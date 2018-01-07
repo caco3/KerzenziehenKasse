@@ -1,0 +1,322 @@
+body {
+/*     background-image: url("images/wallpaper.jpg"); */
+    background-image: url("images/wallpaper2.jpg");
+/*     background-color: #cccccc; */
+
+    font-family: Arial; 
+/*     padding: 10px; */
+}
+
+
+
+
+#articlesDiv {
+    float: left; 
+     display: inline-block;  
+/*     border: 3px solid orange;  */
+/*     margin: 15px; */
+    margin-right: 50px;
+}
+
+
+#rightSide {
+/*     float: right;  */
+    display: inline-block;  
+    max-width: 50%;
+}
+
+
+
+#basketDiv {
+/*     float: right;  */
+     display: inline-block;  
+/*     border: 3px solid orange;  */
+/*     margin: 15px; */
+/*     margin-bottom: 20px; */
+}
+
+
+#bibleVerseDiv {
+/*      display: inline-block;   */
+/*     max-width: 500px; */
+    margin-top: 50px;
+    border: 3px solid black; 
+    box-shadow: 10px 10px 5px #888888;
+    padding: 5px;
+/*     background:  rgba( 255, 255, 255, 0.5); */
+    background:  rgba( 255, 200, 200, 0.5);
+    
+    width: 100%;
+    max-width: 500px;
+}
+
+
+/* Shade */
+#basketTable {
+    box-shadow: 10px 10px 5px #888888;
+}
+
+#dippArticlesTable, #pourArticlesTable, #manualArticleTable, #basketTable {
+    box-shadow: 10px 10px 5px #888888;
+}
+
+#dippArticlesTable {
+    margin-bottom: 20px;
+}
+
+#pourArticlesTable {
+    margin-bottom: 20px;
+}
+
+#bottomDiv {
+    clear: both;
+    padding-top: 20px
+}
+
+
+#logo {
+/*     float: right;  */
+     display: inline-block;  
+}
+#clock {
+    float: right; 
+}
+
+#clockText {
+    margin: 0px;
+    font-size:200%;
+}
+
+
+
+
+h1 {
+    margin: 0px;
+}
+
+h2 {
+    margin: 0px;
+}
+
+h3 {
+    margin-bottom: 5px;
+}
+
+
+hr {
+    margin-top: 0px;
+}
+
+
+
+th, td {
+    white-space:nowrap;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+th {
+/*     height: 10px; */
+}
+
+td {
+    height: 40px;
+}
+
+
+
+.addToBasket {
+/*     border: none; */
+/*     color: white; */
+/*     padding: 6px 20px 6px 20px; */
+/*     background-image: url("images/add.png"); */
+    background: url("images/add.png") no-repeat top center;
+/*     center no-repeat;  */
+    background-size: 100% 100%;
+    width: 40px;
+    height: 40px;
+}
+
+
+.deleteFromBasket {
+/*     border: none; */
+/*     color: white; */
+/*     padding: 6px 20px 6px 20px; */
+/*     background-image: url("images/add.png"); */
+    background: url("images/delete.png") no-repeat top center;
+/*     center no-repeat;  */
+    background-size: 100% 100%;
+    width: 40px;
+    height: 40px;
+}
+
+
+.articleQuantityInput, .articleMoneyInput, .basketQuantityInput, .basketMoneyInput {
+    width: 60px;
+    padding: 5px;
+    font-size: 120%;
+}
+
+
+#manualArticleDescriptionInput {
+    width: 300px;
+    font-size: 120%;
+    padding: 5px;
+}
+
+
+
+#bibleVerseText {
+    margin: 0px;
+    font-family: Comic Sans MS, Comic Sans, cursive;
+}
+
+#bibleVerseReference {
+    margin: 0px;
+    margin-top: 10px;
+    font-style: italic;
+    text-align: right;
+    font-family: Comic Sans MS, Comic Sans, cursive;
+    font-size: 70%;
+}
+
+
+/* ############ Ziehen ############## */
+#dippArticlesTable {
+    border: 3px solid black; 
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#dippArticlesTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+/*     background-color: #ffd144; */
+    background:  rgba(255, 209, 68, 0.5);
+}
+
+#dippArticlesTable tr:nth-child(odd){
+/*     background-color: #ffff99;     */
+    background:  rgba(255, 255, 153, 0.8);
+}
+
+#dippArticlesTable tr:nth-child(even){
+/*     background-color: #ffffe4;     */
+    background:  rgba(255, 255, 228, 0.8);
+}
+
+
+
+/* ############ Giessen ############## */
+#pourArticlesTable {
+    border: 3px solid black; 
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#pourArticlesTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+/*     background-color: #7c4eff; */
+    background:  rgba(124, 78, 255, 0.5);
+/*     color: white; */
+}
+
+#pourArticlesTable tr:nth-child(odd){
+/*     background-color: #a585ff;     */
+    background:  rgba(165, 133, 255, 0.8);
+}
+
+#pourArticlesTable tr:nth-child(even){
+/*     background-color: #ccbaff;     */
+    background:  rgba(204, 186, 255, 0.8);
+}
+
+
+
+
+/* ############ Freie Eingabe ############## */
+#manualArticleTable {
+    border: 3px solid black; 
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#manualArticleTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background:  rgba(0, 149, 149, 0.5);
+}
+
+#manualArticleTable tr{
+    background:  rgba(170, 255, 255, 0.5);
+}
+
+
+
+/* ############ Warenkorb ############## */
+#basketTable {
+    border: 3px solid black; 
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#basketTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+/*     background-color: #3e8a5c; */
+    background:  rgba(62, 138, 92, 0.6);
+}
+
+#basketTable tr:nth-child(odd){
+/*     background-color: #85c79f;     */
+    background:  rgba(133, 199, 159, 0.8);
+}
+
+#basketTable tr:nth-child(even){
+/*     background-color: #ccffcc;    */
+    background:  rgba(204, 255, 204, 0.8); 
+}
+
+
+
+
+
+
+
+
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: 
+/*                 rgba( 255, 255, 255, .8 )  */
+                rgba( 255, 255, 255, 0 ) 
+                url('images/ajax-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
