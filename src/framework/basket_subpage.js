@@ -68,15 +68,8 @@ function startWatchdog(){
     
 $(document).ready(function(){    
     console.log("Basket loaded");
-    restoreFocus();
-    
-//     formatCurrencyField("basketDonationMoney");
-//     formatCurrencyField("basketTotalMoney");
-    
-    
-
-    
-    
+//     restoreFocus();
+        
     
     
     startWatchdog();
@@ -291,7 +284,7 @@ function updateBasketEntry(basketId, free, quantity, price) {
         inputFieldId.selectionStart = 1;
     }
     
-    saveFocus(inputField);    
+//     saveFocus(inputField);    
             
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() { 
@@ -355,31 +348,31 @@ function updateBasketEntry(basketId, free, quantity, price) {
 
 
 
-function saveFocus(inputField){    
-    // Store field persistently
-    inputFieldActive = inputField;
-    
-    // Store cursor position persistently
-    inputFieldId = document.getElementById(inputField);    
-    inputFieldSelection = inputFieldId.selectionStart;
-    
-    console.log("## Remembering to set focus to " + inputField + " after reloading basket (cursor position: " + inputFieldSelection + ")");
-}
+// function saveFocus(inputField){    
+//     // Store field persistently
+//     inputFieldActive = inputField;
+//     
+//     // Store cursor position persistently
+//     inputFieldId = document.getElementById(inputField);    
+//     inputFieldSelection = inputFieldId.selectionStart;
+//     
+//     console.log("## Remembering to set focus to " + inputField + " after reloading basket (cursor position: " + inputFieldSelection + ")");
+// }
 
 
-function restoreFocus(){
-    try { // try to restore focus and selection
-        if(inputFieldActive != null){
-            inputFieldId = document.getElementById(inputFieldActive);
-            inputFieldId.focus();
-            inputFieldId.selectionStart = inputFieldSelection;
-        console.log("## Setting focus to: " + inputFieldId + " (cursor position: " + inputFieldSelection + ")");
-        }
-        else {
-            console.log("Nothing to set focus to!");
-        }  
-    }
-    catch(error) {
-        // nothing to do
-    }
-}
+// function restoreFocus(){
+//     try { // try to restore focus and selection
+//         if(inputFieldActive != null){
+//             inputFieldId = document.getElementById(inputFieldActive);
+//             inputFieldId.focus();
+//             inputFieldId.selectionStart = inputFieldSelection;
+//         console.log("## Setting focus to: " + inputFieldId + " (cursor position: " + inputFieldSelection + ")");
+//         }
+//         else {
+//             console.log("Nothing to set focus to!");
+//         }  
+//     }
+//     catch(error) {
+//         // nothing to do
+//     }
+// }

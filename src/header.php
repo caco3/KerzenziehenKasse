@@ -22,8 +22,8 @@ db_connect();
 
 <script>
 // global variables used in basket
-var inputFieldActive = null;
-var inputFieldSelection = null;
+// var inputFieldActive = null;
+// var inputFieldSelection = null;
 
 $(document).ready(function(){    
     startClock();

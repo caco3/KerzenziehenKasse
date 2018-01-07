@@ -10476,3 +10476,67 @@ UPDATE `tbl_basket_various` SET `total`='4614.5'
  INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('0', '1', '123.45', '1', '5') 
 -- Sun, 07 Jan 2018 22:38:54 +0100
 UPDATE `tbl_basket_various` SET `total`='4737.95' 
+-- Sun, 07 Jan 2018 22:43:46 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('0', '1', '3', '1', 'aa"bb"') 
+-- Sun, 07 Jan 2018 22:43:46 +0100
+UPDATE `tbl_basket_various` SET `total`='4740.95' 
+-- Sun, 07 Jan 2018 22:47:23 +0100
+UPDATE `tbl_basket` SET `price`='13.00' WHERE `basket_id`='343'
+-- Sun, 07 Jan 2018 22:47:23 +0100
+UPDATE `tbl_basket_various` SET `total`='4630.95' 
+-- Sun, 07 Jan 2018 22:47:27 +0100
+UPDATE `tbl_basket_various` SET `total`='460.95' 
+-- Sun, 07 Jan 2018 22:47:27 +0100
+UPDATE `tbl_basket_various` SET `total`='4616.95' 
+-- Sun, 07 Jan 2018 22:47:27 +0100
+UPDATE `tbl_basket_various` SET `donation`='0' 
+-- Sun, 07 Jan 2018 22:47:32 +0100
+UPDATE `tbl_basket_various` SET `total`='46161.95' 
+-- Sun, 07 Jan 2018 22:47:33 +0100
+UPDATE `tbl_basket_various` SET `donation`='41545' 
+-- Sun, 07 Jan 2018 22:47:36 +0100
+UPDATE `tbl_basket_various` SET `total`='4616.95' 
+-- Sun, 07 Jan 2018 22:47:36 +0100
+UPDATE `tbl_basket_various` SET `donation`='0' 
+-- Sun, 07 Jan 2018 22:47:39 +0100
+UPDATE `tbl_basket` SET `price`='465.50' WHERE `basket_id`='345'
+-- Sun, 07 Jan 2018 22:47:40 +0100
+UPDATE `tbl_basket_various` SET `total`='616.95' 
+-- Sun, 07 Jan 2018 22:47:42 +0100
+UPDATE `tbl_basket` SET `price`='1.00' WHERE `basket_id`='345'
+-- Sun, 07 Jan 2018 22:47:42 +0100
+UPDATE `tbl_basket_various` SET `total`='152.45' 
+-- Sun, 07 Jan 2018 22:47:43 +0100
+UPDATE `tbl_basket` SET `price`='10.00' WHERE `basket_id`='345'
+-- Sun, 07 Jan 2018 22:47:43 +0100
+UPDATE `tbl_basket_various` SET `total`='161.45' 
+-- Sun, 07 Jan 2018 22:47:47 +0100
+UPDATE `tbl_basket` SET `price`='1.00' WHERE `basket_id`='346'
+-- Sun, 07 Jan 2018 22:47:48 +0100
+UPDATE `tbl_basket_various` SET `total`='39' 
+-- Sun, 07 Jan 2018 22:47:49 +0100
+UPDATE `tbl_basket` SET `price`='100.00' WHERE `basket_id`='346'
+-- Sun, 07 Jan 2018 22:47:49 +0100
+UPDATE `tbl_basket_various` SET `total`='138' 
+-- Sun, 07 Jan 2018 22:47:49 +0100
+UPDATE `tbl_basket` SET `price`='1000.00' WHERE `basket_id`='346'
+-- Sun, 07 Jan 2018 22:47:49 +0100
+UPDATE `tbl_basket_various` SET `total`='1038' 
+-- Sun, 07 Jan 2018 22:47:51 +0100
+UPDATE `tbl_basket` SET `price`='10.00' WHERE `basket_id`='346'
+-- Sun, 07 Jan 2018 22:47:51 +0100
+UPDATE `tbl_basket_various` SET `total`='48' 
+-- Sun, 07 Jan 2018 22:47:56 +0100
+UPDATE `tbl_basket_various` SET `donation`='2.00' 
+-- Sun, 07 Jan 2018 22:47:56 +0100
+UPDATE `tbl_basket_various` SET `total`='50' 
+-- Sun, 07 Jan 2018 22:47:59 +0100
+UPDATE `tbl_basket_various` SET `total`='48.00' 
+-- Sun, 07 Jan 2018 22:47:59 +0100
+UPDATE `tbl_basket_various` SET `donation`='0' 
+-- Sun, 07 Jan 2018 22:48:03 +0100
+UPDATE `tbl_basket_various` SET `total`='47.00' 
+-- Sun, 07 Jan 2018 22:48:03 +0100
+UPDATE `tbl_basket_various` SET `total`='48' 
+-- Sun, 07 Jan 2018 22:48:03 +0100
+UPDATE `tbl_basket_various` SET `donation`='0' 
