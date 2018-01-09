@@ -52,7 +52,7 @@ $(document).ready(function(){
 //             console.log("keydown which: " + event.which);
                                 
             if( // The following key are not to be ignored:          
-                (event.which >= 48 && event.which <= 57)      ||     // numbers                
+                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
 //                 (event.which >= 8 && event.which <= 13)       ||     // backspace, tab, enter   
 //                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, delete, decimal point, F5, num lock, period
@@ -74,7 +74,7 @@ $(document).ready(function(){
 //             console.log("keyup which: " + event.which);
             
             if( // The following key are not to be ignored:          
-                (event.which >= 48 && event.which <= 57)      ||     // numbers                
+                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                 
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
                 ($.inArray(event.which, [ 8, 13, 46]) !== -1)        // backspace, enter, delete
             ) { // ok, refresh basket
@@ -125,7 +125,7 @@ $(document).ready(function(){
             
             
             if( // The following key are not to be ignored:          
-                (event.which >= 48 && event.which <= 57)      ||     // numbers                
+                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                 
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1) || // backspace, tab, enter, end, home, left arrow, right arrow, delete, F5, num lock
                 ($.inArray(event.which, [ 110, 190]) !== -1)         // decimal point, period
@@ -144,44 +144,67 @@ $(document).ready(function(){
     $(".articleMoneyInput").keyup(
         function(event){
 //             console.log("keyup which: " + event.which);
-                        
+            
             if( // The following key are not to be ignored:          
-                (event.which >= 48 && event.which <= 57)      ||     // numbers                
+                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 13, 46]) !== -1) ||     // backspace, enter, delete
-                ($.inArray(event.which, [ 110, 190]) !== -1)         // decimal point, period
+                ($.inArray(event.which, [ 8, 13, 46]) !== -1)        // backspace, enter, delete
             ) { // ok, refresh basket
 //                 console.log("ok, accept key");
             }
             else { //all other keys should not refresh basket
                 return;
             }            
-
             
-            // Formating field
-            var inputField = $(event.target).attr('id');  
-            formatCurrency(inputField);
-                      
-                                             
-//             console.log("### update basket");
-//             var inputField = $(event.target).attr('id');  
-//             basketId = inputField.replace("basketId_", "");
-//             basketId = basketId.replace("_quantity", "");
-//             var quantity = $("#" + inputField).val(); 
-//             adjustQuantity(inputField, quantity);
-                                 
-                                 
-            // tell watchdog to update basket after timeout
-//             var inputField = $(event.target).attr('id');  
-//             watchdogMonitoredField = inputField;
-//             watchdogCounter = watchdogCounterStartValue;  
+            var inputField = $(event.target).attr('id');     
+            //prevent empty field
+            if($("#" + inputField).val() == "") {
+                $("#" + inputField).val(0);
+            } 
+            else{
+                $("#" + inputField).val($("#" + inputField).val() * 1);
+            }
+                        
+            // TODO keep selection
             
-            // TODO: improve handling (add timeout, keep selection, ...)
         }
-    ); 
+    );
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     
+    
+    $("#manualArticleDescriptionInput").keydown(
+        function(event){
+//             console.log("keydown which: " + event.which);
+                                            
+            if( // The following key are not to be ignored:          
+                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)              
+                (event.which >= 65 && event.which <= 105)     ||     // keypad numbers     
+                (event.which >= 65 && event.which <= 90)      ||     // letters 
+                (event.which == 32)      ||     // whitespace 
+//                 (event.which >= 8 && event.which <= 13)       ||     // backspace, tab, enter   
+//                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, delete, decimal point, F5, num lock, period
+                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, delete, F5, num lock
+            ) { // accept key press
+//                 console.log("ok, accept key");
+                return;
+            }
+            else { // undo key press
+                event.preventDefault();
+//                 console.log("undo key press");
+            }
+        }
+    );
     
     
     

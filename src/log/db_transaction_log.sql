@@ -10540,3 +10540,7 @@ UPDATE `tbl_basket_various` SET `total`='47.00'
 UPDATE `tbl_basket_various` SET `total`='48' 
 -- Sun, 07 Jan 2018 22:48:03 +0100
 UPDATE `tbl_basket_various` SET `donation`='0' 
+-- Tue, 09 Jan 2018 22:43:21 +0100
+UPDATE `tbl_basket` SET `quantity`='133' WHERE `basket_id`='342'
+-- Tue, 09 Jan 2018 22:43:21 +0100
+UPDATE `tbl_basket_various` SET `total`='1500' 
