@@ -76,7 +76,7 @@ $(document).ready(function(){
     
     
     
-    $(".deleteFromBasket").click(
+    $(".deleteFromBasketButton").click(
         function(event){
             var basketId = $(event.target).attr('id');   
             console.log("deleteFromBasket basketId=" + basketId);

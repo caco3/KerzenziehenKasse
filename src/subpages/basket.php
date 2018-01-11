@@ -67,8 +67,8 @@ echo("<table id=basketTable>");
     
     // Total
     echo("<tr>
-            <td colspan=2>Total</td>
-            <td class=moneyCell>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . roundMoney(getDbTotal()) . "></td>
+            <td colspan=2 class=bold>Total</td>
+            <td class=moneyCell class=bold>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . roundMoney(getDbTotal()) . "></td>
             <td></td>
         </tr>\n");  
     

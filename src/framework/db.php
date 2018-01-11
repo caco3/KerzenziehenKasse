@@ -24,7 +24,7 @@ function db_connect(){
 function getDbProducts($type) {
     global $db_link;
     
-    $sql = "SELECT * FROM tbl_produkt_stamm WHERE typ = '$type' ORDER by `produkt_stamm_id` ASC";  
+    $sql = "SELECT * FROM tbl_articles WHERE typ = '$type' ORDER by `articleId` ASC";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -48,7 +48,7 @@ function getDbProducts($type) {
 function getDbArticleData($id){
     global $db_link;
     
-    $sql = "SELECT * FROM tbl_produkt_stamm WHERE produkt_stamm_id = '$id'";  
+    $sql = "SELECT * FROM tbl_articles WHERE articleId = '$id'";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -56,9 +56,19 @@ function getDbArticleData($id){
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    
+    
+    if($line['articleId'] == 0){ // free article
+        $line['unit'] = "Stk.";
+    }
+    
+//     echo("<pre>");
+//     print_r($line);
+//     echo("</pre>");
+    
     mysqli_free_result( $query_response );
 
-    return [$line['name'], $line['betrag'], $line['einheit']];
+    return [$line['name'], $line['pricePerQuantity'], $line['unit']];
 }
 
 
@@ -284,6 +294,9 @@ function getDbBasket() {
         if($line['free'] == 0){ //normal article
             $line['price'] = $line['quantity'] * $line['pricePerQuantity'];
         }
+        else{ // manual article
+            $line['unit'] = "Stk.";
+        }
 
         $lines[] = $line;
 //         print_r($line);
@@ -296,6 +309,8 @@ function getDbBasket() {
 
     return $lines;
 }
+
+
 
 
 

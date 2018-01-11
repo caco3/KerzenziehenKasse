@@ -22,23 +22,23 @@ db_connect();
 $lines = getDbProducts("wachs");
 
 foreach($lines as $line) {
-    if($line['einheit'] == "g") {
-        $price = "CHF " . number_format($line['betrag'] * 100, 2) . "/100g";
+    if($line['unit'] == "g") {
+        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2) . "/100g";
         
         /* Note: input fields typenumber do not allow setSelection
          *       So we use a type=text field and restrict the characters, see $(".adjustQuantityInput").keydown()          */
-        $weight = "<input type=text class=articleQuantityInput id=quantity" . $line['produkt_stamm_id'] . " value=0> g";
+        $weight = "<input type=text class=articleQuantityInput id=quantity" . $line['articleId'] . " value=0> g";
     }
-    else if($line['einheit'] == "Stk.") {  
-        $price = "CHF " . number_format($line['betrag'], 2) . "/Stk.";
-        $weight = "<input type=hidden value=1 class=weightInput id=quantity" . $line['produkt_stamm_id'] . ">";
+    else if($line['unit'] == "Stk.") {  
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2) . "/Stk.";
+        $weight = "<input type=hidden value=1 class=weightInput id=quantity" . $line['articleId'] . ">";
     }
     else {
-        $price = "CHF " . number_format($line['betrag'], 2);
-        $weight = "<input type=hidden value=1 id=quantity" . $line['produkt_stamm_id'] . ">";
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2);
+        $weight = "<input type=hidden value=1 id=quantity" . $line['articleId'] . ">";
     }
     
-    $button = addButton($line['produkt_stamm_id']);
+    $button = addButton($line['articleId']);
             
     echo("<tr>
             <td>" . $line['name'] . "</td>
@@ -57,20 +57,20 @@ foreach($lines as $line) {
 $lines = getDbProducts("guss");
 
 foreach($lines as $line) {
-    if($line['einheit'] == "g") {
-        $price = "CHF " . number_format($line['betrag'] * 100, 2) . "/100g";
-        $weight = "<input type=hidden value=1 id=quantity" . $line['produkt_stamm_id'] . ">";
+    if($line['unit'] == "g") {
+        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2) . "/100g";
+        $weight = "<input type=hidden value=1 id=quantity" . $line['articleId'] . ">";
     }
-    else if($line['einheit'] == "Stk.") {  
-        $price = "CHF " . number_format($line['betrag'], 2) . "/Stk.";
-        $weight = "<input type=hidden value=1 id=quantity" . $line['produkt_stamm_id'] . ">";
+    else if($line['unit'] == "Stk.") {  
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2) . "/Stk.";
+        $weight = "<input type=hidden value=1 id=quantity" . $line['articleId'] . ">";
     }
     else {
-        $price = "CHF " . number_format($line['betrag'], 2);
-        $weight = "<input type=hidden value=1 id=quantity" . $line['produkt_stamm_id'] . ">";
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2);
+        $weight = "<input type=hidden value=1 id=quantity" . $line['articleId'] . ">";
     }
     
-    $button = addButton($line['produkt_stamm_id']);
+    $button = addButton($line['articleId']);
             
     echo("<tr>
             <td>" . $line['name'] . "</td>

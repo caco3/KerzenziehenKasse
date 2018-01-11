@@ -10,21 +10,29 @@ body {
 
 
 
-#articlesDiv {
-    float: left; 
-     display: inline-block;  
-/*     border: 3px solid orange;  */
-/*     margin: 15px; */
-    margin-right: 50px;
-}
 
-
-#rightSide {
+#leftSideDiv {
 /*     float: right;  */
+    float: left; 
     display: inline-block;  
     max-width: 50%;
 }
 
+#rightSideDiv {
+/*     float: right;  */
+    display: inline-block;  
+    max-width: 50%;
+    margin-left: 50px;
+}
+
+
+#articlesDiv {
+/*     float: left;  */
+     display: inline-block;  
+/*     border: 3px solid orange;  */
+/*     margin: 15px; */
+/*     margin-right: 50px; */
+}
 
 
 #basketDiv {
@@ -33,13 +41,21 @@ body {
 /*     border: 3px solid orange;  */
 /*     margin: 15px; */
 /*     margin-bottom: 20px; */
+
+    width: 100%;
+}
+
+
+#basketCompleteDiv {
+    text-align: right;
+    width: 100%;
 }
 
 
 #bibleVerseDiv {
 /*      display: inline-block;   */
 /*     max-width: 500px; */
-    margin-top: 50px;
+    margin-top: 20px;
     border: 3px solid black; 
     box-shadow: 10px 10px 5px #888888;
     padding: 5px;
@@ -52,25 +68,17 @@ body {
 
 
 /* Shade */
-#basketTable {
+
+#dippArticlesTable, #pourArticlesTable, #manualArticleTable, #basketTable, #summaryTable {
     box-shadow: 10px 10px 5px #888888;
 }
 
-#dippArticlesTable, #pourArticlesTable, #manualArticleTable, #basketTable {
-    box-shadow: 10px 10px 5px #888888;
-}
-
-#dippArticlesTable {
-    margin-bottom: 20px;
-}
-
-#pourArticlesTable {
+#dippArticlesTable, #pourArticlesTable, #bottomDiv, #summaryTable {
     margin-bottom: 20px;
 }
 
 #bottomDiv {
     clear: both;
-    padding-top: 20px
 }
 
 
@@ -127,7 +135,7 @@ td {
 
 
 
-.addToBasket {
+.addToBasketButton {
 /*     border: none; */
 /*     color: white; */
 /*     padding: 6px 20px 6px 20px; */
@@ -140,7 +148,7 @@ td {
 }
 
 
-.deleteFromBasket {
+.deleteFromBasketButton {
 /*     border: none; */
 /*     color: white; */
 /*     padding: 6px 20px 6px 20px; */
@@ -153,10 +161,97 @@ td {
 }
 
 
+
+
+/* Source: http://css3buttongenerator.com/ */
+.createReceiptButton, .finishButton, .summaryBackButton {  
+  -webkit-border-radius: 9;
+  -moz-border-radius: 9;
+  border-radius: 9px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  
+  width: 150px;
+  height: 100px;
+}
+
+.createReceiptButton:hover, .finishButton:hover, .summaryBackButton:hover {  
+  text-decoration: none;
+}
+
+.createReceiptButton {  
+  background: #3498db;
+  background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+  background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+  background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+  background-image: -o-linear-gradient(top, #3498db, #2980b9);
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+}
+
+.createReceiptButton:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+}
+
+
+.finishButton{  
+  background: #52d934;
+  background-image: -webkit-linear-gradient(top, #52d934, #1f7821);
+  background-image: -moz-linear-gradient(top, #52d934, #1f7821);
+  background-image: -ms-linear-gradient(top, #52d934, #1f7821);
+  background-image: -o-linear-gradient(top, #52d934, #1f7821);
+  background-image: linear-gradient(to bottom, #52d934, #1f7821);
+}
+
+
+.finishButton:hover{
+  background: #3cfc3f;
+  background-image: -webkit-linear-gradient(top, #3cfc3f, #26ad43);
+  background-image: -moz-linear-gradient(top, #3cfc3f, #26ad43);
+  background-image: -ms-linear-gradient(top, #3cfc3f, #26ad43);
+  background-image: -o-linear-gradient(top, #3cfc3f, #26ad43);
+  background-image: linear-gradient(to bottom, #3cfc3f, #26ad43);
+}
+
+
+
+.summaryBackButton {
+  background: #d9a734;
+  background-image: -webkit-linear-gradient(top, #d9a734, #946723);
+  background-image: -moz-linear-gradient(top, #d9a734, #946723);
+  background-image: -ms-linear-gradient(top, #d9a734, #946723);
+  background-image: -o-linear-gradient(top, #d9a734, #946723);
+  background-image: linear-gradient(to bottom, #d9a734, #946723);
+}
+
+.summaryBackButton:hover {
+  background: #fad13c;
+  background-image: -webkit-linear-gradient(top, #fad13c, #d1872c);
+  background-image: -moz-linear-gradient(top, #fad13c, #d1872c);
+  background-image: -ms-linear-gradient(top, #fad13c, #d1872c);
+  background-image: -o-linear-gradient(top, #fad13c, #d1872c);
+  background-image: linear-gradient(to bottom, #fad13c, #d1872c);
+}
+
+
+
+
 .articleQuantityInput, .articleMoneyInput, .basketQuantityInput, .basketMoneyInput {
     width: 60px;
     padding: 5px;
     font-size: 120%;
+}
+
+
+.bold{
+    font-weight:bold;
 }
 
 
@@ -259,7 +354,7 @@ td {
 
 
 
-/* ############ Warenkorb ############## */
+/* ############ Basket ############## */
 #basketTable {
     border: 3px solid black; 
     border-collapse: collapse;
@@ -285,6 +380,33 @@ td {
 }
 
 
+
+
+
+/* ############ Summary ############## */
+#summaryTable {
+    border: 3px solid black; 
+    border-collapse: collapse;
+/*     width: 100%; */
+}
+
+#summaryTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+/*     background-color: #3e8a5c; */
+    background:  rgba(62, 138, 92, 0.6);
+}
+
+#summaryTable tr:nth-child(odd){
+/*     background-color: #85c79f;     */
+    background:  rgba(133, 199, 159, 0.8);
+}
+
+#summaryTable tr:nth-child(even){
+/*     background-color: #ccffcc;    */
+    background:  rgba(204, 255, 204, 0.8); 
+}
 
 
 
@@ -319,4 +441,5 @@ td {
 body.loading .modal {
     display: block;
 }
+
 

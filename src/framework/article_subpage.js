@@ -210,7 +210,7 @@ $(document).ready(function(){
     
     
 
-    $(".addToBasket").click(
+    $(".addToBasketButton").click(
         function(event){
             var id = $(event.target).attr('id');   
             var price = 0;
