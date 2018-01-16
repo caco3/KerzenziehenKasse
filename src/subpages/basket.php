@@ -16,12 +16,12 @@ db_connect();
 
 <?
 echo("<table id=basketTable>");
-    echo("<tr><th>Artikel</th><th>Menge</th><th>Preis</th><th></th></tr>\n");
+    echo("<tr><th colspan=2>Artikel</th><th>Menge</th><th>Preis</th><th></th></tr>\n");
     $basket = getDbBasket();
     
 /*    echo("<pre>");
     print_r($basket);
-    echo("</pre>"); */   
+    echo("</pre>");  */  
     
     foreach($basket as $basketEntry) {      
         $basketEntryId = $basketEntry['basket_id'];
@@ -29,6 +29,7 @@ echo("<table id=basketTable>");
         $freeEntry = $basketEntry['free'];
         $quantity = $basketEntry['quantity'];
         $price = $basketEntry['price'];
+        $image = $basketEntry['image'];
         
         $deleteButton = showDeleteButton($basketEntryId);
         
@@ -48,6 +49,7 @@ echo("<table id=basketTable>");
         
         
         echo("<tr>
+            <td><span class=tooltip><img class=articleImage src=images/$image><span><img src=images/$image></span></td>
             <td>$textField</td>
             <td class=quantityCell>$quantityField</td>
             <td class=moneyCell>$priceField</td>
@@ -59,7 +61,7 @@ echo("<table id=basketTable>");
     
     // Spende
     echo("<tr>
-            <td colspan=2>Spende</td>
+            <td colspan=3>Spende</td>
             <td class=moneyCell>CHF <input type=text class=basketMoneyInput id=basketDonationMoney value=" . getDbDonation() . "></td>
             <td></td>
         </tr>\n");    
@@ -67,7 +69,7 @@ echo("<table id=basketTable>");
     
     // Total
     echo("<tr>
-            <td colspan=2 class=bold>Total</td>
+            <td colspan=3 class=bold>Total</td>
             <td class=moneyCell class=bold>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . roundMoney(getDbTotal()) . "></td>
             <td></td>
         </tr>\n");  

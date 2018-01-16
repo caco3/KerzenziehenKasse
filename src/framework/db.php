@@ -68,7 +68,7 @@ function getDbArticleData($id){
     
     mysqli_free_result( $query_response );
 
-    return [$line['name'], $line['pricePerQuantity'], $line['unit']];
+    return [$line['name'], $line['pricePerQuantity'], $line['unit'], $line['image']];
 }
 
 
@@ -289,7 +289,7 @@ function getDbBasket() {
     $lines = array();
     while ($line = mysqli_fetch_array( $query_response, MYSQL_ASSOC))
     {
-        list($line['name'], $line['pricePerQuantity'], $line['unit']) = getDbArticleData($line['article_id']);
+        list($line['name'], $line['pricePerQuantity'], $line['unit'], $line['image']) = getDbArticleData($line['article_id']);
         
         if($line['free'] == 0){ //normal article
             $line['price'] = $line['quantity'] * $line['pricePerQuantity'];

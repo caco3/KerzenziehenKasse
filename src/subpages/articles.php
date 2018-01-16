@@ -16,7 +16,7 @@ db_connect();
 <h2>Artikel</h2>
 
 <table id=dippArticlesTable>
-<tr><th>Wachs</th><th>Preis</th><th>Gewicht</th><th></th></tr>
+<tr><th colspan=2>Wachs</th><th>Preis</th><th>Gewicht</th><th></th></tr>
 
 <? 
 $lines = getDbProducts("wachs");
@@ -41,6 +41,7 @@ foreach($lines as $line) {
     $button = addButton($line['articleId']);
             
     echo("<tr>
+            <td><span class=tooltip><img class=articleImage src=images/" . $line['image'] . "><span><img src=images/" . $line['image'] . "></span></span></td>
             <td>" . $line['name'] . "</td>
             <td class=moneyCell>$price</td>
             <td>$weight</td>
@@ -52,7 +53,7 @@ foreach($lines as $line) {
 </table>
 
 <table id=pourArticlesTable>
-<tr><th>Form</th><th>Preis</th><th></th></tr>
+<tr><th colspan=2>Form</th><th>Preis</th><th></th></tr>
 <?
 $lines = getDbProducts("guss");
 
@@ -73,6 +74,7 @@ foreach($lines as $line) {
     $button = addButton($line['articleId']);
             
     echo("<tr>
+            <td><span class=tooltip><img class=articleImage src=images/" . $line['image'] . "><span><img src=images/" . $line['image'] . "></span></span></td>
             <td>" . $line['name'] . "</td>
             <td class=moneyCell>$price $weight</td>
             <td>$button</td>
