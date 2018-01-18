@@ -14,75 +14,96 @@ body {
 
 
 
-#leftSideDiv {
-/*     float: right;  */
+.leftSideDiv {
     float: left; 
-    display: inline-block;  
-    max-width: 50%;
-}
-
-#rightSideDiv {
-/*     float: right;  */
-    display: inline-block;  
-    max-width: 50%;
-    margin-left: 50px;
-}
-
-
-#articlesDiv {
-/*     float: left;  */
-     display: inline-block;  
-/*     border: 3px solid orange;  */
-/*     margin: 15px; */
-/*     margin-right: 50px; */
-}
-
-
-#basketDiv {
-/*     float: right;  */
-     display: inline-block;  
-/*     border: 3px solid orange;  */
-/*     margin: 15px; */
-/*     margin-bottom: 20px; */
-
-    width: 100%;
-}
-
-
-#basketCompleteDiv {
-    text-align: right;
-    width: 100%;
-}
-
-
-#bibleVerseDiv {
-/*      display: inline-block;   */
-/*     max-width: 500px; */
-    margin-top: 20px;
-    border: 3px solid black; 
-    box-shadow: 10px 10px 5px #888888;
-    padding: 5px;
-/*     background:  rgba( 255, 255, 255, 0.5); */
-    background:  rgba( 255, 200, 200, 0.5);
+    display: inline-block; 
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 32%;
+    vertical-align: top;
     
+/*     border: 1px solid red;  */
+/*     background: rgba(0, 0, 0, 0.5);   */
+    
+}
+
+.midddleDiv {
+    display: inline-block;  
+    width: 32%;
+    vertical-align: top;
+    margin-left: 10px;
+
+/*     border: 1px solid red;  */
+/*     background: rgba(0, 0, 0, 0.5);   */
+}
+
+.rightSideDiv {
+    display: inline-block;  
+    width: 32%;
+    vertical-align: top;
+    margin-left: 5px;
+
+/*     border: 1px solid red;  */
+/*     background: rgba(0, 0, 0, 0.5);   */
+    
+}
+
+
+.topAlignDiv {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 20px;
+}
+
+.bottomAlignDiv {
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+
+#dipArticlesDiv, #pourArticlesDiv, #manualArticlesDiv, #basketDiv, #bibleVerseDiv {
+    display: inline-block;  
     width: 100%;
-    max-width: 500px;
-}
-
-
-/* Shade */
-
-#dippArticlesTable, #pourArticlesTable, #manualArticleTable, #basketTable, #summaryTable {
-    box-shadow: 10px 10px 5px #888888;
-}
-
-#dippArticlesTable, #pourArticlesTable, #bottomDiv, #summaryTable {
     margin-bottom: 20px;
 }
 
-#bottomDiv {
-    clear: both;
+#bibleVerseDiv {
+/*     padding: 20px; */
 }
+
+
+/* border, Shade */
+#dippArticlesTable, #pourArticlesTable, #manualArticleTable, #basketTable, #summaryTable, #bibleVerseContentDiv {
+    box-shadow: 10px 10px 5px #888888;
+    border: 3px solid black; 
+    border-collapse: collapse;    
+}
+
+
+#dippArticlesTable, #pourArticlesTable, #manualArticleTable, #basketTable, #summaryTable {
+    width: 100%;
+}
+
+/* ############ Bibleverse Content ############## */
+#bibleVerseContentDiv {
+    background: rgba(255, 200, 200, 0.5);    
+    padding: 6px;
+    margin-left: 40px;
+    margin-right: 40px;
+    margin-top: 40px;
+}
+
+
+#basketButtonsDiv {
+    width: 100%;
+    text-align: right;
+    
+/*     background: rgba(0, 0, 0, 0.5); */
+}
+
+/*#bottomDiv {
+    clear: both;
+}*/
 
 
 #logo {
@@ -246,9 +267,15 @@ td {
 
 
 
-.articleQuantityInput, .articleMoneyInput, .basketQuantityInput, .basketMoneyInput {
+.articleQuantityInput, .basketQuantityInput {
+    width: 45px;
+    padding: 2px;
+    font-size: 120%;
+}
+
+.articleMoneyInput, .basketMoneyInput {
     width: 60px;
-    padding: 5px;
+    padding: 2px;
     font-size: 120%;
 }
 
@@ -281,13 +308,7 @@ td {
 }
 
 
-/* ############ Ziehen ############## */
-#dippArticlesTable {
-    border: 3px solid black; 
-    border-collapse: collapse;
-    width: 100%;
-}
-
+/* ############ Table Dipping Articles ############## */
 #dippArticlesTable th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -308,13 +329,7 @@ td {
 
 
 
-/* ############ Giessen ############## */
-#pourArticlesTable {
-    border: 3px solid black; 
-    border-collapse: collapse;
-    width: 100%;
-}
-
+/* ############ Table Pouring Articles ############## */
 #pourArticlesTable th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -337,13 +352,7 @@ td {
 
 
 
-/* ############ Freie Eingabe ############## */
-#manualArticleTable {
-    border: 3px solid black; 
-    border-collapse: collapse;
-    width: 100%;
-}
-
+/* ############ Table free Entry ############## */
 #manualArticleTable th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -357,13 +366,8 @@ td {
 
 
 
-/* ############ Basket ############## */
-#basketTable {
-    border: 3px solid black; 
-    border-collapse: collapse;
-    width: 100%;
-}
 
+/* ############ Table Basket ############## */
 #basketTable th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -386,13 +390,7 @@ td {
 
 
 
-/* ############ Summary ############## */
-#summaryTable {
-    border: 3px solid black; 
-    border-collapse: collapse;
-/*     width: 100%; */
-}
-
+/* ############ Table Summary ############## */
 #summaryTable th {
     padding-top: 12px;
     padding-bottom: 12px;

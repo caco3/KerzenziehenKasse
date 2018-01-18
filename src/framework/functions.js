@@ -3,7 +3,9 @@
 
 function showArticles() {
     console.log("load articles");
-    $("#articlesDiv").load("subpages/articles.php");
+    $("#dipArticlesDiv").load("subpages/dipArticles.php");
+    $("#pourArticlesDiv").load("subpages/pourArticles.php");
+    $("#manualArticlesDiv").load("subpages/manualArticles.php");
 }
 
 
@@ -12,6 +14,7 @@ function showArticles() {
 function showBasket() {  
     console.log("load basket");
     $("#basketDiv").load("subpages/basket.php");
+    $("#basketButtonsDiv").load("subpages/basketButtons.php");
 }
 
 function changeBibleVerse() {    

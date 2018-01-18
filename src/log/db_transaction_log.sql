@@ -10828,3 +10828,111 @@ UPDATE `tbl_basket_various` SET `total`='147'
  INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('3', '1', '0', '0', '') 
 -- Tue, 16 Jan 2018 22:29:34 +0100
 UPDATE `tbl_basket_various` SET `total`='148' 
+-- Tue, 16 Jan 2018 22:38:14 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='353'
+-- Tue, 16 Jan 2018 22:38:14 +0100
+UPDATE `tbl_basket_various` SET `total`='107.5' 
+-- Tue, 16 Jan 2018 22:42:23 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='369'
+-- Tue, 16 Jan 2018 22:42:23 +0100
+UPDATE `tbl_basket_various` SET `total`='105.5' 
+-- Tue, 16 Jan 2018 22:42:33 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('0', '1', '45', '1', 'fg hr h') 
+-- Tue, 16 Jan 2018 22:42:33 +0100
+UPDATE `tbl_basket_various` SET `total`='150.5' 
+-- Tue, 16 Jan 2018 23:01:03 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='352'
+-- Tue, 16 Jan 2018 23:01:03 +0100
+UPDATE `tbl_basket_various` SET `total`='137' 
+-- Tue, 16 Jan 2018 23:01:08 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='370'
+-- Tue, 16 Jan 2018 23:01:08 +0100
+UPDATE `tbl_basket_various` SET `total`='135' 
+-- Tue, 16 Jan 2018 23:01:08 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='371'
+-- Tue, 16 Jan 2018 23:01:08 +0100
+UPDATE `tbl_basket_various` SET `total`='134.46' 
+-- Tue, 16 Jan 2018 23:01:09 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='372'
+-- Tue, 16 Jan 2018 23:01:09 +0100
+UPDATE `tbl_basket_various` SET `total`='128.96' 
+-- Tue, 16 Jan 2018 23:01:09 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='373'
+-- Tue, 16 Jan 2018 23:01:09 +0100
+UPDATE `tbl_basket_various` SET `total`='121.96' 
+-- Tue, 16 Jan 2018 23:01:09 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='374'
+-- Tue, 16 Jan 2018 23:01:09 +0100
+UPDATE `tbl_basket_various` SET `total`='112.96' 
+-- Tue, 16 Jan 2018 23:01:10 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='375'
+-- Tue, 16 Jan 2018 23:01:10 +0100
+UPDATE `tbl_basket_various` SET `total`='111.96' 
+-- Tue, 16 Jan 2018 23:01:10 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='349'
+-- Tue, 16 Jan 2018 23:01:10 +0100
+UPDATE `tbl_basket_various` SET `total`='91.96' 
+-- Tue, 16 Jan 2018 23:01:11 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='350'
+-- Tue, 16 Jan 2018 23:01:11 +0100
+UPDATE `tbl_basket_various` SET `total`='88.46' 
+-- Tue, 16 Jan 2018 23:01:11 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='351'
+-- Tue, 16 Jan 2018 23:01:11 +0100
+UPDATE `tbl_basket_various` SET `total`='51.46' 
+-- Tue, 16 Jan 2018 23:01:12 +0100
+DELETE FROM `tbl_basket` WHERE `basket_id`='376'
+-- Tue, 16 Jan 2018 23:01:12 +0100
+UPDATE `tbl_basket_various` SET `total`='6.46' 
+-- Tue, 16 Jan 2018 23:01:37 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('11', '1', '0', '0', '') 
+-- Tue, 16 Jan 2018 23:01:37 +0100
+UPDATE `tbl_basket_various` SET `total`='13.46' 
+-- Tue, 16 Jan 2018 23:01:37 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('8', '1', '0', '0', '') 
+-- Tue, 16 Jan 2018 23:01:37 +0100
+UPDATE `tbl_basket_various` SET `total`='19.96' 
+-- Tue, 16 Jan 2018 23:01:38 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('11', '1', '0', '0', '') 
+-- Tue, 16 Jan 2018 23:01:38 +0100
+UPDATE `tbl_basket_various` SET `total`='26.96' 
+-- Tue, 16 Jan 2018 23:01:39 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('11', '1', '0', '0', '') 
+-- Tue, 16 Jan 2018 23:01:39 +0100
+UPDATE `tbl_basket_various` SET `total`='33.96' 
+-- Tue, 16 Jan 2018 23:01:46 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('2', '100', '0', '0', '') 
+-- Tue, 16 Jan 2018 23:01:46 +0100
+UPDATE `tbl_basket_various` SET `total`='37.66' 
+-- Tue, 16 Jan 2018 23:01:49 +0100
+UPDATE `tbl_basket` SET `quantity`='200' WHERE `basket_id`='381'
+-- Tue, 16 Jan 2018 23:01:49 +0100
+UPDATE `tbl_basket_various` SET `total`='41.36' 
+-- Tue, 16 Jan 2018 23:01:50 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('16', '1', '0', '0', '') 
+-- Tue, 16 Jan 2018 23:01:50 +0100
+UPDATE `tbl_basket_various` SET `total`='50.36' 
+-- Tue, 16 Jan 2018 23:01:52 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('3', '1', '0', '0', '') 
+-- Tue, 16 Jan 2018 23:01:52 +0100
+UPDATE `tbl_basket_various` SET `total`='51.36' 
+-- Tue, 16 Jan 2018 23:04:52 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('0', '1', '3', '1', 'fdhdf') 
+-- Tue, 16 Jan 2018 23:04:52 +0100
+UPDATE `tbl_basket_various` SET `total`='54.36' 
+-- Thu, 18 Jan 2018 16:34:09 +0100
+UPDATE `tbl_basket_various` SET `total`='154.35' 
+-- Thu, 18 Jan 2018 16:34:09 +0100
+UPDATE `tbl_basket_various` SET `donation`='106.45' 
+-- Thu, 18 Jan 2018 22:13:44 +0100
+-- Thu, 18 Jan 2018 22:13:44 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('1', '1000', '0', '0', '') 
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('1', '1000', '0', '0', '') 
+-- Thu, 18 Jan 2018 22:13:44 +0100
+-- Thu, 18 Jan 2018 22:13:44 +0100
+UPDATE `tbl_basket_various` SET `total`='208.35' 
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('1', '1000', '0', '0', '') 
+-- Thu, 18 Jan 2018 22:13:45 +0100
+UPDATE `tbl_basket_various` SET `total`='235.35' 
+-- Thu, 18 Jan 2018 22:13:45 +0100
+UPDATE `tbl_basket_various` SET `total`='235.35' 

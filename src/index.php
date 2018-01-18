@@ -3,23 +3,32 @@
 ?>
 
 
-<div id=leftSideDiv>
-    <div id=articlesDiv></div>
-</div>
-<div id=rightSideDiv>
-    <div id=basketDiv></div>
-    <div id=basketCompleteDiv>
-        <p></p>
-        <form method="get" target="_self" action="summary.php">
-            <button type=submit id=createReceipt class=createReceiptButton><img src="images/pay.png" width=50px><br>Weiter</button>
-        </form>
-    </div>
+<div class=leftSideDiv>
+    <div id=dipArticlesDiv></div>
+    <div id=manualArticlesDiv></div>
     <div id=bibleVerseDiv></div>
 </div>
 
+<div class=midddleDiv>
+    <div id=pourArticlesDiv></div>
+</div>
 
-<div id=bottomDiv></div>
 
-<? 
-    include "footer.php";
-?>
+<div class=rightSideDiv>
+    <div id=basketDiv></div>
+    <div id=basketButtonsDiv></div>
+        
+<!--     <div class="rightSideDiv bottomxxAlignDiv">             -->
+      
+<!--     </div> -->
+
+</div>
+
+
+<!-- <div class="rightSideDiv topAlignDiv"> -->
+
+<!-- </div> -->
+
+<!--<div id=bottomDiv>
+    < ? include "footer.php"; ?>
+</div>-->
