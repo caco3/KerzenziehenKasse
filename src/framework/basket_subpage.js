@@ -76,8 +76,7 @@ $(document).ready(function(){
     
     
     
-    $(".deleteFromBasketButton").click(
-        function(event){
+    $(".deleteFromBasketButton").off().on('click', function(event){
             var basketId = $(event.target).attr('id');   
             console.log("deleteFromBasket basketId=" + basketId);
 
@@ -93,7 +92,7 @@ $(document).ready(function(){
 //                         showBasket(); // in functions.js
                     }
                     else{
-                        alert("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
+                        showFullPageOverlay("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
                     }
                 }
             };
@@ -323,7 +322,7 @@ function updateBasketEntry(basketId, free, quantity, price) {
                 $("body").removeClass("loading");                  
             }
             else{
-                alert("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
+                showFullPageOverlay("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
             }
         }
     };

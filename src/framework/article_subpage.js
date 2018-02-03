@@ -9,7 +9,7 @@ $(document).on({
 
 
 $(document).ready(function(){
-    console.log("Articles loaded");   
+//     console.log("Articles loaded");   
      
     
 //     $(".articleQuantityInput").keydown(
@@ -210,27 +210,26 @@ $(document).ready(function(){
     
     
 
-    $(".addToBasketButton").click(
-        function(event){
+    $(".addToBasketButton").off().on('click', function(event){
             var id = $(event.target).attr('id');   
             var price = 0;
-            var quantity = 0;
+            var quantity = 1;
             var text = "";
             var free = false;
             
             console.log("addToBasket id="+id + ", quantity: " + quantity);
-            
+                        
             if(id == 0){ //manual entry
                 free = true;
                 price =  $("#quantity"+id).val();
                 text = $("#manualArticleDescriptionInput").val();
                 console.log("Manual Article, Text: " + text + ", price: " + price);
                 if(text == "") {
-                    alert("Fehler: Fehlender Text für freie Eingabe!");
+                    showFullPageOverlay("Fehler: Fehlender Text für freie Eingabe!");
                     return;
                 }
                 else if(price == "") {
-                    alert("Fehler: Fehlender oder ungültiger Preis für freie Eingabe!");
+                    showFullPageOverlay("Fehler: Fehlender oder ungültiger Preis für freie Eingabe!");
                     return;
                 }
                 else { //ok
@@ -239,12 +238,12 @@ $(document).ready(function(){
             }  
             else{ //pouring or dipping  
                 quantity =  $("#quantity"+id).val();
-                if(quantity == ""){ // no weight entered for dipping articles
-                    alert("Fehler: Bitte Gewicht eingeben!");
+                if(quantity == ""){ // no weight value entered for dipping articles
+                    showFullPageOverlay("Fehler: Bitte Gewicht eingeben!");
                     return;
                 }
-                else if(quantity == 0){ // weight not useful
-                    alert("Fehler: Bitte sinnvolles Gewicht eingeben!");
+                else if(quantity == 0){ // weight value not useful
+                    showFullPageOverlay("Fehler: Bitte sinnvolles Gewicht eingeben!");
                     return;
                 }  
             }
@@ -266,7 +265,7 @@ $(document).ready(function(){
                         $("#quantity0").val(""); // clear manual entry field
                     }
                     else{
-                        alert("Fehler: Konnte Artikel nicht zum Warenkorb hinzufügen!");
+                        showFullPageOverlay("Fehler: Konnte Artikel nicht zum Warenkorb hinzufügen!");
                     }
                 }
             };
@@ -281,4 +280,5 @@ $(document).ready(function(){
             xhttp.send(params);
         }
     );
+    
 });

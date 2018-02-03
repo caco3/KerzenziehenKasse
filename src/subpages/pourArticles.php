@@ -44,3 +44,9 @@ foreach($lines as $line) {
 ?>
 
 </table>
+
+<script>
+    $(document).ready(function(){
+        console.log("Pour Articles loaded");  
+    });
+</script>

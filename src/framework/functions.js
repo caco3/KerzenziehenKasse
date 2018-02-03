@@ -1,11 +1,22 @@
+// var contentsLoaded = 6;
 
+function blockLoaded(){
+//     contentsLoaded = contentsLoaded - 1;
+//     console.log("Loaded: " + (6 - contentsLoaded)); 
+//     if(contentsLoaded == 0){ 
+//         console.log("all loaded");
+//         
+//         console.log("hide full page overlay");
+//         $('.fullPageOverlay').hide();
+//     }
+}
 
 
 function showArticles() {
     console.log("load articles");
-    $("#dipArticlesDiv").load("subpages/dipArticles.php");
-    $("#pourArticlesDiv").load("subpages/pourArticles.php");
-    $("#manualArticlesDiv").load("subpages/manualArticles.php");
+    $("#dipArticlesDiv").load("subpages/dipArticles.php", blockLoaded());
+    $("#pourArticlesDiv").load("subpages/pourArticles.php", blockLoaded());
+    $("#manualArticlesDiv").load("subpages/manualArticles.php", blockLoaded());
 }
 
 
@@ -13,9 +24,17 @@ function showArticles() {
 
 function showBasket() {  
     console.log("load basket");
-    $("#basketDiv").load("subpages/basket.php");
-    $("#basketButtonsDiv").load("subpages/basketButtons.php");
+    $("#basketDiv").load("subpages/basket.php", blockLoaded());
+    $("#basketButtonsDiv").load("subpages/basketButtons.php", blockLoaded());
 }
+
+function loadBibleVerse() {
+//     console.log("loadBibleVerse");   
+    $("#bibleVerseDiv").load("subpages/bibleVerse.php", blockLoaded());
+    $("#bibleVerseDiv").fadeIn(1000);
+}
+
+
 
 function changeBibleVerse() {    
 //     console.log("changeBibleVerse");   
@@ -23,10 +42,16 @@ function changeBibleVerse() {
 }
 
 
-function loadBibleVerse() {
-//     console.log("loadBibleVerse");   
-    $("#bibleVerseDiv").load("subpages/bibleVerse.php");
-    $("#bibleVerseDiv").fadeIn(1000);
+function showFullPageOverlay(content) {
+    console.log("Showing full page overlay");
+    content = content + "<br><br><input type=button class=fullPageOverlayContentButton value=Schliessen onclick=hideFullPageOverlay()>";
+    $('.fullPageOverlayContent').html(content);
+    $('.fullPageOverlay').show();
+}
+
+function hideFullPageOverlay() {    
+    console.log("Hiding full page overlay");
+    $('.fullPageOverlay').hide(500);
 }
 
 
@@ -93,6 +118,7 @@ function formatCurrency(value){
         digitsBehindDecimalPoints = getDigitsBehindDecimalPoints(value);
         if(digitsBehindDecimalPoints > 2) { // cut sufix away
             // TODO round properly
+            value = value.toString();
             value = value.substring(0, value.length - digitsBehindDecimalPoints + 2);
 //             console.log(value);
 //             value = Math.round(parseInt(value * 100) / 100.0);

@@ -23,4 +23,8 @@ db_connect();
 </table>
 
 
-
+<script>
+    $(document).ready(function(){
+        console.log("Manual Articles loaded");  
+    });
+</script>

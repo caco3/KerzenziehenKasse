@@ -8,6 +8,10 @@ body {
 
     font-family: Arial; 
 /*     padding: 10px; */
+
+    height:100%;
+    margin:0;
+    padding:0;
 }
 
 
@@ -418,6 +422,20 @@ td {
 }
 
 
+.footer {
+    margin-left: 5px;
+}
+
+
+.contentLogin {
+    margin-left: 5px; 
+    margin-top: 50px; 
+    margin-bottom: 50px; 
+/*     font-size:200%; */
+}
+
+
+
 /* Start by setting display:none to make this hidden.
    Then we position it in relation to the viewport window
    with position:fixed. Width, height, top and left speak
@@ -426,14 +444,12 @@ td {
 .modal {
     display:    none;
     position:   fixed;
-    z-index:    1000;
+    z-index:    200;
     top:        0;
     left:       0;
     height:     100%;
     width:      100%;
-    background: 
-/*                 rgba( 255, 255, 255, .8 )  */
-                rgba( 255, 255, 255, 0 ) 
+    background: rgba( 255, 255, 255, 0 ) 
                 url('images/ajax-loader.gif') 
                 50% 50% 
                 no-repeat;
@@ -448,6 +464,65 @@ body.loading .modal {
 
 
 
+
+
+/*#dialog {
+    display:    none;
+    position:   fixed;
+    z-index:    300;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: 
+                rgba( 255, 255, 255, 0.8 ) 
+                url('images/ajax-loader.gif') 
+                50% 50% 
+                no-repeat;
+}*/
+
+
+.fullPageOverlay{
+    position:absolute;
+    background: #FFFFFF;
+    opacity:.8;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    z-index:400;
+
+    height:     100%;
+    width:      100%;
+    
+    display: none; /* initially hidden */
+}
+
+.fullPageOverlayContent {    
+    position: relative;
+    float: left;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    font-size:200%;
+    color: red;    
+    font-weight:bold;
+}
+
+
+.fullPageOverlayContentButton {        
+    font-size:100%;
+    color: red;    
+    font-weight:bold;
+}
+
+
+
+
+
+/****** TOOLTIP ******/
 .tooltip
 {
   text-decoration:none;
@@ -482,7 +557,7 @@ body.loading .modal {
   position:absolute;
   top:-128px;
   left:20px;
-  z-index:1000;
+/*   z-index:100; */
   width:auto;
   max-width:256px;
   min-height:256px;
@@ -491,4 +566,30 @@ body.loading .modal {
   margin-left:32px;
   overflow:hidden;
   padding:8px;
+}
+
+
+
+
+
+
+
+
+.login_info{
+  background-color: lightyellow;
+  border-radius: 10px;
+  padding: 5px;  
+  margin-top: 5px;
+  margin-bottom: 5px;  
+  
+  max-width: 500px;
+  font-size:150%;
+}
+
+.login_ok{
+  background-color: lightgreen;
+}
+
+.login_error{
+  background-color: LightCoral ; /*red*/
 }
