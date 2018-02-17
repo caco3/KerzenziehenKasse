@@ -1,8 +1,10 @@
 <?
+$root="..";
+require_once("$root/framework/credentials_check.php");
 
-include "../config/config.php";
-include "../framework/functions.php";
-include "../framework/db.php";
+require_once("$root/config/config.php");
+require_once("$root/framework/functions.php");
+require_once("$root/framework/db.php");
 
 db_connect();
 

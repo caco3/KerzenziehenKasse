@@ -1,10 +1,7 @@
 <?
-    require_once('framework/credentials_check.php');
-    
-    if($autorization == CREDENTIALS_VALID){ //credentials are valid, redirect to index.php (default page)
-        echo("<head><meta http-equiv=refresh content=\"1; url=index.php\"/></head>");
-//         exit();
-    }
+$root=".";
+require_once("$root/framework/credentials_check.php");
+
     
     // Enable to generate password hash
 //     echo password_hash("xxx", PASSWORD_DEFAULT)."\n";

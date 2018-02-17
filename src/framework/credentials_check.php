@@ -4,13 +4,14 @@ define('INVALID_CREDENTIALS', 'INVALID_CREDENTIALS');
 define('MISSING_CREDENTIALS', 'MISSING_CREDENTIALS');
 define('CREDENTIALS_VALID', 'CREDENTIALS_VALID');
 
-
+// echo ($_SERVER['PHP_SELF']);
+// echo basename($_SERVER['PHP_SELF']) . "<br>";
 
 
 if(!empty($_POST['password'])){ //password is set
     $password = $_POST['password'];           
     
-    $config_file = "config/config.php";
+    $config_file = "$root/config/config.php";
     if(file_exists($config_file)){ //config file exists
         require($config_file);
         
@@ -33,7 +34,7 @@ if(!empty($_POST['password'])){ //password is set
 else if(isset($_COOKIE['ID'])){  // ID in cookie is set  
     $ID = $_COOKIE['ID'];  
     
-    $config_file = "config/config.php";
+    $config_file = "$root/config/config.php";
     if(file_exists($config_file)){ //config file exists
         require($config_file);
         
@@ -61,32 +62,39 @@ else{ //no username/password or username/ID given
       
       
       
-CREDENTIALS_INVALID: //password is wrong or ID is wrong
-    if(basename($_SERVER['PHP_SELF']) != "login.php"){ //we are not login.php, 
-        echo("<head><meta http-equiv=refresh content=\"0; url=login.php\"/></head>"); //redirect to login.php
+CREDENTIALS_INVALID: //password is wrong or ID is wrong        
+    $autorization = INVALID_CREDENTIALS;
+    if(basename($_SERVER['PHP_SELF']) != "login.php"){ //we are not on the login.php, redirect
+//         echo("Credentials are invalid<br>");     
+    //         goto END;
+        echo("<head><meta http-equiv=refresh content=\"0; url=$root/login.php\"/></head>"); //redirect to login.php
         die("Access restricted, you get redirected to login.php!");
     }
-    else{//we are on index.php, show login form
-//         echo("Credentials are invalid<br>");             
-        $autorization = INVALID_CREDENTIALS;
+    else { // we are on the login page continue loading page
         goto END;
     }
-          
             
-MISSING_CREDENTIALS: //no password or ID given  
-    if(basename($_SERVER['PHP_SELF']) != "login.php"){ //we are not login.php, 
-        echo("<head><meta http-equiv=refresh content=\"0; url=login.php\"/></head>"); //redirect to login.php
+MISSING_CREDENTIALS: //no password or ID given       
+    $autorization = MISSING_CREDENTIALS;
+    if(basename($_SERVER['PHP_SELF']) != "login.php"){ //we are not on the login.php, redirect
+//         echo("Credentials are missing<br>");        
+    //         goto END;
+        echo("<head><meta http-equiv=refresh content=\"0; url=$root/login.php\"/></head>"); //redirect to login.php
         die("Access restricted, you get redirected to login.php!");
     }
-    else{//we are on index.php, show login form
-//         echo("Credentials are missing<br>");             
-        $autorization = MISSING_CREDENTIALS;
+    else { // we are on the login page continue loading page
         goto END;
     }
       
  
 CREDENTIALS_VALID:
-    $autorization = CREDENTIALS_VALID;
-    
-END:    
+    $autorization = CREDENTIALS_VALID; 
+    if(basename($_SERVER['PHP_SELF']) == "login.php"){ //we are on the login.php, redirect
+//         echo("Credentials are valid<br>");     
+    //     if($autorization == CREDENTIALS_VALID){ //credentials are valid, redirect to index.php (default page)
+        echo("<head><meta http-equiv=refresh content=\"0; url=$root/index.php\"/></head>");
+    //         exit();
+    //     }
+    }
+END:  
 ?>

@@ -1,3 +1,11 @@
+html, body {    
+    height:100%;
+    margin:0;
+    padding:0;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 body {
 /*     background-image: url("images/wallpaper.jpg"); */
     background-image: url("images/wallpaper2.jpg");
@@ -7,23 +15,34 @@ body {
 /*     background-color: #cccccc; */
 
     font-family: Arial; 
-/*     padding: 10px; */
+}
 
-    height:100%;
-    margin:0;
-    padding:0;
+#body {
+    padding-bottom: 50px;   /* Height of the footer */
+}
+
+
+#container {
+    min-height:100%;
+    position:relative;
+}
+
+
+#footer {
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height: 50px;   /* Height of the footer */
+    margin-left: 5px;
 }
 
 
 
-
-
 .leftSideDiv {
-    float: left; 
-    display: inline-block; 
+    display:inline-table;
     margin-left: 0px;
     margin-right: 0px;
-    width: 32%;
+    max-width: 32.9%;
     vertical-align: top;
     
 /*     border: 1px solid red;  */
@@ -32,8 +51,8 @@ body {
 }
 
 .midddleDiv {
-    display: inline-block;  
-    width: 32%;
+    display:inline-table;
+    max-width: 32.9%;
     vertical-align: top;
     margin-left: 10px;
 
@@ -42,10 +61,10 @@ body {
 }
 
 .rightSideDiv {
-    display: inline-block;  
-    width: 32%;
+    display:inline-table;
+    max-width: 32.9%;
     vertical-align: top;
-    margin-left: 5px;
+    margin-left: 10px;
 
 /*     border: 1px solid red;  */
 /*     background: rgba(0, 0, 0, 0.5);   */
@@ -101,6 +120,7 @@ body {
 #basketButtonsDiv {
     width: 100%;
     text-align: right;
+    margin-bottom: 10px;
     
 /*     background: rgba(0, 0, 0, 0.5); */
 }
@@ -114,6 +134,19 @@ body {
 /*     float: right;  */
      display: inline-block;  
 }
+
+#links {
+    float: right; 
+    margin-top: 5px;  
+    margin-right: 50px;    
+}
+
+
+#linkTexts {
+    margin: 0px;
+    font-size:150%;
+}
+
 #clock {
     float: right; 
 }
@@ -192,7 +225,7 @@ td {
 
 
 /* Source: http://css3buttongenerator.com/ */
-.createReceiptButton, .finishButton, .summaryBackButton {  
+.createReceiptButton, .payButton, .summaryBackButton {  
   -webkit-border-radius: 9;
   -moz-border-radius: 9;
   border-radius: 9px;
@@ -206,7 +239,7 @@ td {
   height: 100px;
 }
 
-.createReceiptButton:hover, .finishButton:hover, .summaryBackButton:hover {  
+.createReceiptButton:hover, .payhButton:hover, .summaryBackButton:hover {  
   text-decoration: none;
 }
 
@@ -229,7 +262,7 @@ td {
 }
 
 
-.finishButton{  
+.payButton{  
   background: #52d934;
   background-image: -webkit-linear-gradient(top, #52d934, #1f7821);
   background-image: -moz-linear-gradient(top, #52d934, #1f7821);
@@ -239,7 +272,7 @@ td {
 }
 
 
-.finishButton:hover{
+.payButton:hover{
   background: #3cfc3f;
   background-image: -webkit-linear-gradient(top, #3cfc3f, #26ad43);
   background-image: -moz-linear-gradient(top, #3cfc3f, #26ad43);
@@ -422,9 +455,6 @@ td {
 }
 
 
-.footer {
-    margin-left: 5px;
-}
 
 
 .contentLogin {
@@ -464,28 +494,11 @@ body.loading .modal {
 
 
 
-
-
-/*#dialog {
-    display:    none;
-    position:   fixed;
-    z-index:    300;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
-    background: 
-                rgba( 255, 255, 255, 0.8 ) 
-                url('images/ajax-loader.gif') 
-                50% 50% 
-                no-repeat;
-}*/
-
-
+/**** Dialog *****/
 .fullPageOverlay{
     position:absolute;
-    background: #FFFFFF;
-    opacity:.8;
+/*     background: #FFFFFF; */
+/*     opacity:.9; */
     left:0;
     right:0;
     top:0;
@@ -506,9 +519,20 @@ body.loading .modal {
     transform: translate(-50%, -50%);
     text-align: center;
 
-    font-size:200%;
-    color: red;    
+    font-size:150%;
+    color: white;    
     font-weight:bold;
+    
+    background: #5f5f5f;
+    padding: 40px;
+    box-shadow: 10px 10px 5px #888888;
+    border: 1px solid black; 
+    border-collapse: collapse; 
+    
+    
+    -moz-border-radius: 20px;
+    -webkit-border-radius:20px;
+    -khtml-border-radius:20px;
 }
 
 

@@ -1,8 +1,9 @@
 <? 
-    include "header.php";
-    
-    // todo get next free recipe id
-    $id = 99;
+$root=".";
+include "header.php";
+
+// todo get next free recipe id
+$id = 99;
 ?>
 <h2>Zusammenfassung</h2>
 

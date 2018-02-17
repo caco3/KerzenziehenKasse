@@ -1,7 +1,6 @@
 <? 
 
 
-
 function addButton($id) {
     return "<button type=button id=$id class=addToBasketButton></button> ";
 }
@@ -37,6 +36,7 @@ function listProducts() {
 
 
 }
+
 
 
 
@@ -88,7 +88,6 @@ function calculateBasketTotal($includeDOnation){
     
     return $sum;
 }
-
 
 
 
@@ -145,6 +144,7 @@ function getSummary(){
                 $summary[$id]['name'] = $text;
                 $summary[$id]['price'] = $price; 
                 $summary[$id]['quantity'] = 1; 
+                $summary[$id]['articleId'] = $id;
             }
             $summary[$id]['unit'] = $unit;
         }
@@ -171,16 +171,25 @@ function getSummary(){
         $summary['donation']['quantity'] = "";
         $summary['donation']['unit'] = "";
         $summary['donation']['price'] = $donation;
+        $summary['donation']['articleId'] = 'donation';
     }
     
-    return [$summary, $total];
+    $summary['total']['name'] = "Total";
+    $summary['total']['quantity'] = "";
+    $summary['total']['unit'] = "";
+    $summary['total']['price'] = $total;
+    $summary['total']['articleId'] = 'total';
+    
+    
+    
+    return $summary;
 }
 
 
 
 
 function showSummary(){
-    list($summary, $total) = getSummary();
+    $summary = getSummary();
     
 //     echo("<pre>");
 //     print_r($summary);
@@ -199,10 +208,10 @@ function showSummary(){
         
         }
         
-        echo("<tr>
-                <td colspan=2 class=bold>Total</td>
-                <td class=bold>CHF " . number_format(roundMoney($total), 2) . "</td>
-            </tr>\n"); 
+//         echo("<tr>
+//                 <td colspan=2 class=bold>Total</td>
+//                 <td class=bold>CHF " . number_format(roundMoney($total), 2) . "</td>
+//             </tr>\n"); 
 ?>
     </table>
 
@@ -214,4 +223,3 @@ function showSummary(){
 
 
 ?>
-

@@ -313,6 +313,91 @@ function getDbBasket() {
 
 
 
+function bookingsCreateColumns($column) {
+    global $db_link;
+
+    $sql = "ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `$column` DECIMAL(8,3) NOT NULL";
+    
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+    }
+    else { // fail
+//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
+        sql_transaction_logger("-- [ERROR] Failed to create column '$column' in table booking: $sql");
+        return false;
+    }
+    return true;
+}
+
+
+
+
+function bookingsGetNextFreeId() {
+    global $db_link;
+    
+    $sql = "INSERT INTO tbl_bookings (`booking_id`) values (null)"; 
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+    
+    $sql = "SELECT `booking_id` FROM tbl_bookings ORDER BY `booking_id` DESC LIMIT 1"; 
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+
+    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    mysqli_free_result( $query_response );
+    
+    if($line == ""){ //empty table
+        return 0;
+    }
+    
+//     echo "line: $line\n";
+
+    return $line['booking_id'];
+}
+
+
+
+function bookingsAddBasket($bookingId, $articleId, $cost) {
+    global $db_link;
+
+    // TODO sanetize
+       
+    $sql = "UPDATE `tbl_bookings` SET `$articleId`='$cost' WHERE `booking_id`='$bookingId'"; 
+        
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+    }
+    else { // fail
+        sql_transaction_logger("-- [ERROR] Failed to add article $articleId to bookings: $sql");
+        return false;
+    }
+}
+
+
+
+
+function emptyBasket() {
+    global $db_link;
+       
+    $sql = "TRUNCATE TABLE tbl_basket"; 
+        
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+    }
+    else { // fail
+        sql_transaction_logger("-- [ERROR] Failed to drop basket: $sql");
+        return false;
+    }
+}
 
 
 

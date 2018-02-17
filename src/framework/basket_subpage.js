@@ -260,7 +260,61 @@ $(document).ready(function(){
             formatCurrencyField(inputField);
         }
     ); 
+    
+    
+    
+    $(".payButton").off().on('click', 
+        function(event){
+            moveBasketToBookings();
+        }
+    );
+    
+    
+//     $(".createReceiptButton").off().on('click', 
+//         function(event){
+//             moveBasketToBookings(true);
+//         }
+//     );
+    
 });
+
+
+
+
+function moveBasketToBookings() {    
+    console.log("pay (move basket to bookings)");
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {                    
+//                 console.log(this.responseText);
+//                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            var obj = JSON.parse(this.responseText);                    
+            if(obj.response.success == "true") {
+                showBasket();
+//                 console.log("deleted from basket.\nResponse: " + this.responseText); 
+                firework.launch("Buchung erfolgreich abgeschlossen. <a href=\"receipt.php\" target=\"_blank\">Beleg generieren</a>", 'success', 5000);
+            }
+            else{
+                showFullPageOverlay("Fehler: Konnte Warenkorb nicht freigeben!");
+            }
+        }
+    };
+    var params = "";
+
+    // Show progress indicator
+    $("body").addClass("loading");  
+        
+    xhttp.open("POST", "ajax/pay.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
+
+
+
+
+
 
 
 function getBasketIdfromImputField(inputField){ 
