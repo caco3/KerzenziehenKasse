@@ -1,5 +1,5 @@
 var watchdogInterval = 100; // in ms
-var watchdogCounterStartValue = 5;
+var watchdogCounterStartValue = 10;
                                         
 var watchdogMonitoredField = null;
 var watchdogCounter = 0;
@@ -21,7 +21,10 @@ function watchdog() {
         if(basketId == "basketDonationMoney"){
             var free = 0;
             var quantity = 1;
-            var price = $("#basketDonationMoney").val();       
+            var price = $("#basketDonationMoney").val();   
+            if(price == ""){
+                $("#basketDonationMoney").val(0);
+            }
         }
         else if(basketId == "basketTotalMoney"){
             var free = 0;
@@ -36,17 +39,15 @@ function watchdog() {
         
         if(quantity == ""){
             quantity = 1;
+            $("#basketId_" + basketId + "_quantity").val(quantity);
         }
         
         if(price == ""){
             price = 0;
+//             $("#basketId_" + basketId + "_price").val(price);
         }
-        
-        
+                
         price = formatCurrency(price)
-        
-        
-        
         
         console.log("basketId:", basketId, "free:", free, "quantity:", quantity, "price:", price);
         
@@ -92,7 +93,7 @@ $(document).ready(function(){
                     }
                     else{
 //                         showFullPageOverlay("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
-                        firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'danger', 5000);
+                        firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'error', 5000);
                     }
                 }
             };
@@ -297,7 +298,7 @@ function moveBasketToBookings() {
             }
             else{
 //                 showFullPageOverlay("Fehler: Konnte Warenkorb nicht freigeben!");
-                firework.launch("Konnte Warenkorb nicht freigeben!", 'danger', 5000);
+                firework.launch("Konnte Warenkorb nicht freigeben!", 'error', 5000);
                 hideProgressBar();
             }
         }
@@ -391,7 +392,7 @@ function updateBasketEntry(basketId, free, quantity, price) {
             }
             else{
 //                 showFullPageOverlay("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
-                firework.launch("Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!", 'danger', 5000);
+                firework.launch("Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!", 'error', 5000);
             }
         }
     };

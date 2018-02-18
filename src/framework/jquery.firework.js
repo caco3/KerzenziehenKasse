@@ -2,7 +2,7 @@
  * Firework displays short notifications at top of page,
  * then fades out a few seconds later (no user interaction)
  * @param   m   string    message
- * @param   t   string    (optional) message type ('success', 'danger')
+ * @param   t   string    (optional) message type ('success', 'error')
  * @param   l   number    (optional) length of time to display message in milliseconds
  */
 ;(function ($, window) {

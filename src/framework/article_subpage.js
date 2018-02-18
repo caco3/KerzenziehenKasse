@@ -224,12 +224,12 @@ $(document).ready(function(){
                 console.log("Manual Article, Text: " + text + ", price: " + price);
                 if(text == "") {
 //                     showFullPageOverlay("Fehler: Fehlender Text für freie Eingabe!");
-                    firework.launch("Fehlender Text für freie Eingabe!", 'danger', 5000);
+                    firework.launch("Fehlender Text für freie Eingabe!", 'error', 5000);
                     return;
                 }
                 else if(price == "") {
 //                     showFullPageOverlay("Fehler: Fehlender oder ungültiger Preis für freie Eingabe!");
-                    firework.launch("Fehlender oder ungültiger Preis für freie Eingabe!", 'danger', 5000);
+                    firework.launch("Fehlender oder ungültiger Preis für freie Eingabe!", 'error', 5000);
                     return;
                 }
                 else { //ok
@@ -240,12 +240,12 @@ $(document).ready(function(){
                 quantity =  $("#quantity"+id).val();
                 if(quantity == ""){ // no weight value entered for dipping articles
 //                     showFullPageOverlay("Fehler: Bitte Gewicht eingeben!");
-                    firework.launch("Bitte Gewicht eingeben!", 'danger', 5000);
+                    firework.launch("Bitte Gewicht eingeben!", 'error', 5000);
                     return;
                 }
                 else if(quantity == 0){ // weight value not useful
 //                     showFullPageOverlay("Fehler: Bitte sinnvolles Gewicht eingeben!");
-                    firework.launch("Bitte sinnvolles Gewicht eingeben!", 'danger', 5000);
+                    firework.launch("Bitte sinnvolles Gewicht eingeben!", 'error', 5000);
                     return;
                 }  
             }
@@ -268,7 +268,7 @@ $(document).ready(function(){
                     }
                     else{
 //                         showFullPageOverlay("Fehler: Konnte Artikel nicht zum Warenkorb hinzufügen!");
-                        firework.launch("Konnte Artikel nicht zum Warenkorb hinzufügen!", 'danger', 5000);
+                        firework.launch("Konnte Artikel nicht zum Warenkorb hinzufügen!", 'error', 5000);
                     }
                 }
             };

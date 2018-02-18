@@ -22,6 +22,12 @@ body {
 }
 
 
+a:link, a:visited, a:hover, a:active {    
+    text-decoration: none;
+    color: #00407d;
+}
+
+
 #container {
     min-height:100%;
     position:relative;
@@ -135,14 +141,16 @@ body {
      display: inline-block;  
 }
 
-#links {
-    float: right; 
+#headerLinksDiv {
+/*     float: right;  */
+     display: inline-block;  
     margin-top: 5px;  
+    margin-left: 50px; 
     margin-right: 50px;    
 }
 
 
-#linkTexts {
+#headerLinksTexts {
     margin: 0px;
     font-size:150%;
 }
@@ -599,7 +607,7 @@ body.loading .modal {
 
 
 
-.login_info{
+/*.login_info{
   background-color: lightyellow;
   border-radius: 10px;
   padding: 5px;  
@@ -616,4 +624,16 @@ body.loading .modal {
 
 .login_error{
   background-color: LightCoral ; /*red*/
+}*/
+
+
+
+
+a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:active {    
+    text-decoration: none;
+    font-weight: bold;
+    color: #00407d;
 }
+
+
+

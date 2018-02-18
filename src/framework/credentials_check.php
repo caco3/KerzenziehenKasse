@@ -3,13 +3,21 @@
 define('INVALID_CREDENTIALS', 'INVALID_CREDENTIALS');
 define('MISSING_CREDENTIALS', 'MISSING_CREDENTIALS');
 define('CREDENTIALS_VALID', 'CREDENTIALS_VALID');
+define('INITIAL_PAGE_LOAD', 'INITIAL_PAGE_LOAD');
 
 // echo ($_SERVER['PHP_SELF']);
 // echo basename($_SERVER['PHP_SELF']) . "<br>";
+// echo("<pre>");
+// print_r($_POST);
+// echo("</pre>");
 
 
-if(!empty($_POST['password'])){ //password is set
-    $password = $_POST['password'];           
+if(isset($_POST['password'])){ //password is set
+    $password = $_POST['password'];   
+    
+    if($password == "") {
+        goto MISSING_CREDENTIALS;
+    }
     
     $config_file = "$root/config/config.php";
     if(file_exists($config_file)){ //config file exists
@@ -48,15 +56,17 @@ else if(isset($_COOKIE['ID'])){  // ID in cookie is set
             goto CREDENTIALS_INVALID;
         }  
     }
-    else{ //config file does not exist (username is wrong)
+    else{ //config file does not exist
         goto CREDENTIALS_INVALID;
     }
 }
 //---------------------------------------------
-else{ //no username/password or username/ID given    
-//     echo("No POST or Cookie parameters set<br>");    
-    goto MISSING_CREDENTIALS;
-}
+// else{ //no password or ID given    
+//     echo("No POST or Cookie parameters set<br>"); 
+//     goto MISSING_CREDENTIALS;
+// }
+
+goto INITIAL_PAGE_LOAD;
 
     
       
@@ -76,6 +86,18 @@ CREDENTIALS_INVALID: //password is wrong or ID is wrong
             
 MISSING_CREDENTIALS: //no password or ID given       
     $autorization = MISSING_CREDENTIALS;
+    if(basename($_SERVER['PHP_SELF']) != "login.php"){ //we are not on the login.php, redirect
+//         echo("Credentials are missing<br>");        
+    //         goto END;
+        echo("<head><meta http-equiv=refresh content=\"0; url=$root/login.php\"/></head>"); //redirect to login.php
+        die("Access restricted, you get redirected to login.php!");
+    }
+    else { // we are on the login page continue loading page
+        goto END;
+    }
+            
+INITIAL_PAGE_LOAD: //no password or ID given  (initial call)     
+    $autorization = INITIAL_PAGE_LOAD;
     if(basename($_SERVER['PHP_SELF']) != "login.php"){ //we are not on the login.php, redirect
 //         echo("Credentials are missing<br>");        
     //         goto END;

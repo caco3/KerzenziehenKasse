@@ -49,19 +49,33 @@ db_connect();
                 <h1><img src="images/candle.png" width=30px> Kerzenziehen &ndash; <img src="images/logo_small.png"></h1>
             </div>
             
-            <div id=clock><p id=clockText></p></div>
-            <div id=links><p id=linkTexts>
-                <a href="receipt.php" target="_blank">Beleg zu letzter Buchung</a> | 
-                <a href="stats.php" target="_blank">Auswertung</a>
-            </p></div>
+            <div id=headerLinksDiv>
+                <p id=headerLinksTexts>
+                <? if(basename($_SERVER['PHP_SELF']) == "index.php") { ?>
+                    <a class="headerLinks" href="receipt.php" target="_blank">Beleg zu letzter Buchung</a> | 
+                    <a class="headerLinks" href="stats.php" target="_blank">Auswertung</a>
+                    | <a class="headerLinks" href="help.php" target="_blank">Hilfe</a>
+                <? } 
+                    elseif(basename($_SERVER['PHP_SELF']) == "stats.php") { ?>
+                    <a class="headerLinks" href="index.php" target="_blank">Hauptseite</a>
+                    | <a class="headerLinks" href="help.php" target="_blank">Hilfe</a>
+                <? } 
+                    elseif(basename($_SERVER['PHP_SELF']) == "help.php") { ?>
+                    <a class="headerLinks" href="index.php" target="_blank">Hauptseite</a>
+                <? } ?>
+                </p>
+            </div>
+            <div id=clock>
+                <p id=clockText></p>
+            </div>
         </div>
         <hr>
         <div class="modal"></div>
-        <div class="fullPageOverlay">
+<!--        <div class="fullPageOverlay">
             <div class="fullPageOverlayContent">
                 Laden...
             </div>
-        </div>
+        </div>-->
     </div>
     
     
