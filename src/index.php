@@ -1,6 +1,6 @@
 <? 
 $root=".";
-include "header.php";
+include "$root/framework/header.php";
 ?>
     <div id="body">
         <div class=leftSideDiv>
@@ -32,7 +32,7 @@ include "header.php";
 <!-- </div> -->
 
 <?
-include "footer.php"; 
+include "$root/framework/footer.php"; 
 ?>
     
 

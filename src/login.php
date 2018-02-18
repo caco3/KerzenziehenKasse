@@ -16,7 +16,7 @@ require_once("$root/framework/credentials_check.php");
     <http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="shortcut icon" href="favicon.ico">
     <title>Kerzenziehen</title>    
-    <link rel="stylesheet" href="style.css">  
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">  
 </head>
 
 

@@ -14124,3 +14124,95 @@ UPDATE `tbl_bookings` SET `19`='12' WHERE `booking_id`='40'
 UPDATE `tbl_bookings` SET `donation`='5.8' WHERE `booking_id`='40'
 -- Sat, 17 Feb 2018 23:28:13 +0100
 UPDATE `tbl_bookings` SET `total`='145' WHERE `booking_id`='40'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `1` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `2` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `3` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `5` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `7` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `11` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `16` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `17` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `19` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `donation` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `total` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `1`='2.7' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `2`='37' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `3`='1' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `5`='35' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `7`='5.5' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `11`='7' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `16`='9' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `17`='30' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `19`='12' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `donation`='5.8' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:08 +0100
+UPDATE `tbl_bookings` SET `total`='145' WHERE `booking_id`='41'
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `1` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `2` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `3` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `5` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `7` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `11` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `16` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `17` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `19` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `donation` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `total` DECIMAL(8,3) NOT NULL
+-- Sun, 18 Feb 2018 17:50:15 +0100
+UPDATE `tbl_bookings` SET `1`='2.7' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:16 +0100
+UPDATE `tbl_bookings` SET `2`='37' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:16 +0100
+UPDATE `tbl_bookings` SET `3`='1' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `5`='35' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `7`='5.5' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `11`='7' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `16`='9' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `17`='30' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `19`='12' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `donation`='5.8' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:50:17 +0100
+UPDATE `tbl_bookings` SET `total`='145' WHERE `booking_id`='42'
+-- Sun, 18 Feb 2018 17:54:43 +0100
+ INSERT INTO `tbl_basket` (`article_id`, `quantity`, `price`, `free`, `text`) VALUES ('4', '1', '0', '0', '') 
+-- Sun, 18 Feb 2018 17:54:43 +0100
+UPDATE `tbl_basket_various` SET `total`='147' 

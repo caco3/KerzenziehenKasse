@@ -7,8 +7,8 @@ html, body {
 }
 
 body {
-/*     background-image: url("images/wallpaper.jpg"); */
-    background-image: url("images/wallpaper2.jpg");
+/*     background-image: url("../images/wallpaper.jpg"); */
+    background-image: url("../images/wallpaper2.jpg");
 /*     background-repeat: no-repeat; */
     background-attachment: fixed;
     background-position: center; 
@@ -200,8 +200,8 @@ td {
 /*     border: none; */
 /*     color: white; */
 /*     padding: 6px 20px 6px 20px; */
-/*     background-image: url("images/add.png"); */
-    background: url("images/add.png") no-repeat top center;
+/*     background-image: url("../images/add.png"); */
+    background: url("../images/add.png") no-repeat top center;
 /*     center no-repeat;  */
     background-size: 100% 100%;
     width: 40px;
@@ -213,8 +213,8 @@ td {
 /*     border: none; */
 /*     color: white; */
 /*     padding: 6px 20px 6px 20px; */
-/*     background-image: url("images/add.png"); */
-    background: url("images/delete.png") no-repeat top center;
+/*     background-image: url("../images/add.png"); */
+    background: url("../images/delete.png") no-repeat top center;
 /*     center no-repeat;  */
     background-size: 100% 100%;
     width: 40px;
@@ -480,7 +480,7 @@ td {
     height:     100%;
     width:      100%;
     background: rgba( 255, 255, 255, 0 ) 
-                url('images/ajax-loader.gif') 
+                url('../images/ajax-loader.gif') 
                 50% 50% 
                 no-repeat;
 }

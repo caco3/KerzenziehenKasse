@@ -15,7 +15,7 @@ db_connect();
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="shortcut icon" href="favicon.ico">
     <title>Kerzenziehen</title>    
-    <link rel="stylesheet" href="style.css">  
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">  
     <script src="<? echo("$root"); ?>/framework/jquery.min.js"></script>
     <script src="<? echo("$root"); ?>/framework/jquery-ui.min.js"></script>
     <script src="<? echo("$root"); ?>/framework/functions.js"></script>
