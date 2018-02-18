@@ -37,7 +37,7 @@ foreach($lines as $line) {
             
     echo("<tr>
             <td><span class=tooltip><img class=articleImage src=images/" . $line['image'] . "><span><img src=images/" . $line['image'] . "></span></span></td>
-            <td>" . $line['name'] . "</td>
+            <td class=articleNameCell>" . $line['name'] . "</td>
             <td class=moneyCell>$price $weight</td>
             <td>$button</td>
         </tr>");    

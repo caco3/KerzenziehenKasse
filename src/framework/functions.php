@@ -110,7 +110,7 @@ function roundMoney($num){
 
 
 
-function getSummary(){
+function getSummary($includeTotal){
     $freeId = 0;
     $basket = getDbBasket();
     
@@ -174,12 +174,13 @@ function getSummary(){
         $summary['donation']['articleId'] = 'donation';
     }
     
-    $summary['total']['name'] = "Total";
-    $summary['total']['quantity'] = "";
-    $summary['total']['unit'] = "";
-    $summary['total']['price'] = $total;
-    $summary['total']['articleId'] = 'total';
-    
+    if($includeTotal == true) {
+        $summary['total']['name'] = "Total";
+        $summary['total']['quantity'] = "";
+        $summary['total']['unit'] = "";
+        $summary['total']['price'] = $total;
+        $summary['total']['articleId'] = 'total';
+    }
     
     
     return $summary;

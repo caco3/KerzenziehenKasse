@@ -15,7 +15,7 @@ $quantity = "";
 
 
 
-$summary = getSummary();
+$summary = getSummary(true);
 
 // echo("<pre>");
 // print_r($summary);
@@ -54,13 +54,13 @@ if($success == true) { // ok, all columns exists
 
 
 if($success == true) { // ok, whole basket transfered, empty basket
-//     $ret = emptyBasket();
-//     if( $ret == false) {
-//         $errorText = "Failed to empty basket!";
-//         $success = false;
-//     }
-//     updateDonationInBasket(0);
-//     updateTotalInBasket(0);
+    $ret = emptyBasket();
+    if( $ret == false) {
+        $errorText = "Failed to empty basket!";
+        $success = false;
+    }
+    updateDonationInBasket(0);
+    updateTotalInBasket(0);
 }
 
 

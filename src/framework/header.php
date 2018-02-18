@@ -52,7 +52,9 @@ db_connect();
             <div id=headerLinksDiv>
                 <p id=headerLinksTexts>
                 <? if(basename($_SERVER['PHP_SELF']) == "index.php") { ?>
-                    <a class="headerLinks" href="receipt.php" target="_blank">Beleg zu letzter Buchung</a> | 
+                    <a id=receiptTrigger class="headerLinks" href="receipt.php" target="_self" 
+                        onclick="firework.launch('Erstelle Beleg...', 'success', 5000);"
+                        >Beleg zu letzter Buchung</a> | 
                     <a class="headerLinks" href="stats.php" target="_blank">Auswertung</a>
                     | <a class="headerLinks" href="help.php" target="_blank">Hilfe</a>
                 <? } 

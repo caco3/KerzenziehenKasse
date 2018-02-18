@@ -38,7 +38,7 @@ if($bookingId == ""){
 }
 
 
-$price = "CHF " . number_format(getDbTotal(), 2);
+$price = "CHF " . number_format(roundMoney(getDbTotal()), 2);
 
 
 $odf = new Odf("templates/receipt.odt");
@@ -56,7 +56,7 @@ $odf->setVars('priceTotal', "$price");
 
 $articlesList = $odf->setSegment('articles');
 
-$data = getSummary();
+$data = getSummary(false);
 
 // echo("<pre>");
 // print_r($data);
@@ -66,7 +66,7 @@ foreach($data as $article) {
 
 //     echo($article['name'] . ", " . "CHF " . number_format($article['price'], 2) . "<br>\n");
     
-    $articlesList->articleTitle($article['name']);
+    $articlesList->articleTitle(strip_tags($article['name']));
     $articlesList->articleDetails($article['quantity'] . " " . $article['unit']);
     $articlesList->articleCost("CHF " . number_format($article['price'], 2));
     $articlesList->merge();

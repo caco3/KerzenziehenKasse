@@ -1,5 +1,20 @@
 // var contentsLoaded = 6;
 
+
+
+
+
+
+
+// $(document).ready(function(){
+//     $("#receiptTrigger").click(){ function(event){
+//             console.log("receiptTrigger");
+//         }
+//     );    
+// });
+    
+    
+
 function blockLoaded(){
 //     contentsLoaded = contentsLoaded - 1;
 //     console.log("Loaded: " + (6 - contentsLoaded)); 
