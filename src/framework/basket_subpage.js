@@ -91,7 +91,8 @@ $(document).ready(function(){
                         console.log("deleted from basket.\nResponse: " + this.responseText);
                     }
                     else{
-                        showFullPageOverlay("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
+//                         showFullPageOverlay("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
+                        firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'danger', 5000);
                     }
                 }
             };
@@ -288,7 +289,7 @@ function moveBasketToBookings() {
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             var obj = JSON.parse(this.responseText);                    
-            if(obj.response.success == "tarue") {
+            if(obj.response.success == "true") {
                 showBasket();
 //                 console.log("deleted from basket.\nResponse: " + this.responseText); 
 //                 firework.launch("Buchung erfolgreich abgeschlossen. <a href=\"receipt.php\" target=\"_blank\">Beleg generieren</a>", 'success', 5000);
@@ -296,7 +297,8 @@ function moveBasketToBookings() {
             }
             else{
 //                 showFullPageOverlay("Fehler: Konnte Warenkorb nicht freigeben!");
-                firework.launch("Konnte Warenkorb nicht freigeben!", 'error', 5000);
+                firework.launch("Konnte Warenkorb nicht freigeben!", 'danger', 5000);
+                hideProgressBar();
             }
         }
     };
@@ -348,21 +350,36 @@ function updateBasketEntry(basketId, free, quantity, price) {
 //                 showBasket();
                 console.log("Updated " + inputField +" in basket.\nResponse: " + this.responseText);
                 
-                console.log("Updating changed fields");                
+                console.log("Updating changed fields:");                
 //                 console.log(obj.updatedFields);
                 
                 jQuery.each(obj.updatedFields, function(id, val) {
                     if(id == 'total'){
-                        console.log("New total: " + val);
+//                         console.log("Old  Total: " + $("#" + 'basketTotalMoney').val());
+                        console.log("  Total: " + val);
                         $("#" + 'basketTotalMoney').val(formatCurrency(val))
+                        
+                        if((obj.corrections) && (obj.corrections.action == 'uprounded')) { // There was a correction and the total was "uprounded"
+                            firework.launch("Total in Warenkorb korrigiert auf Mindestbetrag.", 'warning', 5000);
+                        }
+                        else {
+                            firework.launch("Total in Warenkorb aktualisiert.", 'success', 5000);
+                        }                        
                     }
                     if(id == 'donation'){
-                        console.log("New donation: " + val);
+                        console.log("  Donation: " + val);
                         $("#" + 'basketDonationMoney').val(formatCurrency(val))
+                        
+                        if((obj.corrections) && (obj.corrections.action == 'uprounded')) { // There was a correction and the total was "uprounded"
+                            // suppress success notification
+                        }
+                        else {
+                            firework.launch("Spende in Warenkorb aktualisiert.", 'success', 5000);
+                        }
                     }
                     if(id == 'article'){                        
                         jQuery.each(val, function($basketEntryId, val2) {
-                            console.log("Article "+ $basketEntryId + " has new price: " + val2.price);
+                            console.log("  Article "+ $basketEntryId + ": " + val2.price);
                             $("#basketId_" + $basketEntryId + "_price").val(formatCurrency(val2.price));
                         });
                     }
@@ -373,7 +390,8 @@ function updateBasketEntry(basketId, free, quantity, price) {
                 hideProgressBar();                  
             }
             else{
-                showFullPageOverlay("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
+//                 showFullPageOverlay("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
+                firework.launch("Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!", 'danger', 5000);
             }
         }
     };

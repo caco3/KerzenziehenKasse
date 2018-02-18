@@ -85,11 +85,13 @@ if (isset($_POST['basketId']) AND isset($_POST['free']) AND isset($_POST['quanti
         if(updateTotalInBasket($price) == true){ 
             $TotalWithoutDonation = calculateBasketTotal(false);
             $donation = $price - $TotalWithoutDonation;
-            if($donation < 0) {
+            if($donation < 0) { // donation is negative! This means that the newly entered total is below the cost of all articles!
                 $donation = 0;
                 updateTotalInBasket($TotalWithoutDonation); 
                 $total = getDbTotal();
                 $response_array['updatedFields']['total'] = $total;
+                $response_array['corrections']['action'] = 'uprounded';
+                $response_array['corrections']['Text'] = 'total rounded up to minimum!';
             }
             updateDonationInBasket($donation) == true;
             // todo validate
