@@ -89,7 +89,6 @@ $(document).ready(function(){
                     if(obj.response.success == "true") {
                         showBasket();
                         console.log("deleted from basket.\nResponse: " + this.responseText);
-//                         showBasket(); // in functions.js
                     }
                     else{
                         showFullPageOverlay("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
@@ -99,8 +98,7 @@ $(document).ready(function(){
             var params = "basketId=" + basketId;
 //             console.log(params);
 
-            // Show progress indicator
-            $("body").addClass("loading");  
+            showProgressBar();  
                 
             xhttp.open("POST", "ajax/deleteFromBasket.php", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -290,20 +288,21 @@ function moveBasketToBookings() {
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             var obj = JSON.parse(this.responseText);                    
-            if(obj.response.success == "true") {
+            if(obj.response.success == "tarue") {
                 showBasket();
 //                 console.log("deleted from basket.\nResponse: " + this.responseText); 
-                firework.launch("Buchung erfolgreich abgeschlossen. <a href=\"receipt.php\" target=\"_blank\">Beleg generieren</a>", 'success', 5000);
+//                 firework.launch("Buchung erfolgreich abgeschlossen. <a href=\"receipt.php\" target=\"_blank\">Beleg generieren</a>", 'success', 5000);
+                firework.launch("Buchung erfolgreich abgeschlossen.", 'success', 5000);
             }
             else{
-                showFullPageOverlay("Fehler: Konnte Warenkorb nicht freigeben!");
+//                 showFullPageOverlay("Fehler: Konnte Warenkorb nicht freigeben!");
+                firework.launch("Konnte Warenkorb nicht freigeben!", 'error', 5000);
             }
         }
     };
     var params = "";
 
-    // Show progress indicator
-    $("body").addClass("loading");  
+    showProgressBar();  
         
     xhttp.open("POST", "ajax/pay.php", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -370,10 +369,8 @@ function updateBasketEntry(basketId, free, quantity, price) {
                 });
                             
                 // Monitor input field changes again
-                startWatchdog();
-                                                
-                // Hide progress indicator
-                $("body").removeClass("loading");                  
+                startWatchdog();                                                
+                hideProgressBar();                  
             }
             else{
                 showFullPageOverlay("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
@@ -388,8 +385,7 @@ function updateBasketEntry(basketId, free, quantity, price) {
     var params = "basketId=" + basketId + "&free=" + free + "&quantity=" + quantity + "&price=" + price;    
     console.log("Parameters:", params);
 
-    // Show progress indicator
-    $("body").addClass("loading");  
+    showProgressBar();  
     
     xhttp.open("POST", "ajax/updateInBasket.php", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

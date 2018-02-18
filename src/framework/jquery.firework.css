@@ -4,13 +4,13 @@
   border-color: #888;
   border-radius: 6px 0;
   color: #fff;
-  left: 25%;
+  left: 30%;
   padding: 10px;
   position: fixed;
   opacity: 0.8;
   text-align: center;
   top: 0;
-  width: 50%;
+  width: 30%;
   z-index: 99;
     font-size:200%;
 }
@@ -22,17 +22,17 @@
   padding: 0 5px;
 }
 .firework.success {
-  background-color: #669936;
+  background-color: rgba(102, 153, 54, 0.9);
   border-color: #669936;
   color: #fff
 }
 .firework.danger {
-  background-color: #E65A27;
+  background-color: rgba(230, 90, 39, 0.9);
   border-color: #E65A27;
   color: #fff
 }
 .firework.warning {
-  color: #5F612C;
-  background-color: #DBD667;
+  background-color: rgba(219, 214, 103, 0.9);
   border-color: #DBD667;
+  color: #5F612C;
 }

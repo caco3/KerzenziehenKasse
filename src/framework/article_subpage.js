@@ -1,10 +1,8 @@
 $(document).on({
     
-    // Hide progress indicator
     ajaxStop: function() { 
-        $("body").removeClass("loading");
-    }
-     
+        hideProgressBar();
+    }    
 });
 
 
@@ -272,8 +270,7 @@ $(document).ready(function(){
             var params = "id=" + id + "&quantity=" + quantity + "&price=" + price + "&free=" + free + "&text=" + text;
             console.log(params);
 
-            // Show progress indicator
-            $("body").addClass("loading");   
+            showProgressBar();   
     
             xhttp.open("POST", "ajax/addToBasket.php", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

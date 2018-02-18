@@ -42,6 +42,15 @@ function changeBibleVerse() {
 }
 
 
+function showProgressBar() {
+    $("body").addClass("loading"); 
+}
+
+function hideProgressBar() {
+    $("body").removeClass("loading"); 
+}
+
+
 function showFullPageOverlay(content) {
     console.log("Showing full page overlay");
     content = content + "<br><br><input type=button class=fullPageOverlayContentButton value=Schliessen onclick=hideFullPageOverlay()>";
