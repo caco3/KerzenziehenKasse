@@ -291,10 +291,11 @@ function moveBasketToBookings() {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             var obj = JSON.parse(this.responseText);                    
             if(obj.response.success == "true") {
+                console.log("Moved basket to bookings (ID: " + obj.response.bookingId + ")");
                 showBasket();
 //                 console.log("deleted from basket.\nResponse: " + this.responseText); 
 //                 firework.launch("Buchung erfolgreich abgeschlossen. <a href=\"receipt.php\" target=\"_blank\">Beleg generieren</a>", 'success', 5000);
-                firework.launch("Buchung erfolgreich abgeschlossen.", 'success', 5000);
+                firework.launch("Buchung " + obj.response.bookingId + " erfolgreich abgeschlossen.", 'success', 5000);
             }
             else{
 //                 showFullPageOverlay("Fehler: Konnte Warenkorb nicht freigeben!");

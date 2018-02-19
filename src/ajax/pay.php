@@ -15,7 +15,7 @@ $quantity = "";
 
 
 
-$summary = getSummary(true);
+$summary = getBasketSummary(false, false);
 
 // echo("<pre>");
 // print_r($summary);
@@ -24,12 +24,19 @@ $summary = getSummary(true);
 
 $success = true;
 
-// Make sure there is a column for each article ID
+// In the bookings table, create two columns (quantity, cost) for each used article ID in this basket
 foreach($summary as $entry){
 //     echo "id: " . $entry['articleId'] . "\n";
-    $ret = bookingsCreateColumns($entry['articleId']);
+    if($entry['free'] == true) { // free article
+        $ret = bookingsCreateArticleColumns($entry['articleId'], array("cost", "text")); 
+    }
+    else { // normal article
+        $ret = bookingsCreateArticleColumns($entry['articleId'], array("cost", "quantity")); 
+    }
+        
+        
     if($ret == false) {
-        $errorText = "Failed to create column in table booking!";
+        $errorText = "Failed to create columns in table booking!";
         $success = false;
         break;
     }
@@ -37,19 +44,33 @@ foreach($summary as $entry){
 
 
 if($success == true) { // ok, all columns exists
-    $bookingId = bookingsGetNextFreeId();
+    $bookingId = bookingsCreateId();
 
 //     echo "bookingId: $bookingId\n";
 
     // Add all articles to bookings
-    foreach($summary as $entry){
-        $ret = bookingsAddBasket($bookingId, $entry['articleId'], $entry['price']);
+    foreach($summary as $entry){    
+        if($entry['free'] == true) { // free article
+            $ret = bookingsAddBasketFreeArticle($bookingId, $entry['articleId'], $entry['price'], $entry['name']);
+        }
+        else { // normal article
+            $ret = bookingsAddBasketArticle($bookingId, $entry['articleId'], $entry['price'], $entry['quantity']);
+        }        
+        
         if( $ret == false) {
             $errorText = "Failed to add article " . $entry['articleId'] ." to table booking for booking ID $bookingId!";
             $success = false;
             break;
         }
     }
+    
+    $ret = bookingsAddBasketDonationAndTotal($bookingId, getDbDonation(), getDbTotal());
+    if( $ret == false) {
+        $errorText = "Failed to add donation + total to table booking for booking ID $bookingId!";
+        $success = false;
+    }
+    
+    
     
     sql_transaction_logger("-- Booking completed (ID: $bookingId)");
     sql_transaction_logger("-- ---------------------------------------------------------------------------");
@@ -80,6 +101,7 @@ if($success == true) { // ok, whole basket transfered, empty basket
 if ( $success == true) {
     $response_array['response']['success'] = 'true'; 
     $response_array['response']['Text'] = "moved basket to bookings.";
+    $response_array['response']['bookingId'] = $bookingId;
 }
 else {
     $response_array['response']['success'] = 'false'; 

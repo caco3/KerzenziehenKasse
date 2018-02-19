@@ -45,6 +45,9 @@ function getDbProducts($type) {
 
 
 
+/* return article data
+ * Note: only provide real article IDs (but not free ones)
+ */
 function getDbArticleData($id){
     global $db_link;
     
@@ -312,27 +315,46 @@ function getDbBasket() {
 
 
 
-function bookingsCreateColumns($column) {
+function bookingsCreateArticleColumns($articleId, $columns) {
     global $db_link;
-
-    $sql = "ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `$column` DECIMAL(8,3) NOT NULL";
     
-    if(mysqli_query($db_link, $sql)){
-        sql_transaction_logger($sql);
-        return true;
+    foreach ($columns as $column) {
+        $columnName = "article_" . $articleId . "_" . $column;
+        
+        switch($column) {
+            case "cost":
+                $columnsType = "decimal(8,3)";
+                break;
+            case "quantity":
+                $columnsType = "int(11)";
+                break;
+            case "text":
+                $columnsType = "text";
+                break;
+            default:
+                $columnsType = "text";
+                break;
+        }
+                
+        // create column if it doesn't exist yet
+        $sql = "ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `$columnName` $columnsType NOT NULL";
+        
+        if(mysqli_query($db_link, $sql)){
+            sql_transaction_logger($sql);
+        }
+        else { // fail
+            sql_transaction_logger("-- [ERROR] Failed to create column 'article_" . $articleId . "_quantity' in table booking: $sql");
+            return false;
+        }
     }
-    else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
-        sql_transaction_logger("-- [ERROR] Failed to create column '$column' in table booking: $sql");
-        return false;
-    }
+    
     return true;
 }
 
 
 
 
-function bookingsGetNextFreeId() {
+function bookingsCreateId() {
     global $db_link;
     
     $sql = "INSERT INTO tbl_bookings (`booking_id`) values (null)"; 
@@ -341,6 +363,13 @@ function bookingsGetNextFreeId() {
     {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
+    
+    return bookingsGetLastId();
+}
+
+
+function bookingsGetLastId() {
+    global $db_link;
     
     $sql = "SELECT `booking_id` FROM tbl_bookings ORDER BY `booking_id` DESC LIMIT 1"; 
     $query_response = mysqli_query($db_link, $sql );
@@ -356,19 +385,19 @@ function bookingsGetNextFreeId() {
         return 0;
     }
     
-//     echo "line: $line\n";
-
     return $line['booking_id'];
 }
 
 
 
-function bookingsAddBasket($bookingId, $articleId, $cost) {
+function bookingsAddBasketArticle($bookingId, $articleId, $cost,$quantity) {
     global $db_link;
 
     // TODO sanetize
        
-    $sql = "UPDATE `tbl_bookings` SET `$articleId`='$cost' WHERE `booking_id`='$bookingId'"; 
+    $sql = "UPDATE `tbl_bookings`
+            SET `article_" . $articleId . "_cost`='$cost' , `article_" . $articleId . "_quantity`='$quantity'
+            WHERE `booking_id`='$bookingId'"; 
         
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -380,6 +409,66 @@ function bookingsAddBasket($bookingId, $articleId, $cost) {
     }
 }
 
+
+
+function bookingsAddBasketFreeArticle($bookingId, $articleId, $cost, $text) {
+    global $db_link;
+
+    // TODO sanetize
+       
+    $sql = "UPDATE `tbl_bookings`
+            SET `article_" . $articleId . "_cost`='$cost', `article_" . $articleId . "_text`='$text'
+            WHERE `booking_id`='$bookingId'"; 
+        
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+    }
+    else { // fail
+        sql_transaction_logger("-- [ERROR] Failed to add free article $articleId to bookings: $sql");
+        return false;
+    }
+}
+
+
+
+function bookingsAddBasketDonationAndTotal($bookingId, $donation, $total) {
+    global $db_link;
+
+    // TODO sanetize
+       
+    $sql = "UPDATE `tbl_bookings`
+            SET `donation`='$donation', `total`='$total'
+            WHERE `booking_id`='$bookingId'"; 
+        
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+    }
+    else { // fail
+        sql_transaction_logger("-- [ERROR] Failed to add donation and total to bookings: $sql");
+        return false;
+    }
+}
+
+
+
+
+function getBooking($bookingId) {
+    global $db_link;
+    
+    $sql = "SELECT * FROM tbl_bookings WHERE booking_id = '$bookingId'"; 
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+
+    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    mysqli_free_result( $query_response );
+
+    return $line;
+}
 
 
 

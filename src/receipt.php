@@ -26,16 +26,18 @@ require_once('framework/odtphp/src/Zip/PhpZipProxy.php');
 use Odtphp\Odf;
 
 
-if(isset($_GET['id'])){
-    $bookingId = $_GET['id'];
-}
-else{
-    $bookingId = 0;
-}
+// if(isset($_GET['id'])){
+//     $bookingId = $_GET['id'];
+// }
+// else{
+//     $bookingId = 0;
+// }
+// 
+// if($bookingId == ""){
+//     $bookingId = 0;
+// }
 
-if($bookingId == ""){
-    $bookingId = 0;
-}
+$bookingId = bookingsGetLastId();
 
 
 $price = "CHF " . number_format(roundMoney(getDbTotal()), 2);
@@ -56,10 +58,10 @@ $odf->setVars('priceTotal', "$price");
 
 $articlesList = $odf->setSegment('articles');
 
-$data = getSummary(false);
+$data = getLastBookingSummary();
 
-// echo("<pre>");
-// print_r($data);
+echo("<pre>");
+print_r($data);
 
 foreach($data as $article) {
 //     print_r($article);
@@ -77,6 +79,6 @@ $odf->mergeSegment($articlesList);
 
 
 // We export the file
-$odf->exportAsAttachedFile("Kerzenziehen $year - Buchung $bookingId - $date.odt");
+// $odf->exportAsAttachedFile("Kerzenziehen $year - Buchung $bookingId - $date.odt");
  
 ?>

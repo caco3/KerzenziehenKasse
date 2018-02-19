@@ -109,8 +109,8 @@ function roundMoney($num){
 
 
 
-
-function getSummary($includeTotal){
+/* Returns the summarized content of the basket */
+function getBasketSummary($includeDonation, $includeTotal){
     $freeId = 0;
     $basket = getDbBasket();
     
@@ -128,7 +128,184 @@ function getSummary($includeTotal){
         
         $id = $articleId;
         if($id == 0){ // manual article
-            $id = "9999999999_free_" . $freeId;
+            $id = "free_" . $freeId;
+            $freeId++;
+        }
+        
+        
+        if(!array_key_exists($id, $summary)){ // new article
+            if($free != 1){ // normal article
+                $summary[$id]['name'] = $name;
+                $summary[$id]['quantity'] = 0;
+                $summary[$id]['articleId'] = $articleId;
+                $summary[$id]['price'] = 0;          
+                $summary[$id]['free'] = 0;          
+            }
+            else{ // manual article
+                $summary[$id]['name'] = $text;
+                $summary[$id]['price'] = $price; 
+                $summary[$id]['quantity'] = 1; 
+                $summary[$id]['articleId'] = $id;     
+                $summary[$id]['free'] = 1;      
+            }
+            $summary[$id]['unit'] = $unit;
+        }
+        
+        // Sum identical articles up
+        if($free != 1){ // normal article
+            $summary[$id]['price'] += $quantity * $pricePerQuantity; 
+            $summary[$id]['quantity'] += $quantity;            
+        }
+        else{ // manual article
+//             $summary[$id]['price'] = $price; 
+//             $summary[$id]['quantity'] = 1;  
+        }        
+    } 
+    
+    ksort($summary);
+    
+    $total = getDbTotal();
+    $donation = getDbDonation();
+    
+    
+    if(($includeDonation == true) and ($donation > 0)){
+        $summary['donation']['name'] = "Spende";
+        $summary['donation']['quantity'] = "";
+        $summary['donation']['unit'] = "";
+        $summary['donation']['price'] = $donation;
+        $summary['donation']['articleId'] = 'donation';
+    }
+    
+    if($includeTotal == true) {
+        $summary['total']['name'] = "Total";
+        $summary['total']['quantity'] = "";
+        $summary['total']['unit'] = "";
+        $summary['total']['price'] = $total;
+        $summary['total']['articleId'] = 'total';
+    }
+        
+    return $summary;
+}
+
+
+
+
+function showSummary(){
+    $summary = getBasketSummary(false, false);
+    
+//     echo("<pre>");
+//     print_r($summary);
+//     echo("</pre>");
+?>
+
+    <table id=summaryTable>
+    <tr><th>Artikel</th><th>Menge</th><th>Preis</th></tr>
+<?
+        foreach($summary as $entry){
+            echo("<tr>
+                <td>" . $entry['name'] . "</td>
+                <td>" . $entry['quantity'] . " " .  $entry['unit'] . "</td>
+                <td>CHF " . number_format($entry['price'], 2) . "</td>
+            </tr>\n");
+        
+        }
+        
+//         echo("<tr>
+//                 <td colspan=2 class=bold>Total</td>
+//                 <td class=bold>CHF " . number_format(roundMoney($total), 2) . "</td>
+//             </tr>\n"); 
+?>
+    </table>
+
+<?
+    
+    
+}
+
+
+
+/* Returns the sumarized content of the last booking */
+function getLastBookingSummary(){
+    $freeId = 0;
+    
+    $bookingId = bookingsGetLastId();
+    $booking = getBooking($bookingId);
+    
+    echo("<pre>Bookings:\n");
+    print_r($booking);
+    
+    $summary = array();
+    
+    foreach(array_keys($booking) as $bookingEntry) {  
+        echo("$bookingEntry: " . $booking[$bookingEntry] . "\n");
+        
+        
+        if($bookingEntry == "booking_id") {
+        
+        }
+        elseif($bookingEntry == "total") {
+        
+        }
+        elseif($bookingEntry == "donation") {
+        
+        }
+        else { // article
+            if($booking[$bookingEntry] != 0) { // the booking contains this article                
+                if(strpos($bookingEntry, "free_") === false) { // normal article
+                    $id = $bookingEntry;
+                    list($name, $pricePerQuantity, $unit) = getDbArticleData($id);
+                    $summary[$id]['name'] = $name;
+                    $summary[$id]['unit'] = $unit;
+                }
+                else { // manual article                    
+                    $summary[$id]['name'] = $bookingEntry; // temporarly
+                }
+            }
+        
+
+        
+        
+            
+        }
+    
+    }
+    
+    
+    
+    print_r($summary);
+    
+    
+    exit();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    $summary = array();
+    
+    foreach($basket as $basketEntry) {      
+        $basketId = $basketEntry['basket_id'];
+        $articleId = $basketEntry['article_id'];
+        $quantity = $basketEntry['quantity'];
+        $free = $basketEntry['free'];
+        $price = $basketEntry['price'];
+        $text = $basketEntry['text'];
+        list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+        
+        
+        $id = $articleId;
+        if($id == 0){ // manual article
+            $id = "free_" . $freeId;
             $freeId++;
         }
         
@@ -184,41 +361,6 @@ function getSummary($includeTotal){
     
     
     return $summary;
-}
-
-
-
-
-function showSummary(){
-    $summary = getSummary();
-    
-//     echo("<pre>");
-//     print_r($summary);
-//     echo("</pre>");
-?>
-
-    <table id=summaryTable>
-    <tr><th>Artikel</th><th>Menge</th><th>Preis</th></tr>
-<?
-        foreach($summary as $entry){
-            echo("<tr>
-                <td>" . $entry['name'] . "</td>
-                <td>" . $entry['quantity'] . " " .  $entry['unit'] . "</td>
-                <td>CHF " . number_format($entry['price'], 2) . "</td>
-            </tr>\n");
-        
-        }
-        
-//         echo("<tr>
-//                 <td colspan=2 class=bold>Total</td>
-//                 <td class=bold>CHF " . number_format(roundMoney($total), 2) . "</td>
-//             </tr>\n"); 
-?>
-    </table>
-
-<?
-    
-    
 }
 
 
