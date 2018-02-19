@@ -1,3 +1,4 @@
 src/config/config.php
 src/log/db_transaction_log.sql*
+src/log/*.log
 _git

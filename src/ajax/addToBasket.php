@@ -72,12 +72,7 @@ else {
     $response_array['response']['success'] = 'false'; 
     $response_array['response']['Text'] = $errorText; 
     
-    // temporary
-//     sql_transaction_logger("--" . $errorText);
-//     $vars = print_r($_POST, true);
-//     sql_transaction_logger("--" . $vars);
-//     sql_transaction_logger("-- id: $id, quantity: $quantity");
-    
+    errorLog(print_r($response_array, true));
 }
 
 

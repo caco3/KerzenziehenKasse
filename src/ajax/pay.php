@@ -50,6 +50,17 @@ if($success == true) { // ok, all columns exists
             break;
         }
     }
+    
+    sql_transaction_logger("-- Booking completed (ID: $bookingId)");
+    sql_transaction_logger("-- ---------------------------------------------------------------------------");
+    
+    
+    /* Write basket into bookings log */
+    $ret = writeBasketContentLog($bookingId);
+    if( $ret == false) {
+        $errorText = "Failed to write basket Log (booking ID $bookingId)!";
+        $success = false;
+    }    
 }
 
 
@@ -65,6 +76,7 @@ if($success == true) { // ok, whole basket transfered, empty basket
 
 
 
+
 if ( $success == true) {
     $response_array['response']['success'] = 'true'; 
     $response_array['response']['Text'] = "moved basket to bookings.";
@@ -72,6 +84,8 @@ if ( $success == true) {
 else {
     $response_array['response']['success'] = 'false'; 
     $response_array['response']['Text'] = $errorText; 
+    
+    errorLog(print_r($response_array, true));
 }
 
 

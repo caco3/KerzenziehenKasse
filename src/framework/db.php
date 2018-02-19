@@ -114,8 +114,7 @@ function addToBasket($id, $quantity, $price, $free, $text) {
 
     // TODO sanetize
        
-    $sql = "
-        INSERT INTO `tbl_basket`
+    $sql = "INSERT INTO `tbl_basket`
         (`article_id`, `quantity`, `price`, `free`, `text`) 
         VALUES
         ('$id', '$quantity',  '$price', '$free', '$text')

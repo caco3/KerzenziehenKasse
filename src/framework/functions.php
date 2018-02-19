@@ -41,12 +41,12 @@ function listProducts() {
 
 
 
-function sql_transaction_logger($sql){
-    $sql = str_replace("\n", " ", $sql);
-    $sql = preg_replace('!\s+!', ' ', $sql);
+function sql_transaction_logger($message){
+    $message = str_replace("\n", " ", $message);
+    $message = preg_replace('!\s+!', ' ', $message);
     // TODO: replace absolute path
-    file_put_contents("/home/chrisc22/www/kerzenziehen/new/log/db_transaction_log.sql", "-- " . date(DATE_RFC2822) . "\r\n", FILE_APPEND);
-    file_put_contents("/home/chrisc22/www/kerzenziehen/new/log/db_transaction_log.sql", "$sql\r\n", FILE_APPEND);
+    file_put_contents(LOG_FOLDER . "/db_transaction_log.sql", "-- " . date(DATE_RFC2822) . "\r\n", FILE_APPEND);
+    file_put_contents(LOG_FOLDER . "/db_transaction_log.sql", "$message\r\n", FILE_APPEND);
 }
 
 
@@ -221,6 +221,44 @@ function showSummary(){
     
 }
 
+
+
+
+function writeBasketContentLog($bookingId) {
+    $basket = getDbBasket();
+    
+    // TODO: replace absolute path    
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "Booking ID, Date\r\n", FILE_APPEND);
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "articleId, quantity, pricePerQuantity, price, free, text\r\n", FILE_APPEND);
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "donation, total\r\n", FILE_APPEND);
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "----------------------------\r\n", FILE_APPEND);
+    
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$bookingId, " . date(DATE_RFC2822) . "\r\n", FILE_APPEND);
+    
+    foreach($basket as $basketEntry) {      
+        $articleId = $basketEntry['article_id'];
+        $quantity = $basketEntry['quantity'];
+        $free = $basketEntry['free'];
+        $price = $basketEntry['price'];
+        $text = $basketEntry['text'];
+        list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+
+        file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$articleId, $quantity, $pricePerQuantity, $price, $free, $text\r\n", FILE_APPEND);
+    }
+        
+    $total = getDbTotal();
+    $donation = getDbDonation();
+    
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$donation, $total\r\n", FILE_APPEND);
+    
+    
+    return true;
+}
+
+
+function errorLog($message) {
+    file_put_contents(LOG_FOLDER . "/error.log", date(DATE_RFC2822) . ", $message\r\n", FILE_APPEND);
+}
 
 
 ?>
