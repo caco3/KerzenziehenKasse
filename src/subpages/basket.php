@@ -27,14 +27,13 @@ echo("<table id=basketTable>");
     foreach($basket as $basketEntry) {      
         $basketEntryId = $basketEntry['basket_id'];
         $articleId = $basketEntry['article_id'];
-        $custom = $basketEntry['custom'];
         $quantity = $basketEntry['quantity'];
         $price = $basketEntry['price'];
         $image = $basketEntry['image'];
         
-        $deleteButton = showDeleteButton($basketEntryId);
+        $removeButton = showRemoveFromBasketButton($basketEntryId);
         
-        if($custom == 0) { // normal entry
+        if($articleId != 'custom') { // normal entry
             list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
@@ -54,8 +53,7 @@ echo("<table id=basketTable>");
             <td>$textField</td>
             <td class=quantityCell>$quantityField</td>
             <td class=moneyCell>$priceField</td>
-            <td>$deleteButton
-                <input type=hidden id=basketId_" . $basketEntryId . "_custom  value=$custom> </td>
+            <td>$removeButton</td>
             </tr>\n");  
     }
     

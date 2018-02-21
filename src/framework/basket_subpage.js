@@ -19,7 +19,6 @@ function watchdog() {
         console.log("basketId:", basketId);
 
         if(basketId == "basketDonationMoney"){
-            var custom = 0;
             var quantity = 1;
             var price = $("#basketDonationMoney").val();   
             if(price == ""){
@@ -27,12 +26,10 @@ function watchdog() {
             }
         }
         else if(basketId == "basketTotalMoney"){
-            var custom = 0;
             var quantity = 1;
             var price = $("#basketTotalMoney").val();  
         }
-        else { // its an article
-            var custom = $("#basketId_" + basketId + "_custom").val();       
+        else { // its an article     
             var quantity = $("#basketId_" + basketId + "_quantity").val();   
             var price = $("#basketId_" + basketId + "_price").val();    
         }
@@ -49,9 +46,9 @@ function watchdog() {
                 
         price = formatCurrency(price)
         
-        console.log("basketId:", basketId, "custom:", custom, "quantity:", quantity, "price:", price);
+        console.log("basketId:", basketId, "quantity:", quantity, "price:", price);
         
-        updateBasketEntry(basketId, custom, quantity, price);
+        updateBasketEntry(basketId, quantity, price);
         return;
     }        
     watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
@@ -77,9 +74,9 @@ $(document).ready(function(){
     
     
     
-    $(".deleteFromBasketButton").off().on('click', function(event){
+    $(".removeFromBasketButton").off().on('click', function(event){
             var basketId = $(event.target).attr('id');   
-            console.log("deleteFromBasket basketId=" + basketId);
+            console.log("removeFromBasket basketId=" + basketId);
 
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {                    
@@ -89,7 +86,7 @@ $(document).ready(function(){
                     var obj = JSON.parse(this.responseText);                    
                     if(obj.response.success == "true") {
                         showBasket();
-                        console.log("deleted from basket.\nResponse: " + this.responseText);
+                        console.log("removed from basket.\nResponse: " + this.responseText);
                     }
                     else{
 //                         showFullPageOverlay("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
@@ -102,7 +99,7 @@ $(document).ready(function(){
 
             showProgressBar();  
                 
-            xhttp.open("POST", "ajax/deleteFromBasket.php", true);
+            xhttp.open("POST", "ajax/removeFromBasket.php", true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.send(params);
         }
@@ -119,8 +116,8 @@ $(document).ready(function(){
                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
 //                 (event.which >= 8 && event.which <= 13)       ||     // backspace, tab, enter   
-//                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, delete, decimal point, F5, num lock, period
-                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, delete, F5, num lock
+//                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, decimal point, F5, num lock, period
+                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, F5, num lock
             ) { // accept key press
 //                 console.log("ok, accept key");
                 return;
@@ -140,7 +137,7 @@ $(document).ready(function(){
             if( // The following key are not to be ignored:          
                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 13, 46]) !== -1)        // backspace, enter, delete
+                ($.inArray(event.which, [ 8, 13, 46]) !== -1)        // backspace, enter, remove
             ) { // ok, refresh basket
 //                 console.log("ok, accept key");
             }
@@ -189,7 +186,7 @@ $(document).ready(function(){
             if( // The following key are not to be ignored:          
                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)            
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1) || // backspace, tab, enter, end, home, left arrow, right arrow, delete, F5, num lock
+                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1) || // backspace, tab, enter, end, home, left arrow, right arrow, remove, F5, num lock
                 ($.inArray(event.which, [ 110, 190]) !== -1)         // decimal point, period
             ) { // accept key press
 //                 console.log("ok, accept key");
@@ -210,7 +207,7 @@ $(document).ready(function(){
             if( // The following key are not to be ignored:          
                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 13, 46]) !== -1) ||     // backspace, enter, delete
+                ($.inArray(event.which, [ 8, 13, 46]) !== -1) ||     // backspace, enter, remove
                 ($.inArray(event.which, [ 110, 190]) !== -1)         // decimal point, period
             ) { // ok, refresh basket
 //                 console.log("ok, accept key");
@@ -293,7 +290,7 @@ function moveBasketToBookings() {
             if(obj.response.success == "true") {
                 console.log("Moved basket to bookings (ID: " + obj.response.bookingId + ")");
                 showBasket();
-//                 console.log("deleted from basket.\nResponse: " + this.responseText); 
+//                 console.log("removed from basket.\nResponse: " + this.responseText); 
 //                 firework.launch("Buchung erfolgreich abgeschlossen. <a href=\"receipt.php\" target=\"_blank\">Beleg generieren</a>", 'success', 5000);
                 firework.launch("Buchung " + obj.response.bookingId + " erfolgreich abgeschlossen.", 'success', 5000);
             }
@@ -330,7 +327,7 @@ function getBasketIdfromImputField(inputField){
 
 
 
-function updateBasketEntry(basketId, custom, quantity, price) {
+function updateBasketEntry(basketId, quantity, price) {
     // Store cursor position persistently
     
     //if empty, set to 1 and cursor right to it
@@ -402,7 +399,7 @@ function updateBasketEntry(basketId, custom, quantity, price) {
     
     
     
-    var params = "basketId=" + basketId + "&custom=" + custom + "&quantity=" + quantity + "&price=" + price;    
+    var params = "basketId=" + basketId + "&quantity=" + quantity + "&price=" + price;    
     console.log("Parameters:", params);
 
     showProgressBar();  

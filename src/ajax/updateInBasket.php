@@ -12,23 +12,25 @@ $basketId = "";
 $quantity = "";
 $success = false;
 
-if (isset($_POST['basketId']) AND isset($_POST['custom']) AND isset($_POST['quantity']) AND isset($_POST['price'])) {
+// print_r($_POST);
+
+if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['price'])) {
     $basketId = $_POST['basketId'];
-    $custom = $_POST['custom'];
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
 
-    if (!is_numeric($custom) OR !is_numeric($quantity) OR !is_numeric($price)){ // one of custom, quantity or price is not a number
+    // TODO only check/use price in case its a custom article or donation or total
+    if (!is_numeric($quantity) OR !is_numeric($price)){ // quantity or price is not a number
         $errorText = "Invalid parameters (not numbers)!";
     }
-    else if (is_numeric($basketId)){ // Id is a number => must be an article
-        if($custom != 0){ //custom article
+    else if (is_numeric($basketId)){ // Id is a number => must be an article (normal or custom)    
+        $articleId = getArticleIdInBasket($basketId);    
+        if($articleId == 'custom'){ //custom article
             if(updateArticlePriceInBasket($basketId, $price) == true){
                 $total = calculateBasketTotal(true);    
                 updateTotalInBasket($total);
                 //todo validate
                 
-                $articleId = getArticleIdInBasket($basketId);
                 list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
                                                     
                 // List all fields that changed  
@@ -46,7 +48,6 @@ if (isset($_POST['basketId']) AND isset($_POST['custom']) AND isset($_POST['quan
                 updateTotalInBasket($total);
                 //todo validate
                 
-                $articleId = getArticleIdInBasket($basketId);
                 list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
                                                     
                 // List all fields that changed  
@@ -58,13 +59,7 @@ if (isset($_POST['basketId']) AND isset($_POST['custom']) AND isset($_POST['quan
             else {
                 $errorText = "SQL transaction failed (article)!";
             }
-        }
-    
-    
-    
-    
-    
-        
+        } 
     }
     else if(($basketId == "basketDonationMoney")) { // id is donation, update donation
         if(updateDonationInBasket($price) == true){   

@@ -112,15 +112,15 @@ function getDbTotal(){
 
 
 
-function addToBasket($id, $quantity, $price, $custom, $text) {
+function addToBasket($id, $quantity, $price, $text) {
     global $db_link;
 
     // TODO sanetize
        
     $sql = "INSERT INTO `tbl_basket`
-        (`article_id`, `quantity`, `price`, `custom`, `text`) 
+        (`article_id`, `quantity`, `price`, `text`) 
         VALUES
-        ('$id', '$quantity',  '$price', '$custom', '$text')
+        ('$id', '$quantity',  '$price', '$text')
     ";
     
         

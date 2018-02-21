@@ -213,12 +213,10 @@ $(document).ready(function(){
             var price = 0;
             var quantity = 1;
             var text = "";
-            var custom = false;
             
             console.log("addToBasket id="+id + ", quantity: " + quantity);
                         
             if(id == 'custom'){ //custom article
-                custom = true;
                 price =  $("#quantity_"+id).val();
                 text = $("#customArticleDescriptionInput").val();
                 console.log("Manual Article, Text: " + text + ", price: " + price);
@@ -272,7 +270,7 @@ $(document).ready(function(){
                     }
                 }
             };
-            var params = "id=" + id + "&quantity=" + quantity + "&price=" + price + "&custom=" + custom + "&text=" + text;
+            var params = "id=" + id + "&quantity=" + quantity + "&price=" + price + "&text=" + text;
             console.log(params);
 
             showProgressBar();   

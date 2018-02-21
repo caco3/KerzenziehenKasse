@@ -16,12 +16,11 @@ $success = false;
 
 // sleep(3); //test high latency
 
-if (isset($_POST['id']) AND (isset($_POST['quantity']) OR isset($_POST['price'])) AND isset($_POST['custom']) AND isset($_POST['text'])) {
+if (isset($_POST['id']) AND (isset($_POST['quantity']) OR isset($_POST['price'])) AND isset($_POST['text'])) {
     $id = $_POST['id'];
     $quantity = $_POST['quantity'];
     $text = $_POST['text'];
     $price = $_POST['price'];
-    $custom = $_POST['custom'];
 
 //     echo($id . ", is_numeric(): " . is_numeric($id) . "<br>");
 //     echo($quantity . ", is_numeric(): " . is_numeric($quantity) . "<br>");
@@ -30,17 +29,15 @@ if (isset($_POST['id']) AND (isset($_POST['quantity']) OR isset($_POST['price'])
         if((is_numeric($quantity)) OR ($id == 'custom' AND $text != "" AND $price != "")) { //its a pour or dip article OR a custom article with a price and text
         
         
-            if($custom != "true"){ // normal article
-                $custom = 0;
+            if($id != "custom"){ // normal article
                 list($name, $pricePerQuantity, $unit, $image) = getDbArticleData($id);
                 $price = $quantity * $pricePerQuantity;
             }
             else{ // custom article
-                $custom = 1;
                 $quantity = 1;                
             }        
         
-            if(addToBasket($id, $quantity, $price, $custom, $text) == true){
+            if(addToBasket($id, $quantity, $price, $text) == true){
                 $total = calculateBasketTotal(true);    
                 updateTotalInBasket($total);
                 //todo validate
