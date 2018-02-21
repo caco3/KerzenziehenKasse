@@ -10,7 +10,7 @@ db_connect();
 ?>
 
 <script src="framework/functions.js"></script>
-<script src="framework/basket_subpage.js"></script>
+<script src="framework/basket.js"></script>
 
 
 <h2>Warenkorb</h2>

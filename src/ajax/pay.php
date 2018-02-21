@@ -27,7 +27,7 @@ $success = true;
 // In the bookings table, create two columns (quantity, cost) for each used article ID in this basket
 foreach($summary as $entry){
 //     echo "id: " . $entry['articleId'] . "\n";
-    if($entry['free'] == true) { // free article
+    if($entry['articleId'] == 'custom') { // custom article
         $ret = bookingsCreateArticleColumns($entry['articleId'], array("cost", "text")); 
     }
     else { // normal article
@@ -50,8 +50,8 @@ if($success == true) { // ok, all columns exists
 
     // Add all articles to bookings
     foreach($summary as $entry){    
-        if($entry['free'] == true) { // free article
-            $ret = bookingsAddBasketFreeArticle($bookingId, $entry['articleId'], $entry['price'], $entry['name']);
+        if($entry['articleId'] == 'custom') { // custom article
+            $ret = bookingsAddBasketCustomArticle($bookingId, $entry['articleId'], $entry['price'], $entry['name']);
         }
         else { // normal article
             $ret = bookingsAddBasketArticle($bookingId, $entry['articleId'], $entry['price'], $entry['quantity']);

@@ -368,6 +368,7 @@ function updateBasketEntry(basketId, quantity, price) {
                     if(id == 'donation'){
                         console.log("  Donation: " + val);
                         $("#" + 'basketDonationMoney').val(formatCurrency(val))
+                        // TODO round to 0.05
                         
                         if((obj.corrections) && (obj.corrections.action == 'uprounded')) { // There was a correction and the total was "uprounded"
                             // suppress success notification

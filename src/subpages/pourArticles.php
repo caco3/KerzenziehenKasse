@@ -10,7 +10,7 @@ db_connect();
 ?>
 
 <script src="framework/functions.js"></script>
-<script src="framework/article_subpage.js"></script>
+<script src="framework/articles.js"></script>
 
 <h2>Artikel zum Giessen</h2>
 
