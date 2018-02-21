@@ -181,7 +181,7 @@ $(document).ready(function(){
     
      
     
-    $("#manualArticleDescriptionInput").keydown(
+    $("#customArticleDescriptionInput").keydown(
         function(event){
 //             console.log("keydown which: " + event.which);
                                             
@@ -213,14 +213,14 @@ $(document).ready(function(){
             var price = 0;
             var quantity = 1;
             var text = "";
-            var free = false;
+            var custom = false;
             
             console.log("addToBasket id="+id + ", quantity: " + quantity);
                         
-            if(id == 0){ //manual entry
-                free = true;
-                price =  $("#quantity"+id).val();
-                text = $("#manualArticleDescriptionInput").val();
+            if(id == 'custom'){ //custom article
+                custom = true;
+                price =  $("#quantity_"+id).val();
+                text = $("#customArticleDescriptionInput").val();
                 console.log("Manual Article, Text: " + text + ", price: " + price);
                 if(text == "") {
 //                     showFullPageOverlay("Fehler: Fehlender Text für freie Eingabe!");
@@ -237,7 +237,7 @@ $(document).ready(function(){
                 }
             }  
             else{ //pouring or dipping  
-                quantity =  $("#quantity"+id).val();
+                quantity =  $("#quantity_"+id).val();
                 if(quantity == ""){ // no weight value entered for dipping articles
 //                     showFullPageOverlay("Fehler: Bitte Gewicht eingeben!");
                     firework.launch("Bitte Gewicht eingeben!", 'error', 5000);
@@ -263,8 +263,8 @@ $(document).ready(function(){
 //                             console.log(obj.data.id);
                         showBasket();
                         console.log("added to basket.\nResponse: " + this.responseText);
-                        $("#manualArticleDescriptionInput").val(""); // clear manual entry field
-                        $("#quantity0").val(""); // clear manual entry field
+                        $("#customArticleDescriptionInput").val(""); // clear custom article field
+                        $("#quantity_custom").val(""); // clear custom article field
                     }
                     else{
 //                         showFullPageOverlay("Fehler: Konnte Artikel nicht zum Warenkorb hinzufügen!");
@@ -272,7 +272,7 @@ $(document).ready(function(){
                     }
                 }
             };
-            var params = "id=" + id + "&quantity=" + quantity + "&price=" + price + "&free=" + free + "&text=" + text;
+            var params = "id=" + id + "&quantity=" + quantity + "&price=" + price + "&custom=" + custom + "&text=" + text;
             console.log(params);
 
             showProgressBar();   

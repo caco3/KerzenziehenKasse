@@ -19,7 +19,7 @@ function watchdog() {
         console.log("basketId:", basketId);
 
         if(basketId == "basketDonationMoney"){
-            var free = 0;
+            var custom = 0;
             var quantity = 1;
             var price = $("#basketDonationMoney").val();   
             if(price == ""){
@@ -27,12 +27,12 @@ function watchdog() {
             }
         }
         else if(basketId == "basketTotalMoney"){
-            var free = 0;
+            var custom = 0;
             var quantity = 1;
             var price = $("#basketTotalMoney").val();  
         }
         else { // its an article
-            var free = $("#basketId_" + basketId + "_free").val();       
+            var custom = $("#basketId_" + basketId + "_custom").val();       
             var quantity = $("#basketId_" + basketId + "_quantity").val();   
             var price = $("#basketId_" + basketId + "_price").val();    
         }
@@ -49,9 +49,9 @@ function watchdog() {
                 
         price = formatCurrency(price)
         
-        console.log("basketId:", basketId, "free:", free, "quantity:", quantity, "price:", price);
+        console.log("basketId:", basketId, "custom:", custom, "quantity:", quantity, "price:", price);
         
-        updateBasketEntry(basketId, free, quantity, price);
+        updateBasketEntry(basketId, custom, quantity, price);
         return;
     }        
     watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
@@ -330,7 +330,7 @@ function getBasketIdfromImputField(inputField){
 
 
 
-function updateBasketEntry(basketId, free, quantity, price) {
+function updateBasketEntry(basketId, custom, quantity, price) {
     // Store cursor position persistently
     
     //if empty, set to 1 and cursor right to it
@@ -402,7 +402,7 @@ function updateBasketEntry(basketId, free, quantity, price) {
     
     
     
-    var params = "basketId=" + basketId + "&free=" + free + "&quantity=" + quantity + "&price=" + price;    
+    var params = "basketId=" + basketId + "&custom=" + custom + "&quantity=" + quantity + "&price=" + price;    
     console.log("Parameters:", params);
 
     showProgressBar();  

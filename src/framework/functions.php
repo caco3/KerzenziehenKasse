@@ -68,16 +68,16 @@ function calculateBasketTotal($includeDOnation){
     foreach($basket as $basketEntry) {      
         $articleId = $basketEntry['article_id'];
         $quantity = $basketEntry['quantity'];
-        $free = $basketEntry['free'];
+        $custom = $basketEntry['custom'];
         $price = $basketEntry['price'];
         list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
         
           
         
-        if($free != 1){ // normal article
+        if($custom != 1){ // normal article
             $sum += $quantity * $pricePerQuantity; 
         }
-        else{ // manual article
+        else{ // custom article
             $sum += $price; 
         }
     }
@@ -111,7 +111,7 @@ function roundMoney($num){
 
 /* Returns the summarized content of the basket */
 function getBasketSummary($includeDonation, $includeTotal){
-    $freeId = 0;
+    $customId = 0;
     $basket = getDbBasket();
     
     $summary = array();
@@ -120,43 +120,43 @@ function getBasketSummary($includeDonation, $includeTotal){
         $basketId = $basketEntry['basket_id'];
         $articleId = $basketEntry['article_id'];
         $quantity = $basketEntry['quantity'];
-        $free = $basketEntry['free'];
+        $custom = $basketEntry['custom'];
         $price = $basketEntry['price'];
         $text = $basketEntry['text'];
         list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
         
         
         $id = $articleId;
-        if($id == 0){ // manual article
-            $id = "free_" . $freeId;
-            $freeId++;
+        if($id == 0){ // custom article
+            $id = "custom_" . $customId;
+            $customId++;
         }
         
         
         if(!array_key_exists($id, $summary)){ // new article
-            if($free != 1){ // normal article
+            if($custom != 1){ // normal article
                 $summary[$id]['name'] = $name;
                 $summary[$id]['quantity'] = 0;
                 $summary[$id]['articleId'] = $articleId;
                 $summary[$id]['price'] = 0;          
-                $summary[$id]['free'] = 0;          
+                $summary[$id]['custom'] = 0;          
             }
-            else{ // manual article
+            else{ // custom article
                 $summary[$id]['name'] = $text;
                 $summary[$id]['price'] = $price; 
                 $summary[$id]['quantity'] = 1; 
                 $summary[$id]['articleId'] = $id;     
-                $summary[$id]['free'] = 1;      
+                $summary[$id]['custom'] = 1;      
             }
             $summary[$id]['unit'] = $unit;
         }
         
         // Sum identical articles up
-        if($free != 1){ // normal article
+        if($custom != 1){ // normal article
             $summary[$id]['price'] += $quantity * $pricePerQuantity; 
             $summary[$id]['quantity'] += $quantity;            
         }
-        else{ // manual article
+        else{ // custom article
 //             $summary[$id]['price'] = $price; 
 //             $summary[$id]['quantity'] = 1;  
         }        
@@ -226,7 +226,7 @@ function showSummary(){
 
 /* Returns the sumarized content of the last booking */
 function getLastBookingSummary(){
-    $freeId = 0;
+    $customId = 0;
     
     $bookingId = bookingsGetLastId();
     $booking = getBooking($bookingId);
@@ -251,13 +251,13 @@ function getLastBookingSummary(){
         }
         else { // article
             if($booking[$bookingEntry] != 0) { // the booking contains this article                
-                if(strpos($bookingEntry, "free_") === false) { // normal article
+                if(strpos($bookingEntry, "custom_") === false) { // normal article
                     $id = $bookingEntry;
                     list($name, $pricePerQuantity, $unit) = getDbArticleData($id);
                     $summary[$id]['name'] = $name;
                     $summary[$id]['unit'] = $unit;
                 }
-                else { // manual article                    
+                else { // custom article                    
                     $summary[$id]['name'] = $bookingEntry; // temporarly
                 }
             }
@@ -297,27 +297,27 @@ function getLastBookingSummary(){
         $basketId = $basketEntry['basket_id'];
         $articleId = $basketEntry['article_id'];
         $quantity = $basketEntry['quantity'];
-        $free = $basketEntry['free'];
+        $custom = $basketEntry['custom'];
         $price = $basketEntry['price'];
         $text = $basketEntry['text'];
         list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
         
         
         $id = $articleId;
-        if($id == 0){ // manual article
-            $id = "free_" . $freeId;
-            $freeId++;
+        if($id == 0){ // custom article
+            $id = "custom_" . $customId;
+            $customId++;
         }
         
         
         if(!array_key_exists($id, $summary)){ // new article
-            if($free != 1){ // normal article
+            if($custom != 1){ // normal article
                 $summary[$id]['name'] = $name;
                 $summary[$id]['quantity'] = 0;
                 $summary[$id]['articleId'] = $articleId;
                 $summary[$id]['price'] = 0;          
             }
-            else{ // manual article
+            else{ // custom article
                 $summary[$id]['name'] = $text;
                 $summary[$id]['price'] = $price; 
                 $summary[$id]['quantity'] = 1; 
@@ -327,11 +327,11 @@ function getLastBookingSummary(){
         }
         
         // Sum identical articles up
-        if($free != 1){ // normal article
+        if($custom != 1){ // normal article
             $summary[$id]['price'] += $quantity * $pricePerQuantity; 
             $summary[$id]['quantity'] += $quantity;            
         }
-        else{ // manual article
+        else{ // custom article
 //             $summary[$id]['price'] = $price; 
 //             $summary[$id]['quantity'] = 1;  
         }        
@@ -371,7 +371,7 @@ function writeBasketContentLog($bookingId) {
     
     // TODO: replace absolute path    
     file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "Booking ID, Date\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "articleId, quantity, pricePerQuantity, price, free, text\r\n", FILE_APPEND);
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "articleId, quantity, pricePerQuantity, price, custom, text\r\n", FILE_APPEND);
     file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "donation, total\r\n", FILE_APPEND);
     file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "----------------------------\r\n", FILE_APPEND);
     
@@ -380,12 +380,12 @@ function writeBasketContentLog($bookingId) {
     foreach($basket as $basketEntry) {      
         $articleId = $basketEntry['article_id'];
         $quantity = $basketEntry['quantity'];
-        $free = $basketEntry['free'];
+        $custom = $basketEntry['custom'];
         $price = $basketEntry['price'];
         $text = $basketEntry['text'];
         list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
 
-        file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$articleId, $quantity, $pricePerQuantity, $price, $free, $text\r\n", FILE_APPEND);
+        file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$articleId, $quantity, $pricePerQuantity, $price, $custom, $text\r\n", FILE_APPEND);
     }
         
     $total = getDbTotal();

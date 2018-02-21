@@ -46,7 +46,7 @@ function getDbProducts($type) {
 
 
 /* return article data
- * Note: only provide real article IDs (but not free ones)
+ * Note: only provide real article IDs (but not custom ones)
  */
 function getDbArticleData($id){
     global $db_link;
@@ -61,8 +61,8 @@ function getDbArticleData($id){
     $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
     
     
-    if($line['articleId'] == 0){ // free article
-        $line['unit'] = "Stk.";
+    if($line['articleId'] == 'custom'){ // custom article
+        $line['unit'] = "Stk."; // TODO: replace by unit in table
     }
     
 //     echo("<pre>");
@@ -112,15 +112,15 @@ function getDbTotal(){
 
 
 
-function addToBasket($id, $quantity, $price, $free, $text) {
+function addToBasket($id, $quantity, $price, $custom, $text) {
     global $db_link;
 
     // TODO sanetize
        
     $sql = "INSERT INTO `tbl_basket`
-        (`article_id`, `quantity`, `price`, `free`, `text`) 
+        (`article_id`, `quantity`, `price`, `custom`, `text`) 
         VALUES
-        ('$id', '$quantity',  '$price', '$free', '$text')
+        ('$id', '$quantity',  '$price', '$custom', '$text')
     ";
     
         
@@ -293,11 +293,11 @@ function getDbBasket() {
     {
         list($line['name'], $line['pricePerQuantity'], $line['unit'], $line['image']) = getDbArticleData($line['article_id']);
         
-        if($line['free'] == 0){ //normal article
+        if($line['custom'] == 'custom'){ //normal article
             $line['price'] = $line['quantity'] * $line['pricePerQuantity'];
         }
-        else{ // manual article
-            $line['unit'] = "Stk.";
+        else{ // custom article
+            $line['unit'] = "Stk."; // TODO replace by unit from table
         }
 
         $lines[] = $line;
@@ -411,7 +411,7 @@ function bookingsAddBasketArticle($bookingId, $articleId, $cost,$quantity) {
 
 
 
-function bookingsAddBasketFreeArticle($bookingId, $articleId, $cost, $text) {
+function bookingsAddBasketCustomArticle($bookingId, $articleId, $cost, $text) {
     global $db_link;
 
     // TODO sanetize
@@ -425,7 +425,7 @@ function bookingsAddBasketFreeArticle($bookingId, $articleId, $cost, $text) {
         return true;
     }
     else { // fail
-        sql_transaction_logger("-- [ERROR] Failed to add free article $articleId to bookings: $sql");
+        sql_transaction_logger("-- [ERROR] Failed to add custom article $articleId to bookings: $sql");
         return false;
     }
 }

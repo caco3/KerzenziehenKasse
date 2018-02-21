@@ -12,17 +12,17 @@ $basketId = "";
 $quantity = "";
 $success = false;
 
-if (isset($_POST['basketId']) AND isset($_POST['free']) AND isset($_POST['quantity']) AND isset($_POST['price'])) {
+if (isset($_POST['basketId']) AND isset($_POST['custom']) AND isset($_POST['quantity']) AND isset($_POST['price'])) {
     $basketId = $_POST['basketId'];
-    $free = $_POST['free'];
+    $custom = $_POST['custom'];
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
 
-    if (!is_numeric($free) OR !is_numeric($quantity) OR !is_numeric($price)){ // one of free, quantity or price is not a number
+    if (!is_numeric($custom) OR !is_numeric($quantity) OR !is_numeric($price)){ // one of custom, quantity or price is not a number
         $errorText = "Invalid parameters (not numbers)!";
     }
     else if (is_numeric($basketId)){ // Id is a number => must be an article
-        if($free != 0){ //manual article
+        if($custom != 0){ //custom article
             if(updateArticlePriceInBasket($basketId, $price) == true){
                 $total = calculateBasketTotal(true);    
                 updateTotalInBasket($total);

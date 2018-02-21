@@ -5,7 +5,7 @@ include "$root/framework/header.php";
     <div id="body">
         <div class=leftSideDiv>
             <div id=dipArticlesDiv></div>
-            <div id=manualArticlesDiv></div>
+            <div id=customArticleDiv></div>
             <div id=bibleVerseDiv></div>
         </div>
 

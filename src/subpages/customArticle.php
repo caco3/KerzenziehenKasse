@@ -14,18 +14,18 @@ db_connect();
 
 <h2>Artikel zur freien Eingabe</h2>
 
-<table id=manualArticleTable>
+<table id=customArticleTable>
 <tr><th>Freie Eingabe</th><th>Preis</th><th></th></tr>
 <tr>
-    <td><input type=text id=manualArticleDescriptionInput placeholder="Manuelle Eingabe eines Artikels"></input></td>
-    <td>CHF <input type=text class=articleMoneyInput id=quantity0 maxlength=6 placeholder="0.00"></input></td>
-    <td><? echo(addButton('0')); ?></td>
+    <td><input type=text id=customArticleDescriptionInput placeholder="Freie Eingabe eines Artikels"></input></td>
+    <td>CHF <input type=text class=articleMoneyInput id=quantity_custom maxlength=6 placeholder="0.00"></input></td>
+    <td><? echo(addButton('custom')); ?></td>
 </tr>
 </table>
 
 
 <script>
     $(document).ready(function(){
-        console.log("Manual Articles loaded");  
+        console.log("Custom Article Page loaded");  
     });
 </script>

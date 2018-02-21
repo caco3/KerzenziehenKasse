@@ -22,15 +22,15 @@ $lines = getDbProducts("guss");
 foreach($lines as $line) {
     if($line['unit'] == "g") {
         $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2) . "/100g";
-        $weight = "<input type=hidden value=1 id=quantity" . $line['articleId'] . ">";
+        $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
     else if($line['unit'] == "Stk.") {  
         $price = "CHF " . number_format($line['pricePerQuantity'], 2) . "/Stk.";
-        $weight = "<input type=hidden value=1 id=quantity" . $line['articleId'] . ">";
+        $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
     else {
         $price = "CHF " . number_format($line['pricePerQuantity'], 2);
-        $weight = "<input type=hidden value=1 id=quantity" . $line['articleId'] . ">";
+        $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
     
     $button = addButton($line['articleId']);
@@ -48,6 +48,6 @@ foreach($lines as $line) {
 
 <script>
     $(document).ready(function(){
-        console.log("Pour Articles loaded");  
+        console.log("Pour Articles Page loaded");  
     });
 </script>

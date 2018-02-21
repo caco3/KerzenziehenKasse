@@ -31,7 +31,7 @@ function showArticles() {
     console.log("load articles");
     $("#dipArticlesDiv").load("subpages/dipArticles.php", blockLoaded());
     $("#pourArticlesDiv").load("subpages/pourArticles.php", blockLoaded());
-    $("#manualArticlesDiv").load("subpages/manualArticles.php", blockLoaded());
+    $("#customArticleDiv").load("subpages/customArticle.php", blockLoaded());
 }
 
 
