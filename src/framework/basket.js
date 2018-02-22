@@ -305,7 +305,7 @@ function moveBasketToBookings() {
 
     showProgressBar();  
         
-    xhttp.open("POST", "ajax/pay.php", true);
+    xhttp.open("POST", "ajax/moveBasketToBookings.php", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
 }

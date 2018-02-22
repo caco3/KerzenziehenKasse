@@ -432,15 +432,17 @@ function bookingsAddBasketCustomArticle($bookingId, $articleId, $cost, $text) {
 
 
 
-function bookingsAddBasketDonationAndTotal($bookingId, $donation, $total) {
+function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total) {
     global $db_link;
 
     // TODO sanetize
        
     $sql = "UPDATE `tbl_bookings`
-            SET `donation`='$donation', `total`='$total'
+            SET `date`='" . date("Y-m-d") . "', `time`='" . date("H:i:s") . "',
+            `booking`='$serializedBasket',
+            `donation`='$donation', `total`='$total'
             WHERE `booking_id`='$bookingId'"; 
-        
+    
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
         return true;

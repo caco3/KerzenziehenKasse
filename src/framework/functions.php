@@ -109,9 +109,10 @@ function roundMoney($num){
 /* Returns the summarized content of the basket */
 function getBasketSummary($includeDonation, $includeTotal){
     $basket = getDbBasket();
-    
     $summary = array();
     
+    $customId = 0; 
+        
     foreach($basket as $basketEntry) {      
         $basketId = $basketEntry['basket_id'];
         $articleId = $basketEntry['article_id'];
@@ -119,61 +120,43 @@ function getBasketSummary($includeDonation, $includeTotal){
         $price = $basketEntry['price'];
         $text = $basketEntry['text'];
         list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
-        
-        
-//         $id = $articleId;
-//         if($id == 'custom'){ // generate unique ID for this custom article (there is no consolidating)
-//             $id = "custom_" . $customId;
-//             $customId++;
-//         }
-        
-        
-        if(!array_key_exists($basketId, $summary)){ // new article
-            if($articleId != 'custom'){ // normal article
-                $summary[$basketId]['name'] = $name;
-                $summary[$basketId]['quantity'] = 0;
-                $summary[$basketId]['price'] = 0;              
-            }
-            else{ // custom article
-                $summary[$basketId]['name'] = $text;
-                $summary[$basketId]['price'] = $price; 
-                $summary[$basketId]['quantity'] = 1;  
-            }
-            $summary[$basketId]['articleId'] = $articleId;
-            $summary[$basketId]['unit'] = $unit;
+  
+        if($articleId == 'custom'){ // custom article, they never get merged
+            $summary['custom_' . $customId]['text'] = $text;  
+            $summary['custom_' . $customId]['price'] = $price;             
+            $customId++;
         }
-        
-        // Sum identical articles up
-        if($articleId != 'custom'){ // normal article
-            $summary[$basketId]['price'] += $quantity * $pricePerQuantity; 
-            $summary[$basketId]['quantity'] += $quantity;            
-        }
-        else{ // custom article
-//             $summary[$basketId]['price'] = $price; 
-//             $summary[$basketId]['quantity'] = 1;  
-        }        
+        else { // normal article, add it to tho an existing identical article
+            if(!array_key_exists($articleId, $summary)){ // Article shows up first time
+                $summary[$articleId]['quantity'] = $quantity;
+                $summary[$articleId]['price'] = $quantity * $pricePerQuantity;
+            }
+            else { // article is already in the list, sum it up
+                $summary[$articleId]['quantity'] += $quantity;
+                $summary[$articleId]['price']  += $quantity * $pricePerQuantity;
+            }
+        }    
     } 
     
     ksort($summary);
     
     $total = getDbTotal();
     $donation = getDbDonation();
-    
-    
+        
     if(($includeDonation == true) and ($donation > 0)){
-        $summary['donation']['name'] = "Spende";
-        $summary['donation']['quantity'] = "";
-        $summary['donation']['unit'] = "";
+//         $summary['donation']['name'] = "Spende";
+//         $summary['donation']['quantity'] = "";
+//         $summary['donation']['unit'] = "";
         $summary['donation']['price'] = $donation;
-        $summary['donation']['articleId'] = 'donation';
+//         $summary['donation']['articleId'] = 'donation';
     }
     
     if($includeTotal == true) {
-        $summary['total']['name'] = "Total";
-        $summary['total']['quantity'] = "";
-        $summary['total']['unit'] = "";
+//         $summary['total']['name'] = "Total";
+//         $summary['total']['quantity'] = "";
+//         $summary['total']['unit'] = "";
         $summary['total']['price'] = $total;
-        $summary['total']['articleId'] = 'total';
+//         $summary['total']['articleId'] = 'total';
     }
         
     return $summary;
@@ -246,11 +229,11 @@ function getLastBookingSummary(){
                 if(strpos($bookingEntry, "custom_") === false) { // normal article
                     $id = $bookingEntry;
                     list($name, $pricePerQuantity, $unit) = getDbArticleData($id);
-                    $summary[$basketId]['name'] = $name;
-                    $summary[$basketId]['unit'] = $unit;
+                    $summary[$articleId]['name'] = $name;
+                    $summary[$articleId]['unit'] = $unit;
                 }
                 else { // custom article                    
-                    $summary[$basketId]['name'] = $bookingEntry; // temporarly
+                    $summary[$articleId]['name'] = $bookingEntry; // temporarly
                 }
             }
         }    
@@ -280,28 +263,28 @@ function getLastBookingSummary(){
         
         if(!array_key_exists($id, $summary)){ // new article
             if($articleId != 'custom'){ // normal article
-                $summary[$basketId]['name'] = $name;
-                $summary[$basketId]['quantity'] = 0;
-                $summary[$basketId]['articleId'] = $articleId;
-                $summary[$basketId]['price'] = 0;          
+                $summary[$articleId]['name'] = $name;
+                $summary[$articleId]['quantity'] = 0;
+                $summary[$articleId]['articleId'] = $articleId;
+                $summary[$articleId]['price'] = 0;          
             }
             else{ // custom article
-                $summary[$basketId]['name'] = $text;
-                $summary[$basketId]['price'] = $price; 
-                $summary[$basketId]['quantity'] = 1; 
-                $summary[$basketId]['articleId'] = $id;
+                $summary[$articleId]['name'] = $text;
+                $summary[$articleId]['price'] = $price; 
+                $summary[$articleId]['quantity'] = 1; 
+                $summary[$articleId]['articleId'] = $id;
             }
-            $summary[$basketId]['unit'] = $unit;
+            $summary[$articleId]['unit'] = $unit;
         }
         
         // Sum identical articles up
         if($articleId != 'custom'){ // normal article
-            $summary[$basketId]['price'] += $quantity * $pricePerQuantity; 
-            $summary[$basketId]['quantity'] += $quantity;            
+            $summary[$articleId]['price'] += $quantity * $pricePerQuantity; 
+            $summary[$articleId]['quantity'] += $quantity;            
         }
         else{ // custom article
-//             $summary[$basketId]['price'] = $price; 
-//             $summary[$basketId]['quantity'] = 1;  
+//             $summary[$articleId]['price'] = $price; 
+//             $summary[$articleId]['quantity'] = 1;  
         }        
     } 
     
