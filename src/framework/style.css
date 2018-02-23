@@ -647,3 +647,10 @@ a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:ac
 
 
 
+.question {
+    margin-bottom: 0px;
+}
+
+.answer {
+    margin-top: 0px;
+}
