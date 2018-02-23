@@ -106,6 +106,43 @@ function roundMoney($num){
 
 
 
+
+
+function showSummary(){
+    $summary = getBasketSummary(false, false);
+    
+//     echo("<pre>");
+//     print_r($summary);
+//     echo("</pre>");
+?>
+
+    <table id=summaryTable>
+    <tr><th>Artikel</th><th>Menge</th><th>Preis</th></tr>
+<?
+        foreach($summary as $entry){
+            echo("<tr>
+                <td>" . $entry['name'] . "</td>
+                <td>" . $entry['quantity'] . " " .  $entry['unit'] . "</td>
+                <td>CHF " . number_format($entry['price'], 2) . "</td>
+            </tr>\n");
+        
+        }
+        
+//         echo("<tr>
+//                 <td colspan=2 class=bold>Total</td>
+//                 <td class=bold>CHF " . number_format(roundMoney($total), 2) . "</td>
+//             </tr>\n"); 
+?>
+    </table>
+
+<?
+    
+    
+}
+
+
+
+
 /* Returns the summarized content of the basket */
 function getBasketSummary($includeDonation, $includeTotal){
     $basket = getDbBasket();
@@ -164,154 +201,27 @@ function getBasketSummary($includeDonation, $includeTotal){
 
 
 
-
-function showSummary(){
-    $summary = getBasketSummary(false, false);
+/* Returns the sumarized content of a booking */
+function getBooking($bookingId){
+    $booking = getDbBooking($bookingId);
+    $articleIds = array_keys($booking['articles']);
     
 //     echo("<pre>");
-//     print_r($summary);
-//     echo("</pre>");
-?>
-
-    <table id=summaryTable>
-    <tr><th>Artikel</th><th>Menge</th><th>Preis</th></tr>
-<?
-        foreach($summary as $entry){
-            echo("<tr>
-                <td>" . $entry['name'] . "</td>
-                <td>" . $entry['quantity'] . " " .  $entry['unit'] . "</td>
-                <td>CHF " . number_format($entry['price'], 2) . "</td>
-            </tr>\n");
-        
+//     print_r($articleIds);
+    
+    foreach ($articleIds as $articleId) {
+        if (strpos("$articleId", 'custom') === 0) { // custom article
+            $booking['articles'][$articleId]['quantity'] = 1;
+            list($name, $pricePerQuantity, $unit, $image) = getDbArticleData('custom');
         }
-        
-//         echo("<tr>
-//                 <td colspan=2 class=bold>Total</td>
-//                 <td class=bold>CHF " . number_format(roundMoney($total), 2) . "</td>
-//             </tr>\n"); 
-?>
-    </table>
-
-<?
-    
-    
-}
-
-
-
-/* Returns the sumarized content of the last booking */
-function getLastBookingSummary(){
-    $customId = 0;
-    
-    $bookingId = bookingsGetLastId();
-    $booking = getBooking($bookingId);
-    
-    echo("<pre>Bookings:\n");
-    print_r($booking);
-    
-    $summary = array();
-    
-    foreach(array_keys($booking) as $bookingEntry) {  
-        echo("$bookingEntry: " . $booking[$bookingEntry] . "\n");
-        
-        
-        if($bookingEntry == "booking_id") {
-        
+        else { // normal article
+            list($name, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
+            $booking['articles'][$articleId]['text'] = $name;
         }
-        elseif($bookingEntry == "total") {
-        
-        }
-        elseif($bookingEntry == "donation") {
-        
-        }
-        else { // article
-            if($booking[$bookingEntry] != 0) { // the booking contains this article                
-                if(strpos($bookingEntry, "custom_") === false) { // normal article
-                    $id = $bookingEntry;
-                    list($name, $pricePerQuantity, $unit) = getDbArticleData($id);
-                    $summary[$articleId]['name'] = $name;
-                    $summary[$articleId]['unit'] = $unit;
-                }
-                else { // custom article                    
-                    $summary[$articleId]['name'] = $bookingEntry; // temporarly
-                }
-            }
-        }    
+            $booking['articles'][$articleId]['unit'] = $unit;
     }
     
-    print_r($summary);
-    
-    exit();
-        
-    $summary = array();
-    
-    foreach($basket as $basketEntry) {      
-        $basketId = $basketEntry['basket_id'];
-        $articleId = $basketEntry['article_id'];
-        $quantity = $basketEntry['quantity'];
-        $price = $basketEntry['price'];
-        $text = $basketEntry['text'];
-        list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
-        
-        
-        $id = $articleId;
-        if($id == 'custom'){ // custom article
-            $id = "custom_" . $customId;
-            $customId++;
-        }
-        
-        
-        if(!array_key_exists($id, $summary)){ // new article
-            if($articleId != 'custom'){ // normal article
-                $summary[$articleId]['name'] = $name;
-                $summary[$articleId]['quantity'] = 0;
-                $summary[$articleId]['articleId'] = $articleId;
-                $summary[$articleId]['price'] = 0;          
-            }
-            else{ // custom article
-                $summary[$articleId]['name'] = $text;
-                $summary[$articleId]['price'] = $price; 
-                $summary[$articleId]['quantity'] = 1; 
-                $summary[$articleId]['articleId'] = $id;
-            }
-            $summary[$articleId]['unit'] = $unit;
-        }
-        
-        // Sum identical articles up
-        if($articleId != 'custom'){ // normal article
-            $summary[$articleId]['price'] += $quantity * $pricePerQuantity; 
-            $summary[$articleId]['quantity'] += $quantity;            
-        }
-        else{ // custom article
-//             $summary[$articleId]['price'] = $price; 
-//             $summary[$articleId]['quantity'] = 1;  
-        }        
-    } 
-    
-    ksort($summary);
-    
-    $total = getDbTotal();
-    $donation = getDbDonation();
-    
-    
-    if($donation > 0){
-        $summary['donation']['name'] = "Spende";
-        $summary['donation']['quantity'] = "";
-        $summary['donation']['unit'] = "";
-        $summary['donation']['price'] = $donation;
-        $summary['donation']['articleId'] = 'donation';
-    }
-    
-    if($includeTotal == true) {
-        $summary['total']['name'] = "Total";
-        $summary['total']['quantity'] = "";
-        $summary['total']['unit'] = "";
-        $summary['total']['price'] = $total;
-        $summary['total']['articleId'] = 'total';
-    }
-    
-    
-    return $summary;
+    return $booking;
 }
 
 

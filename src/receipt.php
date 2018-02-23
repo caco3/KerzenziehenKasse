@@ -38,9 +38,17 @@ use Odtphp\Odf;
 // }
 
 $bookingId = bookingsGetLastId();
+$booking = getBooking($bookingId);
 
+// echo("Last booking ID: $bookingId");
+// echo("<pre>");
+// print_r($booking);
+// echo("</pre>");
+// 
+// exit();
 
-$price = "CHF " . number_format(roundMoney(getDbTotal()), 2);
+// $donation = "CHF " . number_format(roundMoney(getDbTotal()), 2);
+// $total = "CHF " . number_format(roundMoney(getDbTotal()), 2);
 
 
 $odf = new Odf("templates/receipt.odt");
@@ -51,34 +59,32 @@ $date = date("d.m.Y");
 $odf->setVars('year', $year);
 $odf->setVars('date', $date);
 $odf->setVars('bookingId', "$bookingId");
-$odf->setVars('priceTotal', "$price");
+$odf->setVars('priceTotal', "CHF " . number_format($booking['total'], 2));
 
 
 
 
 $articlesList = $odf->setSegment('articles');
 
-$data = getLastBookingSummary();
-
-echo("<pre>");
-print_r($data);
-
-foreach($data as $article) {
-//     print_r($article);
-
-//     echo($article['name'] . ", " . "CHF " . number_format($article['price'], 2) . "<br>\n");
-    
-    $articlesList->articleTitle(strip_tags($article['name']));
+foreach($booking['articles'] as $article) { // Add all articles
+    $articlesList->articleTitle(strip_tags($article['text']));
     $articlesList->articleDetails($article['quantity'] . " " . $article['unit']);
     $articlesList->articleCost("CHF " . number_format($article['price'], 2));
     $articlesList->merge();
 }
+
+if ($booking['donation'] != 0) { // Add donation to list
+    $articlesList->articleTitle("Spende");
+    $articlesList->articleDetails("");
+    $articlesList->articleCost("CHF " . number_format($booking['donation'], 2));
+    $articlesList->merge();
+}
+
+
 $odf->mergeSegment($articlesList);
 
 
-
-
 // We export the file
-// $odf->exportAsAttachedFile("Kerzenziehen $year - Buchung $bookingId - $date.odt");
+$odf->exportAsAttachedFile("Kerzenziehen $year - Buchung $bookingId - $date.odt");
  
 ?>

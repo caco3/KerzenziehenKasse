@@ -24,7 +24,7 @@ function db_connect(){
 function getDbProducts($type) {
     global $db_link;
     
-    $sql = "SELECT * FROM tbl_articles WHERE typ = '$type' ORDER by `articleId` ASC";  
+    $sql = "SELECT * FROM articles WHERE typ = '$type' ORDER by `articleId` ASC";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -51,7 +51,7 @@ function getDbProducts($type) {
 function getDbArticleData($id){
     global $db_link;
     
-    $sql = "SELECT * FROM tbl_articles WHERE articleId = '$id'";  
+    $sql = "SELECT * FROM articles WHERE articleId = '$id'";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -79,7 +79,7 @@ function getDbArticleData($id){
 function getDbDonation(){
     global $db_link;
     
-    $sql = "SELECT donation FROM tbl_basket_various";  
+    $sql = "SELECT donation FROM basket_various";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -97,7 +97,7 @@ function getDbDonation(){
 function getDbTotal(){
     global $db_link;
     
-    $sql = "SELECT total FROM tbl_basket_various";  
+    $sql = "SELECT total FROM basket_various";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -117,7 +117,7 @@ function addToBasket($id, $quantity, $price, $text) {
 
     // TODO sanetize
        
-    $sql = "INSERT INTO `tbl_basket`
+    $sql = "INSERT INTO `basket`
         (`article_id`, `quantity`, `price`, `text`) 
         VALUES
         ('$id', '$quantity',  '$price', '$text')
@@ -140,7 +140,7 @@ function addToBasket($id, $quantity, $price, $text) {
 function getArticleIdInBasket($basketId) {
     global $db_link;
 
-    $sql = "SELECT `article_id` FROM tbl_basket WHERE `basket_id`='$basketId'"; 
+    $sql = "SELECT `article_id` FROM basket WHERE `basket_id`='$basketId'"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -158,7 +158,7 @@ function getArticleIdInBasket($basketId) {
 function updateArticleQuantityInBasket($basketId, $quantity) {
     global $db_link;
 
-    $sql = "UPDATE `tbl_basket` SET `quantity`='$quantity' WHERE `basket_id`='$basketId'"; 
+    $sql = "UPDATE `basket` SET `quantity`='$quantity' WHERE `basket_id`='$basketId'"; 
     
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -183,7 +183,7 @@ function updateArticleQuantityInBasket($basketId, $quantity) {
 function updateArticlePriceInBasket($basketId, $price) {
     global $db_link;
 
-    $sql = "UPDATE `tbl_basket` SET `price`='$price' WHERE `basket_id`='$basketId'"; 
+    $sql = "UPDATE `basket` SET `price`='$price' WHERE `basket_id`='$basketId'"; 
     
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -208,7 +208,7 @@ function updateArticlePriceInBasket($basketId, $price) {
 function updateDonationInBasket($money) {
     global $db_link;
 
-    $sql = "UPDATE `tbl_basket_various` SET `donation`='$money' "; 
+    $sql = "UPDATE `basket_various` SET `donation`='$money' "; 
     
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -233,7 +233,7 @@ function updateDonationInBasket($money) {
 function updateTotalInBasket($money) {
     global $db_link;
 
-    $sql = "UPDATE `tbl_basket_various` SET `total`='$money' "; 
+    $sql = "UPDATE `basket_various` SET `total`='$money' "; 
     
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -258,7 +258,7 @@ function updateTotalInBasket($money) {
 function deleteFromBasket($basketId) {
     global $db_link;
 
-    $sql = "DELETE FROM `tbl_basket` WHERE `basket_id`='$basketId'";
+    $sql = "DELETE FROM `basket` WHERE `basket_id`='$basketId'";
 
     
     if(mysqli_query($db_link, $sql)){
@@ -280,7 +280,7 @@ function deleteFromBasket($basketId) {
 function getDbBasket() {
     global $db_link;
     
-    $sql = "SELECT * FROM tbl_basket";  
+    $sql = "SELECT * FROM basket";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -337,7 +337,7 @@ function bookingsCreateArticleColumns($articleId, $columns) {
         }
                 
         // create column if it doesn't exist yet
-        $sql = "ALTER TABLE tbl_bookings ADD COLUMN IF NOT EXISTS `$columnName` $columnsType NOT NULL";
+        $sql = "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS `$columnName` $columnsType NOT NULL";
         
         if(mysqli_query($db_link, $sql)){
             sql_transaction_logger($sql);
@@ -357,7 +357,7 @@ function bookingsCreateArticleColumns($articleId, $columns) {
 function bookingsCreateId() {
     global $db_link;
     
-    $sql = "INSERT INTO tbl_bookings (`booking_id`) values (null)"; 
+    $sql = "INSERT INTO bookings (`booking_id`) values (null)"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -371,7 +371,7 @@ function bookingsCreateId() {
 function bookingsGetLastId() {
     global $db_link;
     
-    $sql = "SELECT `booking_id` FROM tbl_bookings ORDER BY `booking_id` DESC LIMIT 1"; 
+    $sql = "SELECT `booking_id` FROM bookings ORDER BY `booking_id` DESC LIMIT 1"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -390,45 +390,45 @@ function bookingsGetLastId() {
 
 
 
-function bookingsAddBasketArticle($bookingId, $articleId, $cost,$quantity) {
-    global $db_link;
-
-    // TODO sanetize
-       
-    $sql = "UPDATE `tbl_bookings`
-            SET `article_" . $articleId . "_cost`='$cost' , `article_" . $articleId . "_quantity`='$quantity'
-            WHERE `booking_id`='$bookingId'"; 
-        
-    if(mysqli_query($db_link, $sql)){
-        sql_transaction_logger($sql);
-        return true;
-    }
-    else { // fail
-        sql_transaction_logger("-- [ERROR] Failed to add article $articleId to bookings: $sql");
-        return false;
-    }
-}
-
-
-
-function bookingsAddBasketCustomArticle($bookingId, $articleId, $cost, $text) {
-    global $db_link;
-
-    // TODO sanetize
-       
-    $sql = "UPDATE `tbl_bookings`
-            SET `article_" . $articleId . "_cost`='$cost', `article_" . $articleId . "_text`='$text'
-            WHERE `booking_id`='$bookingId'"; 
-        
-    if(mysqli_query($db_link, $sql)){
-        sql_transaction_logger($sql);
-        return true;
-    }
-    else { // fail
-        sql_transaction_logger("-- [ERROR] Failed to add custom article $articleId to bookings: $sql");
-        return false;
-    }
-}
+// function bookingsAddBasketArticle($bookingId, $articleId, $cost,$quantity) {
+//     global $db_link;
+// 
+//     // TODO sanetize
+//        
+//     $sql = "UPDATE `bookings`
+//             SET `article_" . $articleId . "_cost`='$cost' , `article_" . $articleId . "_quantity`='$quantity'
+//             WHERE `booking_id`='$bookingId'"; 
+//         
+//     if(mysqli_query($db_link, $sql)){
+//         sql_transaction_logger($sql);
+//         return true;
+//     }
+//     else { // fail
+//         sql_transaction_logger("-- [ERROR] Failed to add article $articleId to bookings: $sql");
+//         return false;
+//     }
+// }
+// 
+// 
+// 
+// function bookingsAddBasketCustomArticle($bookingId, $articleId, $cost, $text) {
+//     global $db_link;
+// 
+//     // TODO sanetize
+//        
+//     $sql = "UPDATE `bookings`
+//             SET `article_" . $articleId . "_cost`='$cost', `article_" . $articleId . "_text`='$text'
+//             WHERE `booking_id`='$bookingId'"; 
+//         
+//     if(mysqli_query($db_link, $sql)){
+//         sql_transaction_logger($sql);
+//         return true;
+//     }
+//     else { // fail
+//         sql_transaction_logger("-- [ERROR] Failed to add custom article $articleId to bookings: $sql");
+//         return false;
+//     }
+// }
 
 
 
@@ -437,7 +437,7 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total) {
 
     // TODO sanetize
        
-    $sql = "UPDATE `tbl_bookings`
+    $sql = "UPDATE `bookings`
             SET `date`='" . date("Y-m-d") . "', `time`='" . date("H:i:s") . "',
             `booking`='$serializedBasket',
             `donation`='$donation', `total`='$total'
@@ -456,10 +456,10 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total) {
 
 
 
-function getBooking($bookingId) {
+function getDBBooking($bookingId) {
     global $db_link;
     
-    $sql = "SELECT * FROM tbl_bookings WHERE booking_id = '$bookingId'"; 
+    $sql = "SELECT * FROM bookings WHERE booking_id = '$bookingId'"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -468,8 +468,20 @@ function getBooking($bookingId) {
 
     $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
     mysqli_free_result( $query_response );
+        
+    $booking = array();
+    
+    $booking['date'] = $line['date'];
+    $booking['time'] = $line['time'];
+    $booking['donation'] = $line['donation'];
+    $booking['total'] = $line['total'];
 
-    return $line;
+    $booking['articles'] = unserialize($line['booking']);
+
+    
+//     print_r($booking);    
+
+    return $booking;
 }
 
 
@@ -477,7 +489,7 @@ function getBooking($bookingId) {
 function emptyBasket() {
     global $db_link;
        
-    $sql = "TRUNCATE TABLE tbl_basket"; 
+    $sql = "TRUNCATE TABLE basket"; 
         
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -494,7 +506,7 @@ function emptyBasket() {
 function getBibleVerse() {
     global $db_link;
     
-    $sql = "SELECT * FROM tbl_bible_verses ORDER BY RAND() LIMIT 1";  
+    $sql = "SELECT * FROM bible_verses ORDER BY RAND() LIMIT 1";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
