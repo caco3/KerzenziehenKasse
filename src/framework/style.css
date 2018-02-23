@@ -291,6 +291,14 @@ td {
   background-image: linear-gradient(to bottom, #3cfc3f, #26ad43);
 }
 
+.payButton:disabled, .payButton[disabled]{
+  background: #FFFFFF;
+  background-image: -webkit-linear-gradient(top, #d1d1d1, #adadad);
+  background-image: -moz-linear-gradient(top, #d1d1d1, #adadad);
+  background-image: -ms-linear-gradient(top, #d1d1d1, #adadad);
+  background-image: -o-linear-gradient(top, #d1d1d1, #adadad);
+  background-image: linear-gradient(to bottom, #d1d1d1, #adadad);
+}
 
 
 /*.summaryBackButton {

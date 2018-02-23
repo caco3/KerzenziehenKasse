@@ -63,16 +63,20 @@ function startWatchdog(){
 }
 
 
+function updateWatchdog(inputField) { 
+    watchdogMonitoredField = inputField;
+    watchdogCounter = watchdogCounterStartValue; 
+    setPayButtonStateEnabled(false);
+}
+
     
 $(document).ready(function(){    
     console.log("Basket loaded");
 //     restoreFocus();
         
-    
-    
     startWatchdog();
     
-    
+    updatePayButtonState();
     
     $(".removeFromBasketButton").off().on('click', function(event){
             var basketId = $(event.target).attr('id');   
@@ -156,8 +160,7 @@ $(document).ready(function(){
             }         */  
 
             // tell watchdog to update basket after timeout
-            watchdogMonitoredField = inputField;
-            watchdogCounter = watchdogCounterStartValue;           
+            updateWatchdog(inputField);
         }
     );
     
@@ -231,9 +234,7 @@ $(document).ready(function(){
                                  
                                  
             // tell watchdog to update basket after timeout
-            var inputField = $(event.target).attr('id');  
-            watchdogMonitoredField = inputField;
-            watchdogCounter = watchdogCounterStartValue;  
+            updateWatchdog($(event.target).attr('id'));
             
             // TODO: improve handling (add timeout, keep selection, ...)
         }
@@ -336,7 +337,7 @@ function updateBasketEntry(basketId, quantity, price) {
         inputFieldId = document.getElementById(inputField);
         inputFieldId.selectionStart = 1;
     }
-    
+        
 //     saveFocus(inputField);    
             
     var xhttp = new XMLHttpRequest();
@@ -352,12 +353,12 @@ function updateBasketEntry(basketId, quantity, price) {
                 console.log("Updating changed fields:");                
 //                 console.log(obj.updatedFields);
                 
-                jQuery.each(obj.updatedFields, function(id, val) {
+                jQuery.each(obj.updatedFields, function(id, val) { // total changed
                     if(id == 'total'){
 //                         console.log("Old  Total: " + $("#" + 'basketTotalMoney').val());
                         console.log("  Total: " + val);
                         $("#" + 'basketTotalMoney').val(formatCurrency(val))
-                        
+                                                                        
                         if((obj.corrections) && (obj.corrections.action == 'uprounded')) { // There was a correction and the total was "uprounded"
                             firework.launch("Total in Warenkorb korrigiert auf Mindestbetrag.", 'warning', 5000);
                         }
@@ -365,7 +366,7 @@ function updateBasketEntry(basketId, quantity, price) {
                             firework.launch("Total in Warenkorb aktualisiert.", 'success', 5000);
                         }                        
                     }
-                    if(id == 'donation'){
+                    if(id == 'donation'){ // donation changed
                         console.log("  Donation: " + val);
                         $("#" + 'basketDonationMoney').val(formatCurrency(val))
                         // TODO round to 0.05
@@ -377,7 +378,7 @@ function updateBasketEntry(basketId, quantity, price) {
                             firework.launch("Spende in Warenkorb aktualisiert.", 'success', 5000);
                         }
                     }
-                    if(id == 'article'){                        
+                    if(id == 'article'){ // an article changed              
                         jQuery.each(val, function($basketEntryId, val2) {
                             console.log("  Article "+ $basketEntryId + ": " + val2.price);
                             $("#basketId_" + $basketEntryId + "_price").val(formatCurrency(val2.price));
@@ -387,7 +388,8 @@ function updateBasketEntry(basketId, quantity, price) {
                             
                 // Monitor input field changes again
                 startWatchdog();                                                
-                hideProgressBar();                  
+                hideProgressBar(); 
+                updatePayButtonState();                 
             }
             else{
 //                 showFullPageOverlay("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
@@ -412,7 +414,28 @@ function updateBasketEntry(basketId, quantity, price) {
 
 
 
+function updatePayButtonState() {                         
+    console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
+    if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) {
+        setPayButtonStateEnabled(false);
+        console.log("Pay Button disabled");
+    }
+    else {                            
+        setPayButtonStateEnabled(true);
+        console.log("Pay Button enabled");
+    }   
+}
 
+
+function setPayButtonStateEnabled(state) {
+    if (state == false) {
+        console.log("Pay Button disabled");
+    }
+    else {                            
+        console.log("Pay Button enabled");
+    }
+    $("#" + 'payButton').prop("disabled", !state);    
+}
 
 
 // function saveFocus(inputField){    
