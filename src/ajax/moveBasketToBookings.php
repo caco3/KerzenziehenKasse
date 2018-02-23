@@ -25,7 +25,7 @@ $success = true;
 
 $bookingId = bookingsCreateId();
 
-$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), getDbTotal());
+$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney(getDbTotal()));
 if( $ret == false) {
     $errorText = "Failed to move basket to bookings (booking ID $bookingId)!";
     $success = false;
