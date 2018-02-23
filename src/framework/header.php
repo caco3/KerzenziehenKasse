@@ -24,8 +24,8 @@ db_connect();
     <script src="<? echo("$root"); ?>/framework/jquery.firework.js"></script>
     
     <script src="<? echo("$root/"); ?>/framework/functions.js"></script>
-    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
-    <script src="<? echo("$root/"); ?>/framework/basket.js"></script>
+<!--    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
+    <script src="<? echo("$root/"); ?>/framework/basket.js"></script>-->
 
 
 

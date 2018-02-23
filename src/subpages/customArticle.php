@@ -9,8 +9,8 @@ require_once("$root/framework/db.php");
 db_connect();
 ?>
 
-<!--<script src="<? echo("$root/"); ?>/framework/functions.js"></script>
-<script src="<? echo("$root/"); ?>/framework/articles.js"></script>-->
+<!-- <script src="<? echo("$root/"); ?>/framework/functions.js"></script> -->
+<script src="<? echo("$root/"); ?>/framework/articles.js"></script>
 
 <h2>Artikel zur freien Eingabe</h2>
 
