@@ -454,6 +454,7 @@ function getBookingIdsOfDate($date) {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
     
+    $lines = array();
     while ($line = mysqli_fetch_array( $query_response, MYSQL_ASSOC))
     {
         $lines[] = $line['bookingId'];
