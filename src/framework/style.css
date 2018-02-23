@@ -17,6 +17,51 @@ body {
     font-family: Arial; 
 }
 
+
+
+
+
+h1 {
+    margin: 0px;
+}
+
+h2 {
+    margin: 0px;
+}
+
+h3 {
+    margin-bottom: 5px;
+}
+
+
+hr {
+    margin-top: 0px;
+}
+
+
+
+th {
+    white-space:nowrap;
+}
+
+
+th, td {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+th {
+/*     height: 10px; */
+}
+
+td {
+    height: 40px;
+}
+
+
+
 #body {
     padding-bottom: 50px;   /* Height of the footer */
 }
@@ -102,7 +147,7 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* border, Shade */
-#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTable, #summaryTable, #bibleVerseContentDiv {
+#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTable, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
     box-shadow: 10px 10px 5px #888888;
     border: 3px solid black; 
     border-collapse: collapse;   
@@ -165,45 +210,6 @@ a:link, a:visited, a:hover, a:active {
     margin: 0px;
     font-size:200%;
 }
-
-
-
-
-h1 {
-    margin: 0px;
-}
-
-h2 {
-    margin: 0px;
-}
-
-h3 {
-    margin-bottom: 5px;
-}
-
-
-hr {
-    margin-top: 0px;
-}
-
-
-
-th, td {
-    white-space:nowrap;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-}
-
-th {
-/*     height: 10px; */
-}
-
-td {
-    height: 40px;
-}
-
 
 
 .addToBasketButton {
@@ -454,7 +460,7 @@ td {
 
 
 /* ############ Table Summary ############## */
-#summaryTable th {
+ #bookingsTable, #summaryTable th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
@@ -462,15 +468,18 @@ td {
     background:  rgba(62, 138, 92, 0.6);
 }
 
-#summaryTable tr:nth-child(odd){
+ #bookingsTable tr:nth-child(odd), #summaryTable tr:nth-child(odd){
 /*     background-color: #85c79f;     */
     background:  rgba(133, 199, 159, 0.8);
 }
 
-#summaryTable tr:nth-child(even){
+ #bookingsTable tr:nth-child(even), #summaryTable tr:nth-child(even){
 /*     background-color: #ccffcc;    */
     background:  rgba(204, 255, 204, 0.8); 
 }
+
+
+
 
 
 .articleImage {

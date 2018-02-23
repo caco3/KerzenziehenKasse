@@ -357,7 +357,7 @@ function bookingsCreateArticleColumns($articleId, $columns) {
 function bookingsCreateId() {
     global $db_link;
     
-    $sql = "INSERT INTO bookings (`booking_id`) values (null)"; 
+    $sql = "INSERT INTO bookings (`bookingId`) values (null)"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -371,7 +371,7 @@ function bookingsCreateId() {
 function bookingsGetLastId() {
     global $db_link;
     
-    $sql = "SELECT `booking_id` FROM bookings ORDER BY `booking_id` DESC LIMIT 1"; 
+    $sql = "SELECT `bookingId` FROM bookings ORDER BY `bookingId` DESC LIMIT 1"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -385,50 +385,9 @@ function bookingsGetLastId() {
         return 0;
     }
     
-    return $line['booking_id'];
+    return $line['bookingId'];
 }
 
-
-
-// function bookingsAddBasketArticle($bookingId, $articleId, $cost,$quantity) {
-//     global $db_link;
-// 
-//     // TODO sanetize
-//        
-//     $sql = "UPDATE `bookings`
-//             SET `article_" . $articleId . "_cost`='$cost' , `article_" . $articleId . "_quantity`='$quantity'
-//             WHERE `booking_id`='$bookingId'"; 
-//         
-//     if(mysqli_query($db_link, $sql)){
-//         sql_transaction_logger($sql);
-//         return true;
-//     }
-//     else { // fail
-//         sql_transaction_logger("-- [ERROR] Failed to add article $articleId to bookings: $sql");
-//         return false;
-//     }
-// }
-// 
-// 
-// 
-// function bookingsAddBasketCustomArticle($bookingId, $articleId, $cost, $text) {
-//     global $db_link;
-// 
-//     // TODO sanetize
-//        
-//     $sql = "UPDATE `bookings`
-//             SET `article_" . $articleId . "_cost`='$cost', `article_" . $articleId . "_text`='$text'
-//             WHERE `booking_id`='$bookingId'"; 
-//         
-//     if(mysqli_query($db_link, $sql)){
-//         sql_transaction_logger($sql);
-//         return true;
-//     }
-//     else { // fail
-//         sql_transaction_logger("-- [ERROR] Failed to add custom article $articleId to bookings: $sql");
-//         return false;
-//     }
-// }
 
 
 
@@ -441,7 +400,7 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total) {
             SET `date`='" . date("Y-m-d") . "', `time`='" . date("H:i:s") . "',
             `booking`='$serializedBasket',
             `donation`='$donation', `total`='$total'
-            WHERE `booking_id`='$bookingId'"; 
+            WHERE `bookingId`='$bookingId'"; 
     
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -456,10 +415,10 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total) {
 
 
 
-function getDBBooking($bookingId) {
+function getDbBooking($bookingId) {
     global $db_link;
     
-    $sql = "SELECT * FROM bookings WHERE booking_id = '$bookingId'"; 
+    $sql = "SELECT * FROM bookings WHERE bookingId = '$bookingId'"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -482,6 +441,26 @@ function getDBBooking($bookingId) {
 //     print_r($booking);    
 
     return $booking;
+}
+
+
+function getBookingIdsOfDate($date) {
+   global $db_link;
+    
+    $sql = "SELECT bookingId FROM bookings WHERE date = '$date'"; 
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+    
+    while ($line = mysqli_fetch_array( $query_response, MYSQL_ASSOC))
+    {
+        $lines[] = $line['bookingId'];
+    } 
+    mysqli_free_result( $query_response );
+    
+    return $lines;
 }
 
 
