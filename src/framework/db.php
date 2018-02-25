@@ -444,10 +444,16 @@ function getDbBooking($bookingId) {
 }
 
 
-function getBookingIdsOfDate($date) {
+function getBookingIdsOfDate($date, $invertDatefFilter) {
    global $db_link;
     
-    $sql = "SELECT bookingId FROM bookings WHERE date = '$date'"; 
+    if( $invertDatefFilter == false) { // return bookings of set date
+        $sql = "SELECT bookingId FROM bookings WHERE date = '$date' ORDER BY 'bookingId' ASC"; 
+    }
+    else {// return bookings of all but set date
+        $sql = "SELECT bookingId FROM bookings WHERE date != '$date' ORDER BY 'bookingId' ASC"; 
+    }
+    
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
