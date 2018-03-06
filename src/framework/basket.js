@@ -1,5 +1,5 @@
 var watchdogInterval = 100; // in ms
-var watchdogCounterStartValue = 10;
+var watchdogCounterStartValue = 9;
                                         
 var watchdogMonitoredField = null;
 var watchdogCounter = 0;
@@ -8,15 +8,17 @@ var watchdogTimerId =  null;
 
 function watchdog() {
     watchdogCounter = watchdogCounter - 1;   
+//     console.log(watchdogCounter);
+    document.getElementById("timerIcon").src = "images/timer/" + (9 - watchdogCounter) + ".png";
     if (watchdogCounter > 0) { // not reached yet         
         console.log(watchdogMonitoredField + ": " + watchdogCounter);
     }
     else if (watchdogCounter == 0) { //timeout reached
-        clearTimeout(watchdogTimerId);
+        stopInputIdleTimer(watchdogTimerId);
 
         basketId = getBasketIdfromImputField(watchdogMonitoredField);
         
-        console.log("basketId:", basketId);
+//         console.log("basketId:", basketId);
 
         if(basketId == "basketDonationMoney"){
             var quantity = 1;
@@ -57,16 +59,25 @@ function watchdog() {
         
         
 
-function startWatchdog(){
-    clearTimeout(watchdogTimerId);
+function startInputIdleTimer(){
+    stopInputIdleTimer(watchdogTimerId);
     watchdogTimerId = setTimeout(watchdog, watchdogInterval);   
+    console.log("Started InputIdleTimer");
+}       
+        
+
+function stopInputIdleTimer(watchdogTimerId){
+    clearTimeout(watchdogTimerId);
+    console.log("Stopped InputIdleTimer");
 }
 
 
-function updateWatchdog(inputField) { 
+function updateInputIdleTimer(inputField) { 
     watchdogMonitoredField = inputField;
     watchdogCounter = watchdogCounterStartValue; 
     setPayButtonStateEnabled(false);
+    console.log("Updated InputIdleTimer");
+    startInputIdleTimer();
 }
 
     
@@ -74,7 +85,7 @@ $(document).ready(function(){
     console.log("Basket loaded");
 //     restoreFocus();
         
-    startWatchdog();
+//     startInputIdleTimer();
     
     updatePayButtonState();
     
@@ -160,7 +171,7 @@ $(document).ready(function(){
             }         */  
 
             // tell watchdog to update basket after timeout
-            updateWatchdog(inputField);
+            updateInputIdleTimer(inputField);
         }
     );
     
@@ -234,7 +245,7 @@ $(document).ready(function(){
                                  
                                  
             // tell watchdog to update basket after timeout
-            updateWatchdog($(event.target).attr('id'));
+            updateInputIdleTimer($(event.target).attr('id'));
             
             // TODO: improve handling (add timeout, keep selection, ...)
         }
@@ -387,7 +398,7 @@ function updateBasketEntry(basketId, quantity, price) {
                 });
                             
                 // Monitor input field changes again
-                startWatchdog();                                                
+//                 startInputIdleTimer();                                                
                 hideProgressBar(); 
                 updatePayButtonState();                 
             }

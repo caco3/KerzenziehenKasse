@@ -85,6 +85,7 @@ db_connect();
                     elseif(basename($_SERVER['PHP_SELF']) == "help.php") { ?>
                     <a class="headerLinks" href="index.php" target="_blank">Hauptseite</a>
                 <? } ?>
+                    | <img id=timerIcon src="images/timer/0.png" width=18px>
                 </p>
             </div>
             <div id=clock>
