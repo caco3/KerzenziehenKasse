@@ -8,7 +8,7 @@ $(document).on({
 $(document).ready(function(){
 //     console.log("Articles loaded");   
          
-    $(".articleQuantityInput").keydown(
+    $(".articleQuantityInput").off().on("keydown",
         function(event){
 //             console.log("keydown which: " + event.which);
                                 
@@ -30,28 +30,21 @@ $(document).ready(function(){
     );
     
     
-    $(".articleQuantityInput").keyup(
+    $(".articleQuantityInput").off().on("keyup", 
         function(event){
 //             console.log("keyup which: " + event.which);
-            
-            if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                 
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 13, 46]) !== -1)        // backspace, enter, delete
-            ) { // ok, refresh basket
-//                 console.log("ok, accept key");
-            }
-            else { //all other keys should not refresh basket
-                return;
-            }            
-            
+
             var inputFieldId = $(event.target).attr('id');     
-            //prevent empty field
-            if($("#" + inputFieldId).val() == "") {
+            
+            if($("#" + inputFieldId).val() == "") { //prevent empty field
                 $("#" + inputFieldId).val(0);
             } 
-            else{
-                $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
+//             else{
+//                 $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
+//             }
+
+            if(event.which == 13) { // enter key                
+                addToBasket(inputFieldId.replace("quantity_", ""));
             }
                         
             // TODO keep selection
@@ -61,7 +54,7 @@ $(document).ready(function(){
     
      
     
-    $(".articleMoneyInput").keydown(
+    $(".articleMoneyInput").off().on("keydown",
         function(event){
 //             console.log("keydown which: " + event.which);
                                 
@@ -95,28 +88,21 @@ $(document).ready(function(){
     );
     
     
-    $(".articleMoneyInput").keyup(
+    $(".articleMoneyInput").off().on("keyup",
         function(event){
 //             console.log("keyup which: " + event.which);
             
-            if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 13, 46]) !== -1)        // backspace, enter, delete
-            ) { // ok, refresh basket
-//                 console.log("ok, accept key");
-            }
-            else { //all other keys should not refresh basket
-                return;
-            }            
-            
             var inputFieldId = $(event.target).attr('id');     
-            //prevent empty field
-            if($("#" + inputFieldId).val() == "") {
+             
+            if($("#" + inputFieldId).val() == "") { //prevent empty field
                 $("#" + inputFieldId).val(0);
             } 
-            else{
-                $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
+//             else{
+//                 $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
+//             }
+
+            if(event.which == 13) { // enter key                
+                addToBasket(inputFieldId.replace("quantity_", ""));
             }
                         
             // TODO keep selection
@@ -125,9 +111,8 @@ $(document).ready(function(){
     );
     
     
-         
     
-    $("#customArticleDescriptionInput").keydown(
+    $("#customArticleDescriptionInput").off().on("keydown",
         function(event){
 //             console.log("keydown which: " + event.which);
                                             
@@ -151,78 +136,89 @@ $(document).ready(function(){
     );
     
     
-
-    $(".addToBasketButton").off().on('click', function(event){
-            var inputFieldId = $(event.target).attr('id');   
-            var price = 0;
-            var quantity = 1;
-            var text = "";
-            
-            console.log("addToBasket id="+inputFieldId + ", quantity: " + quantity);
-                        
-            if(inputFieldId == 'custom'){ //custom article
-                price =  $("#quantity_"+inputFieldId).val();
-                text = $("#customArticleDescriptionInput").val();
-                console.log("Manual Article, Text: " + text + ", price: " + price);
-                if(text == "") {
-//                     showFullPageOverlay("Fehler: Fehlender Text für freie Eingabe!");
-                    firework.launch("Fehlender Text für freie Eingabe!", 'error', 5000);
-                    return;
-                }
-                else if(price == "") {
-//                     showFullPageOverlay("Fehler: Fehlender oder ungültiger Preis für freie Eingabe!");
-                    firework.launch("Fehlender oder ungültiger Preis für freie Eingabe!", 'error', 5000);
-                    return;
-                }
-                else { //ok
-                    
-                }
-            }  
-            else{ //pouring or dipping  
-                quantity =  $("#quantity_"+inputFieldId).val();
-                if(quantity == ""){ // no weight value entered for dipping articles
-//                     showFullPageOverlay("Fehler: Bitte Gewicht eingeben!");
-                    firework.launch("Bitte Gewicht eingeben!", 'error', 5000);
-                    return;
-                }
-                else if(quantity == 0){ // weight value not useful
-//                     showFullPageOverlay("Fehler: Bitte sinnvolles Gewicht eingeben!");
-                    firework.launch("Bitte sinnvolles Gewicht eingeben!", 'error', 5000);
-                    return;
-                }  
-            }
-            
-            
-            //add to basket
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {                    
-//                 console.log(this.responseText);
-//                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
-                if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-                    var obj = JSON.parse(this.responseText);
-                    
-                    if(obj.response.success == "true") {
-//                             console.log(obj.data.inputFieldId);
-                        showBasket();
-                        console.log("added to basket.\nResponse: " + this.responseText);
-                        $("#customArticleDescriptionInput").val(""); // clear custom article field
-                        $("#quantity_custom").val(""); // clear custom article field
-                    }
-                    else{
-//                         showFullPageOverlay("Fehler: Konnte Artikel nicht zum Warenkorb hinzufügen!");
-                        firework.launch("Konnte Artikel nicht zum Warenkorb hinzufügen!", 'error', 5000);
-                    }
-                }
-            };
-            var params = "id=" + inputFieldId + "&quantity=" + quantity + "&price=" + price + "&text=" + text;
-            console.log(params);
-
-            showProgressBar();   
     
-            xhttp.open("POST", "ajax/addToBasket.php", true);
-            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhttp.send(params);
+    $("#customArticleDescriptionInput").off().on("keyup", 
+        function(event){
+            console.log("keyup which: " + event.which);
+            if(event.which == 13) { // enter key       
+                addToBasket("custom");
+            }
         }
     );
     
+        
+
+    $(".addToBasketButton").off().on('click', 
+        function(event){
+            addToBasket($(event.target).attr('id'));
+        }
+    );    
 });
+
+
+
+function addToBasket(inputFieldId) {
+    var price = 0;
+    var quantity = 1;
+    var text = "";
+    
+    console.log("addToBasket id="+inputFieldId);
+                
+    if(inputFieldId == 'custom'){ //custom article
+        price =  $("#quantity_"+inputFieldId).val();
+        text = $("#customArticleDescriptionInput").val();
+        console.log("Manual Article, Text: " + text + ", price: " + price);
+        if(text == "") {
+            firework.launch("Fehlender Text für freie Eingabe!", 'error', 5000);
+            return;
+        }
+        else if(price == "") {
+            firework.launch("Fehlender oder ungültiger Preis für freie Eingabe!", 'error', 5000);
+            return;
+        }
+        else { //ok
+            
+        }
+    }  
+    else{ //pouring or dipping  
+        quantity =  $("#quantity_"+inputFieldId).val();
+        if(quantity == ""){ // no weight value entered for dipping articles
+            firework.launch("Bitte Gewicht eingeben!", 'error', 5000);
+            return;
+        }
+        else if(quantity == 0){ // weight value not useful
+            firework.launch("Bitte sinnvolles Gewicht eingeben!", 'error', 5000);
+            return;
+        }  
+    }
+    
+    
+    //add to basket
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {                    
+//                 console.log(this.responseText);
+//                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            var obj = JSON.parse(this.responseText);
+            
+            if(obj.response.success == "true") {
+//                             console.log(obj.data.inputFieldId);
+                showBasket();
+                console.log("added to basket.\nResponse: " + this.responseText);
+                $("#customArticleDescriptionInput").val(""); // clear custom article field
+                $("#quantity_custom").val(""); // clear custom article field
+            }
+            else{
+                firework.launch("Konnte Artikel nicht zum Warenkorb hinzufügen!", 'error', 5000);
+            }
+        }
+    };
+    var params = "id=" + inputFieldId + "&quantity=" + quantity + "&price=" + price + "&text=" + text;
+    console.log(params);
+
+    showProgressBar();   
+
+    xhttp.open("POST", "ajax/addToBasket.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
