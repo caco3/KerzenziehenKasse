@@ -16,49 +16,12 @@ function watchdog() {
     else if (watchdogCounter == 0) { //timeout reached
         stopInputIdleTimer(watchdogTimerId);
 
-//         basketId = getBasketIdfromImputField(watchdogMonitoredFieldId);
-//         
-// //         console.log("basketId:", basketId);
-// 
-//         if(basketId == "basketDonationMoney"){
-//             var quantity = 1;
-//             var price = $("#basketDonationMoney").val();   
-//             if(price == ""){
-//                 $("#basketDonationMoney").val(0);
-//             }
-//         }
-//         else if(basketId == "basketTotalMoney"){
-//             var quantity = 1;
-//             var price = $("#basketTotalMoney").val();  
-//         }
-//         else { // its an article     
-//             var quantity = $("#basketId_" + basketId + "_quantity").val();   
-//             var price = $("#basketId_" + basketId + "_price").val();    
-//         }
-//         
-//         if(quantity == ""){
-//             quantity = 1;
-//             $("#basketId_" + basketId + "_quantity").val(quantity);
-//         }
-//         
-//         if(price == ""){
-//             price = 0;
-// //             $("#basketId_" + basketId + "_price").val(price);
-//         }
-//                 
-//         price = formatCurrency(price)
-//         
-//         console.log("basketId:", basketId, "quantity:", quantity, "price:", price);
-//         
-//         updateBasketEntry(basketId, quantity, price);
         updateBasketEntry(watchdogMonitoredFieldId);
         return;
     }        
     watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
 }
     
-        
-        
 
 function startInputIdleTimer(){
     stopInputIdleTimer(watchdogTimerId);
@@ -84,7 +47,6 @@ function updateInputIdleTimer(inputFieldId) {
     
 $(document).ready(function(){    
     console.log("Basket loaded");
-//     restoreFocus();
         
 //     startInputIdleTimer();
     
@@ -105,7 +67,6 @@ $(document).ready(function(){
                         console.log("removed from basket.\nResponse: " + this.responseText);
                     }
                     else{
-//                         showFullPageOverlay("Fehler: Konnte Artikel nicht aus dem Warenkorb entfernen!");
                         firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'error', 5000);
                     }
                 }
@@ -164,10 +125,6 @@ $(document).ready(function(){
             ) { // ok, refresh basket
 //                 console.log("ok, accept key");
                     
-                            
-    //             basketId = inputField.replace("basketId_", "");
-    //             basketId = basketId.replace("_quantity", "");
-                
                 //prevent empty or zero field
     /*            if(($("#" + inputField).val() == "") || ($("#" + inputField).val() == 0)) {
                     $("#" + inputField).val(1);
@@ -184,9 +141,6 @@ $(document).ready(function(){
     
     
     
-    
-     
-    
     $(".basketMoneyInput").keydown(
         function(event){
 //             console.log("keydown which: " + event.which);
@@ -201,7 +155,7 @@ $(document).ready(function(){
                 }
             }
             
-            // TODO: on decimal point prtess, remove odl key, add decimal point on new position
+            // TODO: on decimal point press, remove old key and add decimal point on new position
             
             
             if( // The following key are not to be ignored:          
@@ -269,15 +223,7 @@ $(document).ready(function(){
         function(event){
             moveBasketToBookings();
         }
-    );
-    
-    
-//     $(".createReceiptButton").off().on('click', 
-//         function(event){
-//             moveBasketToBookings(true);
-//         }
-//     );
-    
+    );    
 });
 
 
@@ -300,7 +246,6 @@ function moveBasketToBookings() {
                 firework.launch("Buchung " + obj.response.bookingId + " erfolgreich abgeschlossen.", 'success', 5000);
             }
             else{
-//                 showFullPageOverlay("Fehler: Konnte Warenkorb nicht freigeben!");
                 firework.launch("Konnte Warenkorb nicht freigeben!", 'error', 5000);
                 hideProgressBar();
             }
@@ -314,11 +259,6 @@ function moveBasketToBookings() {
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
 }
-
-
-
-
-
 
 
 
@@ -373,8 +313,6 @@ function updateBasketEntry(basketInputFieldId) {
         inputFieldId = document.getElementById(inputField);
         inputFieldId.selectionStart = 1;
     }
-        
-//     saveFocus(inputField);    
             
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() { 
@@ -422,13 +360,11 @@ function updateBasketEntry(basketInputFieldId) {
                     }
                 });
                             
-                // Monitor input field changes again
-//                 startInputIdleTimer();                                                
+                // Monitor input field changes again                           
                 hideProgressBar(); 
                 updatePayButtonState();                 
             }
             else{
-//                 showFullPageOverlay("Fehler: Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!");
                 firework.launch("Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!", 'error', 5000);
             }
         }
@@ -470,32 +406,3 @@ function setPayButtonStateEnabled(state) {
     $("#" + 'payButton').prop("disabled", !state);    
 }
 
-
-// function saveFocus(inputField){    
-//     // Store field persistently
-//     inputFieldActive = inputField;
-//     
-//     // Store cursor position persistently
-//     inputFieldId = document.getElementById(inputField);    
-//     inputFieldSelection = inputFieldId.selectionStart;
-//     
-//     console.log("## Remembering to set focus to " + inputField + " after reloading basket (cursor position: " + inputFieldSelection + ")");
-// }
-
-
-// function restoreFocus(){
-//     try { // try to restore focus and selection
-//         if(inputFieldActive != null){
-//             inputFieldId = document.getElementById(inputFieldActive);
-//             inputFieldId.focus();
-//             inputFieldId.selectionStart = inputFieldSelection;
-//         console.log("## Setting focus to: " + inputFieldId + " (cursor position: " + inputFieldSelection + ")");
-//         }
-//         else {
-//             console.log("Nothing to set focus to!");
-//         }  
-//     }
-//     catch(error) {
-//         // nothing to do
-//     }
-// }
