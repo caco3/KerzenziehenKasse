@@ -6,44 +6,12 @@ var watchdogCounter = 0;
 var watchdogTimerId =  null;
 
 
-function watchdog() {
-    watchdogCounter = watchdogCounter - 1;   
-//     console.log(watchdogCounter);
-    document.getElementById("timerIcon").src = "images/timer/" + (9 - watchdogCounter) + ".png";
-    if (watchdogCounter > 0) { // not reached yet         
-        console.log(watchdogMonitoredFieldId + ": " + watchdogCounter);
-    }
-    else if (watchdogCounter == 0) { //timeout reached
-        stopInputIdleTimer(watchdogTimerId);
 
-        updateBasketEntry(watchdogMonitoredFieldId);
-        return;
-    }        
-    watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
-}
-    
-
-function startInputIdleTimer(){
-    stopInputIdleTimer(watchdogTimerId);
-    watchdogTimerId = setTimeout(watchdog, watchdogInterval);   
-    console.log("Started InputIdleTimer");
-}       
-        
-
-function stopInputIdleTimer(watchdogTimerId){
-    clearTimeout(watchdogTimerId);
-    console.log("Stopped InputIdleTimer");
-}
-
-
-function updateInputIdleTimer(inputFieldId) { 
-    watchdogMonitoredFieldId = inputFieldId;
-    watchdogCounter = watchdogCounterStartValue; 
-    setPayButtonStateEnabled(false);
-    console.log("Updated InputIdleTimer");
-    startInputIdleTimer();
-}
-
+$(document).on({    
+    ajaxStop: function() { 
+        hideProgressBar();
+    }    
+});
     
 $(document).ready(function(){    
     console.log("Basket loaded");
@@ -69,11 +37,13 @@ $(document).ready(function(){
                     else{
                         firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'error', 5000);
                     }
+                    updatePayButtonState();
                 }
             };
             var params = "basketId=" + basketId;
 //             console.log(params);
 
+            setPayButtonStateEnabled(false);
             showProgressBar();  
                 
             xhttp.open("POST", "ajax/removeFromBasket.php", true);
@@ -388,7 +358,7 @@ function updateBasketEntry(basketInputFieldId) {
 
 
 function updatePayButtonState() {                         
-    console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
+//     console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
     if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) {
         setPayButtonStateEnabled(false);
         console.log("Pay Button disabled");
@@ -410,3 +380,42 @@ function setPayButtonStateEnabled(state) {
     $("#" + 'payButton').prop("disabled", !state);    
 }
 
+
+
+function watchdog() {
+    watchdogCounter = watchdogCounter - 1;   
+//     console.log(watchdogCounter);
+    document.getElementById("timerIcon").src = "images/timer/" + (9 - watchdogCounter) + ".png";
+    if (watchdogCounter > 0) { // not reached yet         
+        console.log(watchdogMonitoredFieldId + ": " + watchdogCounter);
+    }
+    else if (watchdogCounter == 0) { //timeout reached
+        stopInputIdleTimer(watchdogTimerId);
+
+        updateBasketEntry(watchdogMonitoredFieldId);
+        return;
+    }        
+    watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
+}
+    
+
+function startInputIdleTimer(){
+    stopInputIdleTimer(watchdogTimerId);
+    watchdogTimerId = setTimeout(watchdog, watchdogInterval);   
+    console.log("Started InputIdleTimer");
+}       
+        
+
+function stopInputIdleTimer(watchdogTimerId){
+    clearTimeout(watchdogTimerId);
+    console.log("Stopped InputIdleTimer");
+}
+
+
+function updateInputIdleTimer(inputFieldId) { 
+    watchdogMonitoredFieldId = inputFieldId;
+    watchdogCounter = watchdogCounterStartValue; 
+    setPayButtonStateEnabled(false);
+    console.log("Updated InputIdleTimer");
+    startInputIdleTimer();
+}
