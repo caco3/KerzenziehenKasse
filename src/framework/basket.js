@@ -111,12 +111,12 @@ $(document).ready(function(){
         function(event){
             console.log("keyup which: " + event.which);
             
-            var inputField = $(event.target).attr('id'); 
+            var inputFieldId = $(event.target).attr('id'); 
 
             if(event.which == 13) { // enter key
                 console.log("directly send to server instead of waiting for timeout");
                 // directly send to server instead of waiting for timeout
-                updateBasketEntry(inputField);
+                updateBasketEntry(inputFieldId);
             }
             else if( // The following key are not to be ignored:          
                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
@@ -126,12 +126,12 @@ $(document).ready(function(){
 //                 console.log("ok, accept key");
                     
                 //prevent empty or zero field
-    /*            if(($("#" + inputField).val() == "") || ($("#" + inputField).val() == 0)) {
-                    $("#" + inputField).val(1);
+    /*            if(($("#" + inputFieldId).val() == "") || ($("#" + inputFieldId).val() == 0)) {
+                    $("#" + inputFieldId).val(1);
                 }         */  
 
                 // tell watchdog to update basket after timeout
-                updateInputIdleTimer(inputField);
+                updateInputIdleTimer(inputFieldId);
             }
             else { //all other keys should not refresh basket
                 return;
@@ -201,9 +201,8 @@ $(document).ready(function(){
     
     $(".basketMoneyInput").focusout(
         function(event){
-            inputField = this.id;
-            console.log("focus losed", inputField);
-            formatCurrencyField(inputField);
+            console.log("focus losed", this.id);
+            formatCurrencyField(this.id);
         }
     ); 
     
@@ -211,9 +210,7 @@ $(document).ready(function(){
     
     $(".basketMoneyInput").each(
         function(id, obj) {
-//             console.log("basketMoneyInput: " + id + ", " + this.id);
-            inputField = this.id;
-            formatCurrencyField(inputField);
+            formatCurrencyField(this.id);
         }
     ); 
     
@@ -262,8 +259,8 @@ function moveBasketToBookings() {
 
 
 
-function getBasketIdfromImputField(inputField){ 
-    basketId = inputField.replace("basketId_", "");
+function getBasketIdfromInputFieldId(inputFieldId){ 
+    basketId = inputFieldId.replace("basketId_", "");
     basketId = basketId.replace("_quantity", "");
     basketId = basketId.replace("_price", "");
     
@@ -273,7 +270,7 @@ function getBasketIdfromImputField(inputField){
 
 
 function updateBasketEntry(basketInputFieldId) {
-    basketId = getBasketIdfromImputField(basketInputFieldId);
+    basketId = getBasketIdfromInputFieldId(basketInputFieldId);
     
 //         console.log("basketId:", basketId);
 
@@ -310,8 +307,8 @@ function updateBasketEntry(basketInputFieldId) {
     //if empty, set to 1 and cursor right to it
     if(quantity == ""){
         quantity = 0;
-        inputFieldId = document.getElementById(inputField);
-        inputFieldId.selectionStart = 1;
+        inputField = document.getElementById(basketInputFieldId);
+        inputField.selectionStart = 1;
     }
             
     var xhttp = new XMLHttpRequest();
@@ -322,7 +319,7 @@ function updateBasketEntry(basketInputFieldId) {
             var obj = JSON.parse(this.responseText);            
             if(obj.response.success == "true") {                
 //                 showBasket();
-                console.log("Updated " + inputField +" in basket.\nResponse: " + this.responseText);
+                console.log("Updated " + basketInputFieldId +" in basket.\nResponse: " + this.responseText);
                 
                 console.log("Updating changed fields:");                
 //                 console.log(obj.updatedFields);
@@ -365,7 +362,7 @@ function updateBasketEntry(basketInputFieldId) {
                 updatePayButtonState();                 
             }
             else{
-                firework.launch("Konnte Preis von Artikel " + inputField + " in Warenkorb nicht aktualisieren!", 'error', 5000);
+                firework.launch("Konnte Preis in Warenkorb nicht aktualisieren!", 'error', 5000);
             }
         }
     };
