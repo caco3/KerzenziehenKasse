@@ -45,13 +45,13 @@ $(document).ready(function(){
                 return;
             }            
             
-            var inputField = $(event.target).attr('id');     
+            var inputFieldId = $(event.target).attr('id');     
             //prevent empty field
-            if($("#" + inputField).val() == "") {
-                $("#" + inputField).val(0);
+            if($("#" + inputFieldId).val() == "") {
+                $("#" + inputFieldId).val(0);
             } 
             else{
-                $("#" + inputField).val($("#" + inputField).val() * 1);
+                $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
             }
                         
             // TODO keep selection
@@ -110,13 +110,13 @@ $(document).ready(function(){
                 return;
             }            
             
-            var inputField = $(event.target).attr('id');     
+            var inputFieldId = $(event.target).attr('id');     
             //prevent empty field
-            if($("#" + inputField).val() == "") {
-                $("#" + inputField).val(0);
+            if($("#" + inputFieldId).val() == "") {
+                $("#" + inputFieldId).val(0);
             } 
             else{
-                $("#" + inputField).val($("#" + inputField).val() * 1);
+                $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
             }
                         
             // TODO keep selection
@@ -153,15 +153,15 @@ $(document).ready(function(){
     
 
     $(".addToBasketButton").off().on('click', function(event){
-            var id = $(event.target).attr('id');   
+            var inputFieldId = $(event.target).attr('id');   
             var price = 0;
             var quantity = 1;
             var text = "";
             
-            console.log("addToBasket id="+id + ", quantity: " + quantity);
+            console.log("addToBasket id="+inputFieldId + ", quantity: " + quantity);
                         
-            if(id == 'custom'){ //custom article
-                price =  $("#quantity_"+id).val();
+            if(inputFieldId == 'custom'){ //custom article
+                price =  $("#quantity_"+inputFieldId).val();
                 text = $("#customArticleDescriptionInput").val();
                 console.log("Manual Article, Text: " + text + ", price: " + price);
                 if(text == "") {
@@ -179,7 +179,7 @@ $(document).ready(function(){
                 }
             }  
             else{ //pouring or dipping  
-                quantity =  $("#quantity_"+id).val();
+                quantity =  $("#quantity_"+inputFieldId).val();
                 if(quantity == ""){ // no weight value entered for dipping articles
 //                     showFullPageOverlay("Fehler: Bitte Gewicht eingeben!");
                     firework.launch("Bitte Gewicht eingeben!", 'error', 5000);
@@ -202,7 +202,7 @@ $(document).ready(function(){
                     var obj = JSON.parse(this.responseText);
                     
                     if(obj.response.success == "true") {
-//                             console.log(obj.data.id);
+//                             console.log(obj.data.inputFieldId);
                         showBasket();
                         console.log("added to basket.\nResponse: " + this.responseText);
                         $("#customArticleDescriptionInput").val(""); // clear custom article field
@@ -214,7 +214,7 @@ $(document).ready(function(){
                     }
                 }
             };
-            var params = "id=" + id + "&quantity=" + quantity + "&price=" + price + "&text=" + text;
+            var params = "id=" + inputFieldId + "&quantity=" + quantity + "&price=" + price + "&text=" + text;
             console.log(params);
 
             showProgressBar();   
