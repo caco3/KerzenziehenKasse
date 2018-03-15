@@ -1,7 +1,7 @@
 var watchdogInterval = 100; // in ms
 var watchdogCounterStartValue = 9;
                                         
-var watchdogMonitoredField = null;
+var watchdogMonitoredFieldId = null;
 var watchdogCounter = 0;
 var watchdogTimerId =  null;
 
@@ -11,46 +11,47 @@ function watchdog() {
 //     console.log(watchdogCounter);
     document.getElementById("timerIcon").src = "images/timer/" + (9 - watchdogCounter) + ".png";
     if (watchdogCounter > 0) { // not reached yet         
-        console.log(watchdogMonitoredField + ": " + watchdogCounter);
+        console.log(watchdogMonitoredFieldId + ": " + watchdogCounter);
     }
     else if (watchdogCounter == 0) { //timeout reached
         stopInputIdleTimer(watchdogTimerId);
 
-        basketId = getBasketIdfromImputField(watchdogMonitoredField);
-        
-//         console.log("basketId:", basketId);
-
-        if(basketId == "basketDonationMoney"){
-            var quantity = 1;
-            var price = $("#basketDonationMoney").val();   
-            if(price == ""){
-                $("#basketDonationMoney").val(0);
-            }
-        }
-        else if(basketId == "basketTotalMoney"){
-            var quantity = 1;
-            var price = $("#basketTotalMoney").val();  
-        }
-        else { // its an article     
-            var quantity = $("#basketId_" + basketId + "_quantity").val();   
-            var price = $("#basketId_" + basketId + "_price").val();    
-        }
-        
-        if(quantity == ""){
-            quantity = 1;
-            $("#basketId_" + basketId + "_quantity").val(quantity);
-        }
-        
-        if(price == ""){
-            price = 0;
-//             $("#basketId_" + basketId + "_price").val(price);
-        }
-                
-        price = formatCurrency(price)
-        
-        console.log("basketId:", basketId, "quantity:", quantity, "price:", price);
-        
-        updateBasketEntry(basketId, quantity, price);
+//         basketId = getBasketIdfromImputField(watchdogMonitoredFieldId);
+//         
+// //         console.log("basketId:", basketId);
+// 
+//         if(basketId == "basketDonationMoney"){
+//             var quantity = 1;
+//             var price = $("#basketDonationMoney").val();   
+//             if(price == ""){
+//                 $("#basketDonationMoney").val(0);
+//             }
+//         }
+//         else if(basketId == "basketTotalMoney"){
+//             var quantity = 1;
+//             var price = $("#basketTotalMoney").val();  
+//         }
+//         else { // its an article     
+//             var quantity = $("#basketId_" + basketId + "_quantity").val();   
+//             var price = $("#basketId_" + basketId + "_price").val();    
+//         }
+//         
+//         if(quantity == ""){
+//             quantity = 1;
+//             $("#basketId_" + basketId + "_quantity").val(quantity);
+//         }
+//         
+//         if(price == ""){
+//             price = 0;
+// //             $("#basketId_" + basketId + "_price").val(price);
+//         }
+//                 
+//         price = formatCurrency(price)
+//         
+//         console.log("basketId:", basketId, "quantity:", quantity, "price:", price);
+//         
+//         updateBasketEntry(basketId, quantity, price);
+        updateBasketEntry(watchdogMonitoredFieldId);
         return;
     }        
     watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
@@ -72,8 +73,8 @@ function stopInputIdleTimer(watchdogTimerId){
 }
 
 
-function updateInputIdleTimer(inputField) { 
-    watchdogMonitoredField = inputField;
+function updateInputIdleTimer(inputFieldId) { 
+    watchdogMonitoredFieldId = inputFieldId;
     watchdogCounter = watchdogCounterStartValue; 
     setPayButtonStateEnabled(false);
     console.log("Updated InputIdleTimer");
@@ -147,31 +148,37 @@ $(document).ready(function(){
     
     $(".basketQuantityInput").keyup(
         function(event){
-//             console.log("keyup which: " + event.which);
+            console.log("keyup which: " + event.which);
             
-            if( // The following key are not to be ignored:          
+            var inputField = $(event.target).attr('id'); 
+
+            if(event.which == 13) { // enter key
+                console.log("directly send to server instead of waiting for timeout");
+                // directly send to server instead of waiting for timeout
+                updateBasketEntry(inputField);
+            }
+            else if( // The following key are not to be ignored:          
                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 13, 46]) !== -1)        // backspace, enter, remove
+                ($.inArray(event.which, [ 8, 46]) !== -1)        // backspace, remove
             ) { // ok, refresh basket
 //                 console.log("ok, accept key");
+                    
+                            
+    //             basketId = inputField.replace("basketId_", "");
+    //             basketId = basketId.replace("_quantity", "");
+                
+                //prevent empty or zero field
+    /*            if(($("#" + inputField).val() == "") || ($("#" + inputField).val() == 0)) {
+                    $("#" + inputField).val(1);
+                }         */  
+
+                // tell watchdog to update basket after timeout
+                updateInputIdleTimer(inputField);
             }
             else { //all other keys should not refresh basket
                 return;
             }            
-            
-            var inputField = $(event.target).attr('id');     
-                        
-//             basketId = inputField.replace("basketId_", "");
-//             basketId = basketId.replace("_quantity", "");
-            
-            //prevent empty or zero field
-/*            if(($("#" + inputField).val() == "") || ($("#" + inputField).val() == 0)) {
-                $("#" + inputField).val(1);
-            }         */  
-
-            // tell watchdog to update basket after timeout
-            updateInputIdleTimer(inputField);
         }
     );
     
@@ -229,20 +236,6 @@ $(document).ready(function(){
             else { //all other keys should not refresh basket
                 return;
             }            
-
-            
-//             // Formating field
-//             var inputField = $(event.target).attr('id');  
-//             formatCurrencyField(inputField);
-                      
-                                             
-//             console.log("### update basket");
-//             var inputField = $(event.target).attr('id');  
-//             basketId = inputField.replace("basketId_", "");
-//             basketId = basketId.replace("_quantity", "");
-//             var quantity = $("#" + inputField).val(); 
-//             updateBasketEntry(inputField, quantity);
-                                 
                                  
             // tell watchdog to update basket after timeout
             updateInputIdleTimer($(event.target).attr('id'));
@@ -339,9 +332,41 @@ function getBasketIdfromImputField(inputField){
 
 
 
-function updateBasketEntry(basketId, quantity, price) {
-    // Store cursor position persistently
+function updateBasketEntry(basketInputFieldId) {
+    basketId = getBasketIdfromImputField(basketInputFieldId);
     
+//         console.log("basketId:", basketId);
+
+    if(basketId == "basketDonationMoney"){
+        var quantity = 1;
+        var price = $("#basketDonationMoney").val();   
+        if(price == ""){
+            $("#basketDonationMoney").val(0);
+        }
+    }
+    else if(basketId == "basketTotalMoney"){
+        var quantity = 1;
+        var price = $("#basketTotalMoney").val();  
+    }
+    else { // its an article     
+        var quantity = $("#basketId_" + basketId + "_quantity").val();   
+        var price = $("#basketId_" + basketId + "_price").val();    
+    }
+    
+    if(quantity == ""){
+        quantity = 1;
+        $("#basketId_" + basketId + "_quantity").val(quantity);
+    }
+    
+    if(price == ""){
+        price = 0;
+//             $("#basketId_" + basketId + "_price").val(price);
+    }
+            
+    price = formatCurrency(price)
+    
+    console.log("basketId:", basketId, "quantity:", quantity, "price:", price);
+        
     //if empty, set to 1 and cursor right to it
     if(quantity == ""){
         quantity = 0;
@@ -409,9 +434,6 @@ function updateBasketEntry(basketId, quantity, price) {
         }
     };
 
-    
-    
-    
     
     var params = "basketId=" + basketId + "&quantity=" + quantity + "&price=" + price;    
     console.log("Parameters:", params);
