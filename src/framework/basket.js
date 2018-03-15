@@ -179,20 +179,27 @@ $(document).ready(function(){
         function(event){
 //             console.log("keyup which: " + event.which);
                         
-            if( // The following key are not to be ignored:          
+            var inputFieldId = $(event.target).attr('id'); 
+            
+            if(event.which == 13) { // enter key
+                console.log("directly send to server instead of waiting for timeout");
+                // directly send to server instead of waiting for timeout
+                updateBasketEntry(inputFieldId);
+            }
+            else if( // The following key are not to be ignored:          
                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                
                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
                 ($.inArray(event.which, [ 8, 13, 46]) !== -1) ||     // backspace, enter, remove
                 ($.inArray(event.which, [ 110, 190]) !== -1)         // decimal point, period
             ) { // ok, refresh basket
 //                 console.log("ok, accept key");
+                                 
+                // tell watchdog to update basket after timeout
+                updateInputIdleTimer(inputFieldId);
             }
             else { //all other keys should not refresh basket
                 return;
             }            
-                                 
-            // tell watchdog to update basket after timeout
-            updateInputIdleTimer($(event.target).attr('id'));
             
             // TODO: improve handling (add timeout, keep selection, ...)
         }
