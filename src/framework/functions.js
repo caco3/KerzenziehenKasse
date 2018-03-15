@@ -1,19 +1,3 @@
-// var contentsLoaded = 6;
-
-
-
-
-
-
-
-// $(document).ready(function(){
-//     $("#receiptTrigger").click(){ function(event){
-//             console.log("receiptTrigger");
-//         }
-//     );    
-// });
-    
-    
 
 function blockLoaded(){
 //     contentsLoaded = contentsLoaded - 1;
@@ -171,9 +155,6 @@ function formatCurrency(value){
 }
 
 
-
-
-
 function formatCurrencyField(inputField){
     selectionStart = document.getElementById(inputField).selectionStart
     
@@ -211,6 +192,4 @@ function formatCurrencyField(inputField){
     document.getElementById(inputField).selectionStart = selectionStart;
     document.getElementById(inputField).selectionEnd = selectionStart;   
 }
-
-
 
