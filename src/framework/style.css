@@ -345,6 +345,30 @@ a:link, a:visited, a:hover, a:active {
     font-weight:bold;
 }
 
+#basketTotalMoneyRounded {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 150%;
+}
+
+.basketTotalRoundedLabel {
+/*     margin-top: 45px; */
+    margin-bottom: 13px;
+/*     font-size: 150%; */
+/*     text-align: right; */
+/*     vertical-align:bottom; */
+}
+
+
+.basketTotalCell {
+/*     vertical-align:top;  */
+/*     padding-top: 1px; */
+}
+
+.basketTotalRoundedCell {
+    vertical-align:bottom;
+/*     padding-bottom: 0px; */
+}
 
 #customArticleDescriptionInput {
     width: 300px;

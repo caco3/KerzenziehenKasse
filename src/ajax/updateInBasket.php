@@ -35,6 +35,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
                                                     
                 // List all fields that changed  
                 $response_array['updatedFields']['total'] = $total;
+                $response_array['updatedFields']['totalRounded'] = roundMoney($total);
                         
                 $success = true;
             }
@@ -53,6 +54,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
                 // List all fields that changed  
                 $response_array['updatedFields']['article'][$basketId]['price'] = $quantity * $pricePerQuantity;
                 $response_array['updatedFields']['total'] = $total;
+                $response_array['updatedFields']['totalRounded'] = roundMoney($total);
                         
                 $success = true;
             }
@@ -69,6 +71,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
                         
             // List all fields that changed
             $response_array['updatedFields']['total'] = $total;
+            $response_array['updatedFields']['totalRounded'] = roundMoney($total);
                         
             $success = true;
         }
@@ -85,6 +88,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
                 updateTotalInBasket($TotalWithoutDonation); 
                 $total = getDbTotal();
                 $response_array['updatedFields']['total'] = $total;
+                $response_array['updatedFields']['totalRounded'] = roundMoney($total);
                 $response_array['corrections']['action'] = 'uprounded';
                 $response_array['corrections']['Text'] = 'total rounded up to minimum!';
             }

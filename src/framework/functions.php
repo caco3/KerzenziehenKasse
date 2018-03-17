@@ -93,14 +93,16 @@ function roundMoney($num){
     $x = ($num * 1000) % 100;
     
     if($x < 25){
-        return $num - $x/1000;
+        $rounded = $num - $x/1000;
     }
     else if($x >= 75){
-        return $num + (50-$x)/1000 + 0.05;
+        $rounded = $num + (50-$x)/1000 + 0.05;
     }
     else {
-        return $num + (50-$x)/1000;
+        $rounded = $num + (50-$x)/1000;
     }
+    
+    return number_format($rounded, 2);
 }  
 
 

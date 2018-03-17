@@ -314,6 +314,12 @@ function updateBasketEntry(basketInputFieldId) {
                             firework.launch("Total in Warenkorb aktualisiert.", 'success', 5000);
                         }                        
                     }
+                    
+                    if(id == 'totalRounded'){
+                        console.log("  Total (rounded): " + val);
+                        $("#" + 'basketTotalMoneyRounded').html("CHF " + val)                       
+                    }
+                    
                     if(id == 'donation'){ // donation changed
                         console.log("  Donation: " + val);
                         $("#" + 'basketDonationMoney').val(formatCurrency(val))
@@ -326,6 +332,7 @@ function updateBasketEntry(basketInputFieldId) {
                             firework.launch("Spende in Warenkorb aktualisiert.", 'success', 5000);
                         }
                     }
+                    
                     if(id == 'article'){ // an article changed              
                         jQuery.each(val, function($basketEntryId, val2) {
                             console.log("  Article "+ $basketEntryId + ": " + val2.price);
