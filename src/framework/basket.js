@@ -178,7 +178,7 @@ $(document).ready(function(){
     
     $(".basketMoneyInput").focusout(
         function(event){
-            console.log("focus losed", this.id);
+//             console.log("focus losed", this.id);
             formatCurrencyField(this.id);
         }
     ); 

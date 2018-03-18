@@ -111,6 +111,23 @@ function getDbTotal(){
 }
 
 
+function getDbBookingId(){
+    global $db_link;
+    
+    $sql = "SELECT bookingId FROM basket_various";  
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+
+    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    mysqli_free_result( $query_response );
+
+    return $line['bookingId'];
+}
+
+
 
 function addToBasket($id, $quantity, $price, $text) {
     global $db_link;
@@ -249,6 +266,31 @@ function updateTotalInBasket($money) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update total in basket: $sql");
+        return false;
+    }
+}
+
+
+
+function updateBookingIdInBasket($bookingId) {
+    global $db_link;
+
+    $sql = "UPDATE `basket_various` SET `bookingId`='$bookingId' "; 
+    
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+
+//         if(calculateBasketDonation() == true){
+//             return true;
+//         }
+//         else{
+//             return false;
+//         }
+    }
+    else { // fail
+//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
+        sql_transaction_logger("-- [ERROR] Failed to update bookingId in basket: $sql");
         return false;
     }
 }

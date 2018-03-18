@@ -13,10 +13,18 @@ db_connect();
 <script src="<? echo("$root/"); ?>/framework/basket.js"></script>
 
 
-<h2>Warenkorb</h2>
 
 <?
-echo("<table id=basketTable>");
+    $bookingId = getDbBookingId();
+    if($bookingId == "new" ) { // basket to be filled for a new booking
+        echo("<h2>Warenkorb</h2>");
+        echo("<table id=basketTableNew>");
+    }
+    else { // basket loaded to edit an already completed booking
+        echo("<h2 id=editBookingTitle>Warenkorb (Bearbeitung einer bestehenden Buchung!</h2>");
+        echo("<table id=basketTableEdit>");
+    }
+    
     echo("<tr><th colspan=2>Artikel</th><th>Menge</th><th>Preis</th><th></th></tr>\n");
     $basket = getDbBasket();
     

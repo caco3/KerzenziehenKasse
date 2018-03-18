@@ -146,17 +146,29 @@ a:link, a:visited, a:hover, a:active {
 }
 
 
-/* border, Shade */
-#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTable, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
-    box-shadow: 10px 10px 5px #888888;
+/* border */
+#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
     border: 3px solid black; 
-    border-collapse: collapse;   
-/*     table-layout: fixed; */
-/*     width: 100%; */
+    border-collapse: collapse;  
 }
 
 
-#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTable, #summaryTable {
+#basketTableEdit {
+    border: 3px solid #750000; 
+    border-collapse: collapse;  
+}
+
+#editBookingTitle {
+    color: #750000; 
+}
+
+/* Shade */
+#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
+    box-shadow: 10px 10px 5px #888888;
+}
+
+
+#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable {
     width: 100%;
 }
 
@@ -460,28 +472,38 @@ a:link, a:visited, a:hover, a:active {
 
 
 
-/* ############ Table Basket ############## */
-#basketTable th {
+/* ############ Table Basket (new booking) ############## */
+#basketTableNew th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-/*     background-color: #3e8a5c; */
     background:  rgba(62, 138, 92, 0.6);
 }
 
-#basketTable tr:nth-child(odd){
-/*     background-color: #85c79f;     */
+#basketTableNew tr:nth-child(odd){
     background:  rgba(133, 199, 159, 0.8);
 }
 
-#basketTable tr:nth-child(even){
-/*     background-color: #ccffcc;    */
+#basketTableNew tr:nth-child(even){
     background:  rgba(204, 255, 204, 0.8); 
 }
 
 
+/* ############ Table Basket (edit completed booking) ############## */
+#basketTableEdit th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background:  rgba(138, 62, 62, 0.6);
+}
 
+#basketTableEdit tr:nth-child(odd){
+    background:  rgba(199, 133, 133, 0.8);
+}
 
+#basketTableEdit tr:nth-child(even){
+    background:  rgba(255, 204, 204, 0.8); 
+}
 
 /* ############ Table Summary ############## */
  #bookingsTable, #summaryTable th {
