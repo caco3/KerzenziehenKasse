@@ -207,6 +207,8 @@ function addToBasket(inputFieldId) {
                 console.log("added to basket.\nResponse: " + this.responseText);
                 $("#customArticleDescriptionInput").val(""); // clear custom article field
                 $("#quantity_custom").val(""); // clear custom article field
+                $("#quantity_1").val(0); // clear article field (parafin wax)
+                $("#quantity_2").val(0); // clear article field (bee wax)
             }
             else{
                 firework.launch("Konnte Artikel nicht zum Warenkorb hinzufügen!", 'error', 5000);
