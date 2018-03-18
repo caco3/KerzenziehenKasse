@@ -147,7 +147,7 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* border */
-#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
     border: 3px solid black; 
     border-collapse: collapse;  
 }
@@ -163,12 +163,12 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* Shade */
-#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
     box-shadow: 10px 10px 5px #888888;
 }
 
 
-#dippArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable {
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable {
     width: 100%;
 }
 
@@ -409,25 +409,25 @@ a:link, a:visited, a:hover, a:active {
     max-width: 100px;
 /*     word-wrap:break-word; */
 /*     word-break: break-all; */
-    white-space:nowrap;
+/*    white-space:nowrap;
 }*/
 
 
 /* ############ Table Dipping Articles ############## */
-#dippArticlesTable th {
+
+#dipArticlesTable th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-/*     background-color: #ffd144; */
-    background:  rgba(255, 209, 68, 0.5);
+    background:  rgba(243, 235, 54, 0.5);
 }
 
-#dippArticlesTable tr:nth-child(odd){
+#dipArticlesTable tr:nth-child(odd){
 /*     background-color: #ffff99;     */
     background:  rgba(255, 255, 153, 0.8);
 }
 
-#dippArticlesTable tr:nth-child(even){
+#dipArticlesTable tr:nth-child(even){
 /*     background-color: #ffffe4;     */
     background:  rgba(255, 255, 228, 0.8);
 }

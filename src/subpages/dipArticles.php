@@ -14,7 +14,7 @@ db_connect();
 
 <h2>Artikel zum Ziehen</h2>
 
-<table id=dippArticlesTable>
+<table id=dipArticlesTable>
 <tr><th colspan=2>Wachs</th><th>Preis</th><th>Gewicht</th><th></th></tr>
 
 <? 
