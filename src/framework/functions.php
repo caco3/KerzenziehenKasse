@@ -9,7 +9,9 @@ function showRemoveFromBasketButton($basketId) {
     return "<button type=button id=$basketId class=removeFromBasketButton></button> ";
 }
 
-
+function editButton($id) {
+    return "<button type=button id=$id class=editButton></button> ";
+}
 
 
 

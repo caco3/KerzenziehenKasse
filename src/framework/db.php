@@ -530,6 +530,34 @@ function emptyBasket() {
 }
 
 
+function dbCheckBasketIsEmpty() {
+    global $db_link;
+       
+    $sql = "SELECT COUNT(*) FROM basket"; 
+
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+
+    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    mysqli_free_result( $query_response );
+        
+//     print_r( $line);
+
+    if($line['COUNT(*)'] != 0) { // no articles in basket
+        return false;
+    }
+    
+    if (getDbDonation() != 0) { // no donation in basket
+        return false;
+    }
+    
+    return true;
+}
+
+
 
 function getBibleVerse() {
     global $db_link;

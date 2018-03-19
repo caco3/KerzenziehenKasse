@@ -8,6 +8,9 @@ $today = date("Y-m-d");
 $todayDE = date("d.m.Y");
 
 ?>
+
+    <script src="<? echo("$root/"); ?>/framework/bookings.js"></script>
+
     <div id="body">
       <h1>Buchungen Heute (<? echo($todayDE); ?>)</h1>
       <!--<p>Noch nicht implementiert</p>-->
@@ -24,6 +27,7 @@ $todayDE = date("d.m.Y");
         
         foreach($bookingIdsToday as $bookingId) {
             $booking = getBooking($bookingId);
+            $button = editButton($bookingId);
 //             echo("<pre>");
 //             print_r($booking);
             echo("<tr>");
@@ -39,7 +43,7 @@ $todayDE = date("d.m.Y");
             
             echo("</td>");
             
-            echo("<td>" . "edit" . "</td>");
+            echo("<td>$button</td>");
             echo("</tr>\n");
         }        
       ?>

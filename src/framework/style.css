@@ -225,12 +225,7 @@ a:link, a:visited, a:hover, a:active {
 
 
 .addToBasketButton {
-/*     border: none; */
-/*     color: white; */
-/*     padding: 6px 20px 6px 20px; */
-/*     background-image: url("../images/add.png"); */
     background: url("../images/add.png") no-repeat top center;
-/*     center no-repeat;  */
     background-size: 100% 100%;
     width: 40px;
     height: 40px;
@@ -238,12 +233,15 @@ a:link, a:visited, a:hover, a:active {
 
 
 .removeFromBasketButton {
-/*     border: none; */
-/*     color: white; */
-/*     padding: 6px 20px 6px 20px; */
-/*     background-image: url("../images/add.png"); */
     background: url("../images/delete.png") no-repeat top center;
-/*     center no-repeat;  */
+    background-size: 100% 100%;
+    width: 40px;
+    height: 40px;
+}
+
+
+.editButton {
+    background: url("../images/edit.png") no-repeat top center;
     background-size: 100% 100%;
     width: 40px;
     height: 40px;

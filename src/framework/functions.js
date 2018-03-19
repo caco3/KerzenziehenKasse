@@ -47,6 +47,7 @@ function showProgressBar() {
 
 function hideProgressBar() {
     $("body").removeClass("loading"); 
+//     console.log("hided progress bar");
 }
 
 
