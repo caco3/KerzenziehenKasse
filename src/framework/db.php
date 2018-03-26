@@ -554,6 +554,10 @@ function dbCheckBasketIsEmpty() {
         return false;
     }
     
+    if (getDbTotal() != 0) { // no total in basket
+        return false;
+    }
+    
     return true;
 }
 

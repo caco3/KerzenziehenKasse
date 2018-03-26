@@ -231,6 +231,36 @@ function getBooking($bookingId){
 
 
 
+function copyBookingToBasket($bookingId) {
+    $data = getBooking($bookingId);
+//     print_r($data);
+
+    if (updateTotalInBasket($data['total']) != true) {
+        return(false);
+    }
+    
+    if (updateDonationInBasket($data['donation']) != true) {
+        return(false);
+    }
+    
+    foreach($data['articles' ] as $articleId => $article) {
+//         echo("$articleId:\n");
+//         print_r($article);
+        if (addToBasket($articleId, $article['quantity'], $article['price'], $article['text']) != true) {
+            return(false);
+        }
+    }
+    
+    if (updateBookingIdInBasket($bookingId) != true) {
+        return(false);
+    }
+    
+//     return(false);
+    return(true);
+}
+
+
+
 function writeBasketContentLog($bookingId) {
     $basket = getDbBasket();
     
