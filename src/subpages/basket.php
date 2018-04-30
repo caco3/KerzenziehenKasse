@@ -16,7 +16,7 @@ db_connect();
 
 <?
     $bookingId = getDbBookingId();
-    if($bookingId == "new" ) { // basket to be filled for a new booking
+    if($bookingId == "new" ) { // basket filled with articles for a new booking
         echo("<h2>Warenkorb</h2>");
         echo("<table id=basketTableNew>");
     }
@@ -37,7 +37,9 @@ db_connect();
         $articleId = $basketEntry['article_id'];
         $quantity = $basketEntry['quantity'];
         $price = $basketEntry['price'];
-        $image = $basketEntry['image'];
+        $image1 = $basketEntry['image1'];
+        $image2 = $basketEntry['image2'];
+        $image3 = $basketEntry['image3'];
         
         $removeButton = showRemoveFromBasketButton($basketEntryId);
         
@@ -57,8 +59,16 @@ db_connect();
         
         
         echo("<tr>
-            <td><span class=tooltip><img class=articleImage src=images/$image><span><img src=images/$image></span></td>
-            <td>$textField</td>
+            <td>");
+        echo("<span class=tooltip><img class=articleImage src=images/$image1><span><img src=images/$image1></span></span>");
+        if( $image2 != "") {
+            echo("<span class=tooltip><img class=articleImage src=images/$image2><span><img src=images/$image2></span></span>");
+        }
+        if( $image3 != "") {
+            echo("<span class=tooltip><img class=articleImage src=images/$image3><span><img src=images/$image3></span></span>");
+        }
+        
+        echo("</td><td>$textField</td>
             <td class=quantityCell>$quantityField</td>
             <td class=moneyCell>$priceField</td>
             <td>$removeButton</td>

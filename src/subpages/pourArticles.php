@@ -34,9 +34,20 @@ foreach($lines as $line) {
     }
     
     $button = addButton($line['articleId']);
+    
+    $image1 = $line['image1'];
+    $image2 = $line['image2'];
+    $image3 = $line['image3'];
             
-    echo("<tr>
-            <td><span class=tooltip><img class=articleImage src=images/" . $line['image'] . "><span><img src=images/" . $line['image'] . "></span></span></td>
+    echo("<tr><td>");
+    echo("<span class=tooltip><img class=articleImage src=images/$image1><span><img src=images/$image1></span></span>");
+    if( $image2 != "") {
+        echo("<span class=tooltip><img class=articleImage src=images/$image2><span><img src=images/$image2></span></span>");
+    }
+    if( $image3 != "") {
+        echo("<span class=tooltip><img class=articleImage src=images/$image3><span><img src=images/$image3></span></span>");
+    }
+    echo("</td>
             <td class=articleNameCell>" . $line['name'] . "</td>
             <td class=moneyCell>$price $weight</td>
             <td>$button</td>

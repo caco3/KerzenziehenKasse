@@ -25,7 +25,7 @@ $(document).ready(function(){
 //                         copyBookingToBasket(bookingId)();
                         firework.launch("Booking " + bookingId + " wurde in den Warenkorb geladen.", 'success', 5000);
                         // load main page after 1 second
-//                         setTimeout(function(){ window.location.replace("index.php"); }, 1000);                        
+                        setTimeout(function(){ window.location.replace("index.php"); }, 1000);                        
                     }
                     else if(obj.response.empty == "false") {
                         console.log("Basket is not empty");

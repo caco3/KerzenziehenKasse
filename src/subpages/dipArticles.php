@@ -40,7 +40,7 @@ foreach($lines as $line) {
     $button = addButton($line['articleId']);
             
     echo("<tr>
-            <td><span class=tooltip><img class=articleImage src=images/" . $line['image'] . "><span class=tooltipContent><img src=images/" . $line['image'] . "></span></span></td>
+            <td><span class=tooltip><img class=articleImage src=images/" . $line['image1'] . "><span class=tooltipContent><img src=images/" . $line['image1'] . "></span></span></td>
             <td>" . $line['name'] . "</td>
             <td class=moneyCell>$price</td>
             <td>$weight</td>

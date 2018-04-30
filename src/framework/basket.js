@@ -18,7 +18,7 @@ $(document).ready(function(){
         
 //     startInputIdleTimer();
     
-    updatePayButtonState();
+    updateBasketButtonStates();
     
     $(".removeFromBasketButton").off().on('click', function(event){
             var basketId = $(event.target).attr('id');   
@@ -37,7 +37,7 @@ $(document).ready(function(){
                     else{
                         firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'error', 5000);
                     }
-                    updatePayButtonState();
+                    updateBasketButtonStates();
                 }
             };
             var params = "basketId=" + basketId;
@@ -197,6 +197,22 @@ $(document).ready(function(){
         function(event){
             moveBasketToBookings();
         }
+    ); 
+    
+    
+    
+    $(".clearButton").off().on('click', 
+        function(event){
+            clearBasket();
+        }
+    ); 
+    
+    
+    
+    $(".updateButton").off().on('click', 
+        function(event){
+            updateBasketinBookings();
+        }
     );    
 });
 
@@ -233,6 +249,72 @@ function moveBasketToBookings() {
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
 }
+
+
+
+function clearBasket() {    
+    console.log("clear basket");
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {                    
+//                 console.log(this.responseText);
+//                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            var obj = JSON.parse(this.responseText);                    
+            if(obj.response.success == "true") {
+                console.log("Basket emptied");
+                showBasket();
+                firework.launch("Warenkorb ist nun leer.", 'success', 5000);
+            }
+            else{
+                firework.launch("Konnte Warenkorb nicht leeren!", 'error', 5000);
+                hideProgressBar();
+            }
+        }
+    };
+    var params = "";
+
+    showProgressBar();  
+        
+    xhttp.open("POST", "ajax/clearBasket.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
+
+
+
+function updateBasketinBookings() {    
+    console.log("update basket in bookings");
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {                    
+//                 console.log(this.responseText);
+//                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            var obj = JSON.parse(this.responseText);                    
+            if(obj.response.success == "true") {
+                console.log("Updated basket in bookings (ID: " + obj.response.bookingId + ")");
+                showBasket();
+                firework.launch("Buchung " + obj.response.bookingId + " erfolgreich aktualisiert.", 'success', 5000);
+            }
+            else{
+                firework.launch("Konnte Buchung nicht aktualisieren!", 'error', 5000);
+                hideProgressBar();
+            }
+        }
+    };
+    var params = "";
+
+    showProgressBar();  
+        
+    xhttp.open("POST", "ajax/updateBasketInBookings.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
+
+
 
 
 
@@ -343,7 +425,7 @@ function updateBasketEntry(basketInputFieldId) {
                             
                 // Monitor input field changes again                           
                 hideProgressBar(); 
-                updatePayButtonState();                 
+                updateBasketButtonStates();                 
             }
             else{
                 firework.launch("Konnte Preis in Warenkorb nicht aktualisieren!", 'error', 5000);
@@ -364,15 +446,20 @@ function updateBasketEntry(basketInputFieldId) {
 
 
 
-function updatePayButtonState() {                         
+function updateBasketButtonStates() {            
+//     console.log("basketId:", basketId);
+    
 //     console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
     if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) {
         setPayButtonStateEnabled(false);
-        console.log("Pay Button disabled");
+//         setUpdateButtonStateEnabled(false);
+        console.log("Pay Buttons disabled");
     }
     else {                            
         setPayButtonStateEnabled(true);
-        console.log("Pay Button enabled");
+//         setUpdateButtonStateEnabled(true);
+        console.log("Pay Buttons enabled");
+//         console.log("Pay/Update Buttons enabled");
     }   
 }
 
@@ -386,6 +473,17 @@ function setPayButtonStateEnabled(state) {
     }
     $("#" + 'payButton').prop("disabled", !state);    
 }
+
+
+// function setUpdateButtonStateEnabled(state) {
+//     if (state == false) {
+//         console.log("Update Button disabled");
+//     }
+//     else {                            
+//         console.log("Update Button enabled");
+//     }
+//     $("#" + 'updateButton').prop("disabled", !state);    
+// }
 
 
 
