@@ -399,6 +399,7 @@ function bookingsCreateArticleColumns($articleId, $columns) {
 function bookingsCreateId() {
     global $db_link;
     
+    // create entry
     $sql = "INSERT INTO bookings (`bookingId`) values (null)"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
@@ -406,6 +407,16 @@ function bookingsCreateId() {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
     
+    // update date/time with current date/time
+    $sql = "UPDATE `bookings`
+            SET `date`='" . date("Y-m-d") . "', `time`='" . date("H:i:s") . "'
+            WHERE `bookingId`='$bookingId'"; 
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+        
     return bookingsGetLastId();
 }
 
@@ -439,9 +450,7 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total) {
     // TODO sanetize
        
     $sql = "UPDATE `bookings`
-            SET `date`='" . date("Y-m-d") . "', `time`='" . date("H:i:s") . "',
-            `booking`='$serializedBasket',
-            `donation`='$donation', `total`='$total'
+            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total'
             WHERE `bookingId`='$bookingId'"; 
     
     if(mysqli_query($db_link, $sql)){

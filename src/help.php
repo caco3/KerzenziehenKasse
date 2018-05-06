@@ -9,7 +9,9 @@ include "$root/framework/header.php";
         <li><p class=question><b>Frage:</b> Wohin kann ich Feedback und Verbesserungsvorschläge senden?</p>
             <p class=answer><b>Antwort:</b> Siehe Support unten.</p></li>
         <li><p class=question><b>Frage:</b> Wieso zeigt Word eine Fehlermeldung, wenn ich den Beleg öffne?</p>
-            <p class=answer><b>Antwort:</b> Word unterstützt leider die aktuelle Version des Opendocument Formats (*.odt) nicht vollständig. Die Fehlermeldung kann jedoch ignoriert werden.<br>Alternativ kann <a href=https://de.libreoffice.org/ target="_blank">Libreoffice</a> (gratis)</p></li>
+            <p class=answer><b>Antwort:</b> Word unterstützt leider die aktuelle Version des Opendocument Formats (*.odt) nicht vollständig. Die Fehlermeldung kann jedoch ignoriert werden.<br>Alternativ kann <a href=https://de.libreoffice.org/ target="_blank">Libreoffice</a> verwendet werden (gratis)</p></li>
+        <li><p class=question><b>Frage:</b> Wo finde ich den Quellcode dieser Buchungssoftware?</p>
+            <p class=answer><b>Antwort:</b> Siehe <a href="https://github.com/caco3/KerzenziehenKasse">https://github.com/caco3/KerzenziehenKasse</a>.</p></li>
       </ul>
       <h2>Support</h2>
       <p>George Ruinelli<br>

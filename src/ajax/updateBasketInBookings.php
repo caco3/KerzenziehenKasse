@@ -23,38 +23,46 @@ $serializedBasket = serialize($basketSummary);
 
 $success = true;
 
-$bookingId = 0;
-// $bookingId = bookingsCreateId();
+$bookingId = getDbBookingId();
+if($bookingId == "new" ) { // error, we expect a basket loaded from bookings
+    $errorText = "Expected bookingId to be number, but is 'new'!";
+    $success = false;
+}
+else { // ok, basket was loaded from bookings and can be updated in there
+    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney(getDbTotal()));
+    if( $ret == false) {
+        $errorText = "Failed to move basket to bookings (booking ID $bookingId, updating booking)!";
+        $success = false;
+    }
 
-// $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney(getDbTotal()));
-// if( $ret == false) {
-//     $errorText = "Failed to move basket to bookings (booking ID $bookingId)!";
-//     $success = false;
-// }
-// 
-// sql_transaction_logger("-- Booking completed (ID: $bookingId)");
-// sql_transaction_logger("-- ---------------------------------------------------------------------------");
-// 
-// 
-// /* Write basket into bookings log */
-// $ret = writeBasketContentLog($bookingId);
-// if( $ret == false) {
-//     $errorText = "Failed to write basket Log (booking ID $bookingId)!";
-//     $success = false;
-// }    
-// // }
-// 
-// 
-// if($success == true) { // ok, whole basket transfered, empty basket
-//     $ret = emptyBasket();
-//     if( $ret == false) {
-//         $errorText = "Failed to empty basket!";
-//         $success = false;
-//     }
-//     updateDonationInBasket(0);
-//     updateTotalInBasket(0);
-//     updateBookingIdInBasket("new");
-// }
+    sql_transaction_logger("-- Booking completed (ID: $bookingId)");
+    sql_transaction_logger("-- ---------------------------------------------------------------------------");
+
+
+    /* Write basket into bookings log */
+    $ret = writeBasketContentLog($bookingId);
+    if( $ret == false) {
+        $errorText = "Failed to write basket Log (booking ID $bookingId, updating booking)!";
+        $success = false;
+    }    
+    // }
+
+
+    if($success == true) { // ok, whole basket transfered, empty basket
+        $ret = emptyBasket();
+        if( $ret == false) {
+            $errorText = "Failed to empty basket (updating booking)!";
+            $success = false;
+        }
+        updateDonationInBasket(0);
+        updateTotalInBasket(0);
+        updateBookingIdInBasket("new");
+    }
+}
+
+
+
+
 
 
 
