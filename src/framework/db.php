@@ -486,10 +486,10 @@ function getDbBooking($bookingId) {
 }
 
 
-function getBookingIdsOfDate($date, $invertDatefFilter) {
+function getBookingIdsOfDate($date, $invertDateFilter) {
    global $db_link;
     
-    if( $invertDatefFilter == false) { // return bookings of set date
+    if( $invertDateFilter == false) { // return bookings of set date
         $sql = "SELECT bookingId FROM bookings WHERE date = '$date' ORDER BY 'bookingId' ASC"; 
     }
     else {// return bookings of all but set date

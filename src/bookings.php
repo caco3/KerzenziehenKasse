@@ -56,19 +56,19 @@ $todayDE = date("d.m.Y");
     <table id=bookingsTable>
     <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spenden</th><th>Artikel</th></tr>
     <?    
-        $bookingIdsToday = getBookingIdsOfDate($today, true);
-//         arsort($bookingIdsToday); // sorting to show latest booking on top
+        $bookingIds = getBookingIdsOfDate($today, true);
+        arsort($bookingIds); // sorting to show latest booking on top
         
         $previousFormatedDate = "";
         
 //         echo("<pre>");
-//         print_r($bookingIdsToday);
+//         print_r($bookingIds);
         
-        foreach($bookingIdsToday as $bookingId) {
+        foreach($bookingIds as $bookingId) {
             $booking = getBooking($bookingId);
 //             echo("<pre>");
-//             print_r($booking);
-            $formatedDate = strftime("%A, %e %B", strtotime($booking['date']));
+//             print_r($booking); 
+            $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . strftime("%e. %B", strtotime($booking['date']));
             
             if( $formatedDate != $previousFormatedDate) {
 //                 echo("<tr><td></td></tr><tr><td></td></tr>\n");
@@ -81,7 +81,7 @@ $todayDE = date("d.m.Y");
 
             echo("<tr>");
             echo("<td>$bookingId</td>");
-            echo("<td>$formatedDate</td>");
+            echo("<td><nobr>$formatedDate</nobr></td>");
             echo("<td>" . $booking['time'] . "</td>");
             echo("<td>CHF " . number_format($booking['total'], 2) . "</td>");
             echo("<td>CHF " . number_format($booking['donation'], 2) . "</td>");

@@ -1,5 +1,7 @@
 <? 
 
+$germanDayOfWeek = array("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag");
+
 
 function addButton($id) {
     return "<button type=button id=$id class=addToBasketButton></button> ";
