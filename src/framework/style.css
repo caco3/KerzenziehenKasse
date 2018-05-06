@@ -255,7 +255,7 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* Source: http://css3buttongenerator.com/ */
-.createReceiptButton, .payButton, .summaryBackButton, .updateButton, .clearButton {  
+.createReceiptButton, .payButton, .summaryBackButton, .updateButton, .cancelButton {  
   -webkit-border-radius: 9;
   -moz-border-radius: 9;
   border-radius: 9px;
@@ -269,13 +269,13 @@ a:link, a:visited, a:hover, a:active {
   height: 100px;
 }
 
-.createReceiptButton:hover, .payButton:hover, .summaryBackButton:hover, .updateButton:hover, .clearButton:hover {  
+.createReceiptButton:hover, .payButton:hover, .summaryBackButton:hover, .updateButton:hover, .cancelButton:hover {  
   text-decoration: none;
 }
 
 .payButton:disabled, .payButton[disabled],
 .updateButton:disabled, .updateButton[disabled],
-.clearButton:disabled, .clearButton[disabled] {
+.cancelButton:disabled, .cancelButton[disabled] {
   background: #FFFFFF;
   background-image: -webkit-linear-gradient(top, #d1d1d1, #adadad);
   background-image: -moz-linear-gradient(top, #d1d1d1, #adadad);
@@ -326,7 +326,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 
-.clearButton{  
+.cancelButton{  
   background: #f24437;
   background-image: -webkit-linear-gradient(top, #f24437, #ba1f14);
   background-image: -moz-linear-gradient(top, #f24437, #ba1f14);
@@ -335,7 +335,7 @@ a:link, a:visited, a:hover, a:active {
   background-image: linear-gradient(to bottom, #f24437, #ba1f14);
 }
 
-.clearButton:hover{
+.cancelButton:hover{
   background: #ff948c;
   background-image: -webkit-linear-gradient(top, #ff948c, #db4237);
   background-image: -moz-linear-gradient(top, #ff948c, #db4237);
@@ -345,7 +345,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 
-.clearButton {
+.cancelButton {
     margin-right: 10px;
 }
 

@@ -11,7 +11,7 @@ db_connect();
 
 <!-- <button type=submit id=createReceiptButton class=createReceiptButton><img src="images/receipt.png" width=50px><br>Beleg</button>         -->
 
-<button type=button id=clearButton class=clearButton><img src="images/clear_basket.png" width=50p>Abbrechen</button>
+<button type=button id=cancelButton class=cancelButton><img src="images/clear_basket.png" width=50p>Abbrechen</button>
 
 <?
 $bookingId = getDbBookingId();

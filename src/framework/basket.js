@@ -18,7 +18,7 @@ $(document).ready(function(){
         
 //     startInputIdleTimer();
     
-    updateBasketButtonStates();
+    updateBasketButtonsStates();
     
     $(".removeFromBasketButton").off().on('click', function(event){
             var basketEntryId = $(event.target).attr('id');   
@@ -37,13 +37,15 @@ $(document).ready(function(){
                     else{
                         firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'error', 5000);
                     }
-                    updateBasketButtonStates();
+                    updateBasketButtonsStates();
                 }
             };
             var params = "basketEntryId=" + basketEntryId;
 //             console.log(params);
 
             setPayButtonStateEnabled(false);
+            setCancelButtonStateEnabled(false);
+            setUpdateButtonStateEnabled(false);
             showProgressBar();  
                 
             xhttp.open("POST", "ajax/removeFromBasket.php", true);
@@ -201,7 +203,7 @@ $(document).ready(function(){
     
     
     
-    $(".clearButton").off().on('click', 
+    $(".cancelButton").off().on('click', 
         function(event){
             clearBasket();
         }
@@ -425,7 +427,7 @@ function updateBasketEntry(basketInputFieldId) {
                             
                 // Monitor input field changes again                           
                 hideProgressBar(); 
-                updateBasketButtonStates();                 
+                updateBasketButtonsStates();                 
             }
             else{
                 firework.launch("Konnte Preis in Warenkorb nicht aktualisieren!", 'error', 5000);
@@ -446,20 +448,21 @@ function updateBasketEntry(basketInputFieldId) {
 
 
 
-function updateBasketButtonStates() {            
+function updateBasketButtonsStates() {            
 //     console.log("basketEntryId:", basketEntryId);
     
 //     console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
-    if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) {
+    if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) { // total=0
         setPayButtonStateEnabled(false);
-//         setUpdateButtonStateEnabled(false);
-        console.log("Pay Buttons disabled");
+        setCancelButtonStateEnabled(false);
+        /* Note: Allow Update button since we might want to update the booking to "empty" */
+        console.log("Buttons disabled");
     }
     else {                            
         setPayButtonStateEnabled(true);
-//         setUpdateButtonStateEnabled(true);
-        console.log("Pay Buttons enabled");
-//         console.log("Pay/Update Buttons enabled");
+        setCancelButtonStateEnabled(true);
+        setUpdateButtonStateEnabled(true);
+        console.log("Buttons enabled");
     }   
 }
 
@@ -475,15 +478,26 @@ function setPayButtonStateEnabled(state) {
 }
 
 
-// function setUpdateButtonStateEnabled(state) {
-//     if (state == false) {
-//         console.log("Update Button disabled");
-//     }
-//     else {                            
-//         console.log("Update Button enabled");
-//     }
-//     $("#" + 'updateButton').prop("disabled", !state);    
-// }
+function setCancelButtonStateEnabled(state) {
+    if (state == false) {
+        console.log("Cancel Button disabled");
+    }
+    else {                            
+        console.log("Cancel Button enabled");
+    }
+    $("#" + 'cancelButton').prop("disabled", !state);    
+}
+
+
+function setUpdateButtonStateEnabled(state) {
+    if (state == false) {
+        console.log("Update Button disabled");
+    }
+    else {                            
+        console.log("Update Button enabled");
+    }
+    $("#" + 'updateButton').prop("disabled", !state);    
+}
 
 
 
@@ -521,6 +535,8 @@ function updateInputIdleTimer(inputFieldId) {
     watchdogMonitoredFieldId = inputFieldId;
     watchdogCounter = watchdogCounterStartValue; 
     setPayButtonStateEnabled(false);
+    setCancelButtonStateEnabled(false);
+    setUpdateButtonStateEnabled(false);
     console.log("Updated InputIdleTimer");
     startInputIdleTimer();
 }

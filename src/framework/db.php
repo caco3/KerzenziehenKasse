@@ -407,6 +407,8 @@ function bookingsCreateId() {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
     
+    $bookingId = bookingsGetLastId();
+    
     // update date/time with current date/time
     $sql = "UPDATE `bookings`
             SET `date`='" . date("Y-m-d") . "', `time`='" . date("H:i:s") . "'
@@ -417,7 +419,7 @@ function bookingsCreateId() {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
         
-    return bookingsGetLastId();
+    return $bookingId;
 }
 
 
