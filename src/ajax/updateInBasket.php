@@ -8,14 +8,14 @@ require_once("$root/framework/db.php");
 
 db_connect();
 
-$basketId = "";
+$basketEntryId = "";
 $quantity = "";
 $success = false;
 
 // print_r($_POST);
 
-if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['price'])) {
-    $basketId = $_POST['basketId'];
+if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POST['price'])) {
+    $basketEntryId = $_POST['basketEntryId'];
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
 
@@ -23,10 +23,10 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
     if (!is_numeric($quantity) OR !is_numeric($price)){ // quantity or price is not a number
         $errorText = "Invalid parameters (not numbers)!";
     }
-    else if (is_numeric($basketId)){ // Id is a number => must be an article (normal or custom)    
-        $articleId = getArticleIdInBasket($basketId);    
+    else if (is_numeric($basketEntryId)){ // Id is a number => must be an article (normal or custom)    
+        $articleId = getArticleIdInBasket($basketEntryId);    
         if($articleId == 'custom'){ //custom article
-            if(updateArticlePriceInBasket($basketId, $price) == true){
+            if(updateArticlePriceInBasket($basketEntryId, $price) == true){
                 $total = calculateBasketTotal(true);    
                 updateTotalInBasket($total);
                 //todo validate
@@ -44,7 +44,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
             }
         }
         else{ // normal article        
-            if(updateArticleQuantityInBasket($basketId, $quantity) == true){
+            if(updateArticleQuantityInBasket($basketEntryId, $quantity) == true){
                 $total = calculateBasketTotal(true);    
                 updateTotalInBasket($total);
                 //todo validate
@@ -52,7 +52,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
                 list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
                                                     
                 // List all fields that changed  
-                $response_array['updatedFields']['article'][$basketId]['price'] = $quantity * $pricePerQuantity;
+                $response_array['updatedFields']['article'][$basketEntryId]['price'] = $quantity * $pricePerQuantity;
                 $response_array['updatedFields']['total'] = $total;
                 $response_array['updatedFields']['totalRounded'] = roundMoney($total);
                         
@@ -63,7 +63,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
             }
         } 
     }
-    else if(($basketId == "basketDonationMoney")) { // id is donation, update donation
+    else if(($basketEntryId == "basketDonationMoney")) { // id is donation, update donation
         if(updateDonationInBasket($price) == true){   
             $total = calculateBasketTotal(true);    
             updateTotalInBasket($total);
@@ -79,7 +79,7 @@ if (isset($_POST['basketId']) AND isset($_POST['quantity']) AND isset($_POST['pr
             $errorText = "SQL transaction failed (donation)!";
         }    
     }
-    else if(($basketId == "basketTotalMoney") ) { // id is total, update total
+    else if(($basketEntryId == "basketTotalMoney") ) { // id is total, update total
         if(updateTotalInBasket($price) == true){ 
             $TotalWithoutDonation = calculateBasketTotal(false);
             $donation = $price - $TotalWithoutDonation;
@@ -118,7 +118,7 @@ else { //parameters not set
 
 if ( $success == true) {
     $response_array['response']['success'] = 'true'; 
-    $response_array['response']['Text'] = "Updated ID $basketId in basket.";
+    $response_array['response']['Text'] = "Updated ID $basketEntryId in basket.";
        
 }
 else {

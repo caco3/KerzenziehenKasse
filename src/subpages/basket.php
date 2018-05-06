@@ -33,8 +33,8 @@ db_connect();
     echo("</pre>");  */  
     
     foreach($basket as $basketEntry) {      
-        $basketEntryId = $basketEntry['basket_id'];
-        $articleId = $basketEntry['article_id'];
+        $basketEntryId = $basketEntry['basketEntryId'];
+        $articleId = $basketEntry['articleId'];
         $quantity = $basketEntry['quantity'];
         $price = $basketEntry['price'];
         $image1 = $basketEntry['image1'];
@@ -47,14 +47,14 @@ db_connect();
             list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
-            $quantityField = "<input type=text class=basketQuantityInput id=basketId_" . $basketEntryId . "_quantity value=$quantity> $unit";
-            $priceField = "CHF <input class=basketMoneyInput type=text id=basketId_" . $basketEntryId . "_price value=" . number_format($price, 2) . " readonly>";            
+            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity> $unit";
+            $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($price, 2) . " readonly>";            
             $textField = "$name";
         }
         else { // custom entry
-            $quantityField = "<input type=text class=basketQuantityInput id=basketId_" . $basketEntryId . "_quantity value=$quantity readonly> Stk.";
+            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity readonly> Stk.";
             $textField = $basketEntry['text'];
-            $priceField = "CHF <input type=text class=basketMoneyInput id=basketId_" . $basketEntryId . "_price value=" . $price . ">";
+            $priceField = "CHF <input type=text class=basketMoneyInput id=basketEntryId_" . $basketEntryId . "_price value=" . $price . ">";
         }
         
         

@@ -21,8 +21,8 @@ $(document).ready(function(){
     updateBasketButtonStates();
     
     $(".removeFromBasketButton").off().on('click', function(event){
-            var basketId = $(event.target).attr('id');   
-            console.log("removeFromBasket basketId=" + basketId);
+            var basketEntryId = $(event.target).attr('id');   
+            console.log("removeFromBasket basketEntryId=" + basketEntryId);
 
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {                    
@@ -40,7 +40,7 @@ $(document).ready(function(){
                     updateBasketButtonStates();
                 }
             };
-            var params = "basketId=" + basketId;
+            var params = "basketEntryId=" + basketEntryId;
 //             console.log(params);
 
             setPayButtonStateEnabled(false);
@@ -318,50 +318,50 @@ function updateBasketinBookings() {
 
 
 
-function getBasketIdfromInputFieldId(inputFieldId){ 
-    basketId = inputFieldId.replace("basketId_", "");
-    basketId = basketId.replace("_quantity", "");
-    basketId = basketId.replace("_price", "");
+function getBasketEntryIdfromInputFieldId(inputFieldId){ 
+    basketEntryId = inputFieldId.replace("basketEntryId_", "");
+    basketEntryId = basketEntryId.replace("_quantity", "");
+    basketEntryId = basketEntryId.replace("_price", "");
     
-    return basketId;
+    return basketEntryId;
 }
 
 
 
 function updateBasketEntry(basketInputFieldId) {
-    basketId = getBasketIdfromInputFieldId(basketInputFieldId);
+    basketEntryId = getBasketEntryIdfromInputFieldId(basketInputFieldId);
     
-//         console.log("basketId:", basketId);
+//         console.log("basketEntryId:", basketEntryId);
 
-    if(basketId == "basketDonationMoney"){
+    if(basketEntryId == "basketDonationMoney"){
         var quantity = 1;
         var price = $("#basketDonationMoney").val();   
         if(price == ""){
             $("#basketDonationMoney").val(0);
         }
     }
-    else if(basketId == "basketTotalMoney"){
+    else if(basketEntryId == "basketTotalMoney"){
         var quantity = 1;
         var price = $("#basketTotalMoney").val();  
     }
     else { // its an article     
-        var quantity = $("#basketId_" + basketId + "_quantity").val();   
-        var price = $("#basketId_" + basketId + "_price").val();    
+        var quantity = $("#basketEntryId_" + basketEntryId + "_quantity").val();   
+        var price = $("#basketEntryId_" + basketEntryId + "_price").val();    
     }
     
     if(quantity == ""){
         quantity = 1;
-        $("#basketId_" + basketId + "_quantity").val(quantity);
+        $("#basketEntryId_" + basketEntryId + "_quantity").val(quantity);
     }
     
     if(price == ""){
         price = 0;
-//             $("#basketId_" + basketId + "_price").val(price);
+//             $("#basketEntryId_" + basketEntryId + "_price").val(price);
     }
             
     price = formatCurrency(price)
     
-    console.log("basketId:", basketId, "quantity:", quantity, "price:", price);
+    console.log("basketEntryId:", basketEntryId, "quantity:", quantity, "price:", price);
         
     //if empty, set to 1 and cursor right to it
     if(quantity == ""){
@@ -418,7 +418,7 @@ function updateBasketEntry(basketInputFieldId) {
                     if(id == 'article'){ // an article changed              
                         jQuery.each(val, function($basketEntryId, val2) {
                             console.log("  Article "+ $basketEntryId + ": " + val2.price);
-                            $("#basketId_" + $basketEntryId + "_price").val(formatCurrency(val2.price));
+                            $("#basketEntryId_" + $basketEntryId + "_price").val(formatCurrency(val2.price));
                         });
                     }
                 });
@@ -434,7 +434,7 @@ function updateBasketEntry(basketInputFieldId) {
     };
 
     
-    var params = "basketId=" + basketId + "&quantity=" + quantity + "&price=" + price;    
+    var params = "basketEntryId=" + basketEntryId + "&quantity=" + quantity + "&price=" + price;    
     console.log("Parameters:", params);
 
     showProgressBar();  
@@ -447,7 +447,7 @@ function updateBasketEntry(basketInputFieldId) {
 
 
 function updateBasketButtonStates() {            
-//     console.log("basketId:", basketId);
+//     console.log("basketEntryId:", basketEntryId);
     
 //     console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
     if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) {

@@ -167,6 +167,10 @@ a:link, a:visited, a:hover, a:active {
     box-shadow: 10px 10px 5px #888888;
 }
 
+#bookingsTable {
+/*     width: 100%; */
+}
+
 
 #dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable {
     width: 100%;

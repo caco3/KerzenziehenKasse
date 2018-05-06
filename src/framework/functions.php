@@ -7,8 +7,8 @@ function addButton($id) {
     return "<button type=button id=$id class=addToBasketButton></button> ";
 }
 
-function showRemoveFromBasketButton($basketId) {
-    return "<button type=button id=$basketId class=removeFromBasketButton></button> ";
+function showRemoveFromBasketButton($basketEntryId) {
+    return "<button type=button id=$basketEntryId class=removeFromBasketButton></button> ";
 }
 
 function editButton($id) {
@@ -70,7 +70,7 @@ function calculateBasketTotal($includeDOnation){
     
     $sum = 0;
     foreach($basket as $basketEntry) {      
-        $articleId = $basketEntry['article_id'];
+        $articleId = $basketEntry['articleId'];
         $quantity = $basketEntry['quantity'];
         $price = $basketEntry['price'];
         list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
@@ -157,8 +157,8 @@ function getBasketSummary($includeDonation, $includeTotal){
     $customId = 0; 
         
     foreach($basket as $basketEntry) {      
-        $basketId = $basketEntry['basket_id'];
-        $articleId = $basketEntry['article_id'];
+        $basketEntryId = $basketEntry['basketEntryId'];
+        $articleId = $basketEntry['articleId'];
         $quantity = $basketEntry['quantity'];
         $price = $basketEntry['price'];
         $text = $basketEntry['text'];
@@ -280,7 +280,7 @@ function writeBasketContentLog($bookingId) {
     file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$donation, $total\r\n", FILE_APPEND);
     
     foreach($basket as $basketEntry) {      
-        $articleId = $basketEntry['article_id'];
+        $articleId = $basketEntry['articleId'];
         $quantity = $basketEntry['quantity'];
         $price = $basketEntry['price'];
         $text = $basketEntry['text'];

@@ -135,7 +135,7 @@ function addToBasket($id, $quantity, $price, $text) {
     // TODO sanetize
        
     $sql = "INSERT INTO `basket`
-        (`article_id`, `quantity`, `price`, `text`) 
+        (`articleId`, `quantity`, `price`, `text`) 
         VALUES
         ('$id', '$quantity',  '$price', '$text')
     ";
@@ -154,10 +154,10 @@ function addToBasket($id, $quantity, $price, $text) {
 
 
 
-function getArticleIdInBasket($basketId) {
+function getArticleIdInBasket($basketEntryId) {
     global $db_link;
 
-    $sql = "SELECT `article_id` FROM basket WHERE `basket_id`='$basketId'"; 
+    $sql = "SELECT `articleId` FROM basket WHERE `basketEntryId`='$basketEntryId'"; 
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -167,15 +167,15 @@ function getArticleIdInBasket($basketId) {
     $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
     mysqli_free_result( $query_response );
 
-    return $line['article_id'];
+    return $line['articleId'];
 }
 
 
 
-function updateArticleQuantityInBasket($basketId, $quantity) {
+function updateArticleQuantityInBasket($basketEntryId, $quantity) {
     global $db_link;
 
-    $sql = "UPDATE `basket` SET `quantity`='$quantity' WHERE `basket_id`='$basketId'"; 
+    $sql = "UPDATE `basket` SET `quantity`='$quantity' WHERE `basketEntryId`='$basketEntryId'"; 
     
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -197,10 +197,10 @@ function updateArticleQuantityInBasket($basketId, $quantity) {
 
 
 
-function updateArticlePriceInBasket($basketId, $price) {
+function updateArticlePriceInBasket($basketEntryId, $price) {
     global $db_link;
 
-    $sql = "UPDATE `basket` SET `price`='$price' WHERE `basket_id`='$basketId'"; 
+    $sql = "UPDATE `basket` SET `price`='$price' WHERE `basketEntryId`='$basketEntryId'"; 
     
     if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -297,10 +297,10 @@ function updateBookingIdInBasket($bookingId) {
 
 
 
-function deleteFromBasket($basketId) {
+function deleteFromBasket($basketEntryId) {
     global $db_link;
 
-    $sql = "DELETE FROM `basket` WHERE `basket_id`='$basketId'";
+    $sql = "DELETE FROM `basket` WHERE `basketEntryId`='$basketEntryId'";
 
     
     if(mysqli_query($db_link, $sql)){
@@ -309,7 +309,7 @@ function deleteFromBasket($basketId) {
     }
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
-        sql_transaction_logger("-- [ERROR] Failed to delete article $basketId from basket: $sql");
+        sql_transaction_logger("-- [ERROR] Failed to delete article $basketEntryId from basket: $sql");
         return false;
     }
 }
@@ -333,7 +333,7 @@ function getDbBasket() {
     $lines = array();
     while ($line = mysqli_fetch_array( $query_response, MYSQL_ASSOC))
     {
-        list($line['name'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3']) = getDbArticleData($line['article_id']);
+        list($line['name'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3']) = getDbArticleData($line['articleId']);
         
         if($line['custom'] == 'custom'){ //normal article
             $line['price'] = $line['quantity'] * $line['pricePerQuantity'];

@@ -8,17 +8,17 @@ require_once("$root/framework/db.php");
 
 db_connect();
 
-$basketId = "";
+$basketEntryId = "";
 $success = false;
 
 // print_r($_POST);
 
-if (isset($_POST['basketId'])) {
-    $basketId = $_POST['basketId'];
+if (isset($_POST['basketEntryId'])) {
+    $basketEntryId = $_POST['basketEntryId'];
 
 
-    if (is_numeric($basketId)){ // ok
-        if(deleteFromBasket($basketId) == true){
+    if (is_numeric($basketEntryId)){ // ok
+        if(deleteFromBasket($basketEntryId) == true){
             $total = calculateBasketTotal(true);    
             updateTotalInBasket($total);
             //todo validate
@@ -39,7 +39,7 @@ else { //parameters not set
 
 if ( $success == true) {
     $response_array['response']['success'] = 'true'; 
-    $response_array['response']['Text'] = "Deleted $basketId from basket.";
+    $response_array['response']['Text'] = "Deleted $basketEntryId from basket.";
 }
 else {
     $response_array['response']['success'] = 'false'; 
