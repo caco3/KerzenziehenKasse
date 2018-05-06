@@ -20,7 +20,7 @@ $todayDE = date("d.m.Y");
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
-//         arsort($bookingIdsToday); // sorting to show latest booking on top
+        arsort($bookingIdsToday); // sorting to show latest booking on top
         
 //         echo("<pre>");
 //         print_r($bookingIdsToday);

@@ -297,7 +297,7 @@ a:link, a:visited, a:hover, a:active {
   background-image: linear-gradient(to bottom, #52d934, #1f7821);
 }
 
-.payButton:hover{
+.payButton:hover:enabled{
   background: #3cfc3f;
   background-image: -webkit-linear-gradient(top, #3cfc3f, #26ad43);
   background-image: -moz-linear-gradient(top, #3cfc3f, #26ad43);
@@ -316,7 +316,7 @@ a:link, a:visited, a:hover, a:active {
   background-image: linear-gradient(to bottom, #79bcff, #2980b9);
 }
 
-.updateButton:hover{
+.updateButton:hover:enabled{
   background: #bbdaf7;
   background-image: -webkit-linear-gradient(top, #bbdaf7, #67b3fa);
   background-image: -moz-linear-gradient(top, #bbdaf7, #67b3fa);
@@ -335,7 +335,7 @@ a:link, a:visited, a:hover, a:active {
   background-image: linear-gradient(to bottom, #f24437, #ba1f14);
 }
 
-.cancelButton:hover{
+.cancelButton:hover:enabled{
   background: #ff948c;
   background-image: -webkit-linear-gradient(top, #ff948c, #db4237);
   background-image: -moz-linear-gradient(top, #ff948c, #db4237);
