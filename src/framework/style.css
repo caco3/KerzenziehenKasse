@@ -147,9 +147,10 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* border */
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv {
     border: 3px solid black; 
-    border-collapse: collapse;  
+    border-radius:8px;
+    border-spacing: 0;
 }
 
 
@@ -163,16 +164,12 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* Shade */
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable,  #bookingsTable, #bibleVerseContentDiv {
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
     box-shadow: 10px 10px 5px #888888;
 }
 
-#bookingsTable {
-/*     width: 100%; */
-}
 
-
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #summaryTable {
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit {
     width: 100%;
 }
 
@@ -254,7 +251,9 @@ a:link, a:visited, a:hover, a:active {
 
 
 
-/* Source: http://css3buttongenerator.com/ */
+/* Button Generator
+ * http://css3buttongenerator.com/
+ */
 .createReceiptButton, .payButton, .summaryBackButton, .updateButton, .cancelButton {  
   -webkit-border-radius: 9;
   -moz-border-radius: 9;
@@ -283,10 +282,6 @@ a:link, a:visited, a:hover, a:active {
   background-image: -o-linear-gradient(top, #d1d1d1, #adadad);
   background-image: linear-gradient(to bottom, #d1d1d1, #adadad);
 }
-
-/* Button Generator
- * http://css3buttongenerator.com/
- */
 
 .payButton{  
   background: #52d934;
@@ -517,20 +512,18 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* ############ Table Summary ############## */
- #bookingsTable, #summaryTable th {
+ #bookingsTable th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-/*     background-color: #3e8a5c; */
-    background:  rgba(62, 138, 92, 0.6);
 }
 
- #bookingsTable tr:nth-child(odd), #summaryTable tr:nth-child(odd){
+ #bookingsTable tr:nth-child(odd){
 /*     background-color: #85c79f;     */
     background:  rgba(133, 199, 159, 0.8);
 }
 
- #bookingsTable tr:nth-child(even), #summaryTable tr:nth-child(even){
+ #bookingsTable tr:nth-child(even){
 /*     background-color: #ccffcc;    */
     background:  rgba(204, 255, 204, 0.8); 
 }
