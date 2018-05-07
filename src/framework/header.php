@@ -94,11 +94,6 @@ db_connect();
         </div>
         <hr>
         <div class="modal"></div>
-<!--        <div class="fullPageOverlay">
-            <div class="fullPageOverlayContent">
-                Laden...
-            </div>
-        </div>-->
     </div>
     
     
