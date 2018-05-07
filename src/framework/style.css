@@ -227,25 +227,26 @@ a:link, a:visited, a:hover, a:active {
 
 .addToBasketButton {
     background: url("../images/add.png") no-repeat top center;
-    background-size: 100% 100%;
-    width: 40px;
-    height: 40px;
 }
 
 
 .removeFromBasketButton {
     background: url("../images/delete.png") no-repeat top center;
-    background-size: 100% 100%;
-    width: 40px;
-    height: 40px;
 }
 
 
 .editButton {
     background: url("../images/edit.png") no-repeat top center;
-    background-size: 100% 100%;
-    width: 40px;
-    height: 40px;
+}
+
+
+
+.addToBasketButton, .removeFromBasketButton, .editButton {    
+    background-size: 35px 35px;
+    width: 50px;
+    height: 45px;
+    border-radius: 6px;
+    background-position: center left 5px, center left 5px;
 }
 
 
