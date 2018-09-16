@@ -38,7 +38,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             
             echo("<td>");
             foreach($booking['articles'] as $article) {
-                echo($article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
+                $images = ""; // todo show images
+                echo($images . " " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
             }
             
             echo("</td>");
