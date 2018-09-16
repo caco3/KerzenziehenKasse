@@ -148,6 +148,7 @@ function addToBasket($id, $quantity, $price, $text) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to add article $id to basket: $sql");
+        errorLog("SQL Error: Failed to add article $id to basket: $sql");
         return false;
     }
 }
@@ -191,6 +192,7 @@ function updateArticleQuantityInBasket($basketEntryId, $quantity) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update $id in basket: $sql");
+        errorLog("SQL Error: Failed to update $id in basket: $sql");
         return false;
     }
 }
@@ -216,6 +218,7 @@ function updateArticlePriceInBasket($basketEntryId, $price) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update $id in basket: $sql");
+        errorLog("SQL Error: Failed to update $id in basket: $sql");
         return false;
     }
 }
@@ -241,6 +244,7 @@ function updateDonationInBasket($money) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update donation in basket: $sql");
+        errorLog("SQL Error: Failed to update donation in basket: $sql");
         return false;
     }
 }
@@ -266,6 +270,7 @@ function updateTotalInBasket($money) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update total in basket: $sql");
+        errorLog("SQL Error: Failed to update total in basket: $sql");
         return false;
     }
 }
@@ -291,6 +296,7 @@ function updateBookingIdInBasket($bookingId) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update bookingId in basket: $sql");
+        errorLog("SQL Error: Failed to update bookingId in basket: $sql");
         return false;
     }
 }
@@ -310,6 +316,7 @@ function deleteFromBasket($basketEntryId) {
     else { // fail
 //         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to delete article $basketEntryId from basket: $sql");
+        errorLog("SQL Error: Failed to delete article $basketEntryId from basket: $sql");
         return false;
     }
 }
@@ -386,6 +393,7 @@ function bookingsCreateArticleColumns($articleId, $columns) {
         }
         else { // fail
             sql_transaction_logger("-- [ERROR] Failed to create column 'article_" . $articleId . "_quantity' in table booking: $sql");
+            errorLog("SQL Error: Failed to create column 'article_" . $articleId . "_quantity' in table booking: $sql");
             return false;
         }
     }
@@ -461,6 +469,7 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total) {
     }
     else { // fail
         sql_transaction_logger("-- [ERROR] Failed to add donation and total to bookings: $sql");
+        errorLog("SQL Error: Failed to add donation and total to bookings: $sql");
         return false;
     }
 }
@@ -536,6 +545,7 @@ function emptyBasket() {
     }
     else { // fail
         sql_transaction_logger("-- [ERROR] Failed to drop basket: $sql");
+        errorLog("SQL Error: Failed to drop basket: $sql");
         return false;
     }
 }
