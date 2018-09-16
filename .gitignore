@@ -3,3 +3,4 @@ src/log/db_transaction_log.sql*
 src/log/*.log
 src/old
 _git
+src/templates/receipt.odt.old
