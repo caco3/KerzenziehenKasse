@@ -5,7 +5,7 @@ include "$root/framework/header.php";
 
 // Today
 $today = date("Y-m-d");
-$todayDE = date("d.m.Y");
+$todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 
 ?>
 
@@ -69,6 +69,10 @@ $todayDE = date("d.m.Y");
 //             echo("<pre>");
 //             print_r($booking); 
             $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . strftime("%e. %B", strtotime($booking['date']));
+            $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
+                strftime("%d. ", strtotime($booking['date'])) . $germanMonth[strftime("%m", strtotime($booking['date'])) - 1] ;
+            
+            
             
             if( $formatedDate != $previousFormatedDate) {
 //                 echo("<tr><td></td></tr><tr><td></td></tr>\n");
