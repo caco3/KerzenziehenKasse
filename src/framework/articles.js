@@ -156,7 +156,7 @@ $(document).ready(function(){
     
         
 
-    $(".addToBasketButton").on('click', 
+    $(".addToBasketButton").off().on('click', 
         function(event){
             addToBasket($(event.target).attr('id'));
         }
