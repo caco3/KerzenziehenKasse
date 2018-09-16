@@ -4,3 +4,4 @@ src/log/*.log
 src/old
 _git
 src/templates/receipt.odt.old
+credentials.txt
