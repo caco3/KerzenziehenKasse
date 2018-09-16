@@ -109,7 +109,9 @@ require_once("$root/framework/credentials_check.php");
     <input name="submit" type="submit" value="Login">
     </form>
     
-        
+    <p></br></p>
+    <h2>Hinweise</h2>
+    <p>Das Passwort erhältst Du von Tageschef!</p>
 
         <!-- content End -->
     </div>
