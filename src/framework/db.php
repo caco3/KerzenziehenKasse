@@ -31,7 +31,7 @@ function getDbProducts($type) {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    while ($line = mysqli_fetch_array( $query_response, MYSQL_ASSOC))
+    while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
     {
         $lines[] = $line;
     } 
@@ -58,7 +58,7 @@ function getDbArticleData($id){
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     
     
     if($line['articleId'] == 'custom'){ // custom article
@@ -86,7 +86,7 @@ function getDbDonation(){
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
 
     return $line['donation'];
@@ -104,7 +104,7 @@ function getDbTotal(){
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
 
     return $line['total'];
@@ -121,7 +121,7 @@ function getDbBookingId(){
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
 
     return $line['bookingId'];
@@ -164,7 +164,7 @@ function getArticleIdInBasket($basketEntryId) {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
 
     return $line['articleId'];
@@ -331,7 +331,7 @@ function getDbBasket() {
 
 //     echo("<pre>");
     $lines = array();
-    while ($line = mysqli_fetch_array( $query_response, MYSQL_ASSOC))
+    while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
     {
         list($line['name'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3']) = getDbArticleData($line['articleId']);
         
@@ -433,7 +433,7 @@ function bookingsGetLastId() {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
     
     if($line == ""){ //empty table
@@ -478,7 +478,7 @@ function getDbBooking($bookingId) {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
         
     $booking = array();
@@ -514,7 +514,7 @@ function getBookingIdsOfDate($date, $invertDateFilter) {
     }
     
     $lines = array();
-    while ($line = mysqli_fetch_array( $query_response, MYSQL_ASSOC))
+    while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
     {
         $lines[] = $line['bookingId'];
     } 
@@ -552,7 +552,7 @@ function dbCheckBasketIsEmpty() {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
         
 //     print_r( $line);
@@ -584,7 +584,7 @@ function getBibleVerse() {
       die('Invalid MySQL request: ' . mysqli_error($db_link));
     }
 
-    $line = mysqli_fetch_array( $query_response, MYSQL_ASSOC);
+    $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     mysqli_free_result( $query_response );
 
     return $line;
