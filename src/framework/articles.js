@@ -120,16 +120,17 @@ $(document).ready(function(){
     $("#customArticleDescriptionInput").keydown(
         function(event){
             // Note: No debouncing on keydown since this will break the ignoring functionality on autorepeat! 
-//             console.log("keydown which: " + event.which);
+            console.log("keydown which: " + event.which);
                                             
             if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)              
+                ((event.which >= 48 && event.which <= 57) && !event.shiftKey && !event.altKey )      ||     // numbers (without shift or alt key)              
                 (event.which >= 65 && event.which <= 105)     ||     // keypad numbers     
                 (event.which >= 65 && event.which <= 90)      ||     // letters 
                 (event.which == 32)      ||     // whitespace 
 //                 (event.which >= 8 && event.which <= 13)       ||     // backspace, tab, enter   
 //                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, delete, decimal point, F5, num lock, period
-                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, delete, F5, num lock
+                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1) || // backspace, tab, enter, end, home, left arrow, right arrow, delete, F5, num lock
+                (event.which == 0) // Special characters like äöü => to be handled in keypress() handler
             ) { // accept key press
 //                 console.log("ok, accept key");
                 return;
