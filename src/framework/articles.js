@@ -7,9 +7,11 @@ $(document).on({
 
 $(document).ready(function(){
 //     console.log("Articles loaded");   
+       
          
-    $(".articleQuantityInput").off().on("keydown",
-        function(event){
+    $(".articleQuantityInput").keydown(
+        function(event){            
+            if(checkKeyDebouncing() == false){ return; }
 //             console.log("keydown which: " + event.which);
                                 
             if( // The following key are not to be ignored:          
@@ -30,8 +32,9 @@ $(document).ready(function(){
     );
     
     
-    $(".articleQuantityInput").off().on("keyup", 
+    $(".articleQuantityInput").keyup( 
         function(event){
+            if(checkKeyDebouncing() == false){ return; }
 //             console.log("keyup which: " + event.which);
 
             var inputFieldId = $(event.target).attr('id');     
@@ -54,8 +57,9 @@ $(document).ready(function(){
     
      
     
-    $(".articleMoneyInput").off().on("keydown",
+    $(".articleMoneyInput").keydown(
         function(event){
+            if(checkKeyDebouncing() == false){ return; }
 //             console.log("keydown which: " + event.which);
                                 
             // special handling of decimalpoint and period
@@ -88,8 +92,9 @@ $(document).ready(function(){
     );
     
     
-    $(".articleMoneyInput").off().on("keyup",
+    $(".articleMoneyInput").keyup(
         function(event){
+            if(checkKeyDebouncing() == false){ return; }
 //             console.log("keyup which: " + event.which);
             
             var inputFieldId = $(event.target).attr('id');     
@@ -112,8 +117,9 @@ $(document).ready(function(){
     
     
     
-    $("#customArticleDescriptionInput").off().on("keydown",
+    $("#customArticleDescriptionInput").keydown(
         function(event){
+            if(checkKeyDebouncing() == false){ return; }
 //             console.log("keydown which: " + event.which);
                                             
             if( // The following key are not to be ignored:          
@@ -137,9 +143,11 @@ $(document).ready(function(){
     
     
     
-    $("#customArticleDescriptionInput").off().on("keyup", 
+    $("#customArticleDescriptionInput").keyup( 
         function(event){
-            console.log("keyup which: " + event.which);
+            if(checkKeyDebouncing() == false){ return; }
+//             console.log("keyup which: " + event.which);
+
             if(event.which == 13) { // enter key       
                 addToBasket("custom");
             }
@@ -148,12 +156,33 @@ $(document).ready(function(){
     
         
 
-    $(".addToBasketButton").off().on('click', 
+    $(".addToBasketButton").on('click', 
         function(event){
             addToBasket($(event.target).attr('id'));
         }
     );    
 });
+
+
+
+
+
+// global debouncing timer
+var keyDebouncingTimer = 0;
+
+function checkKeyDebouncing() {
+    var now = Date.now();
+//     console.log("Current time: " + now + ", last time: " + keyDebouncingTimer + " (Difference: " + (now - keyDebouncingTimer));
+    if(keyDebouncingTimer > (now - 50)){ //less than 50 ms since last key press, ignoring it
+        keyDebouncingTimer = now;
+        return false;
+    }
+    else {
+        keyDebouncingTimer = now;
+        return true;
+    }
+}
+
 
 
 
