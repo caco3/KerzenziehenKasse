@@ -11,7 +11,7 @@ $(document).ready(function(){
          
     $(".articleQuantityInput").keydown(
         function(event){            
-            if(checkKeyDebouncing() == false){ return; }
+            // Note: No debouncing on keydown since this will break the ignoring functionality on autorepeat! 
 //             console.log("keydown which: " + event.which);
                                 
             if( // The following key are not to be ignored:          
@@ -59,7 +59,7 @@ $(document).ready(function(){
     
     $(".articleMoneyInput").keydown(
         function(event){
-            if(checkKeyDebouncing() == false){ return; }
+            // Note: No debouncing on keydown since this will break the ignoring functionality on autorepeat! 
 //             console.log("keydown which: " + event.which);
                                 
             // special handling of decimalpoint and period
@@ -119,7 +119,7 @@ $(document).ready(function(){
     
     $("#customArticleDescriptionInput").keydown(
         function(event){
-            if(checkKeyDebouncing() == false){ return; }
+            // Note: No debouncing on keydown since this will break the ignoring functionality on autorepeat! 
 //             console.log("keydown which: " + event.which);
                                             
             if( // The following key are not to be ignored:          
