@@ -111,7 +111,7 @@ require_once("$root/framework/credentials_check.php");
     
     <p></br></p>
     <h2>Hinweise</h2>
-    <p>Das Passwort erhältst Du von Tageschef!</p>
+    <p>Das Passwort erhältst Du vom Tageschef!</p>
 
         <!-- content End -->
     </div>
