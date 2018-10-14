@@ -1,7 +1,7 @@
 src/config/config.php
 src/log/db_transaction_log.sql*
 src/log/*.log
-src/old
+old_src
 _git
 src/templates/receipt.odt.old
 credentials.txt
