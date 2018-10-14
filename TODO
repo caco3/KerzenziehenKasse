@@ -1,14 +1,29 @@
 TODO:
 ---------
-Backup DB
 Spaltenbreite 1024
-stats
+stats daily/yearly
 stats auf deutsch
+stats export (pro Tag/Jahr)
 images auf bookings
-edit von bookings => custom text/image broken
+*********** edit von bookings => custom text/image broken
+beleg drucken => verschieben zu buchungen, und für jede buchung erlauben (+aus navbar entfernen)
+download db
+
+
+
+
+TODO beim Einrichten:
+------------------------
+PC einrichten
+Seiten-Skalierung anpassen
+DB leeren? => besser nicht
+Drucker einrichten
+Preise anpassen
+Anleitung
 
 
 DONE:
 ----------
 sonderzeichen in custom article
 edit bookings
+Backup DB
