@@ -507,7 +507,7 @@ function getDbBooking($bookingId) {
 
 
 function getBookingIdsOfDate($date, $invertDateFilter) {
-   global $db_link;
+    global $db_link;
     
     if( $invertDateFilter == false) { // return bookings of set date
         $sql = "SELECT bookingId FROM bookings WHERE date = '$date' ORDER BY 'bookingId' ASC"; 
@@ -526,6 +526,33 @@ function getBookingIdsOfDate($date, $invertDateFilter) {
     while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
     {
         $lines[] = $line['bookingId'];
+    } 
+    mysqli_free_result( $query_response );
+    
+    return $lines;
+}
+
+
+function getBookingDatesOfCurrentYear() {
+    global $db_link;
+   
+    $currentYear = date("Y");
+    $nextYear = $currentYear + 1;
+    
+//     echo("$currentYear - $nextYear");
+    
+    $sql = "SELECT date FROM `bookings` WHERE date between date('$currentYear-01-01') and date('$nextYear-01-01') order by 'date' ASC"; 
+    
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+    
+    $lines = array();
+    while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
+    {
+        $lines[] = $line['date'];
     } 
     mysqli_free_result( $query_response );
     

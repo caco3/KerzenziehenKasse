@@ -33,8 +33,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<tr>");
             echo("<td>$bookingId</td>");
             echo("<td>" . $booking['time'] . "</td>");
-            echo("<td>CHF " . number_format($booking['total'], 2) . "</td>");
-            echo("<td>CHF " . number_format($booking['donation'], 2) . "</td>");
+            echo("<td>CHF " . roundMoney($booking['total']) . "</td>");
+            echo("<td>CHF " . roundMoney($booking['donation']) . "</td>");
             
             echo("<td>");
             foreach($booking['articles'] as $article) {
@@ -84,8 +84,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<td>$bookingId</td>");
             echo("<td><nobr>$formatedDate</nobr></td>");
             echo("<td>" . $booking['time'] . "</td>");
-            echo("<td>CHF " . number_format($booking['total'], 2) . "</td>");
-            echo("<td>CHF " . number_format($booking['donation'], 2) . "</td>");
+            echo("<td>CHF " . roundMoney($booking['total']) . "</td>");
+            echo("<td>CHF " . roundMoney($booking['donation']) . "</td>");
             
             echo("<td>");
             foreach($booking['articles'] as $article) {

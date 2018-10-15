@@ -1,8 +1,6 @@
 TODO:
 ---------
 Spaltenbreite 1024
-stats daily/yearly
-stats auf deutsch
 stats export (pro Tag/Jahr)
 images auf bookings
 *********** edit von bookings => custom text/image broken
@@ -27,3 +25,5 @@ DONE:
 sonderzeichen in custom article
 edit bookings
 Backup DB
+stats daily/yearly
+stats auf deutsch
