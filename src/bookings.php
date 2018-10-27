@@ -16,7 +16,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th>Buchung</th><th>Zeit</th><th>Total</th><th>Spenden</th><th>Artikel</th><th></th></tr>
+      <tr><th>Buchung</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -32,9 +32,9 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 //             print_r($booking);
             echo("<tr>");
             echo("<td>$bookingId</td>");
-            echo("<td>" . $booking['time'] . "</td>");
-            echo("<td>CHF " . number_format($booking['total'], 2) . "</td>");
-            echo("<td>CHF " . number_format($booking['donation'], 2) . "</td>");
+            echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
+            echo("<td class=td_nowrap>CHF " . roundMoney($booking['total']) . "</td>");
+            echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
             
             echo("<td>");
             foreach($booking['articles'] as $article) {
@@ -55,7 +55,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <p></p>
     <h1>Frühere Buchungen (nur aktuelles Jahr)</h1>
     <table id=bookingsTable>
-    <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spenden</th><th>Artikel</th></tr>
+    <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th></tr>
     <?    
         $bookingIds = getBookingIdsOfDate($today, true);
         arsort($bookingIds); // sorting to show latest booking on top
@@ -82,10 +82,10 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 
             echo("<tr>");
             echo("<td>$bookingId</td>");
-            echo("<td><nobr>$formatedDate</nobr></td>");
-            echo("<td>" . $booking['time'] . "</td>");
-            echo("<td>CHF " . number_format($booking['total'], 2) . "</td>");
-            echo("<td>CHF " . number_format($booking['donation'], 2) . "</td>");
+            echo("<td class=td_nowrap>$formatedDate</td>");
+            echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
+            echo("<td class=td_nowrap>CHF " . roundMoney($booking['total']) . "</td>");
+            echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
             
             echo("<td>");
             foreach($booking['articles'] as $article) {
