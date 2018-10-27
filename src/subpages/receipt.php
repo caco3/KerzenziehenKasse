@@ -62,9 +62,11 @@ $odf = new Odf("$root/templates/receipt.odt");
 
 $year = date("Y");
 $date = date("d.m.Y");
+$time = date("H:i:s");
 
 $odf->setVars('year', $year);
 $odf->setVars('date', $date);
+$odf->setVars('time', $time);
 $odf->setVars('bookingId', "$bookingId");
 $odf->setVars('priceTotal', "CHF " . number_format($booking['total'], 2));
 
