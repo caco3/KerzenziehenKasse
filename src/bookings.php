@@ -16,7 +16,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th>Buchung</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th><th></th></tr>
+      <tr><th>Buchung</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th><th></th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -27,7 +27,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
         
         foreach($bookingIdsToday as $bookingId) {
             $booking = getBooking($bookingId);
-            $button = editButton($bookingId);
+            $editButton = editButton($bookingId);
+            $receiptButton = receiptButton($bookingId);
 //             echo("<pre>");
 //             print_r($booking);
             echo("<tr>");
@@ -44,7 +45,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             
             echo("</td>");
             
-            echo("<td>$button</td>");
+            echo("<td>$editButton</td>");
+            echo("<td>$receiptButton</td>");
             echo("</tr>\n");
         }        
       ?>
@@ -55,7 +57,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <p></p>
     <h1>Frühere Buchungen (nur aktuelles Jahr)</h1>
     <table id=bookingsTable>
-    <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th></tr>
+    <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th><th></th></tr>
     <?    
         $bookingIds = getBookingIdsOfDate($today, true);
         arsort($bookingIds); // sorting to show latest booking on top
@@ -67,6 +69,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
         
         foreach($bookingIds as $bookingId) {
             $booking = getBooking($bookingId);
+            $receiptButton = receiptButton($bookingId);
 //             echo("<pre>");
 //             print_r($booking); 
             $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
@@ -92,7 +95,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 echo($article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
             }
             
-            echo("</td>");            
+            echo("</td>");
+            echo("<td>$receiptButton</td>");            
             echo("</tr>\n");
         }    
     ?>

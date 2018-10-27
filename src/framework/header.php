@@ -62,7 +62,6 @@ db_connect();
                     | <a class="headerLinks" href="stats.php" target="_self">Auswertung</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Administration</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
-                    | <a id=receiptTrigger class="headerLinks" href="receipt.php" target="_self" onclick="firework.launch('Erstelle Beleg...', 'success', 5000);" >Beleg zu letzter Buchung</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "bookings.php") { ?>
                     <a class="headerLinks" href="index.php" target="_self">Hauptseite</a>

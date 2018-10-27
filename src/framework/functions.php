@@ -13,7 +13,11 @@ function showRemoveFromBasketButton($basketEntryId) {
 }
 
 function editButton($id) {
-    return "<button type=button id=$id class=editButton></button> ";
+    return "<button type=button id=$id class=editButton title=\"Diese Buchung zurück in den Warenkorb laden\"></button> ";
+}
+
+function receiptButton($id) {
+    return "<button type=button id=$id class=receiptButton title=\"Einen Beleg für diese Buchung erstellen\"></button> ";
 }
 
 

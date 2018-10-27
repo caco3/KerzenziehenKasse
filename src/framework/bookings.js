@@ -47,7 +47,18 @@ $(document).ready(function(){
             xhttp.send(params);
         }
     ); 
-       
+    
+    
+    $(".receiptButton").off().on('click', 
+        function(event){
+            var bookingId = $(event.target).attr('id');
+            console.log("creating receipt for booking " + bookingId);
+            
+            window.location.replace("subpages/receipt.php?id=" + bookingId);
+            
+        }
+    );
+    
 });
 
 

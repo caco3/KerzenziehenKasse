@@ -1,6 +1,6 @@
 <?php
 
-$root=".";
+$root="..";
 require_once("$root/framework/credentials_check.php");
 // 
 require_once("$root/config/config.php");
@@ -10,18 +10,18 @@ require_once("$root/framework/db.php");
 db_connect();
 
 
-require_once('framework/odtphp/src/Odf.php');
+require_once("$root/framework/odtphp/src/Odf.php");
 
-require_once('framework/odtphp/src/Exceptions/OdfException.php');
-require_once('framework/odtphp/src/Exceptions/PhpZipProxyException.php');
-require_once('framework/odtphp/src/Exceptions/PhpZipProxyException.php');
-require_once('framework/odtphp/src/Exceptions/SegmentException.php');
-require_once('framework/odtphp/src/Segment.php');
-require_once('framework/odtphp/src/SegmentIterator.php');
-require_once('framework/odtphp/lib/pclzip.lib.php');
-require_once('framework/odtphp/src/Zip/ZipInterface.php');
-require_once('framework/odtphp/src/Zip/PclZipProxy.php');
-require_once('framework/odtphp/src/Zip/PhpZipProxy.php');
+require_once("$root/framework/odtphp/src/Exceptions/OdfException.php");
+require_once("$root/framework/odtphp/src/Exceptions/PhpZipProxyException.php");
+require_once("$root/framework/odtphp/src/Exceptions/PhpZipProxyException.php");
+require_once("$root/framework/odtphp/src/Exceptions/SegmentException.php");
+require_once("$root/framework/odtphp/src/Segment.php");
+require_once("$root/framework/odtphp/src/SegmentIterator.php");
+require_once("$root/framework/odtphp/lib/pclzip.lib.php");
+require_once("$root/framework/odtphp/src/Zip/ZipInterface.php");
+require_once("$root/framework/odtphp/src/Zip/PclZipProxy.php");
+require_once("$root/framework/odtphp/src/Zip/PhpZipProxy.php");
 
 use Odtphp\Odf;
 
@@ -37,7 +37,14 @@ use Odtphp\Odf;
 //     $bookingId = 0;
 // }
 
-$bookingId = bookingsGetLastId();
+// $bookingId = bookingsGetLastId();
+
+
+// print_r($_GET);
+$bookingId = $_GET['id'];
+
+// echo("booking ID: $bookingId");
+
 $booking = getBooking($bookingId);
 
 // echo("Last booking ID: $bookingId");
@@ -51,7 +58,7 @@ $booking = getBooking($bookingId);
 // $total = "CHF " . number_format(roundMoney(getDbTotal()), 2);
 
 
-$odf = new Odf("templates/receipt.odt");
+$odf = new Odf("$root/templates/receipt.odt");
 
 $year = date("Y");
 $date = date("d.m.Y");

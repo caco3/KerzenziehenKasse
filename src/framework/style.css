@@ -242,9 +242,13 @@ a:link, a:visited, a:hover, a:active {
     background: url("../images/edit.png") no-repeat top center;
 }
 
+.receiptButton {
+    background: url("../images/receipt.png") no-repeat top center;
+}
 
 
-.addToBasketButton, .removeFromBasketButton, .editButton {    
+
+.addToBasketButton, .removeFromBasketButton, .editButton, .receiptButton {    
     background-size: 35px 35px;
     width: 50px;
     height: 45px;
@@ -258,7 +262,7 @@ a:link, a:visited, a:hover, a:active {
 /* Button Generator
  * http://css3buttongenerator.com/
  */
-.createReceiptButton, .payButton, .summaryBackButton, .updateButton, .cancelButton {  
+.payButton, .summaryBackButton, .updateButton, .cancelButton {  
   -webkit-border-radius: 9;
   -moz-border-radius: 9;
   border-radius: 9px;
@@ -272,7 +276,7 @@ a:link, a:visited, a:hover, a:active {
   height: 100px;
 }
 
-.createReceiptButton:hover, .payButton:hover, .summaryBackButton:hover, .updateButton:hover, .cancelButton:hover {  
+.payButton:hover, .summaryBackButton:hover, .updateButton:hover, .cancelButton:hover {  
   text-decoration: none;
 }
 
