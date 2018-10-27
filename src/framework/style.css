@@ -60,6 +60,10 @@ td {
 }
 
 
+.td_nowrap {
+    white-space:nowrap; 
+}
+
 
 #body {
     padding-bottom: 50px;   /* Height of the footer */
