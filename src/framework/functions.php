@@ -107,7 +107,7 @@ function roundMoney($num){
         $rounded = $num + (50-$x)/1000;
     }
     
-    return number_format($rounded, 2);
+    return number_format($rounded, 2, ".", "'");
 }  
 
 
@@ -170,7 +170,7 @@ function getBasketSummary($includeDonation, $includeTotal){
             $summary['custom_' . $customId]['price'] = $price;             
             $customId++;
         }
-        else { // normal article, add it to tho an existing identical article
+        else { // normal article, add it to an existing identical article
             if(!array_key_exists($articleId, $summary)){ // Article shows up first time
                 $summary[$articleId]['quantity'] = $quantity;
                 $summary[$articleId]['price'] = $quantity * $pricePerQuantity;
@@ -250,6 +250,11 @@ function copyBookingToBasket($bookingId) {
     foreach($data['articles' ] as $articleId => $article) {
 //         echo("$articleId:\n");
 //         print_r($article);
+
+        if (strpos($articleId, "custom_") !== false) { // remove index as used in bookings serialized format
+            $articleId = "custom";
+        }
+
         if (addToBasket($articleId, $article['quantity'], $article['price'], $article['text']) != true) {
             return(false);
         }
