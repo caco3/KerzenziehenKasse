@@ -6,7 +6,7 @@ require_once("$root/config/config.php");
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
-$file = "Kerzenziehen-Datenbank - " . date_format(date_create(),"Y-m-d__H-i-s") . ".sql";
+$file = "Kerzenziehen-Datenbank - " . date("Y-m-d__H-i-s") . ".sql";
 
 $database = MYSQL_DATABASE;
 $user = MYSQL_USER;
