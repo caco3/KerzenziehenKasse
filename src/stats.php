@@ -115,7 +115,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
         
     </div>
 
-    *) Freier Eingabe
+    <p>*) Freie Eingabe eines Artikels</p>
 
 
 <?
