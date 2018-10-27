@@ -1,11 +1,8 @@
 TODO:
 ---------
 Spaltenbreite 1024
-stats daily/yearly
-stats auf deutsch
 stats export (pro Tag/Jahr)
 images auf bookings
-*********** edit von bookings => custom text/image broken
 beleg drucken => verschieben zu buchungen, und für jede buchung erlauben (+aus navbar entfernen)
 download db
 
@@ -27,3 +24,6 @@ DONE:
 sonderzeichen in custom article
 edit bookings
 Backup DB
+stats daily/yearly
+stats auf deutsch
+edit von bookings => custom text/image broken
