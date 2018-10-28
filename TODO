@@ -7,14 +7,19 @@ images auf bookings
 
 
 
-TODO beim Einrichten:
+TODO beim Einrichten (järlich):
 ------------------------
 PC einrichten
 Seiten-Skalierung anpassen
 DB leeren? => besser nicht
+logs leeren
 Drucker einrichten
 Preise anpassen
-Anleitung
+Anleitung erstellen
+   vollbild
+   anwender
+   tageschef
+   
 
 
 DONE:
@@ -27,3 +32,4 @@ stats auf deutsch
 edit von bookings => custom text/image broken
 beleg drucken => verschieben zu buchungen, und für jede buchung erlauben (+aus navbar entfernen)
 download db
+Stats für jeden tag
