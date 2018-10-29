@@ -1,13 +1,17 @@
 TODO:
 ---------
+bug: freie eingabe => falsche stückzahl
+csv export: freie eingabe separieren
+activate strict mode in config.php
+avoid notes/warning
 Spaltenbreite 1024
-stats export (pro Tag/Jahr)
 images auf bookings
 
 
 
 
-TODO beim Einrichten (järlich):
+
+TODO beim Einrichten (jährlich):
 ------------------------
 PC einrichten
 Seiten-Skalierung anpassen
@@ -33,3 +37,4 @@ edit von bookings => custom text/image broken
 beleg drucken => verschieben zu buchungen, und für jede buchung erlauben (+aus navbar entfernen)
 download db
 Stats für jeden tag
+sicherheitsabfrage vor basket leeren
