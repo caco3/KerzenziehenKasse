@@ -150,16 +150,17 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* border */
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv {
-    border: 3px solid black; 
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
     border-radius:8px;
     border-spacing: 0;
 }
 
+#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv {
+    border: 3px solid black; 
+}
 
 #basketTableEdit {
     border: 3px solid #750000; 
-    border-collapse: collapse;  
 }
 
 #editBookingTitle {
