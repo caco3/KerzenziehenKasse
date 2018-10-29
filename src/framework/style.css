@@ -247,9 +247,13 @@ a:link, a:visited, a:hover, a:active {
     background: url("../images/receipt.png") no-repeat top center;
 }
 
+.exportCsvButton {
+    background: url("../images/csv.png") no-repeat top center;
+}
 
 
-.addToBasketButton, .removeFromBasketButton, .editButton, .receiptButton {    
+
+.addToBasketButton, .removeFromBasketButton, .editButton, .receiptButton, .exportCsvButton {    
     background-size: 35px 35px;
     width: 50px;
     height: 45px;

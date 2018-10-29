@@ -20,6 +20,10 @@ function receiptButton($id) {
     return "<button type=button id=$id class=receiptButton title=\"Einen Beleg für diese Buchung erstellen\"></button> ";
 }
 
+function exportCsvButton($id) {
+    return "<button type=button id=$id class=exportCsvButton title=\"Als CSV exportieren\" onclick=\"location.href='subpages/exportCsv.php?id=$id'\"></button> ";
+}
+
 
 
 function listProducts() {

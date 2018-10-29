@@ -33,7 +33,7 @@ include "$root/framework/header.php";
             $sales += $article['price'];
         }
 
-        echo("<h3>Tages-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
+        echo("<h3>". exportCsvButton($date) . " Tages-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
 ?>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th>Menge</th><th>Betrag</th></tr>
