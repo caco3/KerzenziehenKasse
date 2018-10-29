@@ -5,6 +5,7 @@ var watchdogMonitoredFieldId = null;
 var watchdogCounter = 0;
 var watchdogTimerId =  null;
 
+var cancelClearBasketQuestionDialogId = null;
 
 
 $(document).on({    
@@ -215,7 +216,7 @@ $(document).ready(function(){
         function(event){
             updateBasketinBookings();
         }
-    );    
+    );     
 });
 
 
@@ -255,7 +256,24 @@ function moveBasketToBookings() {
 
 
 function clearBasket() {    
-    console.log("clear basket");
+    console.log("user requests to clear basket");
+    cancelClearBasketQuestionDialogId = firework.launch("Soll der Warenkorb wirklich geleert werden? Dieser Schritt kann nicht rückgängig gemacht werden!" + 
+    "<br><button id=btnConfirmedToClearBasket onclick=\"definitlyClearBasket()\">Ja</button> <button id=btnCancelClearBasket onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
+}
+
+
+
+function cancelClearBasket() { 
+    console.log("cancel clearing basket");
+    firework.remove("#"+ cancelClearBasketQuestionDialogId);
+    cancelClearBasketQuestionDialogId = null;
+}
+
+
+function definitlyClearBasket() {    
+    console.log("clearing basket");
+    firework.remove("#"+ cancelClearBasketQuestionDialogId);
+    cancelClearBasketQuestionDialogId = null;
     
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {                    
@@ -282,6 +300,8 @@ function clearBasket() {
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
 }
+
+
 
 
 
