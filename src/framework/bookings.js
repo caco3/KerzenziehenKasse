@@ -23,7 +23,7 @@ $(document).ready(function(){
                     if(obj.response.success == "true") {
 //                         console.log("ok, basket is empty");
 //                         copyBookingToBasket(bookingId)();
-                        firework.launch("Booking " + bookingId + " wurde in den Warenkorb geladen. Du wirst gleich weitergeleitet...", 'success', 5000);
+                        firework.launch("Buchung " + bookingId + " wurde in den Warenkorb geladen. Du wirst gleich weitergeleitet...", 'success', 5000);
                         // load main page after 1 second
                         setTimeout(function(){ window.location.replace("index.php"); }, 1000);                        
                     }
