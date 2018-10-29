@@ -276,12 +276,12 @@ function copyBookingToBasket($bookingId) {
 
 function writeBasketContentLog($bookingId) {
     $basket = getDbBasket();
-    
-    // TODO: replace absolute path    
+     
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "------------------------------------------------------------------------------\r\n", FILE_APPEND);
     file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "Booking ID, Date\r\n", FILE_APPEND);
     file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "donation, total\r\n", FILE_APPEND);
     file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "articleId, quantity, pricePerQuantity, price, text\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "----------------------------\r\n", FILE_APPEND);
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "------------------------------------------------------------------------------\r\n", FILE_APPEND);
         
     $total = getDbTotal();
     $donation = getDbDonation();
@@ -298,9 +298,8 @@ function writeBasketContentLog($bookingId) {
 
         file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$articleId, $quantity, $pricePerQuantity, $price, $text\r\n", FILE_APPEND);
     }
-    
-    
-    
+        
+    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "------------------------------------------------------------------------------\r\n\r\n\r\n", FILE_APPEND);
     return true;
 }
 
