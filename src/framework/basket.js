@@ -257,8 +257,9 @@ function moveBasketToBookings() {
 
 function clearBasket() {    
     console.log("user requests to clear basket");
+    // Note: CSS sytle must be inlined since it will not get picked up from an external style sheet!
     cancelClearBasketQuestionDialogId = firework.launch("Soll der Warenkorb wirklich geleert werden? Dieser Schritt kann nicht rückgängig gemacht werden!" + 
-    "<br><button id=btnConfirmedToClearBasket onclick=\"definitlyClearBasket()\">Ja</button> <button id=btnCancelClearBasket onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
+    "<br><button style=\"font-size: 100%;\" onclick=\"definitlyClearBasket()\">Ja</button> <button style=\"font-size: 100%;\" onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
 }
 
 
