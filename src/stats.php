@@ -115,11 +115,11 @@ include "$root/framework/header.php";
 <?
 
     foreach($articles as $articleId => $article) {
-        if (is_numeric($articleId)) { 
-            $custom = "";
+        if ($article['type'] == "custom") { 
+            $custom = "*) ";
         }
         else {
-            $custom = "*) "; 
+            $custom = ""; 
         }
     
         echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['price']) . "</td></tr>\n");
