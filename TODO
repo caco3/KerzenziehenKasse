@@ -1,7 +1,5 @@
 TODO:
 ---------
-bug: freie eingabe => falsche stückzahl
-csv export: freie eingabe separieren
 activate strict mode in config.php
 avoid notes/warning
 Spaltenbreite 1024
@@ -38,3 +36,5 @@ beleg drucken => verschieben zu buchungen, und für jede buchung erlauben (+aus 
 download db
 Stats für jeden tag
 sicherheitsabfrage vor basket leeren
+csv export: freie eingabe separieren
+bug: freie eingabe => falsche stückzahl

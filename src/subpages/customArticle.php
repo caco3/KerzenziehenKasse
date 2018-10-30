@@ -13,10 +13,15 @@ db_connect();
 <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
 
 <h2>Artikel zur freien Eingabe</h2>
+<?
+
+$lines = getDbProducts("custom");
+?>
 
 <table id=customArticleTable>
-<tr><th>Freie Eingabe</th><th>Preis</th><th></th></tr>
+<tr><th colspan=2>Freie Eingabe</th><th>Preis</th><th></th></tr>
 <tr>
+    <td><span class=tooltip><img class=articleImage src=images/<? echo($lines[0]['image1']); ?>><span class=tooltipContent><img src=images/<? echo($lines[0]['image1']); ?>></span></span></td>
     <td><input type=text id=customArticleDescriptionInput placeholder="Freie Eingabe eines Artikels"></input></td>
     <td>CHF <input type=text class=articleMoneyInput id=quantity_custom maxlength=6 placeholder="0.00"></input></td>
     <td><? echo(addButton('custom')); ?></td>
