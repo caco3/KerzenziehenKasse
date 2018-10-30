@@ -3,7 +3,7 @@ html, body {
     margin:0;
     padding:0;
     margin-left: 5px;
-    margin-right: 5px;
+    margin-right: 0px;
 }
 
 body {
@@ -91,39 +91,33 @@ a:link, a:visited, a:hover, a:active {
 }
 
 
+.leftSideDiv, .midddleDiv, .rightSideDiv {
+    display:inline-table;
+    max-width: 32.5%;
+    vertical-align: top;
+}
+
+
+
 
 .leftSideDiv {
-    display:inline-table;
     margin-left: 0px;
-    margin-right: 0px;
-    max-width: 32.9%;
-    vertical-align: top;
-    
-/*     border: 1px solid red;  */
-/*     background: rgba(0, 0, 0, 0.5);   */
-    
+    margin-right: 0px;  
 }
 
 .midddleDiv {
-    display:inline-table;
-    max-width: 32.9%;
-    vertical-align: top;
-    margin-left: 10px;
-
-/*     border: 1px solid red;  */
-/*     background: rgba(0, 0, 0, 0.5);   */
+    
 }
 
 .rightSideDiv {
-    display:inline-table;
-    max-width: 32.9%;
-    vertical-align: top;
-    margin-left: 10px;
-
-/*     border: 1px solid red;  */
-/*     background: rgba(0, 0, 0, 0.5);   */
     
 }
+
+.verticalSpacer {
+    display:inline-table;
+    width: 5px;
+}
+    
 
 
 .topAlignDiv {

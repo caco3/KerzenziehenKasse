@@ -8,12 +8,15 @@ include "$root/framework/header.php";
             <div id=customArticleDiv></div>
             <div id=bibleVerseDiv></div>
         </div>
-
+        
+        <div class=verticalSpacer></div>
+        
         <div class=midddleDiv>
             <div id=pourArticlesDiv></div>
         </div>
-
-
+        
+        <div class=verticalSpacer></div>
+        
         <div class=rightSideDiv>
             <div id=basketDiv></div>
             <div id=basketButtonsDiv></div>
