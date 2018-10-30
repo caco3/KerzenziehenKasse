@@ -11,25 +11,34 @@ include "$root/framework/header.php";
         $timestamp = strtotime($date);
         $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
         echo("<h2>$formatedDate</h2>");
-        $summary = array();
+        $articles = array();
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
             foreach ($booking['articles'] as $articleId => $article) { // articles
-                $summary[$articleId]['text'] = $article['text'];
-                $summary[$articleId]['quantity'] += $article['quantity'];
-                $summary[$articleId]['price'] += $article['price'];
-                $summary[$articleId]['unit'] = $article['unit'];
+                if($article['type'] == "normal") { // normal article   
+                    $id = $articleId;
+                }
+                else { // custom article       
+                    $id = $article['text'];
+                }
+                
+                $articles[$id]['text'] = $article['text'];
+                $articles[$id]['quantity'] += $article['quantity'];
+                $articles[$id]['price'] += $article['price'];
+                $articles[$id]['unit'] = $article['unit'];
+                $articles[$id]['type'] = $article['type'];
             }
         }
         
-        ksort($summary, SORT_STRING);    
-    //     print_r($summary);
+        ksort($articles, SORT_STRING);    
+//         echo("<pre>");
+//         print_r($articles);
 ?>
 
 <?
         $sales = 0;
-        foreach($summary as $article) {
+        foreach($articles as $article) {
             $sales += $article['price'];
         }
 
@@ -39,12 +48,12 @@ include "$root/framework/header.php";
         <tr><th>Artikel</th><th>Menge</th><th>Betrag</th></tr>
 <?
 
-        foreach($summary as $articleId => $article) {
-            if (is_numeric($articleId)) { 
-                $custom = "";
+        foreach($articles as $articleId => $article) {
+            if ($article['type'] == "custom") { 
+                $custom = "*) ";
             }
             else {
-                $custom = "*) "; 
+                $custom = ""; 
             }
         
             echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['price']) . "</td></tr>\n");
@@ -62,7 +71,7 @@ include "$root/framework/header.php";
       
       <h1>Auswertung ganzes Jahr</h1>
 <?
-    $summary = array();
+    $articles = array();
     
     $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
@@ -71,21 +80,29 @@ include "$root/framework/header.php";
             $booking = getBooking($bookingId);
 //             print_r($booking);
             foreach ($booking['articles'] as $articleId => $article) { // articles
-                $summary[$articleId]['text'] = $article['text'];
-                $summary[$articleId]['quantity'] += $article['quantity'];
-                $summary[$articleId]['price'] += $article['price'];
-                $summary[$articleId]['unit'] = $article['unit'];
+                if($article['type'] == "normal") { // normal article   
+                    $id = $articleId;
+                }
+                else { // custom article       
+                    $id = $article['text'];
+                }
+                
+                $articles[$id]['text'] = $article['text'];
+                $articles[$id]['quantity'] += $article['quantity'];
+                $articles[$id]['price'] += $article['price'];
+                $articles[$id]['unit'] = $article['unit'];
+                $articles[$id]['type'] = $article['type'];
             }
         }
     }
     
-    ksort($summary, SORT_STRING);    
-//     print_r($summary);
+    ksort($articles, SORT_STRING);    
+//     print_r($articles);
 ?>
   
 <?
     $sales = 0;
-    foreach($summary as $article) {
+    foreach($articles as $article) {
         $sales += $article['price'];
     }
 
@@ -97,7 +114,7 @@ include "$root/framework/header.php";
       <tr><th>Artikel</th><th>Menge</th><th>Betrag</th></tr>
 <?
 
-    foreach($summary as $articleId => $article) {
+    foreach($articles as $articleId => $article) {
         if (is_numeric($articleId)) { 
             $custom = "";
         }

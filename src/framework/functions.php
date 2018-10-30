@@ -228,13 +228,15 @@ function getBooking($bookingId){
     foreach ($articleIds as $articleId) {
         if (strpos("$articleId", 'custom') === 0) { // custom article
             $booking['articles'][$articleId]['quantity'] = 1;
+            $booking['articles'][$articleId]['type'] = "custom";
             list($name, $pricePerQuantity, $unit, $image) = getDbArticleData('custom');
         }
         else { // normal article
             list($name, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
             $booking['articles'][$articleId]['text'] = $name;
+            $booking['articles'][$articleId]['type'] = "normal";
         }
-            $booking['articles'][$articleId]['unit'] = $unit;
+        $booking['articles'][$articleId]['unit'] = $unit;
     }
     
     return $booking;
