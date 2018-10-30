@@ -79,8 +79,7 @@ db_connect();
     // Spende
     echo("<tr>
             <td colspan=3>Spende</td>
-            <td class=moneyCell>CHF <input type=text class=basketMoneyInput id=basketDonationMoney value=" . getDbDonation() . "></td>
-            <td></td>
+            <td class=moneyCell colspan=2>CHF <input type=text class=basketMoneyInput id=basketDonationMoney value=" . getDbDonation() . "></td>
         </tr>\n");    
     
     
@@ -88,8 +87,7 @@ db_connect();
     echo("<tr>
             <td colspan=2 class=bold class=basketTotalCell>Total</td>
             <td class=basketTotalRoundedCell><p class=basketTotalRoundedLabel>gerunded</p></td>
-            <td class=moneyCell><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . getDbTotal() . "><p id=basketTotalMoneyRounded>CHF " . roundMoney(getDbTotal()) . "</p></td>
-            <td></td>
+            <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . getDbTotal() . "><p id=basketTotalMoneyRounded>CHF " . roundMoney(getDbTotal()) . "</p></td>
         </tr>\n"); 
     
     

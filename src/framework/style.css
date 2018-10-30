@@ -357,7 +357,7 @@ a:link, a:visited, a:hover, a:active {
     width: 45px;
     padding: 2px;
     font-size: 120%;
-}
+} 
 
 .articleMoneyInput, .basketMoneyInput {
     width: 60px;
@@ -374,6 +374,11 @@ a:link, a:visited, a:hover, a:active {
     margin-top: 10px;
     margin-bottom: 10px;
     font-size: 150%;
+    white-space:nowrap;
+}
+
+.moneyCell, .quantityCell {
+    white-space:nowrap;
 }
 
 .basketTotalRoundedLabel {
