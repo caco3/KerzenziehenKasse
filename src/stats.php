@@ -2,15 +2,31 @@
 $root=".";
 include "$root/framework/header.php";
 
+$bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
 ?>
     <div id="body">
-      <h1>Auswertung pro Tag</h1> 
+    <h1>Übersicht</h1>
+    <ul>
 <?
-    $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $timestamp = strtotime($date);
         $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
-        echo("<h2>$formatedDate</h2>");
+        echo("<li><a href=#$date>$formatedDate</a><br></li>\n");
+    }
+
+?>
+    <li><a href=#year>Ganzes Jahr</a></li>
+  </ul>
+  
+  
+  
+    
+<h1>Auswertung pro Tag (aktuelles Jahr)</h1> 
+<?
+    foreach($bookingDatesOfCurrentYear as $date) {  // a day
+        $timestamp = strtotime($date);
+        $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
+        echo("<a name=$date></a><h2>". exportCsvButton($date) . "$formatedDate</h2>");
         $articles = array();
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
@@ -42,7 +58,7 @@ include "$root/framework/header.php";
             $sales += $article['price'];
         }
 
-        echo("<h3>". exportCsvButton($date) . " Tages-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
+        echo("<h3> Tages-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
 ?>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th>Menge</th><th>Betrag</th></tr>
@@ -69,7 +85,7 @@ include "$root/framework/header.php";
     
       
       
-      <h1>Auswertung ganzes Jahr</h1>
+<a name=year></a><h1><? echo(exportCsvButton('year')); ?>Auswertung ganzes Jahr</h1>
 <?
     $articles = array();
     
