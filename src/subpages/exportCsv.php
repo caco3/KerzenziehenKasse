@@ -1,4 +1,6 @@
-<pre><? 
+<?
+// echo("<pre>");
+
 $root="..";
 require_once("$root/framework/credentials_check.php");
 require_once("$root/config/config.php");
@@ -21,49 +23,55 @@ $timestamp = strtotime($date);
 $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
 
 // Create list of all available products, so all exports have the same order
-$summary = array();
+$articles = array();
 
 $products = getDbProducts("wachs");
 // print_r($products);
 foreach($products as $product) {
-    $summary[$product['articleId']]['text'] = $product['name'];
+    $articles[$product['articleId']]['text'] = $product['name'];
 }
 
 $products = getDbProducts("guss");
 foreach($products as $product) {
-    $summary[$product['articleId']]['text'] = $product['name'];
+    $articles[$product['articleId']]['text'] = $product['name'];
 }
 
-// print_r($summary);
+// print_r($articles);
 
 
 $bookingIds = getBookingIdsOfDate($date, false);
 foreach($bookingIds as $bookingId) { // a booking
     $booking = getBooking($bookingId);
     foreach ($booking['articles'] as $articleId => $article) { // articles
-        print_r($article);
-        $summary[$articleId]['text'] = $article['text'];
-        $summary[$articleId]['quantity'] += $article['quantity'];
-        $summary[$articleId]['price'] += $article['price'];
-        $summary[$articleId]['unit'] = $article['unit'];
+//         print_r($article);
+        if($article['type'] == "normal") { // normal article   
+            $id = $articleId;
+        }
+        else { // custom article       
+            $id = $article['text'];
+        }
+                
+        $articles[$id]['text'] = $article['text'];
+        $articles[$id]['quantity'] += $article['quantity'];
+        $articles[$id]['price'] += $article['price'];
+        $articles[$id]['unit'] = $article['unit'];
+        $articles[$id]['type'] = $article['type'];
     }
 }
  
-// print_r($summary);
-?>
+// print_r($articles);
 
-<?
 $sales = 0;
-foreach($summary as $article) {
+foreach($articles as $article) {
     $sales += $article['price'];
 }
 
-$content .= "$formatedDate (Total: CHF $sales)\n\n";
+$content .= "Export für:;$formatedDate;Total [CHF]:;$sales\n\n";
 $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
-foreach($summary as $articleId => $article) {
-    if (is_numeric($articleId)) { 
-        $custom = "";
+foreach($articles as $articleId => $article) {
+    if ($article['type'] == "custom") { 
+        $custom = "*) ";
     }
     else {
         $custom = ""; 
@@ -74,10 +82,10 @@ foreach($summary as $articleId => $article) {
 
 
 
-/*
+
 header("Content-Disposition: attachment; filename=\"$file\"");
 header("Content-Type: application/text");
-header("Content-Length: " . strlen($content));*/
+header("Content-Length: " . strlen($content));
    
 echo($content);
 
