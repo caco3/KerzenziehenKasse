@@ -216,7 +216,7 @@ function getBasketSummary($includeDonation, $includeTotal){
 
 
 
-/* Returns the sumarized content of a booking */
+/* Returns the summarized content of a booking */
 function getBooking($bookingId){
     $booking = getDbBooking($bookingId);
 
