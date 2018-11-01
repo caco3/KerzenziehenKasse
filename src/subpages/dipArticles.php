@@ -30,7 +30,7 @@ foreach($lines as $line) {
     }
     else if($line['unit'] == "Stk.") {  
         $price = "CHF " . number_format($line['pricePerQuantity'], 2) . "/Stk.";
-        $weight = "<input type=hidden class=weightInput id=quantity_" . $line['articleId'] . " value=\"\" placeholder=100>";
+        $weight = "<input type=hidden class=weightInput id=quantity_" . $line['articleId'] . " value=1 placeholder=100>";
     }
     else {
         $price = "CHF " . number_format($line['pricePerQuantity'], 2);
