@@ -11,7 +11,7 @@ include "$root/framework/header.php";
       <p>Noch nicht implementiert</p>
       
       <h2>Datenbank exportieren</h2>
-      <p><a href=exportDb.php target=_blank">Export im SQL-Format</a>.</p>
+      <p><a href=subpages/exportDb.php target=_blank">Export im SQL-Format</a>.</p>
       
     </div>
 

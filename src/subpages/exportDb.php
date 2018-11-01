@@ -1,5 +1,5 @@
 <? 
-$root=".";
+$root="..";
 require_once("$root/framework/credentials_check.php");
 require_once("$root/config/config.php");
 
