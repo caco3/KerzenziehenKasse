@@ -475,17 +475,19 @@ function updateBasketButtonsStates() {
 //     console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
     if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) { // total=0
         setPayButtonStateEnabled(false);
+        setCancelButtonStateEnabled(false);
         /* Notes: 
          * Allow update button since we might want to update the booking to "empty" */
-        /* Allow cancel since we want to cancel at any state (even it has no outcome) */
         console.log("Buttons disabled");
     }
     else {                            
         setPayButtonStateEnabled(true);
-        setCancelButtonStateEnabled(true);
-        setUpdateButtonStateEnabled(true);
+//         setCancelButtonStateEnabled(true);
+//         setUpdateButtonStateEnabled(true);
         console.log("Buttons enabled");
     }   
+    setUpdateButtonStateEnabled(true); // keep update button enabled since we might want to update the booking to "empty"
+        setCancelButtonStateEnabled(true); // keep cancel button enabled since we always want to be able to cancel
 }
 
 
