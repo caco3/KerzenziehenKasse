@@ -39,9 +39,9 @@ $(document).ready(function(){
 
             var inputFieldId = $(event.target).attr('id');     
             
-            if($("#" + inputFieldId).val() == "") { //prevent empty field
-                $("#" + inputFieldId).val(0);
-            } 
+//             if($("#" + inputFieldId).val() == "") { //prevent empty field
+//                 $("#" + inputFieldId).val(0);
+//             } 
 //             else{
 //                 $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
 //             }
@@ -99,9 +99,9 @@ $(document).ready(function(){
             
             var inputFieldId = $(event.target).attr('id');     
              
-            if($("#" + inputFieldId).val() == "") { //prevent empty field
-                $("#" + inputFieldId).val(0);
-            } 
+//             if($("#" + inputFieldId).val() == "") { //prevent empty field
+//                 $("#" + inputFieldId).val(0);
+//             } 
 //             else{
 //                 $("#" + inputFieldId).val($("#" + inputFieldId).val() * 1);
 //             }
@@ -237,8 +237,8 @@ function addToBasket(inputFieldId) {
                 console.log("added to basket.\nResponse: " + this.responseText);
                 $("#customArticleDescriptionInput").val(""); // clear custom article field
                 $("#quantity_custom").val(""); // clear custom article field
-                $("#quantity_1").val(0); // clear article field (parafin wax)
-                $("#quantity_2").val(0); // clear article field (bee wax)
+                $("#quantity_1").val(""); // clear article field (parafin wax)
+                $("#quantity_2").val(""); // clear article field (bee wax)
             }
             else{
                 firework.launch("Konnte Artikel nicht zum Warenkorb hinzufügen!", 'error', 5000);
