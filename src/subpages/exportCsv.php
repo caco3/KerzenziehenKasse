@@ -48,6 +48,7 @@ foreach($products as $product) {
 
 if ($id != 'year') { // a day
     $bookingIds = getBookingIdsOfDate($date, false);
+    $donations = 0;
     foreach($bookingIds as $bookingId) { // a booking
         $booking = getBooking($bookingId);
         foreach ($booking['articles'] as $articleId => $article) { // articles
@@ -65,6 +66,7 @@ if ($id != 'year') { // a day
             $articles[$id]['unit'] = $article['unit'];
             $articles[$id]['type'] = $article['type'];
         }
+        $donations += $booking['donation'];
     }
     
     // print_r($articles);
@@ -87,9 +89,11 @@ if ($id != 'year') { // a day
 
         $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "'") . ";" . $article['unit'] . ";" . roundMoney($article['price']) . "\n";
     }
+    $content .= "Spenden;;;$donations";
 }
 else { // the whole year    
     $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
+    $donations = 0;
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
@@ -109,6 +113,7 @@ else { // the whole year
                 $articles[$id]['unit'] = $article['unit'];
                 $articles[$id]['type'] = $article['type'];
             }
+            $donations += $booking['donation'];
         }
     }
         
@@ -131,7 +136,8 @@ else { // the whole year
         }
 
         $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "'") . ";" . $article['unit'] . ";" . roundMoney($article['price']) . "\n";
-    }
+    }    
+    $content .= "Spenden;;;$donations";
 }
 
 $content .= "\n\n*) Freie Eingabe eines Artikels\n";
