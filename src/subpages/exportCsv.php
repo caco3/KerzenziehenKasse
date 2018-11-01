@@ -62,7 +62,7 @@ if ($id != 'year') { // a day
                     
             $articles[$id]['text'] = $article['text'];
             $articles[$id]['quantity'] += $article['quantity'];
-            $articles[$id]['price'] += $article['price'];
+                $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
             $articles[$id]['unit'] = $article['unit'];
             $articles[$id]['type'] = $article['type'];
         }
@@ -73,7 +73,7 @@ if ($id != 'year') { // a day
 
     $sales = 0;
     foreach($articles as $article) {
-        $sales += $article['price'];
+        $sales += $article['quantity'] * $article['price'];
     }
     $sales += $donations;
 
@@ -110,7 +110,7 @@ else { // the whole year
                         
                 $articles[$id]['text'] = $article['text'];
                 $articles[$id]['quantity'] += $article['quantity'];
-                $articles[$id]['price'] += $article['price'];
+                $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
                 $articles[$id]['unit'] = $article['unit'];
                 $articles[$id]['type'] = $article['type'];
             }
@@ -122,7 +122,7 @@ else { // the whole year
 
     $sales = 0;
     foreach($articles as $article) {
-        $sales += $article['price'];
+        $sales += $article['quantity'] * $article['price'];
     }
     $sales += $donations;
 

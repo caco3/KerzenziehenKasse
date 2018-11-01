@@ -44,7 +44,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
                 
                 $articles[$id]['text'] = $article['text'];
                 $articles[$id]['quantity'] += $article['quantity'];
-                $articles[$id]['price'] += $article['price'];
+                $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
                 $articles[$id]['unit'] = $article['unit'];
                 $articles[$id]['type'] = $article['type'];
             }
@@ -59,7 +59,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
 <?
         $sales = 0;
         foreach($articles as $article) {
-            $sales += $article['price'];
+            $sales += $article['quantity'] * $article['price'];
         }
         $sales += $donations;
 
@@ -77,7 +77,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
                 $custom = ""; 
             }
         
-            echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['price']) . "</td></tr>\n");
+            echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
         }
         
         echo("<tr><td>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
@@ -113,7 +113,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
                 
                 $articles[$id]['text'] = $article['text'];
                 $articles[$id]['quantity'] += $article['quantity'];
-                $articles[$id]['price'] += $article['price'];
+                $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
                 $articles[$id]['unit'] = $article['unit'];
                 $articles[$id]['type'] = $article['type'];
             }
@@ -128,7 +128,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
 <?
     $sales = 0;
     foreach($articles as $article) {
-        $sales += $article['price'];
+        $sales += $article['quantity'] * $article['price'];
     }
     $sales += $donations;
         
@@ -148,7 +148,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
             $custom = ""; 
         }
     
-        echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['price']) . "</td></tr>\n");
+        echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
     }
     
     echo("<tr><td>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
