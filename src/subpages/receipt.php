@@ -78,7 +78,7 @@ $articlesList = $odf->setSegment('articles');
 foreach($booking['articles'] as $article) { // Add all articles
     $articlesList->articleTitle(strip_tags($article['text']));
     $articlesList->articleDetails($article['quantity'] . " " . $article['unit']);
-    $articlesList->articleCost("CHF " . number_format($article['price'], 2));
+    $articlesList->articleCost("CHF " . number_format($article['quantity'] * $article['price'], 2));
     $articlesList->merge();
 }
 
