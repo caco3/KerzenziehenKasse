@@ -61,6 +61,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
         foreach($articles as $article) {
             $sales += $article['price'];
         }
+        $sales += $donations;
 
         echo("<h3> Tages-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
 ?>
@@ -129,6 +130,8 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
     foreach($articles as $article) {
         $sales += $article['price'];
     }
+    $sales += $donations;
+        
     echo("<p></p><h3>Jahres-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
 ?>
 

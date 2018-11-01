@@ -75,6 +75,7 @@ if ($id != 'year') { // a day
     foreach($articles as $article) {
         $sales += $article['price'];
     }
+    $sales += $donations;
 
     $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney($sales) . "\n\n";
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
@@ -123,6 +124,7 @@ else { // the whole year
     foreach($articles as $article) {
         $sales += $article['price'];
     }
+    $sales += $donations;
 
     $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney($sales) . "\n\n";
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
