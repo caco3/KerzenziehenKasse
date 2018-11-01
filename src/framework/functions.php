@@ -181,11 +181,11 @@ function getBasketSummary($includeDonation, $includeTotal){
         else { // normal article, add it to an existing identical article
             if(!array_key_exists($articleId, $summary)){ // Article shows up first time
                 $summary[$articleId]['quantity'] = $quantity;
-                $summary[$articleId]['price'] = $quantity * $pricePerQuantity;
+                $summary[$articleId]['price'] = $pricePerQuantity;
             }
             else { // article is already in the list, sum it up
                 $summary[$articleId]['quantity'] += $quantity;
-                $summary[$articleId]['price']  += $quantity * $pricePerQuantity;
+//                 $summary[$articleId]['price']  += $quantity * $pricePerQuantity;
             }
         }    
     } 
