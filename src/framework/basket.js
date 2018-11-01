@@ -257,8 +257,16 @@ function moveBasketToBookings() {
 
 function clearBasket() {    
     console.log("user requests to clear basket");
-    // Note: CSS sytle must be inlined since it will not get picked up from an external style sheet!
-    cancelClearBasketQuestionDialogId = firework.launch("Soll der Warenkorb wirklich geleert werden? Dieser Schritt kann nicht rückgängig gemacht werden!" + 
+    // Note: CSS style must be inlined since it will not get picked up from an external style sheet!
+    
+    if (document.getElementById("payButton")) { // we are in normal mode
+        var message = "Soll der Warenkorb wirklich geleert werden? Dieser Schritt kann nicht rückgängig gemacht werden!";
+    }
+    else { // we are in update mode
+        var message = "Soll das Editieren dieser bestehenden Buchung abgebrochen werden? Allfällige Änderungen gehen verloren!";
+    }
+    
+    cancelClearBasketQuestionDialogId = firework.launch(message + 
     "<br><button style=\"font-size: 100%;\" onclick=\"definitlyClearBasket()\">Ja</button> <button style=\"font-size: 100%;\" onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
 }
 
