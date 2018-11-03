@@ -32,13 +32,13 @@ else { // a day
 // Create list of all available products, so all exports have the same order
 $articles = array();
 
-$products = getDbProducts("wachs");
+$products = getDbProducts("wachs", "articleId");
 // print_r($products);
 foreach($products as $product) {
     $articles[$product['articleId']]['text'] = $product['name'];
 }
 
-$products = getDbProducts("guss");
+$products = getDbProducts("guss", "name");
 foreach($products as $product) {
     $articles[$product['articleId']]['text'] = $product['name'];
 }

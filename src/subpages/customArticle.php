@@ -15,7 +15,7 @@ db_connect();
 <h2>Artikel zur freien Eingabe</h2>
 <?
 
-$lines = getDbProducts("custom");
+$lines = getDbProducts("custom", "name");
 ?>
 
 <table id=customArticleTable>

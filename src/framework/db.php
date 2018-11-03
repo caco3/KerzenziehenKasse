@@ -21,10 +21,10 @@ function db_connect(){
 
 
 
-function getDbProducts($type) {
+function getDbProducts($type, $orderByColumn) {
     global $db_link;
     
-    $sql = "SELECT * FROM articles WHERE typ = '$type' ORDER by `articleId` ASC";  
+    $sql = "SELECT * FROM articles WHERE typ = '$type' ORDER by `$orderByColumn` ASC";  
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
