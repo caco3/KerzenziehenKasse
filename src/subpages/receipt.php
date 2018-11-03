@@ -54,8 +54,8 @@ $booking = getBooking($bookingId);
 // 
 // exit();
 
-// $donation = "CHF " . number_format(roundMoney(getDbTotal()), 2);
-// $total = "CHF " . number_format(roundMoney(getDbTotal()), 2);
+// $donation = "CHF " . number_format(roundMoney(getDbTotal()), 2, ".", "");
+// $total = "CHF " . number_format(roundMoney(getDbTotal()), 2, ".", "");
 
 
 $odf = new Odf("$root/templates/receipt.odt");
@@ -68,7 +68,7 @@ $odf->setVars('year', $year);
 $odf->setVars('date', $date);
 $odf->setVars('time', $time);
 $odf->setVars('bookingId', "$bookingId");
-$odf->setVars('priceTotal', "CHF " . number_format($booking['total'], 2));
+$odf->setVars('priceTotal', "CHF " . number_format($booking['total'], 2, ".", ""));
 
 
 
@@ -78,14 +78,14 @@ $articlesList = $odf->setSegment('articles');
 foreach($booking['articles'] as $article) { // Add all articles
     $articlesList->articleTitle(strip_tags($article['text']));
     $articlesList->articleDetails($article['quantity'] . " " . $article['unit']);
-    $articlesList->articleCost("CHF " . number_format($article['quantity'] * $article['price'], 2));
+    $articlesList->articleCost("CHF " . number_format($article['quantity'] * $article['price'], 2, ".", ""));
     $articlesList->merge();
 }
 
 if ($booking['donation'] != 0) { // Add donation to list
     $articlesList->articleTitle("Spende");
     $articlesList->articleDetails("");
-    $articlesList->articleCost("CHF " . number_format($booking['donation'], 2));
+    $articlesList->articleCost("CHF " . number_format($booking['donation'], 2, ".", ""));
     $articlesList->merge();
 }
 

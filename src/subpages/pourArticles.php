@@ -21,15 +21,15 @@ $lines = getDbProducts("guss");
 
 foreach($lines as $line) {
     if($line['unit'] == "g") {
-        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2) . "/100g";
+        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2, ".", "") . "/100g";
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
     else if($line['unit'] == "Stk.") {  
-        $price = "CHF " . number_format($line['pricePerQuantity'], 2) . "/Stk.";
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "") . "/Stk.";
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
     else {
-        $price = "CHF " . number_format($line['pricePerQuantity'], 2);
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
     

@@ -22,18 +22,18 @@ $lines = getDbProducts("wachs");
 
 foreach($lines as $line) {
     if($line['unit'] == "g") {
-        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2) . "/100g";
+        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2, ".", "") . "/100g";
         
         /* Note: input fields typenumber do not allow setSelection
          *       So we use a type=text field and restrict the characters, see $(".adjustQuantityInput").keydown()          */
         $weight = "<input type=text class=articleQuantityInput id=quantity_" . $line['articleId'] . " value=\"\" placeholder=100> g";
     }
     else if($line['unit'] == "Stk.") {  
-        $price = "CHF " . number_format($line['pricePerQuantity'], 2) . "/Stk.";
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "") . "/Stk.";
         $weight = "<input type=hidden class=weightInput id=quantity_" . $line['articleId'] . " value=1 placeholder=100>";
     }
     else {
-        $price = "CHF " . number_format($line['pricePerQuantity'], 2);
+        $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
     
