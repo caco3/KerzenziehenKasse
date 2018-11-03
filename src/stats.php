@@ -28,6 +28,23 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
         $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
         echo("<a name=$date></a><h2>". exportCsvButton($date) . "$formatedDate</h2>");
         $articles = array();
+                
+        // Create list of all available products, so all days have the same order
+        $products = getDbProducts("wachs", "articleId");
+        // print_r($products);
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+        }
+
+        $products = getDbProducts("guss", "name");
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+        }
+        
         $donations = 0;
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
@@ -49,9 +66,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
                 $articles[$id]['type'] = $article['type'];
             }
             $donations += $booking['donation'];
-        }
-        
-        ksort($articles, SORT_STRING);    
+        }   
 //         echo("<pre>");
 //         print_r($articles);
 ?>
@@ -70,6 +85,10 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
 <?
 
         foreach($articles as $articleId => $article) {
+            if ($article['quantity'] == 0) { // no sales for this article, ignore it 
+                continue;
+            }
+            
             if ($article['type'] == "custom") { 
                 $custom = "*) ";
             }
@@ -98,6 +117,22 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
     $articles = array();
     $donations = 0;
     
+    // Create list of all available products, so all days have the same order
+    $products = getDbProducts("wachs", "articleId");
+    // print_r($products);
+    foreach($products as $product) {
+        $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+    }
+
+    $products = getDbProducts("guss", "name");
+    foreach($products as $product) {
+        $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+    }
+    
     $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $bookingIds = getBookingIdsOfDate($date, false);
@@ -121,8 +156,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
             $donations += $booking['donation'];
         }
     }
-    
-    ksort($articles, SORT_STRING);    
+       
 //     print_r($articles);
 ?>
   
@@ -142,6 +176,10 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
 <?
 
     foreach($articles as $articleId => $article) {
+        if ($article['quantity'] == 0) { // no sales for this article, ignore it 
+            continue;
+        }
+            
         if ($article['type'] == "custom") { 
             $custom = "*) ";
         }

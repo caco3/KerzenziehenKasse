@@ -36,11 +36,15 @@ $products = getDbProducts("wachs", "articleId");
 // print_r($products);
 foreach($products as $product) {
     $articles[$product['articleId']]['text'] = $product['name'];
+    $articles[$product['articleId']]['quantity'] = $product['quantity'];
+    $articles[$product['articleId']]['unit'] = $product['unit'];
 }
 
 $products = getDbProducts("guss", "name");
 foreach($products as $product) {
     $articles[$product['articleId']]['text'] = $product['name'];
+    $articles[$product['articleId']]['quantity'] = $product['quantity'];
+    $articles[$product['articleId']]['unit'] = $product['unit'];
 }
 
 // print_r($articles);
