@@ -158,8 +158,9 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
       
         
     </div>
-
-    <p>*) Freie Eingabe eines Artikels</p>
+    <p><br></p>
+    <hr>
+    <p>*) Freie Eingabe eines Artikels<br><br></p>
 
 
 <?
