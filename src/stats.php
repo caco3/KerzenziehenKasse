@@ -3,6 +3,12 @@ $root=".";
 include "$root/framework/header.php";
 
 $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
+
+// get image for custom articles
+$products = getDbProducts("custom", "articleId");
+// print_r($products);
+$customImage = $products[0]['image1'];
+
 ?>
     <div id="body">
     <h1>Übersicht</h1>
@@ -31,18 +37,22 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
                 
         // Create list of all available products, so all days have the same order
         $products = getDbProducts("wachs", "articleId");
-        // print_r($products);
+//         print_r($products);
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
         }
 
         $products = getDbProducts("guss", "name");
         foreach($products as $product) {
+//             echo("<pre>");
+//             print_r($product);
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
         }
         
         $donations = 0;
@@ -81,7 +91,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
         echo("<p><br>Tages-Umsatz: CHF ". roundMoney($sales) . "<br><br></p>\n");
 ?>
         <table id=bookingsTable>
-        <tr><th>Artikel</th><th>Menge</th><th>Betrag</th></tr>
+        <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
 <?
 
         foreach($articles as $articleId => $article) {
@@ -91,15 +101,18 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
             
             if ($article['type'] == "custom") { 
                 $custom = "*) ";
+                $article['image'] = $customImage;
             }
             else {
                 $custom = ""; 
             }
         
-            echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+            echo("<tr>");
+            echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+            echo("<td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
         }
         
-        echo("<tr><td>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+        echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
 ?>
         </table>
       <p><br></p>
@@ -122,15 +135,17 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
     // print_r($products);
     foreach($products as $product) {
         $articles[$product['articleId']]['text'] = $product['name'];
-            $articles[$product['articleId']]['quantity'] = $product['quantity'];
-            $articles[$product['articleId']]['unit'] = $product['unit'];
+        $articles[$product['articleId']]['quantity'] = $product['quantity'];
+        $articles[$product['articleId']]['unit'] = $product['unit'];
+        $articles[$product['articleId']]['image'] = $product['image1'];
     }
 
     $products = getDbProducts("guss", "name");
     foreach($products as $product) {
         $articles[$product['articleId']]['text'] = $product['name'];
-            $articles[$product['articleId']]['quantity'] = $product['quantity'];
-            $articles[$product['articleId']]['unit'] = $product['unit'];
+        $articles[$product['articleId']]['quantity'] = $product['quantity'];
+        $articles[$product['articleId']]['unit'] = $product['unit'];
+        $articles[$product['articleId']]['image'] = $product['image1'];
     }
     
     $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
@@ -172,7 +187,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
 
 
     <table id=bookingsTable>
-    <tr><th>Artikel</th><th>Menge</th><th>Betrag</th></tr>
+    <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
 <?
 
     foreach($articles as $articleId => $article) {
@@ -182,15 +197,18 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
             
         if ($article['type'] == "custom") { 
             $custom = "*) ";
+            $article['image'] = $customImage;
         }
         else {
             $custom = ""; 
         }
     
-        echo("<tr><td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+        echo("<tr>");
+        echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+        echo("<td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
     }
     
-    echo("<tr><td>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+    echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
 ?>
     </table>
       
