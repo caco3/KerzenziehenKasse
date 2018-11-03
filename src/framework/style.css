@@ -16,7 +16,10 @@ body {
     font-family: Arial; 
 }
 
-
+input[readonly] {    
+    background: transparent;
+    border: 0px;
+}
 
 
 
