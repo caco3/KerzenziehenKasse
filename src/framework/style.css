@@ -3,6 +3,7 @@ html, body {
     margin:0;
     padding:0;
     margin-left: 5px;
+    margin-top: 5px;
     margin-right: 0px;
     
 /*     font-size: 90%; */
@@ -370,12 +371,14 @@ a:link, a:visited, a:hover, a:active {
     width: 45px;
     padding: 2px;
     font-size: 120%;
+    color: black;
 } 
 
 .articleMoneyInput, .basketMoneyInput {
     width: 60px;
     padding: 2px;
     font-size: 120%;
+    color: black;
 }
 
 
