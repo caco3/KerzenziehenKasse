@@ -542,6 +542,7 @@ a:link, a:visited, a:hover, a:active {
 /* ############ Table Summary ############## */
 #bookingsTable {
     margin-right: 5px;
+    max-width: 1200px;
 }
  
  
