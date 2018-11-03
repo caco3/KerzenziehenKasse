@@ -41,12 +41,12 @@ foreach($lines as $line) {
     $image3 = $line['image3'];
             
     echo("<tr><td>");
-    echo("<span class=tooltip><img class=articleImage src=images/$image1><span><img src=images/$image1></span></span>");
+    echo("<span class=tooltip><img class=articleImage src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
     if( $image2 != "") {
-        echo("<span class=tooltip><img class=articleImage src=images/$image2><span><img src=images/$image2></span></span>");
+        echo("<span class=tooltip><img class=articleImage src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
     }
     if( $image3 != "") {
-        echo("<span class=tooltip><img class=articleImage src=images/$image3><span><img src=images/$image3></span></span>");
+        echo("<span class=tooltip><img class=articleImage src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
     }
     echo("</td>
             <td class=articleNameCell>" . $line['name'] . "</td>
