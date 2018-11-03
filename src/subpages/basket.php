@@ -48,11 +48,11 @@ db_connect();
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
             $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity> $unit";
-            $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($price, 2, ".", "") . " readonly>";            
+            $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($price, 2, ".", "") . " readonly disabled=disabled>";            
             $textField = "$name";
         }
         else { // custom entry
-            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity readonly> Stk.";
+            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity readonly disabled=disabled> Stk.";
             $textField = $basketEntry['text'];
             $priceField = "CHF <input type=text class=basketMoneyInput id=basketEntryId_" . $basketEntryId . "_price value=" . $price . ">";
         }
