@@ -63,7 +63,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
         }
         $sales += $donations;
 
-        echo("<h3> Tages-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
+        echo("<p><br>Tages-Umsatz: CHF ". roundMoney($sales) . "<br><br></p>\n");
 ?>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th>Menge</th><th>Betrag</th></tr>
@@ -84,6 +84,7 @@ $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
 ?>
         </table>
       <p><br></p>
+        <hr>
 <?
     }
 ?>
