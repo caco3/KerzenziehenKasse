@@ -115,7 +115,7 @@ function roundMoney($num){
         $rounded = $num + (50-$x)/1000;
     }
     
-    return number_format($rounded, 2, ".", "'");
+    return number_format($rounded, 2, ".", "");
 }  
 
 
@@ -138,14 +138,14 @@ function showSummary(){
             echo("<tr>
                 <td>" . $entry['name'] . "</td>
                 <td>" . $entry['quantity'] . " " .  $entry['unit'] . "</td>
-                <td>CHF " . number_format($entry['price'], 2) . "</td>
+                <td>CHF " . number_format($entry['price'], 2, ".", "") . "</td>
             </tr>\n");
         
         }
         
 //         echo("<tr>
 //                 <td colspan=2 class=bold>Total</td>
-//                 <td class=bold>CHF " . number_format(roundMoney($total), 2) . "</td>
+//                 <td class=bold>CHF " . number_format(roundMoney($total), 2, ".", "") . "</td>
 //             </tr>\n"); 
 ?>
     </table>
