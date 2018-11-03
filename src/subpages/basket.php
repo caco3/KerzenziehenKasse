@@ -21,7 +21,7 @@ db_connect();
         echo("<table id=basketTableNew>");
     }
     else { // basket loaded to edit an already completed booking
-        echo("<h2 id=editBookingTitle>Warenkorb (Bearbeitung einer bestehenden Buchung)!</h2>");
+        echo("<h2 id=editBookingTitle>Bearbeitung einer bestehenden Buchung</h2>");
         echo("<table id=basketTableEdit>");
     }
     
