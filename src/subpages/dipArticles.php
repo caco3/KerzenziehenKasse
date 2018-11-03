@@ -15,14 +15,14 @@ db_connect();
 <h2>Artikel zum Ziehen</h2>
 
 <table id=dipArticlesTable>
-<tr><th colspan=2>Wachs</th><th>Preis</th><th>Gewicht</th><th></th></tr>
+<tr><th colspan=2>Wachs</th><th>Preis (pro 100g)</th><th>Gewicht</th><th></th></tr>
 
 <? 
 $lines = getDbProducts("wachs", "articleId");
 
 foreach($lines as $line) {
     if($line['unit'] == "g") {
-        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2, ".", "") . "/100g";
+        $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2, ".", "");
         
         /* Note: input fields typenumber do not allow setSelection
          *       So we use a type=text field and restrict the characters, see $(".adjustQuantityInput").keydown()          */
