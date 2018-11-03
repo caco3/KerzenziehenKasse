@@ -80,7 +80,7 @@ td {
 
 
 #body {
-    padding-bottom: 50px;   /* Height of the footer */
+    padding-bottom: 5px;   /* Height of the footer */
 }
 
 
@@ -100,7 +100,7 @@ a:link, a:visited, a:hover, a:active {
     position:absolute;
     bottom:0;
     width:100%;
-    height: 50px;   /* Height of the footer */
+    height: 5px;   /* Height of the footer */
     margin-left: 5px;
 }
 
