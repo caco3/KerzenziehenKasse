@@ -36,6 +36,7 @@ h1 {
 
 h2 {
     margin: 0px;
+    font-size: 110%;
 }
 
 h3 {
@@ -57,10 +58,10 @@ th {
 
 
 th, td {
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 th {
@@ -105,7 +106,7 @@ a:link, a:visited, a:hover, a:active {
 
 .leftSideDiv, .midddleDiv, .rightSideDiv {
     display:inline-table;
-    max-width: 32.5%;
+    max-width: 37%;
     vertical-align: top;
 }
 
@@ -127,7 +128,7 @@ a:link, a:visited, a:hover, a:active {
 
 .verticalSpacer {
     display:inline-table;
-    width: 5px;
+    width: 2px;
 }
     
 
@@ -175,7 +176,7 @@ a:link, a:visited, a:hover, a:active {
 
 /* Shade */
 #dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
-    box-shadow: 10px 10px 5px #888888;
+    box-shadow: 5px 5px 5px #888888;
 }
 
 
@@ -262,7 +263,7 @@ a:link, a:visited, a:hover, a:active {
 .addToBasketButton, .removeFromBasketButton, .editButton, .receiptButton, .exportCsvButton {    
     background-size: 25px 25px;
     width: 40px;
-    height: 35px;
+    height: 30px;
     border-radius: 6px;
     background-position: center left 5px, center left 5px;
 }
@@ -536,6 +537,11 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* ############ Table Summary ############## */
+#bookingsTable {
+    margin-right: 5px;
+}
+ 
+ 
  #bookingsTable th {
     padding-top: 5px;
     padding-bottom: 5px;
@@ -559,7 +565,7 @@ a:link, a:visited, a:hover, a:active {
 .articleImage {
     width: 30px;
     height: 30px;
-    margin: 2px;
+    margin: 0px;
 /*     margin-right: 5px; */
 }
 
