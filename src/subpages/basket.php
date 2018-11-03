@@ -30,7 +30,7 @@ db_connect();
     
 /*    echo("<pre>");
     print_r($basket);
-    echo("</pre>");  */  
+    echo("</pre>"); */   
     
     foreach($basket as $basketEntry) {      
         $basketEntryId = $basketEntry['basketEntryId'];
@@ -87,7 +87,7 @@ db_connect();
     echo("<tr>
             <td colspan=2 class=bold class=basketTotalCell>Total</td>
             <td class=basketTotalRoundedCell><p class=basketTotalRoundedLabel>gerunded</p></td>
-            <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . getDbTotal() . "><p id=basketTotalMoneyRounded>CHF " . roundMoney(getDbTotal()) . "</p></td>
+            <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . number_format(getDbTotal(), 2, ".", "") . "><p id=basketTotalMoneyRounded>CHF " . roundMoney(getDbTotal()) . "</p></td>
         </tr>\n"); 
     
     
