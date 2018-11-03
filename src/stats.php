@@ -32,7 +32,7 @@ $customImage = $products[0]['image1'];
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $timestamp = strtotime($date);
         $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
-        echo("<a name=$date></a><h2>". exportCsvButton($date) . "$formatedDate</h2>");
+        echo("<a name=$date></a><h2>$formatedDate</h2>");
         $articles = array();
                 
         // Create list of all available products, so all days have the same order
@@ -82,13 +82,11 @@ $customImage = $products[0]['image1'];
 ?>
 
 <?
-        $sales = 0;
+        $total = 0;
         foreach($articles as $article) {
-            $sales += $article['quantity'] * $article['price'];
+            $total += $article['quantity'] * $article['price'];
         }
-        $sales += $donations;
-
-        echo("<p><br>Tages-Umsatz: CHF ". roundMoney($sales) . "<br><br></p>\n");
+        $total += $donations;
 ?>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
@@ -113,8 +111,10 @@ $customImage = $products[0]['image1'];
         }
         
         echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney($total) . "</b></td></tr>\n");
 ?>
         </table>
+        <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
       <p><br></p>
         <hr>
 <?
@@ -125,7 +125,7 @@ $customImage = $products[0]['image1'];
     
       
       
-<a name=year></a><h1><? echo(exportCsvButton('year')); ?>Auswertung ganzes Jahr</h1>
+<a name=year></a><h1>Auswertung ganzes Jahr</h1>
 <?
     $articles = array();
     $donations = 0;
@@ -176,13 +176,11 @@ $customImage = $products[0]['image1'];
 ?>
   
 <?
-    $sales = 0;
+    $total = 0;
     foreach($articles as $article) {
-        $sales += $article['quantity'] * $article['price'];
+        $total += $article['quantity'] * $article['price'];
     }
-    $sales += $donations;
-        
-    echo("<p></p><h3>Jahres-Umsatz: CHF ". roundMoney($sales) . "</h3><p></p>\n");
+    $total += $donations;
 ?>
 
 
@@ -209,10 +207,10 @@ $customImage = $products[0]['image1'];
     }
     
     echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+    echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney($total) . "</b></td></tr>\n");
 ?>
     </table>
-      
-        
+    <p><br>CSV Export: <? echo(exportCsvButton('year')); ?></p>
     </div>
     <p><br></p>
     <hr>
