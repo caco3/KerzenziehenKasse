@@ -92,7 +92,7 @@ if ($id != 'year') { // a day
             $custom = ""; 
         }
 
-        $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price']) . "\n";
+        $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price'] * $article['quantity']) . "\n";
     }
     $content .= "Spenden;;;$donations";
 }
@@ -141,7 +141,7 @@ else { // the whole year
             $custom = ""; 
         }
 
-        $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price']) . "\n";
+        $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price'] * $article['quantity']) . "\n";
     }    
     $content .= "Spenden;;;$donations";
 }
