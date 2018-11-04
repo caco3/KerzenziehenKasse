@@ -19,7 +19,7 @@ $(document).ready(function(){
         
 //     startInputIdleTimer();
     
-    updateBasketButtonsStates();
+//     updateBasketButtonsStates();
     
     $(".removeFromBasketButton").off().on('click', function(event){
             var basketEntryId = $(event.target).attr('id');   
@@ -38,15 +38,15 @@ $(document).ready(function(){
                     else{
                         firework.launch("Konnte Artikel nicht aus dem Warenkorb entfernen!", 'error', 5000);
                     }
-                    updateBasketButtonsStates();
+//                     updateBasketButtonsStates();
                 }
             };
             var params = "basketEntryId=" + basketEntryId;
 //             console.log(params);
 
-            setPayButtonStateEnabled(false);
-            setCancelButtonStateEnabled(false);
-            setUpdateButtonStateEnabled(false);
+//             setPayButtonStateEnabled(false);
+//             setCancelButtonStateEnabled(false);
+//             setUpdateButtonStateEnabled(false);
             showProgressBar();  
                 
             xhttp.open("POST", "ajax/removeFromBasket.php", true);
@@ -198,7 +198,18 @@ $(document).ready(function(){
     
     $(".payButton").off().on('click', 
         function(event){
-            moveBasketToBookings();
+//             console.log("watchdogCounter: " + watchdogCounter);
+            if(watchdogCounter > 0) {
+                firework.launch("Aktualisiere Warenkorb...<br>Bitte versuch es in einer Sekunde noch einmal!", 'error', 5000);
+            }
+            else { //In sync with server
+                if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+                    moveBasketToBookings();
+                }
+                else { // Basket is empty
+                    firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+                }
+            }
         }
     ); 
     
@@ -456,7 +467,7 @@ function updateBasketEntry(basketInputFieldId) {
                             
                 // Monitor input field changes again                           
                 hideProgressBar(); 
-                updateBasketButtonsStates();                 
+//                 updateBasketButtonsStates();                 
             }
             else{
                 firework.launch("Konnte Preis in Warenkorb nicht aktualisieren!", 'error', 5000);
@@ -477,59 +488,59 @@ function updateBasketEntry(basketInputFieldId) {
 
 
 
-function updateBasketButtonsStates() {            
+// function updateBasketButtonsStates() {            
 //     console.log("basketEntryId:", basketEntryId);
     
 //     console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
-    if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) { // total=0
-        setPayButtonStateEnabled(false);
-        setCancelButtonStateEnabled(false);
+//     if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) { // total=0
+//         setPayButtonStateEnabled(false);
+//         setCancelButtonStateEnabled(false);
         /* Notes: 
          * Allow update button since we might want to update the booking to "empty" */
-        console.log("Buttons disabled");
-    }
-    else {                            
-        setPayButtonStateEnabled(true);
+//         console.log("Buttons disabled");
+//     }
+//     else {                            
+//         setPayButtonStateEnabled(true);
 //         setCancelButtonStateEnabled(true);
 //         setUpdateButtonStateEnabled(true);
-        console.log("Buttons enabled");
-    }   
-    setUpdateButtonStateEnabled(true); // keep update button enabled since we might want to update the booking to "empty"
-        setCancelButtonStateEnabled(true); // keep cancel button enabled since we always want to be able to cancel
-}
+//         console.log("Buttons enabled");
+//     }   
+//     setUpdateButtonStateEnabled(true); // keep update button enabled since we might want to update the booking to "empty"
+//     setCancelButtonStateEnabled(true); // keep cancel button enabled since we always want to be able to cancel
+// }
 
 
-function setPayButtonStateEnabled(state) {
-    $("#" + 'payButton').prop("disabled", !state);
-    if (state == false) {
-        console.log("Pay Button disabled (" + !$("#" + 'payButton').prop("disabled") + ")");
-    }
-    else {                            
-        console.log("Pay Button enabled (" + !$("#" + 'payButton').prop("disabled") + ")");
-    }    
-}
-
-
-function setCancelButtonStateEnabled(state) {
-    $("#" + 'cancelButton').prop("disabled", !state);  
-    if (state == false) {
-        console.log("Cancel Button disabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
-    }
-    else {                            
-        console.log("Cancel Button enabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
-    }  
-}
-
-
-function setUpdateButtonStateEnabled(state) {
-    $("#" + 'updateButton').prop("disabled", !state); 
-    if (state == false) {
-        console.log("Update Button disabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
-    }
-    else {                            
-        console.log("Update Button enabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
-    }   
-}
+// function setPayButtonStateEnabled(state) {
+//     $("#" + 'payButton').prop("disabled", !state);
+//     if (state == false) {
+//         console.log("Pay Button disabled (" + !$("#" + 'payButton').prop("disabled") + ")");
+//     }
+//     else {                            
+//         console.log("Pay Button enabled (" + !$("#" + 'payButton').prop("disabled") + ")");
+//     }    
+// }
+// 
+// 
+// function setCancelButtonStateEnabled(state) {
+//     $("#" + 'cancelButton').prop("disabled", !state);  
+//     if (state == false) {
+//         console.log("Cancel Button disabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
+//     }
+//     else {                            
+//         console.log("Cancel Button enabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
+//     }  
+// }
+// 
+// 
+// function setUpdateButtonStateEnabled(state) {
+//     $("#" + 'updateButton').prop("disabled", !state); 
+//     if (state == false) {
+//         console.log("Update Button disabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
+//     }
+//     else {                            
+//         console.log("Update Button enabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
+//     }   
+// }
 
 
 
@@ -566,9 +577,9 @@ function stopInputIdleTimer(watchdogTimerId){
 function updateInputIdleTimer(inputFieldId) { 
     watchdogMonitoredFieldId = inputFieldId;
     watchdogCounter = watchdogCounterStartValue; 
-    setPayButtonStateEnabled(false);
-    setCancelButtonStateEnabled(false);
-    setUpdateButtonStateEnabled(false);
+//     setPayButtonStateEnabled(false);
+//     setCancelButtonStateEnabled(false);
+//     setUpdateButtonStateEnabled(false);
     console.log("Updated InputIdleTimer");
     startInputIdleTimer();
 }

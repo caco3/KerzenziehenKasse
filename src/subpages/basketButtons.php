@@ -17,7 +17,7 @@ db_connect();
 $bookingId = getDbBookingId();
 if($bookingId == "new" ) { // basket filled with articles for a new booking
 ?>
-    <button type=button id=payButton class=payButton disabled><img src="images/pay.png" width=50p>Bezahlt</button>
+    <button type=button id=payButton class=payButton><img src="images/pay.png" width=50p>Bezahlt</button>
 <?
 }
 else { // basket loaded to edit an already completed booking
