@@ -34,7 +34,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<tr>");
             echo("<td>$bookingId</td>");
             echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
-            echo("<td class=td_nowrap>CHF " . roundMoney($booking['total']) . "</td>");
+            echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
             echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
             
             echo("<td>");
@@ -88,7 +88,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<td>$bookingId</td>");
             echo("<td class=td_nowrap>$formatedDate</td>");
             echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
-            echo("<td class=td_nowrap>CHF " . roundMoney($booking['total']) . "</td>");
+            echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
             echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
             
             echo("<td>");

@@ -29,7 +29,7 @@ if($bookingId == "new" ) { // error, we expect a basket loaded from bookings
     $success = false;
 }
 else { // ok, basket was loaded from bookings and can be updated in there
-    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney(getDbTotal()));
+    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()));
     if( $ret == false) {
         $errorText = "Failed to move basket to bookings (booking ID $bookingId, updating booking)!";
         $success = false;

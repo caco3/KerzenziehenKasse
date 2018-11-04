@@ -500,35 +500,35 @@ function updateBasketButtonsStates() {
 
 
 function setPayButtonStateEnabled(state) {
+    $("#" + 'payButton').prop("disabled", !state);
     if (state == false) {
-        console.log("Pay Button disabled");
+        console.log("Pay Button disabled (" + !$("#" + 'payButton').prop("disabled") + ")");
     }
     else {                            
-        console.log("Pay Button enabled");
-    }
-    $("#" + 'payButton').prop("disabled", !state);    
+        console.log("Pay Button enabled (" + !$("#" + 'payButton').prop("disabled") + ")");
+    }    
 }
 
 
 function setCancelButtonStateEnabled(state) {
+    $("#" + 'cancelButton').prop("disabled", !state);  
     if (state == false) {
-        console.log("Cancel Button disabled");
+        console.log("Cancel Button disabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
     }
     else {                            
-        console.log("Cancel Button enabled");
-    }
-    $("#" + 'cancelButton').prop("disabled", !state);    
+        console.log("Cancel Button enabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
+    }  
 }
 
 
 function setUpdateButtonStateEnabled(state) {
+    $("#" + 'updateButton').prop("disabled", !state); 
     if (state == false) {
-        console.log("Update Button disabled");
+        console.log("Update Button disabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
     }
     else {                            
-        console.log("Update Button enabled");
-    }
-    $("#" + 'updateButton').prop("disabled", !state);    
+        console.log("Update Button enabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
+    }   
 }
 
 

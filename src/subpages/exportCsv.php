@@ -75,13 +75,13 @@ if ($id != 'year') { // a day
     
     // print_r($articles);
 
-    $sales = 0;
+    $total = 0;
     foreach($articles as $article) {
-        $sales += $article['quantity'] * $article['price'];
+        $total += $article['quantity'] * $article['price'];
     }
-    $sales += $donations;
+    $total += $donations;
 
-    $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney($sales) . "\n\n";
+    $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney10($total) . "\n\n";
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {
@@ -124,13 +124,13 @@ else { // the whole year
         
     // print_r($articles);
 
-    $sales = 0;
+    $total = 0;
     foreach($articles as $article) {
-        $sales += $article['quantity'] * $article['price'];
+        $total += $article['quantity'] * $article['price'];
     }
-    $sales += $donations;
+    $total += $donations;
 
-    $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney($sales) . "\n\n";
+    $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney10($total) . "\n\n";
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {

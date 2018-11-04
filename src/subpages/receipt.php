@@ -55,7 +55,7 @@ $booking = getBooking($bookingId);
 // exit();
 
 // $donation = "CHF " . number_format(roundMoney(getDbTotal()), 2, ".", "");
-// $total = "CHF " . number_format(roundMoney(getDbTotal()), 2, ".", "");
+// $total = "CHF " . number_format(roundMoney10(getDbTotal()), 2, ".", "");
 
 
 $odf = new Odf("$root/templates/receipt.odt");
