@@ -111,6 +111,12 @@ a:link, a:visited, a:hover, a:active {
     vertical-align: top;
 }
 
+.leftSideDiv{
+    display:inline-table;
+    max-width: 300px;
+    vertical-align: top;
+}
+
 
 
 
