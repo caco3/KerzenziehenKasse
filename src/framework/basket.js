@@ -271,6 +271,10 @@ function clearBasket() {
     // Note: CSS style must be inlined since it will not get picked up from an external style sheet!
     
     if (document.getElementById("payButton")) { // we are in normal mode
+        if ($("#basketTotalMoney").val() == 0) { // Basket is already empty
+            console.log("Basket is empty, no need to show a message");
+            return;
+        }   
         var message = "Soll der Warenkorb wirklich geleert werden? Dieser Schritt kann nicht rückgängig gemacht werden!";
     }
     else { // we are in update mode
