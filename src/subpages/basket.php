@@ -85,9 +85,17 @@ db_connect();
     
     // Total
     echo("<tr>
-            <td colspan=2 class=bold class=basketTotalCell>Total</td>
-            <td class=basketTotalRoundedCell><p class=basketTotalRoundedLabel>gerunded</p></td>
-            <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . number_format(getDbTotal(), 2, ".", "") . "><p id=basketTotalMoneyRounded>CHF " . roundMoney(getDbTotal()) . "</p></td>
+            <td colspan=3 class=bold class=basketTotalCell>Total</td>
+            <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . number_format(getDbTotal(), 2, ".", "") . "></td>
+        </tr>\n"); 
+        
+    echo("<tr>
+            <td colspan=5 style=\"height: 0px\"></td>
+        </tr>\n"); 
+        
+    echo("<tr>
+            <td colspan=3 class=bold class=basketTotalCell><b>Auf 10 Rappen gerunded</b></td>
+            <td class=moneyCell colspan=2><b><p id=basketTotalMoneyRounded>CHF " . roundMoney10(getDbTotal()) . "</p></td>
         </tr>\n"); 
     
     

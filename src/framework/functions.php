@@ -101,7 +101,7 @@ function calculateBasketTotal($includeDOnation){
 
 
 
-
+/* Rundet auf 5 Rappen */
 function roundMoney($num){
     $x = ($num * 1000) % 100;
     
@@ -113,6 +113,22 @@ function roundMoney($num){
     }
     else {
         $rounded = $num + (50-$x)/1000;
+    }
+    
+    return number_format($rounded, 2, ".", "");
+}  
+
+
+
+/* Rundet auf 10 Rappen */
+function roundMoney10($num){
+    $x = ($num * 1000) % 100;
+    
+    if($x < 50){
+        $rounded = $num - $x/1000;
+    }
+    else {
+        $rounded = $num + (100-$x)/1000;
     }
     
     return number_format($rounded, 2, ".", "");

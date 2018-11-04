@@ -7,11 +7,6 @@ require_once("$root/config/config.php");
 require_once("$root/framework/functions.php");
 require_once("$root/framework/db.php");
 
-// If this variable is set (in config.php), a separate database and files/folders will be used!
-if(isset($testystem)) {
-    echo("<h1 style=\"color: red;\">TEST-SYSTEM!!!</h1>\n");
-}
-
 db_connect();
 ?>
 
@@ -65,6 +60,13 @@ db_connect();
 <div id="container">
 
    <div id="header">
+   
+<?
+// If this variable is set (in config.php), a separate database and files/folders will be used!
+if(isset($testystem)) {
+    echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank und Software)!!!</h1>\n");
+}   
+?>
         <div style="clear:both;">
             <div id=logo>
                 <h1><img src="images/candle.png" width=30px> Kerzenziehen &ndash; <a href="http://www.kirche-neuwies.ch" target="_blank"><img src="images/logo_small.png"></a></h1>

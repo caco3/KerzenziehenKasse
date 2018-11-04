@@ -111,7 +111,7 @@ $customImage = $products[0]['image1'];
         }
         
         echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
-        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney($total) . "</b></td></tr>\n");
+        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
 ?>
         </table>
         <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
@@ -207,7 +207,7 @@ $customImage = $products[0]['image1'];
     }
     
     echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
-    echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney($total) . "</b></td></tr>\n");
+    echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
 ?>
     </table>
     <p><br>CSV Export: <? echo(exportCsvButton('year')); ?></p>
