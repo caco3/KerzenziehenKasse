@@ -57,6 +57,7 @@ $customImage = $products[0]['image1'];
         
         $donations = 0;
         $bookingIds = getBookingIdsOfDate($date, false);
+        $customIds = 0;
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
 //             echo("<pre>");
@@ -66,7 +67,8 @@ $customImage = $products[0]['image1'];
                     $id = $articleId;
                 }
                 else { // custom article       
-                    $id = $article['text'];
+                    $id = $article['text'] . "_$customIds";
+                    $customIds++;
                 }
                 
                 $articles[$id]['text'] = $article['text'];
@@ -149,6 +151,7 @@ $customImage = $products[0]['image1'];
     }
     
     $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
+    $customIds = 0;
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
@@ -158,8 +161,9 @@ $customImage = $products[0]['image1'];
                 if($article['type'] == "normal") { // normal article   
                     $id = $articleId;
                 }
-                else { // custom article       
-                    $id = $article['text'];
+                else { // custom article      
+                    $id = $article['text'] . "_$customIds";
+                    $customIds++;
                 }
                 
                 $articles[$id]['text'] = $article['text'];

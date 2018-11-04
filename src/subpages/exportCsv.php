@@ -53,6 +53,7 @@ foreach($products as $product) {
 if ($id != 'year') { // a day
     $bookingIds = getBookingIdsOfDate($date, false);
     $donations = 0;
+    $customIds = 0;
     foreach($bookingIds as $bookingId) { // a booking
         $booking = getBooking($bookingId);
         foreach ($booking['articles'] as $articleId => $article) { // articles
@@ -60,8 +61,9 @@ if ($id != 'year') { // a day
             if($article['type'] == "normal") { // normal article   
                 $id = $articleId;
             }
-            else { // custom article       
-                $id = $article['text'];
+            else { // custom article      
+                $id = $article['text'] . "_$customIds";
+                $customIds++;
             }
                     
             $articles[$id]['text'] = $article['text'];
@@ -99,6 +101,7 @@ if ($id != 'year') { // a day
 else { // the whole year    
     $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
     $donations = 0;
+    $customIds = 0;
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
@@ -108,8 +111,9 @@ else { // the whole year
                 if($article['type'] == "normal") { // normal article   
                     $id = $articleId;
                 }
-                else { // custom article       
-                    $id = $article['text'];
+                else { // custom article   
+                    $id = $article['text'] . "_$customIds";
+                    $customIds++;
                 }
                         
                 $articles[$id]['text'] = $article['text'];
