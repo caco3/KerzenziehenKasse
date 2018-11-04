@@ -275,10 +275,10 @@ function clearBasket() {
             console.log("Basket is empty, no need to show a message");
             return;
         }   
-        var message = "Soll der Warenkorb wirklich geleert werden? Dieser Schritt kann nicht rückgängig gemacht werden!";
+        var message = "Soll der Warenkorb wirklich geleert werden?<br>Dieser Schritt kann nicht rückgängig gemacht werden!";
     }
     else { // we are in update mode
-        var message = "Soll das Editieren dieser bestehenden Buchung abgebrochen werden? Allfällige Änderungen gehen verloren!";
+        var message = "Soll das Editieren dieser bestehenden Buchung abgebrochen werden?<br>Allfällige Änderungen gehen verloren!";
     }
     
     cancelClearBasketQuestionDialogId = firework.launch(message + 
