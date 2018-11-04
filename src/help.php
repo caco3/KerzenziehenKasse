@@ -19,6 +19,12 @@ include "$root/framework/header.php";
         <li><p class=question><b>Frage:</b> Wieso zeigt Word eine Fehlermeldung, wenn ich den Beleg öffne?</p>
             <p class=answer><b>Antwort:</b> Word unterstützt leider die aktuelle Version des Opendocument Formats (*.odt) nicht vollständig. Die Fehlermeldung kann jedoch ignoriert werden.<br>Alternativ kann <a href=https://de.libreoffice.org/ target="_blank">Libreoffice</a> verwendet werden (Gratis Alternative für Microsoft Office).<br><br></p></li>
             
+        <li><p class=question><b>Frage:</b> Wie kann man eine Buchung löschen?</p>
+            <p class=answer><b>Antwort:</b> Buchungen können nicht mehr gelöscht werden. Stattdessen einfach den Betrag auf CHF 0.00 setzen.<br><br></p></li>
+                        
+        <li><p class=question><b>Frage:</b> Welche Webbrowser werden unterstützt?</p>
+            <p class=answer><b>Antwort:</b> Die Kassensoftware funktioniert nur im Firefox korrekt. Chrome, Internet Explorer, Edge oder Safari werden nicht unterstützt.<br><br></p></li>
+            
         <li><p class=question><b>Frage:</b> Wie können die Preise angepasst werden?</p>
             <p class=answer><b>Antwort:</b> Die Artikel und Preise können über <a href="https://admin.hostpoint.ch/phpmyadmin2/sql.php?db=chrisc22_kerzenziehen&table=articles&server=467&pos=0" target="_blank">phpMyAdmin</a> angepasst werden.<br><br></p></li>
             
