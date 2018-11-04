@@ -1,9 +1,16 @@
 <?
+
+
 require_once("$root/framework/credentials_check.php");
 
 require_once("$root/config/config.php");
 require_once("$root/framework/functions.php");
 require_once("$root/framework/db.php");
+
+// If this variable is set (in config.php), a separate database and files/folders will be used!
+if(isset($testystem)) {
+    echo("<h1 style=\"color: red;\">TEST-SYSTEM!!!</h1>\n");
+}
 
 db_connect();
 ?>
@@ -22,6 +29,7 @@ db_connect();
 
     <link href="<? echo("$root"); ?>/framework/jquery.firework.css" rel="stylesheet">
     <script src="<? echo("$root"); ?>/framework/jquery.firework.js"></script>
+    <script src="<? echo("$root"); ?>/framework/browser_detect.js"></script>
     
     <script src="<? echo("$root/"); ?>/framework/functions.js"></script>
 <!--    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
@@ -35,11 +43,18 @@ db_connect();
     // var inputFieldActive = null;
     // var inputFieldSelection = null;
 
+
     $(document).ready(function(){    
         startClock();
         showArticles();
         showBasket();
         loadBibleVerse();
+        
+            
+        console.log("Webbrowser: " + BrowserDetect.browser);
+        if (BrowserDetect.browser != "Firefox") {
+            firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
+        }
     });
     </script>
 
