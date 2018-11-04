@@ -281,7 +281,7 @@ function copyBookingToBasket($bookingId) {
             $articleId = "custom";
         }
 
-        if (addToBasket($articleId, $article['quantity'], $article['price'], $article['text']) != true) {
+        if (addToBasket($articleId, $article['quantity'], $article['price'] * $article['quantity'], $article['text']) != true) {
             return(false);
         }
     }
