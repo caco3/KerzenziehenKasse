@@ -167,6 +167,11 @@ a:link, a:visited, a:hover, a:active {
     max-width: 600px;
 }
 
+#dipArticlesDiv, #customArticleDiv {
+    margin-bottom: 10px;
+}
+
+
 
 /* border */
 #dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
@@ -202,7 +207,7 @@ a:link, a:visited, a:hover, a:active {
     padding: 6px;
     margin-left: 40px;
     margin-right: 40px;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 
@@ -429,7 +434,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #customArticleDescriptionInput {
-    width: 250px;
+    width: 200px;
     font-size: 120%;
     padding: 5px;
 }
