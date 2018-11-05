@@ -107,7 +107,7 @@ a:link, a:visited, a:hover, a:active {
 
 .leftSideDiv, .midddleDiv, .rightSideDiv {
     display:inline-table;
-    max-width: 37%;
+/*     max-width: 37%; */
     vertical-align: top;
 }
 
@@ -205,6 +205,7 @@ a:link, a:visited, a:hover, a:active {
     width: 100%;
     text-align: right;
     margin-bottom: 10px;
+    white-space: nowrap;
     
 /*     background: rgba(0, 0, 0, 0.5); */
 }
