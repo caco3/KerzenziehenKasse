@@ -10,7 +10,7 @@ include "$root/framework/header.php";
                     <div class=leftSideDiv>
                         <div id=dipArticlesDiv></div>
                         <div id=customArticleDiv></div>
-                        <div id=bibleVerseDiv></div>
+                        <div id=pourArticlesFloatingCandlesDiv></div>
                     </div>
                 </td>
                 <td>
@@ -18,7 +18,7 @@ include "$root/framework/header.php";
                 </td>
                 <td>
                     <div class=midddleDiv>
-                        <div id=pourArticlesDiv></div>
+                        <div id=pourArticlesNormalDiv></div>
                     </div>
                 </td>
                 <td>
@@ -28,6 +28,7 @@ include "$root/framework/header.php";
                     <div class=rightSideDiv>
                         <div id=basketDiv></div>
                         <div id=basketButtonsDiv></div>
+                        <div id=bibleVerseDiv></div>
                     </div>
                 </td>
             </tr>

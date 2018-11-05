@@ -17,7 +17,7 @@ db_connect();
 <table id=pourArticlesTable>
 <tr><th colspan=2>Form</th><th colspan=2>Preis (pro Stk.)</th></tr>
 <?
-$lines = getDbProducts("guss", "name");
+$lines = getDbProductsEx("guss", "name", "normal");
 
 foreach($lines as $line) {
     if($line['unit'] == "g") {
