@@ -4,8 +4,8 @@ include "$root/framework/header.php";
 ?>
 
     <div id="body">
-        <table>
-            <tr style="vertical-align: top">
+        <table id=mainPageTable>
+            <tr style="vertical-align: top; padding: 0px;">
                 <td>
                     <div class=leftSideDiv>
                         <div id=dipArticlesDiv></div>
