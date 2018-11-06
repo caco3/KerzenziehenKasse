@@ -94,7 +94,7 @@ function getDbArticleData($id){
     
     mysqli_free_result( $query_response );
 
-    return [$line['name'], $line['type'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3']];
+    return [$line['name'], $line['typ'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3']];
 }
 
 
