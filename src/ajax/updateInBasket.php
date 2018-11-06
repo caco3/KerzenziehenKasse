@@ -31,7 +31,7 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
                 updateTotalInBasket($total);
                 //todo validate
                 
-                list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+                list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
                                                     
                 // List all fields that changed  
                 $response_array['updatedFields']['total'] = $total;
@@ -49,7 +49,7 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
                 updateTotalInBasket($total);
                 //todo validate
                 
-                list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+                list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
                                                     
                 // List all fields that changed  
                 $response_array['updatedFields']['article'][$basketEntryId]['price'] = $quantity * $pricePerQuantity;

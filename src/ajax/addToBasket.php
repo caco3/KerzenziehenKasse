@@ -30,7 +30,7 @@ if (isset($_POST['id']) AND (isset($_POST['quantity']) OR isset($_POST['price'])
         
         
             if($id != "custom"){ // normal article
-                list($name, $pricePerQuantity, $unit, $image) = getDbArticleData($id);
+                list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($id);
                 $price = $quantity * $pricePerQuantity;
             }
             else{ // custom article

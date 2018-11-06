@@ -44,7 +44,7 @@ db_connect();
         $removeButton = showRemoveFromBasketButton($basketEntryId);
         
         if($articleId != 'custom') { // normal entry
-            list($name, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+            list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
             $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity> $unit";
