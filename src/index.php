@@ -2,30 +2,37 @@
 $root=".";
 include "$root/framework/header.php";
 ?>
-    <div id="body">
-        <div class=leftSideDiv>
-            <div id=dipArticlesDiv></div>
-            <div id=customArticleDiv></div>
-            <div id=bibleVerseDiv></div>
-        </div>
-        
-        <div class=verticalSpacer></div>
-        
-        <div class=midddleDiv>
-            <div id=pourArticlesDiv></div>
-        </div>
-        
-        <div class=verticalSpacer></div>
-        
-        <div class=rightSideDiv>
-            <div id=basketDiv></div>
-            <div id=basketButtonsDiv></div>
-                
-        <!--     <div class="rightSideDiv bottomxxAlignDiv">             -->
-            
-        <!--     </div> -->
 
-        </div>
+    <div id="body">
+        <table id=mainPageTable>
+            <tr style="vertical-align: top; padding: 0px;">
+                <td>
+                    <div class=leftSideDiv>
+                        <div id=dipArticlesDiv></div>
+                        <div id=customArticleDiv></div>
+                        <div id=pourArticlesFloatingCandlesDiv></div>
+                    </div>
+                </td>
+                <td>
+                    <div class=verticalSpacer></div>
+                </td>
+                <td>
+                    <div class=midddleDiv>
+                        <div id=pourArticlesNormalDiv></div>
+                    </div>
+                </td>
+                <td>
+                    <div class=verticalSpacer></div>
+                </td>
+                <td>
+                    <div class=rightSideDiv>
+                        <div id=basketDiv></div>
+                        <div id=basketButtonsDiv></div>
+                        <div id=bibleVerseDiv></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
 
 

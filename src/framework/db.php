@@ -44,6 +44,29 @@ function getDbProducts($type, $orderByColumn) {
 }
 
 
+function getDbProductsEx($type, $orderByColumn, $subType) {
+    global $db_link;
+    
+    $sql = "SELECT * FROM articles WHERE (typ = '$type' AND subtype = '$subType') ORDER by `$orderByColumn` ASC";  
+    $query_response = mysqli_query($db_link, $sql );
+    if ( ! $query_response )
+    {
+      die('Invalid MySQL request: ' . mysqli_error($db_link));
+    }
+
+    while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
+    {
+        $lines[] = $line;
+    } 
+    mysqli_free_result( $query_response );
+    
+//     echo("<pre>");
+//     print_r($lines);
+
+    return $lines;
+}
+
+
 
 /* return article data
  * Note: only provide real article IDs (but not custom ones)

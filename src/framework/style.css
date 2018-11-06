@@ -83,6 +83,10 @@ td {
     padding-bottom: 5px;   /* Height of the footer */
 }
 
+#mainPageTable {
+    border-collapse: collapse;
+}
+
 
 a:link, a:visited, a:hover, a:active {    
     text-decoration: none;
@@ -107,7 +111,7 @@ a:link, a:visited, a:hover, a:active {
 
 .leftSideDiv, .midddleDiv, .rightSideDiv {
     display:inline-table;
-    max-width: 37%;
+/*     max-width: 37%; */
     vertical-align: top;
 }
 
@@ -152,7 +156,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 
-#dipArticlesDiv, #pourArticlesDiv, #customArticleDiv, #basketDiv, #bibleVerseDiv {
+#dipArticlesDiv, #pourArticlesNormalDiv, #pourArticlesFloatingCandlesDiv, #customArticleDiv, #basketDiv, #bibleVerseDiv {
     display: inline-block;  
     width: 100%;
     margin-bottom: 20px;
@@ -160,7 +164,13 @@ a:link, a:visited, a:hover, a:active {
 
 #bibleVerseDiv {
 /*     padding: 20px; */
+    max-width: 600px;
 }
+
+#dipArticlesDiv, #customArticleDiv {
+    margin-bottom: 10px;
+}
+
 
 
 /* border */
@@ -197,7 +207,7 @@ a:link, a:visited, a:hover, a:active {
     padding: 6px;
     margin-left: 40px;
     margin-right: 40px;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 
@@ -205,6 +215,7 @@ a:link, a:visited, a:hover, a:active {
     width: 100%;
     text-align: right;
     margin-bottom: 10px;
+    white-space: nowrap;
     
 /*     background: rgba(0, 0, 0, 0.5); */
 }
@@ -423,7 +434,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #customArticleDescriptionInput {
-    width: 250px;
+    width: 200px;
     font-size: 120%;
     padding: 5px;
 }

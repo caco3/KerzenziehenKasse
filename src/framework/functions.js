@@ -14,7 +14,8 @@ function blockLoaded(){
 function showArticles() {
     console.log("load articles");
     $("#dipArticlesDiv").load("subpages/dipArticles.php", blockLoaded());
-    $("#pourArticlesDiv").load("subpages/pourArticles.php", blockLoaded());
+    $("#pourArticlesNormalDiv").load("subpages/pourArticlesNormal.php", blockLoaded());
+    $("#pourArticlesFloatingCandlesDiv").load("subpages/pourArticlesFloatingCandles.php", blockLoaded());
     $("#customArticleDiv").load("subpages/customArticle.php", blockLoaded());
 }
 
