@@ -63,7 +63,7 @@ $customImage = $products[0]['image1'];
 //             echo("<pre>");
 //             print_r($booking);
             foreach ($booking['articles'] as $articleId => $article) { // articles
-                if($article['type'] == "normal") { // normal article   
+                if($article['type'] != "custom") { // normal article   
                     $id = $articleId;
                 }
                 else { // custom article       
@@ -128,6 +128,9 @@ $customImage = $products[0]['image1'];
       
       
 <a name=year></a><h1>Auswertung ganzes Jahr</h1>
+<table>
+<tr  style="vertical-align: top; padding: 0px;">
+<td>
 <?
     $articles = array();
     $donations = 0;
@@ -156,9 +159,10 @@ $customImage = $products[0]['image1'];
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
+//             echo("<pre>");
 //             print_r($booking);
             foreach ($booking['articles'] as $articleId => $article) { // articles
-                if($article['type'] == "normal") { // normal article   
+                if($article['type'] != "custom") { // normal article   
                     $id = $articleId;
                 }
                 else { // custom article      
@@ -219,8 +223,12 @@ $customImage = $products[0]['image1'];
     <p><br></p>
     <hr>
     <p>*) Freie Eingabe eines Artikels<br><br></p>
-
-
+</td>
+<td>
+<? include "$root/subpages/pieChartYear.php"; ?>
+</td>
+</tr>
+</table>
 <?
 include "$root/framework/footer.php"; 
 ?>
