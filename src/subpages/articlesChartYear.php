@@ -1,9 +1,9 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
     google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
+    google.charts.setOnLoadCallback(drawChartPieChartYear);
 
-    function drawChart() {
+    function drawChartPieChartYear() {
         var data = google.visualization.arrayToDataTable([
             ['Gussform', 'Anzahl'],
 <?
@@ -28,13 +28,13 @@
             title: 'Gussformen',
             titleTextStyle: { fontSize: 18 },
             backgroundColor: 'transparent',
-            chartArea: {'width': '100%', 'height': '80%'}, 
+            chartArea: {'width': '80%', 'height': '80%'}, 
             is3D:true
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chartPieChartYear = new google.visualization.PieChart(document.getElementById('piechart'));
 
-        chart.draw(data, options);
+        chartPieChartYear.draw(data, options);
     }
 </script>
 

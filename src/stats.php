@@ -9,6 +9,8 @@ $products = getDbProducts("custom", "articleId");
 // print_r($products);
 $customImage = $products[0]['image1'];
 
+$statsPerDay = array();
+
 ?>
     <div id="body">
     <h1>Übersicht</h1>
@@ -116,10 +118,12 @@ $customImage = $products[0]['image1'];
         echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
 ?>
         </table>
-        <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
+        <p><br>CSV Export: <? echo(exportCsvButton($date)); ?> | *) Freie Eingabe eines Artikels</p>
       <p><br></p>
         <hr>
 <?
+    
+        $statsPerDay[$date] = roundMoney10($total);
     }
 ?>
     
@@ -218,15 +222,16 @@ $customImage = $products[0]['image1'];
     echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
 ?>
     </table>
-    <p><br>CSV Export: <? echo(exportCsvButton('year')); ?></p>
+    <p><br>CSV Export: <? echo(exportCsvButton('year')); ?> | *) Freie Eingabe eines Artikels</p>
     </div>
-    <p><br></p>
-    <hr>
-    <p>*) Freie Eingabe eines Artikels<br><br></p>
 </td>
 <td>
-<? include "$root/subpages/pieChartYear.php"; ?>
-</td>
+<? include "$root/subpages/articlesChartYear.php"; ?><br>
+<? 
+    ksort($statsPerDay);
+    include "$root/subpages/totalsChartYear.php"; 
+?>
+    </td>
 </tr>
 </table>
 <?
