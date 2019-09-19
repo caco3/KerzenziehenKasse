@@ -9,7 +9,7 @@ include "$root/framework/header.php";
                 <td>
                     <div class=leftSideDiv>
                         <div id=dipArticlesDiv></div>
-                        <div id=customArticleDiv></div>
+<!--                         <div id=customArticleDiv></div> -->
                         <div id=pourArticlesFloatingCandlesDiv></div>
                     </div>
                 </td>
