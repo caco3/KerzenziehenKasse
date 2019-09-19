@@ -3,6 +3,7 @@
 
 require_once("$root/framework/credentials_check.php");
 
+require_once("$root/config/config_generic.php");
 require_once("$root/config/config.php");
 require_once("$root/framework/functions.php");
 require_once("$root/framework/db.php");

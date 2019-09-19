@@ -1,6 +1,8 @@
 <?
 $root=".";
 require_once("$root/framework/credentials_check.php");
+require_once("$root/config/config_generic.php");
+/* We do not include the header and config.php here on purpose! */
 
     
 // Enable to generate password hash
@@ -12,10 +14,16 @@ require_once("$root/framework/credentials_check.php");
 <!DOCTYPE html>
 <html lang="de">
 <head>
+
+<? if(isset($testystem)) { ?>
+    <title>Kerzenziehen TEST-SYSTEM</title>
+<? } else { ?>
+    <title>Kerzenziehen</title>
+<? } ?>
+
     <meta charset="UTF-8">
     <http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="shortcut icon" href="favicon.ico">
-    <title>Kerzenziehen</title>    
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">  
     
     <script src="<? echo("$root"); ?>/framework/jquery.min.js"></script>
@@ -26,11 +34,21 @@ require_once("$root/framework/credentials_check.php");
 </head>
 
 
-<body>
+<? if(isset($testystem)) { ?>
+    <body id=test>
+<? } else { ?>
+    <body id=live>
+<? } ?>
 
 
 
     <div style="clear:both;">
+        <?
+            // If this variable is set (in config.php), a separate database and files/folders will be used!
+            if(isset($testystem)) {
+                echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
+            }
+        ?>
         <div id=logo>
             <h1><img src="images/candle.png" width=30px> Kerzenziehen &ndash; <img src="images/logo_small.png"></h1>
         </div>
@@ -110,7 +128,7 @@ require_once("$root/framework/credentials_check.php");
     </form>
     
     <p></br></p>
-    <h2>Hinweise</h2>
+    <h2>Hinweis</h2>
     <p>Das Passwort erhältst Du vom Tageschef!</p>
 
         <!-- content End -->
