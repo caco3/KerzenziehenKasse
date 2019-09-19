@@ -10,7 +10,6 @@ html, body {
 }
 
 body {
-    background-image: url("../images/wallpaper.jpg"); 
 /*     background-repeat: no-repeat; */
     background-attachment: fixed;
     background-position: center; 
@@ -19,6 +18,14 @@ body {
     font-family: Arial; 
     padding: 0px;
     margin: 0px;
+}
+
+#live {
+    background-image: url("../images/wallpaper.jpg"); 
+}
+
+#test {
+    background-image: url("../images/wallpaper-test-system.jpg"); 
 }
 
 input[readonly] {    

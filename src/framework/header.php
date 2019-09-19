@@ -13,10 +13,16 @@ db_connect();
 <!DOCTYPE html>
 <html lang="de">
 <head>
+
+<? if(isset($testystem)) { ?>
+    <title>Kerzenziehen TEST-SYSTEM</title>
+<? } else { ?>
+    <title>Kerzenziehen</title>
+<? } ?>
+
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="shortcut icon" href="favicon.ico">
-    <title>Kerzenziehen</title>    
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">  
     <script src="<? echo("$root"); ?>/framework/jquery.min.js"></script>
     <script src="<? echo("$root"); ?>/framework/jquery-ui.min.js"></script>
@@ -55,7 +61,11 @@ db_connect();
 
 </head>
 
-<body>
+<? if(isset($testystem)) { ?>
+    <body id=test>
+<? } else { ?>
+    <body id=live>
+<? } ?>
 
 <div id="container">
 
@@ -64,7 +74,7 @@ db_connect();
 <?
 // If this variable is set (in config.php), a separate database and files/folders will be used!
 if(isset($testystem)) {
-    echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank und Software)!!!</h1>\n");
+    echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
 }   
 ?>
         <div style="clear:both;">
