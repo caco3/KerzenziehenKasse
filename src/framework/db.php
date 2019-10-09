@@ -556,7 +556,7 @@ function getBookingIdsOfDate($date, $invertDateFilter) {
 }
 
 
-/* Returns all dates with at least oine booking on that day
+/* Returns all dates with at least one booking on that day
  * On multiple bookings on a day, the day is only returned once
  */
 function getBookingDatesOfCurrentYear() {
