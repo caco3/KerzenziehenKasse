@@ -11,6 +11,8 @@ include "$root/framework/header.php";
                         <div id=dipArticlesDiv></div>
 <!--                         <div id=customArticleDiv></div> -->
                         <div id=pourArticlesFloatingCandlesDiv></div>
+                        <div id=pourArticlesPreMadeDiv></div>
+                        
                     </div>
                 </td>
                 <td>
