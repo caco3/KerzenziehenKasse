@@ -25,35 +25,6 @@ function exportCsvButton($id) {
 }
 
 
-
-function listProducts() {
-?>
-<!--     <h3>Ziehen</h3>         -->
-<?
-    listDipProducts();
-?>
-
-
-<?
-
-
-?>
-<!--     <h3>Giessen</h3> -->
-<br>
-<?
-        listPourProducts();
-?>
-
-
-<?
-
-
-}
-
-
-
-
-
 function sql_transaction_logger($message){
     $message = str_replace("\n", " ", $message);
     $message = preg_replace('!\s+!', ' ', $message);
