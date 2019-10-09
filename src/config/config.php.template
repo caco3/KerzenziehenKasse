@@ -1,0 +1,21 @@
+<?
+
+// Enable this line to to show it uses the test database
+define ( 'TEST_SYSTEM',     'true' );
+
+ 
+define ( 'MYSQL_USER',      '' );
+define ( 'MYSQL_PASSWORD',  '' );
+  
+ 
+define ( 'MYSQL_HOST',      '' );
+define ( 'MYSQL_DATABASE',  '' );
+
+
+define ( 'PASSWORD_HASH',   '' );
+define ( 'ID',              '' );
+
+
+define ( 'LOG_FOLDER',      '' );
+
+?>
