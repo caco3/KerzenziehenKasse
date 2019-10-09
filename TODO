@@ -1,28 +1,11 @@
 TODO:
 ---------
-activate strict mode in config.php
+activate strict mode in config_generic.php
 avoid notes/warning
 Spaltenbreite 1024
-images auf bookings
+solve todos in code
 
-
-
-
-
-TODO beim Einrichten (jährlich):
-------------------------
-PC einrichten
-Seiten-Skalierung anpassen
-DB leeren? => besser nicht
-logs leeren
-Drucker einrichten
-Preise anpassen
-Anleitung erstellen
-   vollbild
-   anwender
-   tageschef
    
-
 
 DONE:
 ----------
@@ -38,3 +21,4 @@ Stats für jeden tag
 sicherheitsabfrage vor basket leeren
 csv export: freie eingabe separieren
 bug: freie eingabe => falsche stückzahl
+images auf bookings
