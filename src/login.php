@@ -1,8 +1,9 @@
 <?
 $root=".";
 require_once("$root/framework/credentials_check.php");
+require_once("$root/config/config.php");
 require_once("$root/config/config_generic.php");
-/* We do not include the header and config.php here on purpose! */
+/* We do not include the header here on purpose! */
 
     
 // Enable to generate password hash
@@ -15,7 +16,7 @@ require_once("$root/config/config_generic.php");
 <html lang="de">
 <head>
 
-<? if(isset($testystem)) { ?>
+<? if(defined(TEST_SYSTEM)) { ?>
     <title>Kerzenziehen TEST-SYSTEM</title>
 <? } else { ?>
     <title>Kerzenziehen</title>
@@ -34,7 +35,7 @@ require_once("$root/config/config_generic.php");
 </head>
 
 
-<? if(isset($testystem)) { ?>
+<? if(defined(TEST_SYSTEM)) { ?>
     <body id=test>
 <? } else { ?>
     <body id=live>

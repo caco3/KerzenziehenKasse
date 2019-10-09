@@ -15,7 +15,7 @@ db_connect();
 <html lang="de">
 <head>
 
-<? if(isset($testystem)) { ?>
+<? if(defined(TEST_SYSTEM)) { ?>
     <title>Kerzenziehen TEST-SYSTEM</title>
 <? } else { ?>
     <title>Kerzenziehen</title>
@@ -62,7 +62,7 @@ db_connect();
 
 </head>
 
-<? if(isset($testystem)) { ?>
+<? if(defined(TEST_SYSTEM)) { ?>
     <body id=test>
 <? } else { ?>
     <body id=live>
@@ -74,7 +74,7 @@ db_connect();
    
 <?
 // If this variable is set (in config.php), a separate database and files/folders will be used!
-if(isset($testystem)) {
+if(defined(TEST_SYSTEM)) {
     echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
 }   
 ?>
