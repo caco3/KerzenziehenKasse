@@ -163,7 +163,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 
-#dipArticlesDiv, #pourArticlesNormalDiv, #pourArticlesFloatingCandlesDiv, #customArticleDiv, #basketDiv, #bibleVerseDiv {
+#dipArticlesDiv, #pourArticlesNormalDiv, #pourArticlesFloatingCandlesDiv, #pourArticlesPreMadeDiv, #customArticleDiv, #basketDiv, #bibleVerseDiv {
     display: inline-block;  
     width: 100%;
     margin-bottom: 20px;
@@ -174,7 +174,7 @@ a:link, a:visited, a:hover, a:active {
     max-width: 600px;
 }
 
-#dipArticlesDiv, #customArticleDiv {
+#dipArticlesDiv, #customArticleDiv, #pourArticlesFloatingCandlesDiv {
     margin-bottom: 10px;
 }
 
