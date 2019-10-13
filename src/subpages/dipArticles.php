@@ -26,7 +26,7 @@ foreach($lines as $line) {
         
         /* Note: input fields typenumber do not allow setSelection
          *       So we use a type=text field and restrict the characters, see $(".adjustQuantityInput").keydown()          */
-        $weight = "<input type=text class=articleQuantityInput id=quantity_" . $line['articleId'] . " value=\"\" placeholder=100> g";
+        $weight = "<nobr><input type=text class=articleQuantityInput id=quantity_" . $line['articleId'] . " value=\"\" placeholder=100> g<n/obr>";
     }
     else if($line['unit'] == "Stk.") {  
         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "") . "/Stk.";
