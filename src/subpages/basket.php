@@ -94,7 +94,7 @@ db_connect();
         </tr>\n"); 
         
     echo("<tr>
-            <td colspan=3 class=bold class=basketTotalCell><b>Auf 10 Rappen gerunded</b></td>
+            <td colspan=3 class=bold class=basketTotalCell><b>Auf 10 Rappen gerundet</b></td>
             <td class=moneyCell colspan=2><b><p id=basketTotalMoneyRounded>CHF " . roundMoney10(getDbTotal()) . "</p></td>
         </tr>\n"); 
     

@@ -150,7 +150,8 @@ else { // the whole year
     $content .= "Spenden;;;$donations";
 }
 
-$content .= "\n\n*) Freie Eingabe eines Artikels\n";
+// $content .= "\n\n*) Freie Eingabe eines Artikels\n";
+$content .= "\n\n";
 
 
 

@@ -118,9 +118,9 @@ $statsPerDay = array();
         echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
 ?>
         </table>
-        <p><br>CSV Export: <? echo(exportCsvButton($date)); ?> | *) Freie Eingabe eines Artikels</p>
+        <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
       <p><br></p>
-        <hr>
+
 <?
     
         $statsPerDay[$date] = roundMoney10($total);
@@ -222,7 +222,7 @@ $statsPerDay = array();
     echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
 ?>
     </table>
-    <p><br>CSV Export: <? echo(exportCsvButton('year')); ?> | *) Freie Eingabe eines Artikels</p>
+    <p><br>CSV Export: <? echo(exportCsvButton('year')); ?></p>
     </div>
 </td>
 <td>
