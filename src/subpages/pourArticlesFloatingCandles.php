@@ -15,7 +15,7 @@ db_connect();
 <h2>Artikel zum Giessen (Schwimmkerzen)</h2>
 
 <table id=pourArticlesTable>
-<tr><th colspan=2>Form</th><th colspan=2>Preis (pro Stk.)</th></tr>
+<tr><th colspan=2>Form</th><th colspan=2>Preis (Stk.)</th></tr>
 <?
 $lines = getDbProductsEx("guss", "name", "floatingCandle");
 
@@ -50,7 +50,7 @@ foreach($lines as $line) {
     }
     echo("</td>
             <td class=articleNameCell>" . $line['name'] . "</td>
-            <td class=moneyCell>$price $weight</td>
+            <td class=moneyCellSmall>$price $weight</td>
             <td>$button</td>
         </tr>");    
 }

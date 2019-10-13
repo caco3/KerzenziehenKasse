@@ -15,7 +15,7 @@ db_connect();
 <h2>Vorgefertigte Artikel</h2>
 
 <table id=preMadeArticlesTable>
-<tr><th colspan=2>Form</th><th colspan=2>Preis (pro Stk.)</th></tr>
+<tr><th colspan=2>Form</th><th colspan=2>Preis (Stk.)</th></tr>
 <?
 $lines = getDbProductsEx("guss", "name", "preMade");
 
@@ -50,7 +50,7 @@ foreach($lines as $line) {
     }
     echo("</td>
             <td class=articleNameCell>" . $line['name'] . "</td>
-            <td class=moneyCell>$price $weight</td>
+            <td class=moneyCellSmall>$price $weight</td>
             <td>$button</td>
         </tr>");    
 }

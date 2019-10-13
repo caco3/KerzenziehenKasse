@@ -15,7 +15,7 @@ db_connect();
 <h2>Artikel zum Ziehen</h2>
 
 <table id=dipArticlesTable>
-<tr><th colspan=2>Wachs</th><th>Preis (pro 100g)</th><th>Gewicht</th><th></th></tr>
+<tr><th colspan=2>Wachs</th><th>Preis (100g)</th><th>Gewicht</th><th></th></tr>
 
 <? 
 $lines = getDbProducts("wachs", "articleId");
@@ -42,7 +42,7 @@ foreach($lines as $line) {
     echo("<tr>
             <td><span class=tooltip><img class=articleImage src=images/articles/" . $line['image1'] . "><span class=tooltipContent><img src=images/articles/" . $line['image1'] . "></span></span></td>
             <td>" . $line['name'] . "</td>
-            <td class=moneyCell>$price</td>
+            <td class=moneyCellSmall>$price</td>
             <td>$weight</td>
             <td>$button</td>
         </tr>\n");    

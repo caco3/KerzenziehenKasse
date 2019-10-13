@@ -417,8 +417,12 @@ a:link, a:visited, a:hover, a:active {
     white-space:nowrap;
 }
 
-.moneyCell, .quantityCell {
+.moneyCell, .moneyCellSmall, .quantityCell {
     white-space:nowrap;
+}
+
+.moneyCellSmall {
+    font-size: 80%;
 }
 
 .basketTotalRoundedLabel {
