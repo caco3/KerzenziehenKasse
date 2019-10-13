@@ -227,6 +227,15 @@ a:link, a:visited, a:hover, a:active {
 /*     background: rgba(0, 0, 0, 0.5); */
 }
 
+
+#basketButtonsTable {
+    width: 100%;
+}
+
+#basketButtonsTable tr {
+    text-align: center;
+}
+
 /*#bottomDiv {
     clear: both;
 }*/

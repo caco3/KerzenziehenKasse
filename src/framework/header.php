@@ -33,7 +33,6 @@ db_connect();
     <script src="<? echo("$root"); ?>/framework/jquery.firework.js"></script>
     <script src="<? echo("$root"); ?>/framework/browser_detect.js"></script>
     
-    <script src="<? echo("$root/"); ?>/framework/functions.js"></script>
 <!--    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
     <script src="<? echo("$root/"); ?>/framework/basket.js"></script>-->
 
@@ -114,7 +113,7 @@ if(defined(TEST_SYSTEM)) {
                     | <a class="headerLinks" href="stats.php" target="_self">Auswertung</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Administration</a>
                 <? } ?>
-                    | <img id=timerIcon src="images/timer/0.png" width=18px>
+<!--                     | <img id=timerIcon src="images/timer/0.png" width=18px> -->
                 </p>
             </div>
             <div id=clock>
