@@ -35,6 +35,12 @@ function loadBibleVerse() {
     $("#bibleVerseDiv").fadeIn(1000);
 }
 
+function loadNavigation() {
+//     console.log("loadNavigation");   
+    $("#navigationDiv").load("subpages/navigation.php", blockLoaded());
+    $("#navigationDiv").fadeIn(1000);
+}
+
 
 
 function changeBibleVerse() {    

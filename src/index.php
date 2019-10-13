@@ -31,6 +31,7 @@ include "$root/framework/header.php";
                         <div id=basketDiv></div>
                         <div id=basketButtonsDiv></div>
                         <div id=bibleVerseDiv></div>
+                        <div id=navigationDiv></div>
                     </div>
                 </td>
             </tr>

@@ -46,15 +46,23 @@ db_connect();
 
 
     $(document).ready(function(){    
-        startClock();
+        <? if (!(basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
+            startClock();
+        <? } ?>
         showArticles();
         showBasket();
         loadBibleVerse();
+        loadNavigation();
         
 //         console.log("Webbrowser: " + BrowserDetect.browser);
 //         if (BrowserDetect.browser != "Firefox") {
 //             firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
 //         }
+
+        <? if(defined(TEST_SYSTEM) and (basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
+            firework.launch("Du verwendest das Test-System! Damit kannst spielen und testen. Die Eingaben haben keinen Einfluss auf die richtige Kasse!", 'error', 9999999000);
+        <? } ?>
+
     });
     </script>
 
@@ -72,9 +80,11 @@ db_connect();
    
 <?
 // If this variable is set (in config.php), a separate database and files/folders will be used!
-if(defined(TEST_SYSTEM)) {
+if(defined(TEST_SYSTEM) and !(basename($_SERVER['PHP_SELF']) == "index.php")) {
     echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
-}   
+}  
+
+if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
 ?>
         <div style="clear:both;">
             <div id=logo>
@@ -121,7 +131,9 @@ if(defined(TEST_SYSTEM)) {
             </div>
         </div>
         <hr>
+        <? } ?>
+  
         <div class="modal"></div>
     </div>
     
-    
+
