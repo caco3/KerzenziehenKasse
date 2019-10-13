@@ -181,12 +181,12 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* border */
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
     border-radius:8px;
     border-spacing: 0;
 }
 
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv {
     border: 3px solid black; 
 }
 
@@ -199,12 +199,12 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* Shade */
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv {
     box-shadow: 5px 5px 5px #888888;
 }
 
 
-#dipArticlesTable, #pourArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit {
     width: 100%;
 }
 
@@ -510,6 +510,23 @@ a:link, a:visited, a:hover, a:active {
 #pourArticlesTable tr:nth-child(even){
 /*     background-color: #ccbaff;     */
     background:  rgba(204, 186, 255, 0.8);
+}
+
+
+#preMadeArticlesTable th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: left;
+    background:  rgba(208, 108, 50, 0.8);
+}
+
+#preMadeArticlesTable tr:nth-child(odd){
+    background:  rgba(248, 129, 60, 0.8);
+}
+
+#preMadeArticlesTable tr:nth-child(even){
+/*     background-color: #ccbaff;     */
+    background:  rgba(255, 175, 129, 0.8);
 }
 
 
