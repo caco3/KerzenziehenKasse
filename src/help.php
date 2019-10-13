@@ -7,7 +7,7 @@ include "$root/framework/header.php";
       <h2>FAQ</h2>
       <ul>
         
-        <li><p class=question><b>Frage:</b> Was bedeutet die kleine Stopuhr <img src=images/timer/5.png> oben in der Navigationsbar?</p>
+        <li><p class=question><b>Frage:</b> Was bedeutet die kleine Stopuhr <img src=images/timer/5.png>?</p>
             <p class=answer><b>Antwort:</b> Wenn im Warenkorb in einem Testfeld eine Eingabe gemacht wird (Menge- oder Preisänderung), wird einen Moment gewartet, bevor der Warenkorb neu berechnet wird.<br><br></p></li>
                 
         <li><p class=question><b>Frage:</b> Wieso kann man nur die Buchungen vom aktuellen Tag nachbearbeiten?</p>
@@ -44,7 +44,7 @@ include "$root/framework/header.php";
         Mobile: 079/471'63'90
       <br><br></p>
       <h2>Copyright</h2>
-      <p>&copy; 2018 by George Ruinelli</p>
+      <p>&copy; 2018-2019 by George Ruinelli</p>
     </div>
 
 <?
