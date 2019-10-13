@@ -52,11 +52,10 @@ db_connect();
         showBasket();
         loadBibleVerse();
         
-            
-        console.log("Webbrowser: " + BrowserDetect.browser);
-        if (BrowserDetect.browser != "Firefox") {
-            firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
-        }
+//         console.log("Webbrowser: " + BrowserDetect.browser);
+//         if (BrowserDetect.browser != "Firefox") {
+//             firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
+//         }
     });
     </script>
 
