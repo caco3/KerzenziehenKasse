@@ -18,7 +18,7 @@ db_connect();
 <tr><th colspan=2>Wachs</th><th>Preis (100g)</th><th>Gewicht</th><th></th></tr>
 
 <? 
-$lines = getDbProducts("wachs", "articleId");
+$lines = getDbProductsEx("wachs", "name", "normal");
 
 foreach($lines as $line) {
     if($line['unit'] == "g") {

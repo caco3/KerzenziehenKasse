@@ -8,24 +8,28 @@ include "$root/framework/header.php";
             <tr style="vertical-align: top; padding: 0px;">
                 <td>
                     <div class=leftSideDiv>
-                        <div id=dipArticlesDiv></div>
+                            <div id=dipArticlesDiv style="width:408px;"></div>
+                                            
 <!--                         <div id=customArticleDiv></div> -->
-                        <div id=pourArticlesFloatingCandlesDiv></div>
-                        <div id=pourArticlesPreMadeDiv></div>
+<!--                        <span id=pourArticlesFloatingCandlesDiv></span>
+                        <span id=pourArticlesNormalDiv></span>
+                        <span id=pourArticlesPreMadeDiv></span>-->
                         
+                        <div id=articlesDiv></div>
+
                     </div>
                 </td>
                 <td>
                     <div class=verticalSpacer></div>
                 </td>
-                <td>
+<!--                <td>
                     <div class=midddleDiv>
                         <div id=pourArticlesNormalDiv></div>
                     </div>
                 </td>
                 <td>
                     <div class=verticalSpacer></div>
-                </td>
+                </td>-->
                 <td>
                     <div class=rightSideDiv>
                         <div id=basketDiv></div>
