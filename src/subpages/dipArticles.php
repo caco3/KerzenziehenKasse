@@ -12,7 +12,7 @@ db_connect();
 <!-- <script src="<? echo("$root/"); ?>/framework/functions.js"></script> -->
 <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
 
-<h2>Artikel zum Ziehen</h2>
+<!-- <h2>Artikel zum Ziehen</h2> -->
 
 <table id=dipArticlesTable>
 <tr><th colspan=2>Wachs</th><th>Preis (100g)</th><th>Gewicht</th><th></th></tr>

@@ -22,7 +22,8 @@ db_connect();
 function showButton($title, $image, $id, $style) {
     ?>
         <div class="articleButton <? echo($style); ?>">
-            <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>"); ?></p>
+<!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>"); ?></p> -->
+            <p><? echo("<img class=articleImage src=images/articles/$image>"); ?></p>
             <p><? echo($title); ?></p>
     <!--         <p class=moneyCellSmall><? echo($price); ?></p> -->
         </div>
