@@ -19,42 +19,42 @@ db_connect();
 <?
 $lines = getDbProductsEx("guss", "name", "normal");
 
-// foreach($lines as $line) {
-//     if($line['unit'] == "g") {
-// //         $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2, ".", "") . "/100g";
-//         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
-//     }
-//     else if($line['unit'] == "Stk.") {  
-// //         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "") . "/Stk.";
-//         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
-//     }
-//     else {
-// //         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
-//         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
-//     }
-//     $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
-//     
-//     $button = addButton($line['articleId']);
-//     
-//     $image1 = $line['image1'];
-//     $image2 = $line['image2'];
-//     $image3 = $line['image3'];
-//             
-//     echo("<tr><td>");
-//     echo("<span class=tooltip><img class=articleImage src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
-//     if( $image2 != "") {
-//         echo("<span class=tooltip><img class=articleImage src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
-//     }
-//     if( $image3 != "") {
-//         echo("<span class=tooltip><img class=articleImage src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
-//     }
-//     echo("</td>
-//             <td class=articleNameCell>" . $line['name'] . "</td>
-//             <td class=moneyCellSmall>$price $weight</td>
-//             <td>$button</td>
-//         </tr>");    
-// }
-// ?>
+foreach($lines as $line) {
+    if($line['unit'] == "g") {
+//         $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2, ".", "") . "/100g";
+        $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
+    }
+    else if($line['unit'] == "Stk.") {  
+//         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "") . "/Stk.";
+        $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
+    }
+    else {
+//         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
+        $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
+    }
+    $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
+    
+    $button = addButton($line['articleId']);
+    
+    $image1 = $line['image1'];
+    $image2 = $line['image2'];
+    $image3 = $line['image3'];
+            
+    echo("<tr><td>");
+    echo("<span class=tooltip><img class=articleImage src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
+    if( $image2 != "") {
+        echo("<span class=tooltip><img class=articleImage src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
+    }
+    if( $image3 != "") {
+        echo("<span class=tooltip><img class=articleImage src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
+    }
+    echo("</td>
+            <td class=articleNameCell>" . $line['name'] . "</td>
+            <td class=moneyCellSmall>$price $weight</td>
+            <td>$button</td>
+        </tr>");    
+}
+?>
 
 <!-- </table> -->
 

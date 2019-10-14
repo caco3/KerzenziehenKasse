@@ -754,11 +754,6 @@ a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:ac
 
 
 
-
-
-
-
-
 /* Article buttons 
    Style source: https://cssgradientbutton.com */
 .articleButton {
@@ -871,4 +866,45 @@ a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:ac
     background-image: -ms-linear-gradient(top, #d5cea6, #b7ad70);
     background-image: -o-linear-gradient(top, #d5cea6, #b7ad70);
     background-image: linear-gradient(to bottom, #d5cea6, #b7ad70);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d5cea6, endColorstr=#b7ad70);
+}
+
+
+
+
+
+
+/* Dipping Article buttons 
+   Style source: https://cssgradientbutton.com */
+.dippingArticleButton {
+    border: 2px solid black;
+    margin: 5px;
+    padding: 2px;
+    width: 336px;
+    height: 90px;
+    float: left;
+    text-align: center;
+    
+    border-radius:8px;
+    border-spacing: 0;
+    
+    box-shadow: 3px 3px 1px #888888;
+    
+/*     background: rgba(255, 200, 200, 0.8);   */
+
+    cursor: -webkit-grab; cursor: grab;
+    
+}
+
+.dippingArticleButton:active {
+    box-shadow: -3px -3px 1px #888888;
+/*     background: rgba(255, 200, 100, 1);   */
+    
+    /* Shift button (Sum of both must be same as 2x margin in default state) */
+    margin-left: 8px;
+    margin-right: 2px;
+    
+    margin-top: 8px;
+    margin-bottom: 2px;  
+    
+    cursor: -webkit-grabbing; cursor: grabbing;
 }
