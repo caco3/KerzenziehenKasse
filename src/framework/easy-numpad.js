@@ -7,9 +7,15 @@ $(document).ready(function () {
 });
 
 var articleId;
+var value;
+var prefix;
+var suffix;
 
-function show_easy_numpad(id, header, showDecimalPoint) {
+function show_easy_numpad(id, header, showDecimalPoint, pre, suf) {
     articleId = id;
+    value = "";
+    prefix = pre;
+    suffix = suf;
     var easy_numpad = `
         <div class="easy-numpad-frame" id="easy-numpad-frame">
             <div class="easy-numpad-container">
@@ -71,17 +77,21 @@ function easynum() {
 
     var easy_num_button = $(event.target);
     var easy_num_value = easy_num_button.text();
-    $('#easy-numpad-output').append(easy_num_value);
+    value += easy_num_value;
+    $('#easy-numpad-output').text(prefix + value + suffix);
 }
 function easy_numpad_del() {
     event.preventDefault();
-    var easy_numpad_output_val = $('#easy-numpad-output').text();
-    var easy_numpad_output_val_deleted = easy_numpad_output_val.slice(0, -1);
-    $('#easy-numpad-output').text(easy_numpad_output_val_deleted);
+    
+    var value_del = value.slice(0, -1);
+    value = value_del;
+    $('#easy-numpad-output').text(prefix + value + suffix);
+    
 }
 function easy_numpad_clear() {
-    event.preventDefault();
-    $('#easy-numpad-output').text("");
+    event.preventDefault();   
+    value = "";
+    $('#easy-numpad-output').text(prefix + value + suffix);
 }
 function easy_numpad_cancel() {
     event.preventDefault();
@@ -89,18 +99,17 @@ function easy_numpad_cancel() {
 }
 function easy_numpad_done() {
     event.preventDefault();
-    var easy_numpad_output_val = $('#easy-numpad-output').text();
     
-    if (easy_numpad_output_val == 0 || easy_numpad_output_val == "") {
+    if (value == 0 || value == "") {
         console.log("Invalid input!");
-        firework.launch("Ungültige Eingabe!", 'error', 2000);
+        firework.launch("Ungültige Eingabe!", 'error', 3000);
         return; // Do not close numpad
     }
     
-    console.log("Input: " + easy_numpad_output_val);
-    $('.easy-put').val(easy_numpad_output_val);
+    console.log("Input: " + value);
+//     $('.easy-put').val(easy_numpad_output_val);
     
-    addArticleWithQuantityToBasket(articleId, easy_numpad_output_val);
+    addArticleWithQuantityToBasket(articleId, value);
     
     easy_numpad_close();
 }
