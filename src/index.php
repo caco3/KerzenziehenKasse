@@ -8,7 +8,7 @@ include "$root/framework/header.php";
             <tr style="vertical-align: top; padding: 0px;">
                 <td>
                     <div class=leftSideDiv>
-                            <div id=dipArticlesDiv style="width:408px;"></div>
+<!--                             <div id=dipArticlesDiv style="width:408px;"></div> -->
                                             
 <!--                         <div id=customArticleDiv></div> -->
 <!--                        <span id=pourArticlesFloatingCandlesDiv></span>

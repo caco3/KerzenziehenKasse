@@ -12,7 +12,7 @@ db_connect();
 <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
 
 
-
+<h2 id=articlesDivTitle>Artikel</h2>
 
 
 
@@ -34,15 +34,18 @@ function showButton($line, $buttonStyle) {
 //         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
-    $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
+    $price = number_format($line['pricePerQuantity'], 2, ".", "");
 
 
 
 
     ?>
         <div class="articleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> onclick="addArticleToBasket(this.id)">
+        <div class=articlePackageDiv><? echo($line['package']); ?></div>
 <!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
-            <p><? echo("<img class=articleImage src=images/articles/".$line['image1'].">"); ?></p>
+            <? echo("<img class=articleImage src=images/articles/".$line['image1'].">"); ?>
+        <div class=articlePriceDiv><? echo($price); ?></div>
+        
             <p><? echo($line['name']); ?></p>
 <!--             <p class=moneyCellSmall><? echo($price); ?></p> -->
         </div>
@@ -54,12 +57,17 @@ function showButton($line, $buttonStyle) {
 
 
 function showDippingButton($line, $buttonStyle) {
+    $price = number_format($line['pricePerQuantity'], 2, ".", "");
+    
     $header = "<img class=articleImage src=images/articles/".$line['image1']."> " . $line['name'];
     ?>
         <div class="dippingArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
             onclick="show_easy_numpad(this.id, '<? echo($header); ?>', false)">
+        <div class=articlePackageDiv><? echo($line['package']); ?></div>
 <!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
             <p><? echo("<img class=articleImage src=images/articles/".$line['image1'].">"); ?></p>
+        <div class=articlePriceDiv><? echo($price); ?></div>
+        
             <p><? echo($line['name']); ?></p>
 <!--             <p class=moneyCellSmall><? echo($price); ?></p> -->
         </div>

@@ -2,9 +2,6 @@ html, body {
     height:100%;
     margin:0;
     padding:0;
-    margin-left: 5px;
-    margin-top: 5px;
-    margin-right: 0px;
     
     font-size: 90%;
 }
@@ -131,13 +128,8 @@ a:link, a:visited, a:hover, a:active {
 /*     max-width: 300px; */
     max-width: 708px;
     vertical-align: top;
-}
 
-
-
-
-.leftSideDiv {
-    margin-left: 0px;
+    margin-left: -5px;
     margin-right: 0px;  
 }
 
@@ -167,6 +159,13 @@ a:link, a:visited, a:hover, a:active {
     vertical-align: bottom;
 }
 
+
+#articlesDiv {
+}
+
+#articlesDivTitle {
+    margin-left: 5px;
+}
 
 #dipArticlesDiv, #pourArticlesNormalDiv, #pourArticlesFloatingCandlesDiv, #pourArticlesPreMadeDiv, #customArticleDiv, #basketDiv, #bibleVerseDiv {
     display: inline-block;  
@@ -634,8 +633,33 @@ a:link, a:visited, a:hover, a:active {
     width: 50px;
     height: 50px;
     margin: 0px;
-/*     margin-right: 5px; */
+    float:left;
 }
+
+
+
+.articlePackageDiv, .articlePriceDiv {
+    height: 20px; 
+    width: 50px; 
+    margin-bottom: 0px; 
+    float:left; 
+    transform: rotate(-90deg);
+    font-size: 80%;
+    color: rgb(100, 100, 100);
+    
+}
+.articlePackageDiv {
+    margin-left: -15px;
+    margin-right: -10px;
+    margin-top: 15px; 
+}
+
+.articlePriceDiv {
+    margin-left: 65px; 
+    margin-right: 0px; 
+    margin-top: -35px; 
+}
+
 
 
 
@@ -879,7 +903,8 @@ a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:ac
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
-    width: 336px;
+    width: 100px;
+/*     width: 336px; */ /* 3 columns */ 
     height: 90px;
     float: left;
     text-align: center;
@@ -889,17 +914,11 @@ a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:ac
     
     box-shadow: 3px 3px 1px #888888;
     
-/*     background: rgba(255, 200, 200, 0.8);   */
-
     cursor: -webkit-grab; cursor: grab;
-    
 }
 
 .dippingArticleButton:active {
     box-shadow: -3px -3px 1px #888888;
-/*     background: rgba(255, 200, 100, 1);   */
-    
-    /* Shift button (Sum of both must be same as 2x margin in default state) */
     margin-left: 8px;
     margin-right: 2px;
     
@@ -907,4 +926,23 @@ a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:ac
     margin-bottom: 2px;  
     
     cursor: -webkit-grabbing; cursor: grabbing;
+}
+
+
+.dippingArticleButton { 
+    background-color: #fcfac0; background-image: -webkit-gradient(linear, left top, left bottom, from(#fcfac0), to(#f6f283));
+    background-image: -webkit-linear-gradient(top, #fcfac0, #f6f283);
+    background-image: -moz-linear-gradient(top, #fcfac0, #f6f283);
+    background-image: -ms-linear-gradient(top, #fcfac0, #f6f283);
+    background-image: -o-linear-gradient(top, #fcfac0, #f6f283);
+    background-image: linear-gradient(to bottom, #fcfac0, #f6f283);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#fcfac0, endColorstr=#f6f283);
+}
+
+.dippingArticleButton:active {
+    background-color: #faf68f; background-image: -webkit-gradient(linear, left top, left bottom, from(#faf68f), to(#f3ed53));
+    background-image: -webkit-linear-gradient(top, #faf68f, #f3ed53);
+    background-image: -moz-linear-gradient(top, #faf68f, #f3ed53);
+    background-image: -ms-linear-gradient(top, #faf68f, #f3ed53);
+    background-image: -o-linear-gradient(top, #faf68f, #f3ed53);
+    background-image: linear-gradient(to bottom, #faf68f, #f3ed53);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faf68f, endColorstr=#f3ed53);
 }
