@@ -47,7 +47,18 @@ db_connect();
             list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
-            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity> $unit";
+            if ($unit == "g") {
+                $prefix = "";
+                $suffix = " g";
+            }            
+            else {
+                $prefix = "";
+                $suffix = " Stk. ";
+            
+            }
+            
+            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity 
+            onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, 'header', false, '$prefix', '$suffix')\"> $unit";
             $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($pricePerQuantity * $quantity, 2, ".", "") . " readonly disabled=disabled>";            
             $textField = "$name";
         }

@@ -10,12 +10,14 @@ var articleId;
 var value;
 var prefix;
 var suffix;
+var type;
 
-function show_easy_numpad(id, header, showDecimalPoint, pre, suf) {
+function show_easy_numpad(id, newType, initialValue, header, showDecimalPoint, newPrefix, newSuffix) {
     articleId = id;
-    value = "";
-    prefix = pre;
-    suffix = suf;
+    value = initialValue;
+    prefix = newPrefix;
+    suffix = newSuffix;
+    type = newType;
     var easy_numpad = `
         <div class="easy-numpad-frame" id="easy-numpad-frame">
             <div class="easy-numpad-container">
@@ -61,6 +63,7 @@ function show_easy_numpad(id, header, showDecimalPoint, pre, suf) {
         </div>
     `;
     $('body').append(easy_numpad);
+    $('#easy-numpad-output').text(prefix + value + suffix);
 }
 
 function easy_numpad_close() {
@@ -106,10 +109,18 @@ function easy_numpad_done() {
         return; // Do not close numpad
     }
     
-    console.log("Input: " + value);
+    console.log("articleId: " + articleId + ", value: " + value);
 //     $('.easy-put').val(easy_numpad_output_val);
     
-    addArticleWithQuantityToBasket(articleId, value);
+    if(type == "articleQuantity") {
+        addArticleWithQuantityToBasket(articleId, value);
+    }
+    else if (type == "basketQuantity") {
+        updateArticleQuantityInBasket(articleId, value);
+    }
+    else {
+        console.log("Invalid type!");
+    }
     
     easy_numpad_close();
 }

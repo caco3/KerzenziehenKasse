@@ -58,59 +58,59 @@ $(document).ready(function(){
     
  
     
-    $(".basketQuantityInput").keydown(
-        function(event){
-//             console.log("keydown which: " + event.which);
-                                
-            if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-//                 (event.which >= 8 && event.which <= 13)       ||     // backspace, tab, enter   
-//                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, decimal point, F5, num lock, period
-                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, F5, num lock
-            ) { // accept key press
-//                 console.log("ok, accept key");
-                return;
-            }
-            else { // undo key press
-                event.preventDefault();
-//                 console.log("undo key press");
-            }
-        }
-    );
+//     $(".basketQuantityInput").keydown(
+//         function(event){
+// //             console.log("keydown which: " + event.which);
+//                                 
+//             if( // The following key are not to be ignored:          
+//                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
+//                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
+// //                 (event.which >= 8 && event.which <= 13)       ||     // backspace, tab, enter   
+// //                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, decimal point, F5, num lock, period
+//                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, F5, num lock
+//             ) { // accept key press
+// //                 console.log("ok, accept key");
+//                 return;
+//             }
+//             else { // undo key press
+//                 event.preventDefault();
+// //                 console.log("undo key press");
+//             }
+//         }
+//     );
     
     
-    $(".basketQuantityInput").keyup(
-        function(event){
-            console.log("keyup which: " + event.which);
-            
-            var inputFieldId = $(event.target).attr('id'); 
-
-            if(event.which == 13) { // enter key
-                console.log("directly send to server instead of waiting for timeout");
-                // directly send to server instead of waiting for timeout
-                updateBasketEntry(inputFieldId);
-            }
-            else if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 46]) !== -1)        // backspace, remove
-            ) { // ok, refresh basket
-//                 console.log("ok, accept key");
-                    
-                //prevent empty or zero field
-    /*            if(($("#" + inputFieldId).val() == "") || ($("#" + inputFieldId).val() == 0)) {
-                    $("#" + inputFieldId).val(1);
-                }         */  
-
-                // tell watchdog to update basket after timeout
-                updateInputIdleTimer(inputFieldId);
-            }
-            else { //all other keys should not refresh basket
-                return;
-            }            
-        }
-    );
+//     $(".basketQuantityInput").keyup(
+//         function(event){
+//             console.log("keyup which: " + event.which);
+//             
+//             var inputFieldId = $(event.target).attr('id'); 
+// 
+//             if(event.which == 13) { // enter key
+//                 console.log("directly send to server instead of waiting for timeout");
+//                 // directly send to server instead of waiting for timeout
+//                 updateBasketEntry(inputFieldId);
+//             }
+//             else if( // The following key are not to be ignored:          
+//                 ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
+//                 (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
+//                 ($.inArray(event.which, [ 8, 46]) !== -1)        // backspace, remove
+//             ) { // ok, refresh basket
+// //                 console.log("ok, accept key");
+//                     
+//                 //prevent empty or zero field
+//     /*            if(($("#" + inputFieldId).val() == "") || ($("#" + inputFieldId).val() == 0)) {
+//                     $("#" + inputFieldId).val(1);
+//                 }         */  
+// 
+//                 // tell watchdog to update basket after timeout
+//                 updateInputIdleTimer(inputFieldId);
+//             }
+//             else { //all other keys should not refresh basket
+//                 return;
+//             }            
+//         }
+//     );
     
     
     
@@ -489,6 +489,105 @@ function updateBasketEntry(basketInputFieldId) {
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
 }
+
+
+
+
+
+
+
+function updateArticleQuantityInBasket(basketEntryId, quantity) {
+    console.log("basketEntryId: " + basketEntryId + ", quantity: " + quantity);
+    $("#basketEntryId_" + basketEntryId + "_quantity").val(quantity);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() { 
+//         console.log("Ready state: " + this.readyState + ", status: " + this.status);
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {                   
+//             console.log(this.responseText);
+            var obj = JSON.parse(this.responseText);            
+            if(obj.response.success == "true") {                
+//                 showBasket();
+//                 console.log("Updated " + basketInputFieldId +" in basket.\nResponse: " + this.responseText);
+                console.log("Updated basket.\nResponse: " + this.responseText);
+                
+                console.log("Updating changed fields:");                
+//                 console.log(obj.updatedFields);
+                
+                jQuery.each(obj.updatedFields, function(id, val) { // total changed
+                    if(id == 'total'){
+//                         console.log("Old  Total: " + $("#" + 'basketTotalMoney').val());
+                        console.log("  Total: " + val);
+                        $("#" + 'basketTotalMoney').val(formatCurrency(val))
+                                                                        
+                        if((obj.corrections) && (obj.corrections.action == 'uprounded')) { // There was a correction and the total was "uprounded"
+                            firework.launch("Total in Warenkorb korrigiert auf Mindestbetrag.", 'warning', 5000);
+                        }
+                        else {
+                            firework.launch("Total in Warenkorb aktualisiert.", 'success', 5000);
+                        }                        
+                    }
+                    
+                    if(id == 'totalRounded'){
+                        console.log("  Total (rounded): " + val);
+                        $("#" + 'basketTotalMoneyRounded').html("CHF " + val)                       
+                    }
+                    
+                    if(id == 'donation'){ // donation changed
+                        console.log("  Donation: " + val);
+                        $("#" + 'basketDonationMoney').val(formatCurrency(val))
+                        // TODO round to 0.05
+                        
+                        if((obj.corrections) && (obj.corrections.action == 'uprounded')) { // There was a correction and the total was "uprounded"
+                            // suppress success notification
+                        }
+                        else {
+                            firework.launch("Spende in Warenkorb aktualisiert.", 'success', 5000);
+                        }
+                    }
+                    
+                    if(id == 'article'){ // an article changed              
+                        jQuery.each(val, function($basketEntryId, val2) {
+                            console.log("  Article "+ $basketEntryId + ": " + val2.price);
+                            $("#basketEntryId_" + $basketEntryId + "_price").val(formatCurrency(val2.price));
+                        });
+                    }
+                });
+                            
+                // Monitor input field changes again                           
+                hideProgressBar(); 
+//                 updateBasketButtonsStates();                 
+            }
+            else{
+                firework.launch("Konnte Preis in Warenkorb nicht aktualisieren!", 'error', 5000);
+            }
+        }
+    };
+
+    
+    var params = "basketEntryId=" + basketEntryId + "&quantity=" + quantity + "&price=0";    
+    console.log("Parameters:", params);
+
+    showProgressBar();  
+    
+    xhttp.open("POST", "ajax/updateInBasket.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

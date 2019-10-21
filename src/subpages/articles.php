@@ -61,7 +61,7 @@ function showDippingButton($line, $buttonStyle) {
     $header = "<img class=articleImage src=images/articles/".$line['image1']."> " . $line['name'];
     ?>
         <div class="dippingArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
-            onclick="show_easy_numpad(this.id, '<? echo($header); ?>', false, '', ' g')">
+            onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', false, '', ' g')">
         <div class=articlePackageDiv><? echo($line['package']); ?></div>
 <!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
             <p><? echo("<img class=articleImage src=images/articles/".$line['image1'].">"); ?></p>
