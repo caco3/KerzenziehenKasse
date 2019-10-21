@@ -13,6 +13,7 @@ var suffix;
 var type;
 
 function show_easy_numpad(id, newType, initialValue, header, showDecimalPoint, newPrefix, newSuffix) {
+    console.log(id, newType, initialValue, showDecimalPoint, newPrefix, newSuffix);
     articleId = id;
     value = initialValue;
     prefix = newPrefix;
@@ -81,6 +82,7 @@ function easynum() {
     var easy_num_button = $(event.target);
     var easy_num_value = easy_num_button.text();
     value += easy_num_value;
+    value = value * 1;
     $('#easy-numpad-output').text(prefix + value + suffix);
 }
 function easy_numpad_del() {
@@ -116,7 +118,13 @@ function easy_numpad_done() {
         addArticleWithQuantityToBasket(articleId, value);
     }
     else if (type == "basketQuantity") {
-        updateArticleQuantityInBasket(articleId, value);
+        updateBasketEntry(articleId, value);
+    }
+    else if (type == "basketDonation") {
+        updateBasketEntry(articleId, value);
+    }
+    else if (type == "basketTotal") {
+        updateBasketEntry(articleId, value);
     }
     else {
         console.log("Invalid type!");
