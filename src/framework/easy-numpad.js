@@ -82,13 +82,22 @@ function easynum() {
     var easy_num_button = $(event.target);
     var easy_num_value = easy_num_button.text();
     value += easy_num_value;
-    value = value * 1;
+    if (easy_num_value == ".") {        
+        var dotCount = value.split(".").length-1; // count dots
+        console.log(dotCount);
+        if (dotCount > 1) {
+            value = value.slice(0, -1); // undo adding dot
+        }
+    }
+    else {
+        value = value * 1;
+    }
     $('#easy-numpad-output').text(prefix + value + suffix);
 }
 function easy_numpad_del() {
     event.preventDefault();
-    
-    var value_del = value.slice(0, -1);
+    console.log(value);
+    var value_del = ("" + value).slice(0, -1);
     value = value_del;
     $('#easy-numpad-output').text(prefix + value + suffix);
     

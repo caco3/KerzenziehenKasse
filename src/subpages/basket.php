@@ -90,7 +90,7 @@ db_connect();
     echo("<tr>
             <td colspan=3>Spende</td>
             <td class=moneyCell colspan=2>CHF <input type=text class=basketMoneyInput id=basketDonationMoney value=" . getDbDonation() . "
-            onclick=\"show_easy_numpad('basketDonationMoney', 'basketDonation', this.value, 'header', false, 'CHF ', '')\"></td>
+            onclick=\"show_easy_numpad('basketDonationMoney', 'basketDonation', this.value, 'header', true, 'CHF ', '')\"></td>
         </tr>\n");    
     
     
@@ -98,7 +98,7 @@ db_connect();
     echo("<tr>
             <td colspan=3 class=bold class=basketTotalCell>Total</td>
             <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . number_format(getDbTotal(), 2, ".", "") . "
-             onclick=\"show_easy_numpad('basketTotalMoney', 'basketTotal', this.value, 'header', false, 'CHF ', '')\"></td>
+             onclick=\"show_easy_numpad('basketTotalMoney', 'basketTotal', this.value, 'header', true, 'CHF ', '')\"></td>
         </tr>\n"); 
         
     echo("<tr>
