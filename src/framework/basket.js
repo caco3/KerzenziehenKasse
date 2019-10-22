@@ -239,9 +239,9 @@ function updateBasketEntry(basketEntryId, quantity) {
     console.log("basketEntryId: " + basketEntryId + ", quantity: " + quantity);
     
     if((basketEntryId == "basketDonationMoney") || (basketEntryId == "basketTotalMoney")){
-        $("#" + basketEntryId).val(quantity);
         var price = quantity
         var quantity = 1;
+        $("#" + basketEntryId).val(formatCurrency(price));
     }
     else { // its an article     
         $("#basketEntryId_" + basketEntryId + "_quantity").val(quantity);
