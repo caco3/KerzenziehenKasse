@@ -49,7 +49,7 @@ h3 {
 }
 
 .navigation {
-    margin-bottom: 10px;    
+    margin-bottom: 20px;    
 }
 
 
@@ -630,13 +630,19 @@ a:link, a:visited, a:hover, a:active {
 
 
 .articleImage {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     margin: 0px;
     float:left;
 }
 
 
+.articleImageLarge {
+    width: 50px;
+    height: 50px;
+    margin: 0px;
+    float:left;
+}
 
 .articlePackageDiv, .articlePriceDiv {
     height: 20px; 

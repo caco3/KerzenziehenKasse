@@ -56,8 +56,9 @@ db_connect();
                 $suffix = " Stk. ";            
             }
             
+            $header = "<h2><img class=articleImage src=images/articles/$image1> $name</h2>";
             $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity 
-            onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, 'header', false, '$prefix', '$suffix')\"> $unit";
+            onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, '$header', false, '$prefix', '$suffix')\"> $unit";
             $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($pricePerQuantity * $quantity, 2, ".", "") . " readonly disabled=disabled>";            
             $textField = "$name";
 //         }
@@ -90,7 +91,7 @@ db_connect();
     echo("<tr>
             <td colspan=3>Spende</td>
             <td class=moneyCell colspan=2>CHF <input type=text class=basketMoneyInput id=basketDonationMoney value=" . getDbDonation() . "
-            onclick=\"show_easy_numpad('basketDonationMoney', 'basketDonation', this.value, 'header', true, 'CHF ', '')\"></td>
+            onclick=\"show_easy_numpad('basketDonationMoney', 'basketDonation', this.value, '<h2>Spende</h2>', true, 'CHF ', '')\"></td>
         </tr>\n");    
     
     
@@ -98,7 +99,7 @@ db_connect();
     echo("<tr>
             <td colspan=3 class=bold class=basketTotalCell>Total</td>
             <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . number_format(getDbTotal(), 2, ".", "") . "
-             onclick=\"show_easy_numpad('basketTotalMoney', 'basketTotal', this.value, 'header', true, 'CHF ', '')\"></td>
+             onclick=\"show_easy_numpad('basketTotalMoney', 'basketTotal', this.value, '<h2>Total</h2>', true, 'CHF ', '')\"></td>
         </tr>\n"); 
         
     echo("<tr>
