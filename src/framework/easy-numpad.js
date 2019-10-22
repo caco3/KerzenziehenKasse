@@ -114,10 +114,20 @@ function easy_numpad_cancel() {
 function easy_numpad_done() {
     event.preventDefault();
     
-    if (value == 0 || value == "") {
+    error = false;
+    if((type == "articleQuantity") || (type == "basketQuantity")) {
+        if (value == 0) {
+            error = true;
+        }
+    }
+    else if(value === "") {
+        error = true;
+    }
+    
+    if (error == true) {
         console.log("Invalid input!");
         firework.launch("Ungültige Eingabe!", 'error', 3000);
-        return; // Do not close numpad
+        return; // Do not close numpad   
     }
     
     console.log("articleId: " + articleId + ", value: " + value);
@@ -126,13 +136,7 @@ function easy_numpad_done() {
     if(type == "articleQuantity") {
         addArticleWithQuantityToBasket(articleId, value);
     }
-    else if (type == "basketQuantity") {
-        updateBasketEntry(articleId, value);
-    }
-    else if (type == "basketDonation") {
-        updateBasketEntry(articleId, value);
-    }
-    else if (type == "basketTotal") {
+    else if ((type == "basketQuantity") || (type == "basketTotal") || (type == "basketDonation")) {
         updateBasketEntry(articleId, value);
     }
     else {
