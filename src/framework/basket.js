@@ -1,10 +1,3 @@
-var watchdogInterval = 100; // in ms
-var watchdogCounterStartValue = 9;
-                                        
-var watchdogMonitoredFieldId = null;
-var watchdogCounter = 0;
-var watchdogTimerId =  null;
-
 var cancelClearBasketQuestionDialogId = null;
 
 
@@ -59,17 +52,11 @@ $(document).ready(function(){
     
     $(".payButton").off().on('click', 
         function(event){
-//             console.log("watchdogCounter: " + watchdogCounter);
-            if(watchdogCounter > 0) {
-                firework.launch("Aktualisiere Warenkorb...<br>Bitte versuch es in einer Sekunde noch einmal!", 'error', 5000);
+            if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+                moveBasketToBookings();
             }
-            else { //In sync with server
-                if ($("#basketTotalMoney").val() != 0) { // Basket contains something
-                    moveBasketToBookings();
-                }
-                else { // Basket is empty
-                    firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
-                }
+            else { // Basket is empty
+                firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
             }
         }
     ); 
@@ -321,50 +308,4 @@ function updateBasketEntry(basketEntryId, quantity) {
     xhttp.open("POST", "ajax/updateInBasket.php", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
-}
-
-
-
-
-
-
-
-function watchdog() {
-    watchdogCounter = watchdogCounter - 1;   
-//     console.log(watchdogCounter);
-    document.getElementById("timerIcon").src = "images/timer/" + (9 - watchdogCounter) + ".png";
-    if (watchdogCounter > 0) { // not reached yet         
-        console.log(watchdogMonitoredFieldId + ": " + watchdogCounter);
-    }
-    else if (watchdogCounter == 0) { //timeout reached
-        stopInputIdleTimer(watchdogTimerId);
-
-        updateBasketEntry(watchdogMonitoredFieldId);
-        return;
-    }        
-    watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
-}
-    
-
-function startInputIdleTimer(){
-    stopInputIdleTimer(watchdogTimerId);
-    watchdogTimerId = setTimeout(watchdog, watchdogInterval);   
-    console.log("Started InputIdleTimer");
-}       
-        
-
-function stopInputIdleTimer(watchdogTimerId){
-    clearTimeout(watchdogTimerId);
-    console.log("Stopped InputIdleTimer");
-}
-
-
-function updateInputIdleTimer(inputFieldId) { 
-    watchdogMonitoredFieldId = inputFieldId;
-    watchdogCounter = watchdogCounterStartValue; 
-//     setPayButtonStateEnabled(false);
-//     setCancelButtonStateEnabled(false);
-//     setUpdateButtonStateEnabled(false);
-    console.log("Updated InputIdleTimer");
-    startInputIdleTimer();
 }

@@ -14,13 +14,10 @@ db_connect();
 
 <table id=basketButtonsTable>
     <tr>
-        <td >
-            <img id=timerIcon src="images/timer/0.png" width=36px>
-        </td>
-        <td style="width: 50px">
+        <td>
             <button type=button id=cancelButton class=cancelButton><img src="images/clear_basket.png" width=50p><br>Abbrechen</button>
         </td>
-        <td style="width: 50px">
+        <td>
             <?
             $bookingId = getDbBookingId();
             if($bookingId == "new" ) { // basket filled with articles for a new booking
