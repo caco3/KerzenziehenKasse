@@ -3,7 +3,7 @@ html, body {
     margin:0;
     padding:0;
     
-    font-size: 90%;
+    font-size: 120%;
 }
 
 body {
@@ -15,6 +15,12 @@ body {
     font-family: Arial; 
     padding: 0px;
     margin: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    
+/*    transform: scale(1.25);
+    transform-origin: top left;
+    overflow:hidden;*/
 }
 
 #live {
@@ -126,7 +132,8 @@ a:link, a:visited, a:hover, a:active {
 .leftSideDiv{
     display:inline-table;
 /*     max-width: 300px; */
-    max-width: 708px;
+/*     max-width: 708px; */
+    max-width: 1000px;
     vertical-align: top;
 
     margin-left: -5px;
@@ -510,15 +517,15 @@ a:link, a:visited, a:hover, a:active {
 
 
 .articleImageLarge {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     margin: 0px;
     float:left;
 }
 
 .articlePackageDiv, .articlePriceDiv {
     height: 20px; 
-    width: 50px; 
+    width: 70px; 
     margin-bottom: 0px; 
     float:left; 
     transform: rotate(-90deg);
@@ -529,11 +536,11 @@ a:link, a:visited, a:hover, a:active {
 .articlePackageDiv {
     margin-left: -15px;
     margin-right: -10px;
-    margin-top: 15px; 
+    margin-top: 20px; 
 }
 
 .articlePriceDiv {
-    margin-left: 65px; 
+    margin-left: 90px; 
     margin-right: 0px; 
     margin-top: -35px; 
 }

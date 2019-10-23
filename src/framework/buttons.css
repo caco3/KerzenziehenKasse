@@ -136,8 +136,8 @@
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
-    width: 100px;
-    height: 90px;
+    width: 140px;
+    height: 120px;
     float: left;
     text-align: center;
     
@@ -255,9 +255,8 @@
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
-    width: 100px;
-/*     width: 336px; */ /* 3 columns */ 
-    height: 90px;
+    width: 140px;
+    height: 120px;
     float: left;
     text-align: center;
     
