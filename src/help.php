@@ -7,9 +7,7 @@ include "$root/framework/header.php";
       <h2>FAQ</h2>
       <ul>
         
-        <li><p class=question><b>Frage:</b> Was bedeutet die kleine Stopuhr <img src=images/timer/5.png>?</p>
-            <p class=answer><b>Antwort:</b> Wenn im Warenkorb in einem Testfeld eine Eingabe gemacht wird (Menge- oder Preisänderung), wird einen Moment gewartet, bevor der Warenkorb neu berechnet wird.<br><br></p></li>
-                
+    
         <li><p class=question><b>Frage:</b> Wieso kann man nur die Buchungen vom aktuellen Tag nachbearbeiten?</p>
             <p class=answer><b>Antwort:</b> Die Tageskasse von den vergangenen Tagen wurden bereits abgerechnet und können nicht mehr verändert werden.<br><br></p></li>
         
