@@ -58,7 +58,7 @@ function showButton($line, $buttonStyle) {
 function showDippingButton($line, $buttonStyle) {
     $price = number_format($line['pricePerQuantity'], 2, ".", "");
     
-    $header = "<h2><img class=articleImage src=images/articles/".$line['image1']."> " . $line['name'] . "</h2>";
+    $header = "<h2><img class=articleImageNumpadHeader src=images/articles/".$line['image1']."> " . $line['name'] . "</h2>";
     ?>
         <div class="dippingArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
             onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', false, '', ' g')">

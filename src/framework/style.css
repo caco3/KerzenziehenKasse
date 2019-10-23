@@ -289,14 +289,14 @@ a:link, a:visited, a:hover, a:active {
 
 
 .articleQuantityInput, .basketQuantityInput {
-    width: 45px;
+    width: 60px;
     padding: 2px;
     font-size: 120%;
     color: black;
 } 
 
 .articleMoneyInput, .basketMoneyInput {
-    width: 60px;
+    width: 100px;
     padding: 2px;
     font-size: 120%;
     color: black;
@@ -509,8 +509,8 @@ a:link, a:visited, a:hover, a:active {
 
 
 .articleImage {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     margin: 0px;
     float:left;
 }
@@ -522,6 +522,15 @@ a:link, a:visited, a:hover, a:active {
     margin: 0px;
     float:left;
 }
+
+.articleImageNumpadHeader {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    margin-top: 0px;
+    float:left;
+}
+
 
 .articlePackageDiv, .articlePriceDiv {
     height: 20px; 

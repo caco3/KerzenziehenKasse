@@ -24,11 +24,12 @@
 
 
 .addToBasketButton, .removeFromBasketButton, .editButton, .receiptButton, .exportCsvButton {    
-    background-size: 25px 25px;
-    width: 40px;
-    height: 30px;
+    background-size: 40px 40px;
+    width: 56px;
+    height: 50px;
     border-radius: 6px;
     background-position: center left 5px, center left 5px;
+    margin: 10px;
 }
 
 
