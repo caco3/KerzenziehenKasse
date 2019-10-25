@@ -15,7 +15,7 @@ db_connect();
 <html lang="de">
 <head>
 
-<? if(defined(TEST_SYSTEM)) { ?>
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
     <title>Kerzenziehen TEST-SYSTEM</title>
 <? } else { ?>
     <title>Kerzenziehen</title>
@@ -63,7 +63,7 @@ db_connect();
 //             firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
 //         }
 
-        <? if(defined(TEST_SYSTEM) and (basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
+        <? if(isset($TEST_SYSTEM) && $TEST_SYSTEM and (basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
             firework.launch("Du verwendest das Test-System! Damit kannst spielen und testen. Die Eingaben haben keinen Einfluss auf die richtige Kasse!", 'error', 9999999000);
         <? } ?>
 
@@ -72,7 +72,7 @@ db_connect();
 
 </head>
 
-<? if(defined(TEST_SYSTEM)) { ?>
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
     <body id=test>
 <? } else { ?>
     <body id=live>
@@ -84,7 +84,7 @@ db_connect();
    
 <?
 // If this variable is set (in config.php), a separate database and files/folders will be used!
-if(defined(TEST_SYSTEM) and !(basename($_SERVER['PHP_SELF']) == "index.php")) {
+if(isset($TEST_SYSTEM) && $TEST_SYSTEM and !(basename($_SERVER['PHP_SELF']) == "index.php")) {
     echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
 }  
 

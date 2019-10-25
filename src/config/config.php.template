@@ -1,8 +1,7 @@
 <?
 
-// Enable this line to to show it uses the test database
-define ( 'TEST_SYSTEM',     'true' );
-
+// Set to true to make sure it uses the test system with its own database
+$TEST_SYSTEM=false;
  
 define ( 'MYSQL_USER',      '' );
 define ( 'MYSQL_PASSWORD',  '' );

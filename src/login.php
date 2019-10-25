@@ -16,7 +16,7 @@ require_once("$root/config/config_generic.php");
 <html lang="de">
 <head>
 
-<? if(defined(TEST_SYSTEM)) { ?>
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
     <title>Kerzenziehen TEST-SYSTEM</title>
 <? } else { ?>
     <title>Kerzenziehen</title>
@@ -36,7 +36,7 @@ require_once("$root/config/config_generic.php");
 </head>
 
 
-<? if(defined(TEST_SYSTEM)) { ?>
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
     <body id=test>
 <? } else { ?>
     <body id=live>
