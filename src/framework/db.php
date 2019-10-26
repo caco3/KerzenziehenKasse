@@ -559,15 +559,14 @@ function getBookingIdsOfDate($date, $invertDateFilter) {
 /* Returns all dates with at least one booking on that day
  * On multiple bookings on a day, the day is only returned once
  */
-function getBookingDatesOfCurrentYear() {
+function getBookingDatesOfYear($year) {
     global $db_link;
    
-    $currentYear = date("Y");
-    $nextYear = $currentYear + 1;
+    $nextYear = $year + 1;
     
-//     echo("$currentYear - $nextYear");
+//     echo("$year - $nextYear");
     
-    $sql = "SELECT date FROM `bookings` WHERE date between date('$currentYear-01-01') and date('$nextYear-01-01') group by date order by date DESC"; 
+    $sql = "SELECT date FROM `bookings` WHERE date between date('$year-01-01') and date('$nextYear-01-01') group by date order by date DESC"; 
     
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
