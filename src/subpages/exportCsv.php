@@ -1,5 +1,5 @@
 <?
-// echo("<pre>");
+echo("<pre>");
 
 $root="..";
 require_once("$root/framework/credentials_check.php");
@@ -29,20 +29,20 @@ else { // a day
 }
 
 
-// Create list of all available products, so all exports have the same order
+// Create list of all available products, so all exports have the same categories
 $articles = array();
 
 $products = getDbProducts("wachs", "articleId");
 // print_r($products);
 foreach($products as $product) {
-    $articles[$product['articleId']]['text'] = $product['name'];
+    $articles[$product['articleId']]['text'] = strip_tags(html_entity_decode($product['name']));
     $articles[$product['articleId']]['quantity'] = $product['quantity'];
     $articles[$product['articleId']]['unit'] = $product['unit'];
 }
 
 $products = getDbProducts("guss", "name");
 foreach($products as $product) {
-    $articles[$product['articleId']]['text'] = $product['name'];
+    $articles[$product['articleId']]['text'] = strip_tags(html_entity_decode($product['name']));
     $articles[$product['articleId']]['quantity'] = $product['quantity'];
     $articles[$product['articleId']]['unit'] = $product['unit'];
 }
@@ -58,15 +58,15 @@ if ($id != 'year') { // a day
         $booking = getBooking($bookingId);
         foreach ($booking['articles'] as $articleId => $article) { // articles
     //         print_r($article);
-            if($article['type'] == "normal") { // normal article   
+//             if($article['type'] == "normal") { // normal article   
                 $id = $articleId;
-            }
-            else { // custom article      
-                $id = $article['text'] . "_$customIds";
-                $customIds++;
-            }
+//             }
+//             else { // custom article      
+//                 $id = $article['text'] . "_$customIds";
+//                 $customIds++;
+//             }
                     
-            $articles[$id]['text'] = $article['text'];
+            $articles[$id]['text'] = strip_tags(html_entity_decode($article['text']));
             $articles[$id]['quantity'] += $article['quantity'];
                 $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
             $articles[$id]['unit'] = $article['unit'];
@@ -75,7 +75,7 @@ if ($id != 'year') { // a day
         $donations += $booking['donation'];
     }
     
-    // print_r($articles);
+//     print_r($articles);
 
     $total = 0;
     foreach($articles as $article) {
@@ -108,15 +108,15 @@ else { // the whole year
             $booking = getBooking($bookingId);
             foreach ($booking['articles'] as $articleId => $article) { // articles
         //         print_r($article);
-                if($article['type'] == "normal") { // normal article   
+//                 if($article['type'] == "normal") { // normal article   
                     $id = $articleId;
-                }
-                else { // custom article   
-                    $id = $article['text'] . "_$customIds";
-                    $customIds++;
-                }
+//                 }
+//                 else { // custom article   
+//                     $id = $article['text'] . "_$customIds";
+//                     $customIds++;
+//                 }
                         
-                $articles[$id]['text'] = $article['text'];
+                $articles[$id]['text'] = strip_tags(html_entity_decode($article['text']));
                 $articles[$id]['quantity'] += $article['quantity'];
                 $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
                 $articles[$id]['unit'] = $article['unit'];
