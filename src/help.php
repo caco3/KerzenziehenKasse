@@ -21,7 +21,7 @@ include "$root/framework/header.php";
             <p class=answer><b>Antwort:</b> Buchungen können nicht mehr gelöscht werden. Stattdessen einfach den Betrag auf CHF 0.00 setzen.<br><br></p></li>
                         
         <li><p class=question><b>Frage:</b> Welche Webbrowser werden unterstützt?</p>
-            <p class=answer><b>Antwort:</b> Die Kassensoftware funktioniert nur im Firefox korrekt. Chrome, Internet Explorer, Edge oder Safari werden nicht unterstützt.<br><br></p></li>
+            <p class=answer><b>Antwort:</b> Die Kassensoftware wurde mit Chrome getestet. Die anderen Webbrowser sollten funktionieren, wurden aber nicht explizit getestet.<br><br></p></li>
             
         <li><p class=question><b>Frage:</b> Wie können die Preise angepasst werden?</p>
             <p class=answer><b>Antwort:</b> Die Artikel und Preise können über <a href="https://admin.hostpoint.ch/phpmyadmin2/sql.php?db=chrisc22_kerzenziehen&table=articles&server=467&pos=0" target="_blank">phpMyAdmin</a> angepasst werden.<br><br></p></li>
