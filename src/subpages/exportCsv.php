@@ -99,7 +99,7 @@ if ($id != 'year') { // a day
     $content .= "Spenden;;;$donations";
 }
 else { // the whole year    
-    $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
+    $bookingDatesOfCurrentYear = getBookingDatesOfYear(date("Y"));
     $donations = 0;
     $customIds = 0;
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
