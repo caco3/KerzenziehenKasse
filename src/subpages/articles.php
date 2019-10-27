@@ -34,7 +34,7 @@ function showButton($line, $buttonStyle) {
 //         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
     }
-    $price = number_format($line['pricePerQuantity'], 2, ".", "");
+    $price = formatMoney($line['pricePerQuantity']);
 
 
 
@@ -56,7 +56,8 @@ function showButton($line, $buttonStyle) {
 
 
 function showDippingButton($line, $buttonStyle) {
-    $price = number_format($line['pricePerQuantity'], 2, ".", "");
+    $price = $line['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
+    $price = formatMoney($price);
     
     $header = "<h2><img class=articleImageNumpadHeader src=images/articles/".$line['image1']."> " . $line['name'] . "</h2>";
     ?>
