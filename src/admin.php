@@ -4,6 +4,9 @@ include "$root/framework/header.php";
 ?>
     <div id="body">
       <h1>Administration</h1>
+      <h2>Preisliste</h2>
+      <p><a href=prices.php target="_blank">Generator für die Preisliste</a>.<br><br></p>
+      
       <h2>Artikel und Preise ändern</h2>
       <p><a href=https://admin.hostpoint.ch/phpmyadmin2/index.php?lang=de&server=mysql19j06.db.hostpoint.internal target="_blank">phpMyAdmin</a> (Zugangsdaten bei George Ruinelli oder Michael Zollinger anfordern).<br><br></p>
       
