@@ -1,3 +1,5 @@
+<h1><a href="admin.php">Zurück</a></h1>
+<hr>
 <? 
 
 $root=".";
