@@ -16,9 +16,9 @@ $articles = array();
 
 /* Dipping Articles */
 $articles = array_merge($articles, getDbProductsEx("wachs", "name", "normal"));
-foreach($articles as &$article) {
-    $article['pricePerQuantity'] = $article['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
-}
+// foreach($articles as &$article) {
+//     $article['pricePerQuantity'] = $article['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
+// }
 
 
 /* Normal Articles */
@@ -48,6 +48,9 @@ $articles = array_merge($articles, getDbProductsEx("wachs", "name", "effect"));
 
 <?
 foreach($articles as $article) {
+    if ($article['typ'] == "wachs") {
+        $article['pricePerQuantity'] = $article['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
+    }
     ?>
     <tr>
         <td><img src=images/articles/<? echo($article['image1']); ?> style="width: 50px; height: 50px;"></td>
