@@ -84,7 +84,7 @@ db_connect();
    
 <?
 // If this variable is set (in config.php), a separate database and files/folders will be used!
-if(isset($TEST_SYSTEM) && $TEST_SYSTEM and !(basename($_SERVER['PHP_SELF']) == "index.php")) {
+if(isset($TEST_SYSTEM) && $TEST_SYSTEM) {
     echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
 }  
 

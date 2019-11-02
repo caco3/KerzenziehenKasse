@@ -39,15 +39,18 @@ input[readonly] {
 p {
     padding: 0px;
     margin: 0px;
+    color: red;
 }
 
 h1 {
     margin: 0px;
+    color: red;
 }
 
 h2 {
     margin: 0px;
 /*     font-size: 120%; */
+    color: red;
 }
 
 h3 {
@@ -55,7 +58,8 @@ h3 {
 }
 
 .navigation {
-    margin-bottom: 20px;    
+    margin-bottom: 20px; 
+    color: red;   
 }
 
 
@@ -104,7 +108,8 @@ td {
 
 a:link, a:visited, a:hover, a:active {    
     text-decoration: none;
-    color: #00407d;
+/*     color: #00407d; */
+    color: red;
 }
 
 
@@ -206,7 +211,8 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #editBookingTitle {
-    color: #750000; 
+/*     color: #750000;  */
+    color: red;
 }
 
 /* Shade */
@@ -292,14 +298,16 @@ a:link, a:visited, a:hover, a:active {
     width: 60px;
     padding: 2px;
     font-size: 120%;
-    color: black;
+/*     color: black; */
+    color: red;
 } 
 
 .articleMoneyInput, .basketMoneyInput {
     width: 100px;
     padding: 2px;
     font-size: 120%;
-    color: black;
+/*     color: black; */
+    color: red;
 }
 
 
@@ -650,7 +658,8 @@ body.loading .modal {
 a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:active {    
     text-decoration: none;
     font-weight: bold;
-    color: #00407d;
+/*     color: #00407d; */
+    color: red;
 }
 
 
