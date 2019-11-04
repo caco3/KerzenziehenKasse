@@ -1,5 +1,5 @@
 <?
-echo("<pre>");
+// echo("<pre>");
 
 $root="..";
 require_once("$root/framework/credentials_check.php");

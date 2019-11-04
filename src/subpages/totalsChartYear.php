@@ -5,23 +5,66 @@
 
     function drawChartTotalsPerDay() {
         var data = google.visualization.arrayToDataTable([
-            ['Tag', 'Total'],
 <?
-            foreach($statsPerDay as $date => $total) {
-                $timestamp = strtotime($date);
-                $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ",\\n" . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
-        
-                echo("['" . $formatedDate . "', " . $total . "],\n");    
+            echo("['Tag', ");
+            
+            $yearsCovered = count($totalPerDayAndYear[0]); // get the number of data columns
+                for($i = $yearsCovered; $i > 0; $i--) {
+                $year = date("Y") - $i + 1; 
+                echo("'$year', ");
+            }            
+            echo("],\n");
+            
+            
+            foreach($totalPerDayAndYear as $day => $data) {
+                // X-Axis
+//                 echo("[\"");  
+//                 foreach($data as $year => $data2) {
+//                     echo($data2['formatedDate'] . ",\\n");
+//                 }
+//                 echo("\", ");  
+                
+                echo("['" . $data[$year - $yearsCovered + 1]['formatedDate'] . "', ");
+                
+                
+                // Data
+                for($i = $yearsCovered; $i > 0; $i--) {
+                    $year = date("Y") - $i + 1; 
+                    if (array_key_exists($year, $data)) {
+                        echo($data[$year]['total'] . ", ");
+                    }
+                    else {
+                        echo("'', ");
+                    }
+
+                }                              
+                echo("],\n");
             }
+
 ?> 
         ]);
 
         var options = { 
-            title: 'Umsatz pro Tag',
-            titleTextStyle: { fontSize: 18 },
             backgroundColor: 'transparent',
-            chartArea: {'width': '80%', 'height': '80%'}, 
-//             is3D:true
+            chartArea: {
+                top: 20,
+                left: 100,
+                height: '70%' 
+            }, 
+            hAxis: {
+                slantedText:true, 
+                slantedTextAngle:90,
+                textStyle: {
+                    fontSize: 18
+                },
+            },
+            
+            vAxis: {
+                title: "Umsatz in CHF",
+                textStyle: {
+                    fontSize: 18
+                },
+            }
         };
 
         var chartTotalsPerDay = new google.visualization.ColumnChart(document.getElementById('dayTotals'));

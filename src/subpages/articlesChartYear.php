@@ -32,10 +32,10 @@
             is3D:true
         };
 
-        var chartPieChartYear = new google.visualization.PieChart(document.getElementById('piechart'));
+        var chartPieChartYear = new google.visualization.PieChart(document.getElementById('piechart_<? echo($year); ?>'));
 
         chartPieChartYear.draw(data, options);
     }
 </script>
 
-<div id="piechart" style="width: 900px; height: 600px;"></div>
+<div id="piechart_<? echo($year); ?>" style="width: 900px; height: 600px;"></div>
