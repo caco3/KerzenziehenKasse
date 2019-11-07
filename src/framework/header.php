@@ -24,7 +24,12 @@ db_connect();
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">  
+    
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style_testsystem.css"> 
+<? } else { ?>
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css"> 
+<? } ?> 
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/buttons.css">  
     <script src="<? echo("$root"); ?>/framework/jquery.min.js"></script>
     <script src="<? echo("$root"); ?>/framework/jquery-ui.min.js"></script>
