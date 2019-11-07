@@ -24,14 +24,15 @@
 //                 }
 //                 echo("\", ");  
                 
-                echo("['" . $data[$year - $yearsCovered + 1]['formatedDate'] . "', ");
+//                 echo("['" . $data[$year - $yearsCovered + 1]['formatedDate'] . "', ");
+                echo("['" . $data['formatedDate'] . "', ");
                 
                 
                 // Data
-                for($i = $yearsCovered; $i > 0; $i--) {
+                for($i = $yearsCovered; $i > 0; $i--) { // for each year
                     $year = date("Y") - $i + 1; 
-                    if (array_key_exists($year, $data)) {
-                        echo($data[$year]['total'] . ", ");
+                    if (array_key_exists($year, $data['year'])) {
+                        echo($data['year'][$year]['total'] . ", ");
                     }
                     else {
                         echo("'', ");

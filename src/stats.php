@@ -273,27 +273,32 @@ function showSummaryOfYear($year) {
     
     $totalPerDayAndYear = array(); // [day][year]
         
-    for ($i = 0; $i <= 10; $i++) {
+    for ($i = 0; $i <= 10; $i++) { // for each year
         $year = date("Y") - $i; 
         $dayIndex = 0;
-        foreach($statsPerDay[$year] as $date => $data) {
+        foreach($statsPerDay[$year] as $date => $data) { // for each day
             if ($dayIndex == 0) {
                 $firstDay = $date; 
                 $zeroOffset = date("z", strtotime($date));
             }
             $offset = date("z", strtotime($date)) - $zeroOffset;
             $dayIndex++;
-            $totalPerDayAndYear[$offset][$year]['total'] = $data['total']; 
-            $totalPerDayAndYear[$offset][$year]['date'] = $date; 
+            
+//             $totalPerDayAndYear[$offset][$year]['total'] = $data['total']; 
+//             $totalPerDayAndYear[$offset][$year]['date'] = $date; 
+            $totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
+            $totalPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
+            
 //             $totalPerDayAndYear[$offset][$year]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))] .
 //                     strftime(", %e. ", strtotime($date)) . $germanMonth[strftime("%m", strtotime($date)) - 1] . ". " . strftime("%Y", strtotime($date)); 
 
-            $totalPerDayAndYear[$offset][$year]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
+//             $totalPerDayAndYear[$offset][$year]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
+            $totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
         }
     }    
     
-//     echo("<pre>");
-//     print_r($totalPerDayAndYear);   
+/*    echo("<pre>");
+    print_r($totalPerDayAndYear); */  
     include "$root/subpages/totalsChartYear.php"; 
 ?>  
 
