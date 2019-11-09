@@ -19,7 +19,7 @@ $file = "Kerzenziehen-Export - " . date("Y-m-d__H-i-s") . ".csv";
 
 $content = "";
 
-if ($id == 'year') {        
+if (strlen($id) == 4) { // year        
     $formatedDate = date("Y");
 }
 else { // a day
@@ -50,7 +50,7 @@ foreach($products as $product) {
 // print_r($articles);
 
 
-if ($id != 'year') { // a day
+if (strlen($id) != 4) { // a day
     $bookingIds = getBookingIdsOfDate($date, false);
     $donations = 0;
     $customIds = 0;
@@ -99,7 +99,7 @@ if ($id != 'year') { // a day
     $content .= "Spenden;;;$donations";
 }
 else { // the whole year    
-    $bookingDatesOfCurrentYear = getBookingDatesOfYear(date("Y"));
+    $bookingDatesOfCurrentYear = getBookingDatesOfYear($id);
     $donations = 0;
     $customIds = 0;
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
