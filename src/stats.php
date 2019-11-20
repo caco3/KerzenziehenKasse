@@ -287,6 +287,12 @@ function showSummaryOfYear($year) {
     }
     
     $totalPerDayAndYear = array(); // [day][year]
+    
+    /* Create one index per day for 30 days.
+     * If a days stays empty, it will get ignored in the plot */
+    for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
+        $totalPerDayAndYear[$i] = array();
+    }
         
     for ($i = 0; $i <= 10; $i++) { // for each year
         $year = date("Y") - $i; 
@@ -304,9 +310,10 @@ function showSummaryOfYear($year) {
             $totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
         }
     }    
+        
     
-/*    echo("<pre>");
-    print_r($totalPerDayAndYear); */  
+//     echo("<pre>");
+//     print_r($totalPerDayAndYear);   
     include "$root/subpages/totalsChartYear.php"; 
 ?>  
 

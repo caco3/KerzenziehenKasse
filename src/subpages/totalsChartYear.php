@@ -17,6 +17,12 @@
             
             
             foreach($totalPerDayAndYear as $day => $data) {
+                /* Ignore all empty days from the array */
+                if(count($data) == 0) { // ignore empty days
+                    continue;
+                }
+
+
                 // X-Axis
 //                 echo("[\"");  
 //                 foreach($data as $year => $data2) {
