@@ -54,7 +54,7 @@ function showDetailsPerDayAndYear($year) {
         $bookingIds = getBookingIdsOfDate($date, false);
         
         // Create list of all available products, so all days have the same order
-        $products = getDbProducts("wachs", "articleId");
+        $products = getDbProducts("wachs", "name");
         // print_r($products);
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
@@ -65,6 +65,15 @@ function showDetailsPerDayAndYear($year) {
         }
 
         $products = getDbProducts("guss", "name");
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
+        }
+
+        $products = getDbProducts("special", "name");
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
