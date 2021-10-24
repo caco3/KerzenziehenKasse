@@ -60,7 +60,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <table id=bookingsTable>
     <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th><th></th></tr>
     <?    
-        $datesWithBookings = getBookingDatesOfCurrentYear();
+        $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
 //         echo("<pre>");
 //         print_r($datesWithBookings);

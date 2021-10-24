@@ -7,9 +7,7 @@ include "$root/framework/header.php";
       <h2>FAQ</h2>
       <ul>
         
-        <li><p class=question><b>Frage:</b> Was bedeutet die kleine Stopuhr <img src=images/timer/5.png> oben in der Navigationsbar?</p>
-            <p class=answer><b>Antwort:</b> Wenn im Warenkorb in einem Testfeld eine Eingabe gemacht wird (Menge- oder Preisänderung), wird einen Moment gewartet, bevor der Warenkorb neu berechnet wird.<br><br></p></li>
-                
+    
         <li><p class=question><b>Frage:</b> Wieso kann man nur die Buchungen vom aktuellen Tag nachbearbeiten?</p>
             <p class=answer><b>Antwort:</b> Die Tageskasse von den vergangenen Tagen wurden bereits abgerechnet und können nicht mehr verändert werden.<br><br></p></li>
         
@@ -23,7 +21,7 @@ include "$root/framework/header.php";
             <p class=answer><b>Antwort:</b> Buchungen können nicht mehr gelöscht werden. Stattdessen einfach den Betrag auf CHF 0.00 setzen.<br><br></p></li>
                         
         <li><p class=question><b>Frage:</b> Welche Webbrowser werden unterstützt?</p>
-            <p class=answer><b>Antwort:</b> Die Kassensoftware funktioniert nur im Firefox korrekt. Chrome, Internet Explorer, Edge oder Safari werden nicht unterstützt.<br><br></p></li>
+            <p class=answer><b>Antwort:</b> Die Kassensoftware wurde mit Chrome getestet. Die anderen Webbrowser sollten funktionieren, wurden aber nicht explizit getestet.<br><br></p></li>
             
         <li><p class=question><b>Frage:</b> Wie können die Preise angepasst werden?</p>
             <p class=answer><b>Antwort:</b> Die Artikel und Preise können über <a href="https://admin.hostpoint.ch/phpmyadmin2/sql.php?db=chrisc22_kerzenziehen&table=articles&server=467&pos=0" target="_blank">phpMyAdmin</a> angepasst werden.<br><br></p></li>
@@ -44,7 +42,7 @@ include "$root/framework/header.php";
         Mobile: 079/471'63'90
       <br><br></p>
       <h2>Copyright</h2>
-      <p>&copy; 2018 by George Ruinelli</p>
+      <p>&copy; 2018-2019 by George Ruinelli</p>
     </div>
 
 <?

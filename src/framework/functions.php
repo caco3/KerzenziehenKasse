@@ -86,7 +86,7 @@ function roundMoney($num){
         $rounded = $num + (50-$x)/1000;
     }
     
-    return number_format($rounded, 2, ".", "");
+    return formatMoney($rounded);
 }  
 
 
@@ -102,8 +102,13 @@ function roundMoney10($num){
         $rounded = $num + (100-$x)/1000;
     }
     
-    return number_format($rounded, 2, ".", "");
+    return formatMoney($rounded);
 }  
+
+
+function formatMoney($price) {
+    return number_format($price, 2, ".", "");
+}
 
 
 

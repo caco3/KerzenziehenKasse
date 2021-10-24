@@ -1,106 +1,123 @@
 <? 
+// TODO Refactor this page
+
 $root=".";
 include "$root/framework/header.php";
 
-$bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
-
-// get image for custom articles
-$products = getDbProducts("custom", "articleId");
-// print_r($products);
-$customImage = $products[0]['image1'];
-
-$statsPerDay = array();
-
-?>
-    <div id="body">
-    <h1>Übersicht</h1>
-    <ul>
-<?
+/* Returns the total gruped per day for each day in the given year listed in the DB */
+function getStatsPerDay($year) {
+    $data = array();
+    $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
-        $timestamp = strtotime($date);
-        $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
-        echo("<li><a href=#$date>$formatedDate</a><br></li>\n");
-    }
-
-?>
-    <li><a href=#year>Ganzes Jahr</a></li>
-  </ul>
-  
-  
-  
-    
-<h1>Auswertung pro Tag (aktuelles Jahr)</h1> 
-<?
-    foreach($bookingDatesOfCurrentYear as $date) {  // a day
-        $timestamp = strtotime($date);
-        $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
-        echo("<a name=$date></a><h2>$formatedDate</h2>");
+        $donations = 0;
+        $total = 0;                
         $articles = array();
-                
+        
+        $bookingIds = getBookingIdsOfDate($date, false);        
+        foreach($bookingIds as $bookingId) { // a booking
+            $booking = getBooking($bookingId);
+            foreach ($booking['articles'] as $articleId => $article) { // articles 
+                $articles[$articleId]['quantity'] += $article['quantity'];
+                $articles[$articleId]['price'] = $article['price']; // not summed up since it is per 1 pc.
+            }
+            $donations += $booking['donation'];
+            $total += $booking['total'];
+
+        }   
+        
+//         $total += $donations;
+        $data[$date]['donations'] = $donations;
+        $data[$date]['total'] = $total;
+    }
+    
+//     echo("<pre>");
+//     print_r($data);
+    ksort($data);
+    return $data;
+}
+
+
+
+
+
+
+function showDetailsPerDayAndYear($year) {
+    global $germanDayOfWeek, $germanMonth;
+
+    $data = array();
+    $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
+    foreach($bookingDatesOfCurrentYear as $date) {  // a day
+        $donations = 0;
+        $total = 0;                
+        $articles = array();
+        
+        $bookingIds = getBookingIdsOfDate($date, false);
+        
         // Create list of all available products, so all days have the same order
         $products = getDbProducts("wachs", "articleId");
-//         print_r($products);
+        // print_r($products);
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
             $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
 
         $products = getDbProducts("guss", "name");
         foreach($products as $product) {
-//             echo("<pre>");
-//             print_r($product);
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
             $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
         
-        $donations = 0;
-        $bookingIds = getBookingIdsOfDate($date, false);
-        $customIds = 0;
-        foreach($bookingIds as $bookingId) { // a booking
+//         echo("<pre>");
+//         print_r($articles);
+        
+        foreach($bookingIds as $bookingId) { // for each booking            
             $booking = getBooking($bookingId);
 //             echo("<pre>");
 //             print_r($booking);
-            foreach ($booking['articles'] as $articleId => $article) { // articles
-                if($article['type'] != "custom") { // normal article   
-                    $id = $articleId;
-                }
-                else { // custom article       
-                    $id = $article['text'] . "_$customIds";
-                    $customIds++;
-                }
-                
-                $articles[$id]['text'] = $article['text'];
-                $articles[$id]['quantity'] += $article['quantity'];
-                $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
-                $articles[$id]['unit'] = $article['unit'];
-                $articles[$id]['type'] = $article['type'];
+            foreach ($booking['articles'] as $articleId => $article) { // articles                
+//                 $articles[$articleId]['text'] = $article['text'];
+                $articles[$articleId]['quantity'] += $article['quantity'];
+                $articles[$articleId]['price'] = $article['price']; // not summed up since it is per 1 pc.
+//                 $articles[$articleId]['unit'] = $article['unit'];
+//                 $articles[$articleId]['type'] = $article['type'];
             }
             $donations += $booking['donation'];
+            $total += $booking['total'];
+            
+//             foreach($articles as $article) {
+//                 $total += $article['quantity'] * $article['price'];
+// //                 echo("<pre>");
+// //                 print_r($article);
+//             }
         }   
-//         echo("<pre>");
-//         print_r($articles);
-?>
 
-<?
-        $total = 0;
-        foreach($articles as $article) {
-            $total += $article['quantity'] * $article['price'];
-        }
-        $total += $donations;
-?>
+        
+//         $total += $donations;
+        $data[$date]['donations'] = $donations;
+        $data[$date]['total'] = $total;
+        $data[$date]['articles'] = $articles;
+        
+        $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($date))] .
+                    strftime(", %e. ", strtotime($date)) . $germanMonth[strftime("%m", strtotime($date)) - 1] .
+                    ". " . strftime("%Y", strtotime($date)); 
+        ?>
+        
+        <a name="<? echo($date); ?>"></a><h2><? echo($formatedDate); ?></h2>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
-<?
+    <?
 
         foreach($articles as $articleId => $article) {
             if ($article['quantity'] == 0) { // no sales for this article, ignore it 
                 continue;
             }
-            
+                
             if ($article['type'] == "custom") { 
                 $custom = "*) ";
                 $article['image'] = $customImage;
@@ -116,124 +133,224 @@ $statsPerDay = array();
         
         echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
         echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
-?>
+    ?>
         </table>
         <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
-      <p><br></p>
+        <?
+    }
+}
 
-<?
-    
-        $statsPerDay[$date] = roundMoney10($total);
-    }
-?>
-    
-    
-    
-      
-      
-<a name=year></a><h1>Auswertung ganzes Jahr</h1>
-<table>
-<tr  style="vertical-align: top; padding: 0px;">
-<td>
-<?
-    $articles = array();
-    $donations = 0;
-    
-    // Create list of all available products, so all days have the same order
-    $products = getDbProducts("wachs", "articleId");
-    // print_r($products);
-    foreach($products as $product) {
-        $articles[$product['articleId']]['text'] = $product['name'];
-        $articles[$product['articleId']]['quantity'] = $product['quantity'];
-        $articles[$product['articleId']]['unit'] = $product['unit'];
-        $articles[$product['articleId']]['image'] = $product['image1'];
-    }
 
-    $products = getDbProducts("guss", "name");
-    foreach($products as $product) {
-        $articles[$product['articleId']]['text'] = $product['name'];
-        $articles[$product['articleId']]['quantity'] = $product['quantity'];
-        $articles[$product['articleId']]['unit'] = $product['unit'];
-        $articles[$product['articleId']]['image'] = $product['image1'];
-    }
-    
-    $bookingDatesOfCurrentYear = getBookingDatesOfCurrentYear();
-    $customIds = 0;
-    foreach($bookingDatesOfCurrentYear as $date) {  // a day
-        $bookingIds = getBookingIdsOfDate($date, false);
-        foreach($bookingIds as $bookingId) { // a booking
-            $booking = getBooking($bookingId);
-//             echo("<pre>");
-//             print_r($booking);
-            foreach ($booking['articles'] as $articleId => $article) { // articles
-                if($article['type'] != "custom") { // normal article   
-                    $id = $articleId;
-                }
-                else { // custom article      
-                    $id = $article['text'] . "_$customIds";
-                    $customIds++;
-                }
-                
-                $articles[$id]['text'] = $article['text'];
-                $articles[$id]['quantity'] += $article['quantity'];
-                $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
-                $articles[$id]['unit'] = $article['unit'];
-                $articles[$id]['type'] = $article['type'];
-            }
-            $donations += $booking['donation'];
+
+
+
+/* Shows the summary stats of a year */
+function showSummaryOfYear($year) {
+        $articles = array();
+        $donations = 0;
+             
+        
+        // Create list of all available products, so all days have the same order
+        $products = getDbProducts("wachs", "articleId");
+        // print_r($products);
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
         }
+
+        $products = getDbProducts("guss", "name");
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
+        }
+        
+                
+        $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
+        $customIds = 0;
+        foreach($bookingDatesOfCurrentYear as $date) {  // a day
+            $bookingIds = getBookingIdsOfDate($date, false);
+            foreach($bookingIds as $bookingId) { // a booking
+                $booking = getBooking($bookingId);
+    //             echo("<pre>");
+    //             print_r($booking);
+                foreach ($booking['articles'] as $articleId => $article) { // articles
+                    if($article['type'] != "custom") { // normal article   
+                        $id = $articleId;
+                    }
+                    else { // custom article      
+                        $id = $article['text'] . "_$customIds";
+                        $customIds++;
+                    }
+                    
+                    $articles[$id]['text'] = $article['text'];
+                    $articles[$id]['quantity'] += $article['quantity'];
+                    $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
+                    $articles[$id]['unit'] = $article['unit'];
+                    $articles[$id]['type'] = $article['type'];
+                }
+                $donations += $booking['donation'];
+            }
+        }
+        
+    //     print_r($articles);
+
+        $total = 0;
+        foreach($articles as $article) {
+            $total += $article['quantity'] * $article['price'];
+        }
+        $total += $donations;
+        
+        if ($total == 0) { // no stats for this year => return
+            return;
+        }
+        
+    ?>
+        <a name=year_<? echo($year); ?>_summary></a><h2><? echo($year); ?></h2>
+        <table id=bookingsTable>
+        <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
+    <?
+
+        foreach($articles as $articleId => $article) {
+            if ($article['quantity'] == 0) { // no sales for this article, ignore it 
+                continue;
+            }
+                
+            if ($article['type'] == "custom") { 
+                $custom = "*) ";
+                $article['image'] = $customImage;
+            }
+            else {
+                $custom = ""; 
+            }
+        
+            echo("<tr>");
+            echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+            echo("<td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+        }
+        
+        echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
+    ?>
+        </table>
+        <p><br>CSV Export: <? echo(exportCsvButton($year)); ?></p>
+        </div>
+    <?
+}
+
+
+
+
+
+
+
+
+
+
+
+
+?>
+    <div id="body">
+     <h1>Übersicht</h1>
+    <ul>
+<?
+    foreach($bookingDatesOfCurrentYear as $date) {  // a day
+        $timestamp = strtotime($date);
+        $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
+        echo("<li><a href=#$date>$formatedDate</a><br></li>\n");
     }
-       
-//     print_r($articles);
+
+?>
+    <li><a href=#PerDayAndYear>Umsatz pro Tag und Jahr</a></li>
+    <li><a href=#PerDay>Umsatz pro Tag (aktuelles Jahr)</a></li>
+    <li><a href=#PerYear>Zusammenfassung pro Jahr</a></li>
+  </ul> 
+  
+  
+  
+  
+  
+  
+<a name="PerDayAndYear"></a><h1>Umsatz pro Tag und Jahr</h1> 
+<?    
+    $statsPerDay = array();
+    for ($i = 0; $i <= 10; $i++) {
+        $year = date("Y") - $i; 
+        $stats = getStatsPerDay($year);
+        if (count($stats) == 0) { // no stats for this year => return
+            break;
+        }
+        $statsPerDay[$year] = $stats;
+    }
+    
+    $totalPerDayAndYear = array(); // [day][year]
+    
+    /* Create one index per day for 30 days.
+     * If a days stays empty, it will get ignored in the plot */
+    for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
+        $totalPerDayAndYear[$i] = array();
+    }
+        
+    for ($i = 0; $i <= 10; $i++) { // for each year
+        $year = date("Y") - $i; 
+        $dayIndex = 0;
+        foreach($statsPerDay[$year] as $date => $data) { // for each day
+            if ($dayIndex == 0) {
+                $firstDay = $date; 
+                $zeroOffset = date("z", strtotime($date));
+            }
+            $offset = date("z", strtotime($date)) - $zeroOffset;
+            $dayIndex++;
+            
+            $totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
+            $totalPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
+            $totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
+        }
+    }    
+        
+    
+//     echo("<pre>");
+//     print_r($totalPerDayAndYear);   
+    include "$root/subpages/totalsChartYear.php"; 
+?>  
+
+
+  
+  
+  
+  
+  
+  
+<a name="PerDay"></a><h1>Umsatz pro Tag (aktuelles Jahr)</h1>
+<?
+    $year = date("Y"); 
+    showDetailsPerDayAndYear($year);
 ?>
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+<a name=PerYear></a><h1>Zusammenfassung pro Jahr</h1>
 <?
-    $total = 0;
-    foreach($articles as $article) {
-        $total += $article['quantity'] * $article['price'];
+    // Show yearly summary
+
+    for ($i = 0; $i <= 10; $i++) {
+        $year = date("Y") - $i; 
+        showSummaryOfYear($year);
     }
-    $total += $donations;
 ?>
 
 
-    <table id=bookingsTable>
-    <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
-<?
-
-    foreach($articles as $articleId => $article) {
-        if ($article['quantity'] == 0) { // no sales for this article, ignore it 
-            continue;
-        }
-            
-        if ($article['type'] == "custom") { 
-            $custom = "*) ";
-            $article['image'] = $customImage;
-        }
-        else {
-            $custom = ""; 
-        }
-    
-        echo("<tr>");
-        echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
-        echo("<td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
-    }
-    
-    echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
-    echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
-?>
-    </table>
-    <p><br>CSV Export: <? echo(exportCsvButton('year')); ?></p>
-    </div>
-</td>
-<td>
-<? include "$root/subpages/articlesChartYear.php"; ?><br>
-<? 
-    ksort($statsPerDay);
-    include "$root/subpages/totalsChartYear.php"; 
-?>
-    </td>
-</tr>
-</table>
 <?
 include "$root/framework/footer.php"; 
 ?>

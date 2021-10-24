@@ -43,29 +43,40 @@ db_connect();
         
         $removeButton = showRemoveFromBasketButton($basketEntryId);
         
-        if($articleId != 'custom') { // normal entry
+//         if($articleId != 'custom') { // normal entry
             list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
-            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity> $unit";
+            if ($unit == "g") {
+                $prefix = "";
+                $suffix = " g";
+            }            
+            else {
+                $prefix = "";
+                $suffix = " Stk. ";            
+            }
+            
+            $header = "<h2><img class=articleImageNumpadHeader src=images/articles/$image1> $name</h2>";
+            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity 
+            onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, '$header', false, '$prefix', '$suffix')\"> $unit";
             $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($pricePerQuantity * $quantity, 2, ".", "") . " readonly disabled=disabled>";            
             $textField = "$name";
-        }
-        else { // custom entry
-            $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity readonly disabled=disabled> Stk.";
-            $textField = $basketEntry['text'];
-            $priceField = "CHF <input type=text class=basketMoneyInput id=basketEntryId_" . $basketEntryId . "_price value=" . $price . ">";
-        }
+//         }
+//         else { // custom entry
+//             $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity readonly disabled=disabled> Stk.";
+//             $textField = $basketEntry['text'];
+//             $priceField = "CHF <input type=text class=basketMoneyInput id=basketEntryId_" . $basketEntryId . "_price value=" . $price . ">";
+//         }
         
         
         echo("<tr>
             <td>");
-        echo("<span class=tooltip><img class=articleImage src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
+        echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
         if( $image2 != "") {
-            echo("<span class=tooltip><img class=articleImage src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
+            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
         }
         if( $image3 != "") {
-            echo("<span class=tooltip><img class=articleImage src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
+            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
         }
         
         echo("</td><td>$textField</td>
@@ -79,14 +90,16 @@ db_connect();
     // Spende
     echo("<tr>
             <td colspan=3>Spende</td>
-            <td class=moneyCell colspan=2>CHF <input type=text class=basketMoneyInput id=basketDonationMoney value=" . getDbDonation() . "></td>
+            <td class=moneyCell colspan=2>CHF <input type=text class=basketMoneyInput id=basketDonationMoney value=" . getDbDonation() . "
+            onclick=\"show_easy_numpad('basketDonationMoney', 'basketDonation', this.value, '<h2>Spende</h2>', true, 'CHF ', '')\"></td>
         </tr>\n");    
     
     
     // Total
     echo("<tr>
             <td colspan=3 class=bold class=basketTotalCell>Total</td>
-            <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . number_format(getDbTotal(), 2, ".", "") . "></td>
+            <td class=moneyCell colspan=2><b>CHF <input type=text class=basketMoneyInput id=basketTotalMoney value=" . number_format(getDbTotal(), 2, ".", "") . "
+             onclick=\"show_easy_numpad('basketTotalMoney', 'basketTotal', this.value, '<h2>Total</h2>', true, 'CHF ', '')\"></td>
         </tr>\n"); 
         
     echo("<tr>

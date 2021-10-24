@@ -15,7 +15,7 @@ db_connect();
 <html lang="de">
 <head>
 
-<? if(defined(TEST_SYSTEM)) { ?>
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
     <title>Kerzenziehen TEST-SYSTEM</title>
 <? } else { ?>
     <title>Kerzenziehen</title>
@@ -24,7 +24,13 @@ db_connect();
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="shortcut icon" href="favicon.ico">
-    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">  
+    
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style_testsystem.css"> 
+<? } else { ?>
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css"> 
+<? } ?> 
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/buttons.css">  
     <script src="<? echo("$root"); ?>/framework/jquery.min.js"></script>
     <script src="<? echo("$root"); ?>/framework/jquery-ui.min.js"></script>
     <script src="<? echo("$root"); ?>/framework/functions.js"></script>
@@ -33,7 +39,9 @@ db_connect();
     <script src="<? echo("$root"); ?>/framework/jquery.firework.js"></script>
     <script src="<? echo("$root"); ?>/framework/browser_detect.js"></script>
     
-    <script src="<? echo("$root/"); ?>/framework/functions.js"></script>
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/easy-numpad.css">
+    <script src="<? echo("$root"); ?>/framework/easy-numpad.js"></script>
+    
 <!--    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
     <script src="<? echo("$root/"); ?>/framework/basket.js"></script>-->
 
@@ -47,21 +55,29 @@ db_connect();
 
 
     $(document).ready(function(){    
-        startClock();
+        <? if (!(basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
+            startClock();
+        <? } ?>
         showArticles();
         showBasket();
         loadBibleVerse();
+        loadNavigation();
         
 //         console.log("Webbrowser: " + BrowserDetect.browser);
 //         if (BrowserDetect.browser != "Firefox") {
 //             firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
 //         }
+
+        <? if(isset($TEST_SYSTEM) && $TEST_SYSTEM and (basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
+            firework.launch("Du verwendest das Test-System! Damit kannst spielen und testen. Die Eingaben haben keinen Einfluss auf die richtige Kasse!", 'error', 9999999000);
+        <? } ?>
+
     });
     </script>
 
 </head>
 
-<? if(defined(TEST_SYSTEM)) { ?>
+<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
     <body id=test>
 <? } else { ?>
     <body id=live>
@@ -73,9 +89,11 @@ db_connect();
    
 <?
 // If this variable is set (in config.php), a separate database and files/folders will be used!
-if(defined(TEST_SYSTEM)) {
+if(isset($TEST_SYSTEM) && $TEST_SYSTEM) {
     echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
-}   
+}  
+
+if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
 ?>
         <div style="clear:both;">
             <div id=logo>
@@ -114,7 +132,7 @@ if(defined(TEST_SYSTEM)) {
                     | <a class="headerLinks" href="stats.php" target="_self">Auswertung</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Administration</a>
                 <? } ?>
-                    | <img id=timerIcon src="images/timer/0.png" width=18px>
+<!--                     | <img id=timerIcon src="images/timer/0.png" width=18px> -->
                 </p>
             </div>
             <div id=clock>
@@ -122,7 +140,9 @@ if(defined(TEST_SYSTEM)) {
             </div>
         </div>
         <hr>
+        <? } ?>
+  
         <div class="modal"></div>
     </div>
     
-    
+

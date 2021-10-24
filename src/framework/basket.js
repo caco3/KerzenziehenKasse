@@ -1,10 +1,3 @@
-var watchdogInterval = 100; // in ms
-var watchdogCounterStartValue = 9;
-                                        
-var watchdogMonitoredFieldId = null;
-var watchdogCounter = 0;
-var watchdogTimerId =  null;
-
 var cancelClearBasketQuestionDialogId = null;
 
 
@@ -54,161 +47,16 @@ $(document).ready(function(){
             xhttp.send(params);
         }
     );
-    
-    
- 
-    
-    $(".basketQuantityInput").keydown(
-        function(event){
-//             console.log("keydown which: " + event.which);
-                                
-            if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-//                 (event.which >= 8 && event.which <= 13)       ||     // backspace, tab, enter   
-//                 ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 110, 116, 144, 190]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, decimal point, F5, num lock, period
-                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1)  // backspace, tab, enter, end, home, left arrow, right arrow, remove, F5, num lock
-            ) { // accept key press
-//                 console.log("ok, accept key");
-                return;
-            }
-            else { // undo key press
-                event.preventDefault();
-//                 console.log("undo key press");
-            }
-        }
-    );
-    
-    
-    $(".basketQuantityInput").keyup(
-        function(event){
-            console.log("keyup which: " + event.which);
-            
-            var inputFieldId = $(event.target).attr('id'); 
-
-            if(event.which == 13) { // enter key
-                console.log("directly send to server instead of waiting for timeout");
-                // directly send to server instead of waiting for timeout
-                updateBasketEntry(inputFieldId);
-            }
-            else if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)               
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 46]) !== -1)        // backspace, remove
-            ) { // ok, refresh basket
-//                 console.log("ok, accept key");
-                    
-                //prevent empty or zero field
-    /*            if(($("#" + inputFieldId).val() == "") || ($("#" + inputFieldId).val() == 0)) {
-                    $("#" + inputFieldId).val(1);
-                }         */  
-
-                // tell watchdog to update basket after timeout
-                updateInputIdleTimer(inputFieldId);
-            }
-            else { //all other keys should not refresh basket
-                return;
-            }            
-        }
-    );
-    
-    
-    
-    $(".basketMoneyInput").keydown(
-        function(event){
-//             console.log("keydown which: " + event.which);
-                                
-            // special handling of decimalpoint and period
-            if((event.which == 190) || (event.which == 110)) { // dot or decimal point pressed
-                var inputField = $(event.target).attr('id');  
-                var value = $("#" + inputField).val()
-                if(getNumberOfDecimalPoints(value) > 0) { // there was already a Decimal Point
-                    event.preventDefault();
-                    console.log("undo key press (Decimal Point)");
-                }
-            }
-            
-            // TODO: on decimal point press, remove old key and add decimal point on new position
-            
-            
-            if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)            
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 9, 13, 35, 36, 37, 39, 46, 116, 144]) !== -1) || // backspace, tab, enter, end, home, left arrow, right arrow, remove, F5, num lock
-                ($.inArray(event.which, [ 110, 190]) !== -1)         // decimal point, period
-            ) { // accept key press
-//                 console.log("ok, accept key");
-                return;
-            }
-            else { // undo key press
-                event.preventDefault();
-//                 console.log("undo key press");
-            }
-        }
-    );
-    
-    
-    $(".basketMoneyInput").keyup(
-        function(event){
-//             console.log("keyup which: " + event.which);
-                        
-            var inputFieldId = $(event.target).attr('id'); 
-            
-            if(event.which == 13) { // enter key
-                console.log("directly send to server instead of waiting for timeout");
-                // directly send to server instead of waiting for timeout
-                updateBasketEntry(inputFieldId);
-            }
-            else if( // The following key are not to be ignored:          
-                ((event.which >= 48 && event.which <= 57) && !event.shiftKey)      ||     // numbers (without shift key)                
-                (event.which >= 96 && event.which <= 105)     ||     // keypad numbers
-                ($.inArray(event.which, [ 8, 13, 46]) !== -1) ||     // backspace, enter, remove
-                ($.inArray(event.which, [ 110, 190]) !== -1)         // decimal point, period
-            ) { // ok, refresh basket
-//                 console.log("ok, accept key");
-                                 
-                // tell watchdog to update basket after timeout
-                updateInputIdleTimer(inputFieldId);
-            }
-            else { //all other keys should not refresh basket
-                return;
-            }            
-            
-            // TODO: improve handling (add timeout, keep selection, ...)
-        }
-    ); 
-    
-    
-    $(".basketMoneyInput").focusout(
-        function(event){
-//             console.log("focus losed", this.id);
-            formatCurrencyField(this.id);
-        }
-    ); 
-    
-    
-    
-    $(".basketMoneyInput").each(
-        function(id, obj) {
-            formatCurrencyField(this.id);
-        }
-    ); 
-    
+        
     
     
     $(".payButton").off().on('click', 
         function(event){
-//             console.log("watchdogCounter: " + watchdogCounter);
-            if(watchdogCounter > 0) {
-                firework.launch("Aktualisiere Warenkorb...<br>Bitte versuch es in einer Sekunde noch einmal!", 'error', 5000);
+            if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+                moveBasketToBookings();
             }
-            else { //In sync with server
-                if ($("#basketTotalMoney").val() != 0) { // Basket contains something
-                    moveBasketToBookings();
-                }
-                else { // Basket is empty
-                    firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
-                }
+            else { // Basket is empty
+                firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
             }
         }
     ); 
@@ -374,48 +222,19 @@ function getBasketEntryIdfromInputFieldId(inputFieldId){
 
 
 
-function updateBasketEntry(basketInputFieldId) {
-    basketEntryId = getBasketEntryIdfromInputFieldId(basketInputFieldId);
+function updateBasketEntry(basketEntryId, quantity) {
+    console.log("basketEntryId: " + basketEntryId + ", quantity: " + quantity);
     
-//         console.log("basketEntryId:", basketEntryId);
-
-    if(basketEntryId == "basketDonationMoney"){
+    if((basketEntryId == "basketDonationMoney") || (basketEntryId == "basketTotalMoney")){
+        var price = quantity
         var quantity = 1;
-        var price = $("#basketDonationMoney").val();   
-        if(price == ""){
-            $("#basketDonationMoney").val(0);
-        }
-    }
-    else if(basketEntryId == "basketTotalMoney"){
-        var quantity = 1;
-        var price = $("#basketTotalMoney").val();  
+        $("#" + basketEntryId).val(formatCurrency(price));
     }
     else { // its an article     
-        var quantity = $("#basketEntryId_" + basketEntryId + "_quantity").val();   
-        var price = $("#basketEntryId_" + basketEntryId + "_price").val();    
-    }
-    
-    if(quantity == ""){
-        quantity = 1;
         $("#basketEntryId_" + basketEntryId + "_quantity").val(quantity);
-    }
+        var price = 0; // no longer used in this case
+    }        
     
-    if(price == ""){
-        price = 0;
-//             $("#basketEntryId_" + basketEntryId + "_price").val(price);
-    }
-            
-    price = formatCurrency(price)
-    
-    console.log("basketEntryId:", basketEntryId, "quantity:", quantity, "price:", price);
-        
-    //if empty, set to 1 and cursor right to it
-    if(quantity == ""){
-        quantity = 0;
-        inputField = document.getElementById(basketInputFieldId);
-        inputField.selectionStart = 1;
-    }
-            
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() { 
 //         console.log("Ready state: " + this.readyState + ", status: " + this.status);
@@ -424,7 +243,8 @@ function updateBasketEntry(basketInputFieldId) {
             var obj = JSON.parse(this.responseText);            
             if(obj.response.success == "true") {                
 //                 showBasket();
-                console.log("Updated " + basketInputFieldId +" in basket.\nResponse: " + this.responseText);
+//                 console.log("Updated " + basketInputFieldId +" in basket.\nResponse: " + this.responseText);
+                console.log("Updated basket.\nResponse: " + this.responseText);
                 
                 console.log("Updating changed fields:");                
 //                 console.log(obj.updatedFields);
@@ -479,8 +299,8 @@ function updateBasketEntry(basketInputFieldId) {
         }
     };
 
-    
-    var params = "basketEntryId=" + basketEntryId + "&quantity=" + quantity + "&price=" + price;    
+     
+    var params = "basketEntryId=" + basketEntryId + "&quantity=" + quantity + "&price=" + price;  
     console.log("Parameters:", params);
 
     showProgressBar();  
@@ -488,102 +308,4 @@ function updateBasketEntry(basketInputFieldId) {
     xhttp.open("POST", "ajax/updateInBasket.php", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
-}
-
-
-
-// function updateBasketButtonsStates() {            
-//     console.log("basketEntryId:", basketEntryId);
-    
-//     console.log("Total: _" + parseInt($("#" + 'basketTotalMoney').val() * 100) + "_");
-//     if (parseInt($("#" + 'basketTotalMoney').val() * 100) == 0) { // total=0
-//         setPayButtonStateEnabled(false);
-//         setCancelButtonStateEnabled(false);
-        /* Notes: 
-         * Allow update button since we might want to update the booking to "empty" */
-//         console.log("Buttons disabled");
-//     }
-//     else {                            
-//         setPayButtonStateEnabled(true);
-//         setCancelButtonStateEnabled(true);
-//         setUpdateButtonStateEnabled(true);
-//         console.log("Buttons enabled");
-//     }   
-//     setUpdateButtonStateEnabled(true); // keep update button enabled since we might want to update the booking to "empty"
-//     setCancelButtonStateEnabled(true); // keep cancel button enabled since we always want to be able to cancel
-// }
-
-
-// function setPayButtonStateEnabled(state) {
-//     $("#" + 'payButton').prop("disabled", !state);
-//     if (state == false) {
-//         console.log("Pay Button disabled (" + !$("#" + 'payButton').prop("disabled") + ")");
-//     }
-//     else {                            
-//         console.log("Pay Button enabled (" + !$("#" + 'payButton').prop("disabled") + ")");
-//     }    
-// }
-// 
-// 
-// function setCancelButtonStateEnabled(state) {
-//     $("#" + 'cancelButton').prop("disabled", !state);  
-//     if (state == false) {
-//         console.log("Cancel Button disabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
-//     }
-//     else {                            
-//         console.log("Cancel Button enabled (" + !$("#" + 'cancelButton').prop("disabled") + ")");
-//     }  
-// }
-// 
-// 
-// function setUpdateButtonStateEnabled(state) {
-//     $("#" + 'updateButton').prop("disabled", !state); 
-//     if (state == false) {
-//         console.log("Update Button disabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
-//     }
-//     else {                            
-//         console.log("Update Button enabled (" + !$("#" + 'updateButton').prop("disabled") + ")");
-//     }   
-// }
-
-
-
-function watchdog() {
-    watchdogCounter = watchdogCounter - 1;   
-//     console.log(watchdogCounter);
-    document.getElementById("timerIcon").src = "images/timer/" + (9 - watchdogCounter) + ".png";
-    if (watchdogCounter > 0) { // not reached yet         
-        console.log(watchdogMonitoredFieldId + ": " + watchdogCounter);
-    }
-    else if (watchdogCounter == 0) { //timeout reached
-        stopInputIdleTimer(watchdogTimerId);
-
-        updateBasketEntry(watchdogMonitoredFieldId);
-        return;
-    }        
-    watchdogTimerId = setTimeout(watchdog, watchdogInterval); //reload watchdog timer
-}
-    
-
-function startInputIdleTimer(){
-    stopInputIdleTimer(watchdogTimerId);
-    watchdogTimerId = setTimeout(watchdog, watchdogInterval);   
-    console.log("Started InputIdleTimer");
-}       
-        
-
-function stopInputIdleTimer(watchdogTimerId){
-    clearTimeout(watchdogTimerId);
-    console.log("Stopped InputIdleTimer");
-}
-
-
-function updateInputIdleTimer(inputFieldId) { 
-    watchdogMonitoredFieldId = inputFieldId;
-    watchdogCounter = watchdogCounterStartValue; 
-//     setPayButtonStateEnabled(false);
-//     setCancelButtonStateEnabled(false);
-//     setUpdateButtonStateEnabled(false);
-    console.log("Updated InputIdleTimer");
-    startInputIdleTimer();
 }

@@ -14,10 +14,12 @@ function blockLoaded(){
 function showArticles() {
     console.log("load articles");
     $("#dipArticlesDiv").load("subpages/dipArticles.php", blockLoaded());
-    $("#pourArticlesNormalDiv").load("subpages/pourArticlesNormal.php", blockLoaded());
-    $("#pourArticlesFloatingCandlesDiv").load("subpages/pourArticlesFloatingCandles.php", blockLoaded());
-    $("#pourArticlesPreMadeDiv").load("subpages/pourArticlesPreMade.php", blockLoaded());
-    $("#customArticleDiv").load("subpages/customArticle.php", blockLoaded());
+//     $("#pourArticlesNormalDiv").load("subpages/pourArticlesNormal.php", blockLoaded());
+//     $("#pourArticlesFloatingCandlesDiv").load("subpages/pourArticlesFloatingCandles.php", blockLoaded());
+//     $("#pourArticlesPreMadeDiv").load("subpages/pourArticlesPreMade.php", blockLoaded());
+//     $("#customArticleDiv").load("subpages/customArticle.php", blockLoaded());
+    
+    $("#articlesDiv").load("subpages/articles.php", blockLoaded());
 }
 
 
@@ -33,6 +35,12 @@ function loadBibleVerse() {
 //     console.log("loadBibleVerse");   
     $("#bibleVerseDiv").load("subpages/bibleVerse.php", blockLoaded());
     $("#bibleVerseDiv").fadeIn(1000);
+}
+
+function loadNavigation() {
+//     console.log("loadNavigation");   
+    $("#navigationDiv").load("subpages/navigation.php", blockLoaded());
+    $("#navigationDiv").fadeIn(1000);
 }
 
 
