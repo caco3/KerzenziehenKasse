@@ -9,7 +9,7 @@ require_once("$root/framework/db.php");
 db_connect();
 ?>
 
-<script src="<? echo("$root/"); ?>/framework/articles.js"></script>
+<script src="framework/articles.js"></script>
 
 
 <h2 id=articlesDivTitle>Artikel</h2>

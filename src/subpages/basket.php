@@ -9,8 +9,8 @@ db_connect();
 
 ?>
 
-<!-- <script src="<? echo("$root/"); ?>/framework/functions.js"></script> -->
-<script src="<? echo("$root/"); ?>/framework/basket.js"></script>
+<!-- <script src="framework/functions.js"></script> -->
+<script src="framework/basket.js"></script>
 
 
 
