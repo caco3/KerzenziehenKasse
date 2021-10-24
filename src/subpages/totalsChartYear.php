@@ -9,14 +9,15 @@
             echo("['Tag', ");
             
             $yearsCovered = count($totalPerDayAndYear[0]); // get the number of data columns
-                for($i = $yearsCovered; $i > 0; $i--) {
-                $year = date("Y") - $i + 1; 
-                echo("'$year', ");
-            }            
+			for($i = $yearsCovered; $i > 0; $i--) {
+				$year = date("Y") - $i + 1; 
+				echo("'$year', ");
+			}            
             echo("],\n");
             
             
             foreach($totalPerDayAndYear as $day => $data) {
+				//echo("$day\n");
                 /* Ignore all empty days from the array */
                 if(count($data) == 0) { // ignore empty days
                     continue;
@@ -31,17 +32,21 @@
 //                 echo("\", ");  
                 
 //                 echo("['" . $data[$year - $yearsCovered + 1]['formatedDate'] . "', ");
+
+				if ($data['formatedDate'] == "") {
+					continue;
+				}
                 echo("['" . $data['formatedDate'] . "', ");
                 
                 
                 // Data
                 for($i = $yearsCovered; $i > 0; $i--) { // for each year
-                    $year = date("Y") - $i + 1; 
-                    if (array_key_exists($year, $data['year'])) {
+                    $year = date("Y") - $i + 1; 					
+                    if (is_array($data['year']) and array_key_exists($year, $data['year'])) {
                         echo($data['year'][$year]['total'] . ", ");
                     }
                     else {
-                        echo("'', ");
+                        echo("0, ");
                     }
 
                 }                              
