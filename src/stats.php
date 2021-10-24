@@ -176,6 +176,15 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['unit'] = $product['unit'];
             $articles[$product['articleId']]['image'] = $product['image1'];
         }
+
+        $products = getDbProducts("special", "name");
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
+        }
         
                 
         $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
