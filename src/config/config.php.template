@@ -17,4 +17,10 @@ define ( 'ID',              '' );
 
 define ( 'LOG_FOLDER',      '' );
 
+
+// List all article types and suptypes to be shown
+$articlesToShow =           [
+                                'wachs' => ['normal', 'effect'],
+                                'guss'  => ['normal', 'floatingCandle', 'premade']
+                            ];
 ?>

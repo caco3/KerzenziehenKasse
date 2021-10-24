@@ -74,46 +74,48 @@ function showDippingButton($line, $buttonStyle) {
 }
 
 
-
-
-
 /* Dipping Articles */
-$lines = getDbProductsEx("wachs", "name", "normal");
-foreach($lines as $line) {     
-//     print_r($line);
-    showDippingButton($line, "dippingArticleButton");
-} 
-
-
-
-
+if (in_array('normal', $articlesToShow['wachs'])) {
+	$lines = getDbProductsEx("wachs", "name", "normal");
+	foreach($lines as $line) {     
+	//     print_r($line);
+		showDippingButton($line, "dippingArticleButton");
+	} 
+}
 
 
 /* Normal Articles */
-$lines = getDbProductsEx("guss", "name", "normal");
-foreach($lines as $line) {     
-//     print_r($line);
-    showButton($line, "normalArticleButton");
-} 
+if (in_array('normal', $articlesToShow['guss'])) {
+	$lines = getDbProductsEx("guss", "name", "normal");
+	foreach($lines as $line) {     
+	//     print_r($line);
+		showButton($line, "normalArticleButton");
+	}
+}
 
 /* Floating Articles */
-$lines = getDbProductsEx("guss", "name", "floatingCandle");
-foreach($lines as $line) {     
-    showButton($line, "floatingArticleButton");
+if (in_array('floatingCandle', $articlesToShow['guss'])) {
+	$lines = getDbProductsEx("guss", "name", "floatingCandle");
+	foreach($lines as $line) {     
+		showButton($line, "floatingArticleButton");
+	}
 }
 
 /* Premade Articles */
-$lines = getDbProductsEx("guss", "name", "premade");
-foreach($lines as $line) {     
-    showButton($line, "preMadeArticleButton");
-} 
+if (in_array('premade', $articlesToShow['guss'])) {
+	$lines = getDbProductsEx("guss", "name", "premade");
+	foreach($lines as $line) {     
+		showButton($line, "preMadeArticleButton");
+	} 
+}
 
 /* Effect Articles */
-$lines = getDbProductsEx("wachs", "name", "effect");
-foreach($lines as $line) {     
-    showButton($line, "effectArticleButton");
-} 
-
+if (in_array('effect', $articlesToShow['wachs'])) {
+	$lines = getDbProductsEx("wachs", "name", "effect");
+	foreach($lines as $line) {     
+		showButton($line, "effectArticleButton");
+	} 
+}
 
 
 
