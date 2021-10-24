@@ -50,7 +50,7 @@ function addToBasket(id, quantity) {
         }
     };
     
-    var params = "id="+id+"&quantity="+quantity+"&price0&text=";
+    var params = "id="+id+"&quantity="+quantity+"&price=0&text=";
     console.log(params);
 
     showProgressBar();   
