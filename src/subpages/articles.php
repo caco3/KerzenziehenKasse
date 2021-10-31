@@ -25,18 +25,18 @@ function showButton($line, $buttonStyle) {
     if($line['unit'] == "g") {
 //         $price = "CHF " . number_format($line['pricePerQuantity'] * 100, 2, ".", "") . "/100g";
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
+		$price = formatMoney($line['pricePerQuantity']);
     }
     else if($line['unit'] == "Stk.") {  
 //         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "") . "/Stk.";
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
+		$price = formatMoney($line['pricePerQuantity']);
     }
     else {
 //         $price = "CHF " . number_format($line['pricePerQuantity'], 2, ".", "");
         $weight = "<input type=hidden value=1 id=quantity_" . $line['articleId'] . ">";
+		$price = "";
     }
-    $price = formatMoney($line['pricePerQuantity']);
-
-
 
 
     ?>
@@ -52,9 +52,6 @@ function showButton($line, $buttonStyle) {
 }
 
 
-
-
-
 function showDippingButton($line, $buttonStyle) {
     $price = $line['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
     $price = formatMoney($price);
@@ -64,6 +61,25 @@ function showDippingButton($line, $buttonStyle) {
         <div class="dippingArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
             onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', false, '', ' g')">
         <div class=articlePackageDiv><? echo($line['package']); ?></div>
+<!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
+            <p><? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?></p>
+        <div class=articlePriceDiv><? echo($price); ?></div>
+        
+            <p><? echo($line['name']); ?></p>
+        </div>
+    <? 
+}
+
+
+
+function showFoodButton($line, $buttonStyle) {
+    $price = "";
+    
+    $header = "<h2><img class=articleImageNumpadHeader src=images/articles/".$line['image1']."> " . $line['name'] . "</h2>";
+    ?>
+        <div class="foodArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
+            onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', false, '', ' CHF')">
+        <div class=articlePackageDiv><!--<? echo($line['package']); ?>--></div>
 <!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
             <p><? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?></p>
         <div class=articlePriceDiv><? echo($price); ?></div>
@@ -114,6 +130,14 @@ if (in_array('effect', $articlesToShow['wachs'])) {
 	$lines = getDbProductsEx("wachs", "name", "effect");
 	foreach($lines as $line) {     
 		showButton($line, "effectArticleButton");
+	} 
+}
+
+/* Special Articles */
+if (in_array('food', $articlesToShow['special'])) {
+	$lines = getDbProductsEx("special", "name", "food");
+	foreach($lines as $line) {     
+		showFoodButton($line, "specialArticleButton");
 	} 
 }
 

@@ -9,6 +9,8 @@ function getStatsPerDay($year) {
     $data = array();
     $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
+	
+		// echo("$date<br>\n");
         $donations = 0;
         $total = 0;                
         $articles = array();
@@ -28,11 +30,18 @@ function getStatsPerDay($year) {
 //         $total += $donations;
         $data[$date]['donations'] = $donations;
         $data[$date]['total'] = $total;
+		
+		//echo("$donations, $total<br>\n");
     }
+	
+	/*if (count($data) == 0) { // No data for this year, add placeholder data
+        $data[$date]['donations'] = 0;
+        $data[$date]['total'] = 0;
+	}*/
     
-//     echo("<pre>");
-//     print_r($data);
     ksort($data);
+	
+	//print_r($data);
     return $data;
 }
 
@@ -54,7 +63,7 @@ function showDetailsPerDayAndYear($year) {
         $bookingIds = getBookingIdsOfDate($date, false);
         
         // Create list of all available products, so all days have the same order
-        $products = getDbProducts("wachs", "articleId");
+        $products = getDbProducts("wachs", "name");
         // print_r($products);
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
@@ -65,6 +74,15 @@ function showDetailsPerDayAndYear($year) {
         }
 
         $products = getDbProducts("guss", "name");
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
+        }
+
+        $products = getDbProducts("special", "name");
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
@@ -166,6 +184,15 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
             $articles[$product['articleId']]['image'] = $product['image1'];
+        }
+
+        $products = getDbProducts("special", "name");
+        foreach($products as $product) {
+            $articles[$product['articleId']]['text'] = $product['name'];
+            $articles[$product['articleId']]['quantity'] = $product['quantity'];
+            $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
         
                 
@@ -278,20 +305,28 @@ function showSummaryOfYear($year) {
 <?    
     $statsPerDay = array();
     for ($i = 0; $i <= 10; $i++) {
-        $year = date("Y") - $i; 
+        $year = date("Y") - $i; // iterate through the last 10 years
         $stats = getStatsPerDay($year);
-        if (count($stats) == 0) { // no stats for this year => return
-            break;
+		/*foreach($stats as $day => $dayStats) {
+			print($day . ": ");
+			print_r($dayStats);
+			print("<br>\n");
+		}*/
+        if (count($stats) == 0) { // no stats for this year => skip
+            continue;
         }
         $statsPerDay[$year] = $stats;
     }
+	
+	//print_r($statsPerDay);
+	
     
     $totalPerDayAndYear = array(); // [day][year]
     
     /* Create one index per day for 30 days.
-     * If a days stays empty, it will get ignored in the plot */
+     * If a day stays empty, it will get ignored in the plot */
     for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
-        $totalPerDayAndYear[$i] = array();
+        $totalPerDayAndYear[$i] = array('donations' => 0, 'total' => 0);
     }
         
     for ($i = 0; $i <= 10; $i++) { // for each year

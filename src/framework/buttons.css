@@ -247,6 +247,56 @@
 
 
 
+/* Food Article buttons 
+   Style source: https://cssgradientbutton.com */
+.foodArticleButton {
+    border: 2px solid black;
+    margin: 5px;
+    padding: 2px;
+    width: 140px;
+    height: 120px;
+    float: left;
+    text-align: center;
+    
+    border-radius:8px;
+    border-spacing: 0;
+    
+    box-shadow: 3px 3px 1px #888888;
+    
+    cursor: -webkit-grab; cursor: grab;
+}
+
+.foodArticleButton:active {
+    box-shadow: -3px -3px 1px #888888;
+    margin-left: 8px;
+    margin-right: 2px;
+    
+    margin-top: 8px;
+    margin-bottom: 2px;  
+    
+    cursor: -webkit-grabbing; cursor: grabbing;
+}
+
+.foodArticleButton { 
+    background-color: #c5bb83; background-image: -webkit-gradient(linear, left top, left bottom, from(#c5bb83), to(#a29752));
+    background-image: -webkit-linear-gradient(top, #c5bb83, #a29752);
+    background-image: -moz-linear-gradient(top, #c5bb83, #a29752);
+    background-image: -ms-linear-gradient(top, #c5bb83, #a29752);
+    background-image: -o-linear-gradient(top, #c5bb83, #a29752);
+    background-image: linear-gradient(to bottom, #c5bb83, #a29752);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#c5bb83, endColorstr=#a29752);
+}
+
+.foodArticleButton:active {
+    background-color: #d5cea6; background-image: -webkit-gradient(linear, left top, left bottom, from(#d5cea6), to(#b7ad70));
+    background-image: -webkit-linear-gradient(top, #d5cea6, #b7ad70);
+    background-image: -moz-linear-gradient(top, #d5cea6, #b7ad70);
+    background-image: -ms-linear-gradient(top, #d5cea6, #b7ad70);
+    background-image: -o-linear-gradient(top, #d5cea6, #b7ad70);
+    background-image: linear-gradient(to bottom, #d5cea6, #b7ad70);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#d5cea6, endColorstr=#b7ad70);
+}
+
+
+
 
 
 

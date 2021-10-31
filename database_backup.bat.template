@@ -1,0 +1,23 @@
+@echo off
+
+set MYSQLDUMP_PATH=D:\xampp\mysql\bin\mysqldump.exe
+
+set MYSQL_USER=
+set MYSQL_PASSWORD=
+set MYSQL_HOST=
+set MYSQL_DATABASE=
+
+set BACKUP_FOLDER=D:\Nextcloud\Kasse\Database-Backups
+
+
+
+
+for /F "usebackq tokens=1,2 delims==" %%i in (`wmic os get LocalDateTime /VALUE 2^>NUL`) do if '.%%i.'=='.LocalDateTime.' set ldt=%%j
+set DATE=%ldt:~0,4%-%ldt:~4,2%-%ldt:~6,2%
+set TIME=%ldt:~8,2%-%ldt:~10,2%
+
+set FILE=DB_Backup_%DATE%.sql
+
+echo %DATE% %TIME%: Backing up MySQL Database "%MYSQL_DATABASE%" to "%BACKUP_FOLDER%\%FILE%"... >> %BACKUP_FOLDER%\log.txt
+
+%MYSQLDUMP_PATH% --user=%MYSQL_USER% --password=%MYSQL_PASSWORD% --databases %MYSQL_DATABASE%  > "%BACKUP_FOLDER%\%FILE%"

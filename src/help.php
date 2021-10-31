@@ -24,10 +24,10 @@ include "$root/framework/header.php";
             <p class=answer><b>Antwort:</b> Die Kassensoftware wurde mit Chrome getestet. Die anderen Webbrowser sollten funktionieren, wurden aber nicht explizit getestet.<br><br></p></li>
             
         <li><p class=question><b>Frage:</b> Wie können die Preise angepasst werden?</p>
-            <p class=answer><b>Antwort:</b> Die Artikel und Preise können über <a href="https://admin.hostpoint.ch/phpmyadmin2/sql.php?db=chrisc22_kerzenziehen&table=articles&server=467&pos=0" target="_blank">phpMyAdmin</a> angepasst werden.<br><br></p></li>
+            <p class=answer><b>Antwort:</b> Die Artikel und Preise können über <a href="../../phpmyadmin/" target="_blank">phpMyAdmin</a> angepasst werden.<br><br></p></li>
             
         <li><p class=question><b>Frage:</b> Gibt es einen Backup?</p>
-            <p class=answer><b>Antwort:</b> Es wird täglich ein Backup der Datenbank gemacht. Die Daten werden abgelegt unter ~/backup/kerzenziehen.<br><br></p></li>
+            <p class=answer><b>Antwort:</b> Es wird stündlich ein Backup der Datenbank gemacht. Die Daten werden abgelegt unter D:\Nextcloud\Kasse\Database-Backups.<br><br></p></li>
             
         <li><p class=question><b>Frage:</b> Wo finde ich den Quellcode dieser Buchungssoftware?</p>
             <p class=answer><b>Antwort:</b> Siehe <a href="https://github.com/caco3/KerzenziehenKasse" target="_blank">https://github.com/caco3/KerzenziehenKasse</a>.<br><br></p></li>
@@ -37,12 +37,10 @@ include "$root/framework/header.php";
       <p>George Ruinelli<br>
         <a href="mailto:george@ruinelli.ch">george@ruinelli.ch</a><br>
         Mobile: 076/418'22'61
-      <br><br></p>
-      <p>Philipp Huber<br>
-        Mobile: 079/471'63'90
-      <br><br></p>
+		<p><br></p>
       <h2>Copyright</h2>
-      <p>&copy; 2018-2019 by George Ruinelli</p>
+      <p>&copy; 2018-2021 by George Ruinelli</p>
+	  <p><br></p>
     </div>
 
 <?
