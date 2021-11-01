@@ -10,14 +10,9 @@ db_connect();
 
 
 if (isset($_POST['usingTwint'])) {
-	$usingTwint = $_POST['usingTwint'];
-    /*if ($_POST['usingTwint'] == "true") {
-		$usingTwint = 1;
-	}
-	else {
-		$usingTwint = 0;
-	}
-	$response_array['response']['usingTwint'] = "$usingTwint";*/ 
+	$usingTwint = filter_var($_POST['usingTwint'], FILTER_VALIDATE_BOOLEAN);
+
+	$response_array['response']['usingTwint'] = $usingTwint; 
 }
 else {
 	$errorText = "Invalid parameters!";

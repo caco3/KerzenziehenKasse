@@ -65,7 +65,9 @@ function showDetailsPerDayAndYear($year) {
     $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $donations = 0;
-        $total = 0;                
+        $total = 0;
+		$cash = 0;
+		$twint = 0;		
         $articles = array();
         
         $bookingIds = getBookingIdsOfDate($date, false);
@@ -115,6 +117,13 @@ function showDetailsPerDayAndYear($year) {
             }
             $donations += $booking['donation'];
             $total += $booking['total'];
+			
+			if ($booking['twint'] == 1) {
+				$twint += $booking['total'];
+			}
+			else {
+				$cash += $booking['total'];
+			}
             
 //             foreach($articles as $article) {
 //                 $total += $article['quantity'] * $article['price'];
@@ -138,7 +147,7 @@ function showDetailsPerDayAndYear($year) {
         <table id=bookingsTable>
         <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
     <?
-
+	
         foreach($articles as $articleId => $article) {
             if ($article['quantity'] == 0) { // no sales for this article, ignore it 
                 continue;
@@ -155,10 +164,13 @@ function showDetailsPerDayAndYear($year) {
             echo("<tr>");
             echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
             echo("<td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+			
+			
+			
         }
         
         echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
-        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
+        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . " (<img src=\"images/cash.png\" height=25px> CHF " . roundMoney10($cash) . ", <img src=\"images/twint-icon.png\" height=25px> CHF " . roundMoney10($twint) .")</b></td></tr>\n");
     ?>
         </table>
         <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>

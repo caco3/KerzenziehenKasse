@@ -482,12 +482,14 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $
 
     // TODO sanetize
 	
-	if ($usingTwint == 'true') {
+	if ($usingTwint == true) {
 		$twint = 1;
 	}
 	else {
 		$twint = 0;
 	};
+	
+	//echo("moveBasketToBooking, $usingTwint, $twint\n");
        
     $sql = "UPDATE `bookings`
             SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `twint`='$twint'

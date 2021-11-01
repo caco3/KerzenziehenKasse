@@ -38,10 +38,10 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
             echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
 			if ($booking['twint'] == 1) {
-				echo("<td class=td_nowrap><img src=\"images/twint-icon.png\" height=40px></td>");
+				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint-icon.png\" height=40px></td>");
 			}
 			else {
-				echo("<td class=td_nowrap><img src=\"images/cash.png\" height=40px></td>");
+				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
 			}
             
             echo("<td>");
@@ -104,10 +104,10 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
                 echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
 				if ($booking['twint'] == 1) {
-					echo("<td class=td_nowrap><img src=\"images/twint-icon.png\" height=40px></td>");
+					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint-icon.png\" height=40px></td>");
 				}
 				else {
-					echo("<td class=td_nowrap><img src=\"images/cash.png\" height=40px></td>");
+					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
 				}
                 
                 echo("<td>");

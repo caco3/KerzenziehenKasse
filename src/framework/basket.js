@@ -13,6 +13,7 @@ $(document).ready(function(){
 //     startInputIdleTimer();
     
 //     updateBasketButtonsStates();
+
     
     $(".removeFromBasketButton").off().on('click', function(event){
             var basketEntryId = $(event.target).attr('id');   
@@ -87,7 +88,8 @@ $(document).ready(function(){
         function(event){
             updateBasketinBookings();
         }
-    );     
+    ); 
+		  
 });
 
 
