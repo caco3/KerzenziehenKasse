@@ -41,7 +41,7 @@
                         echo($data['year'][$year]['total'] . ", ");
                     }
                     else {
-                        echo("'', ");
+                        echo("0, ");
                     }
 
                 }                              

@@ -16,7 +16,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th>Buchung</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th><th></th><th></th></tr>
+      <tr><th>Buchung</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Bezahlung</th><th>Artikel</th><th></th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -27,6 +27,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
         
         foreach($bookingIdsToday as $bookingId) {
             $booking = getBooking($bookingId);
+			//print_r($booking);
             $editButton = editButton($bookingId);
             $receiptButton = receiptButton($bookingId);
 //             echo("<pre>");
@@ -36,6 +37,12 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
             echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
             echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
+			if ($booking['twint'] == 1) {
+				echo("<td class=td_nowrap><img src=\"images/twint-icon.png\" height=40px></td>");
+			}
+			else {
+				echo("<td class=td_nowrap><img src=\"images/cash.png\" height=40px></td>");
+			}
             
             echo("<td>");
             foreach($booking['articles'] as $articleId => $article) {
@@ -58,7 +65,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <p><br></p>
     <h2>Frühere Buchungen (nur aktuelles Jahr)</h2>
     <table id=bookingsTable>
-    <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Artikel</th><th></th></tr>
+    <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Bezahlung</th><th>Artikel</th><th></th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
@@ -96,6 +103,12 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
                 echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
                 echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
+				if ($booking['twint'] == 1) {
+					echo("<td class=td_nowrap><img src=\"images/twint-icon.png\" height=40px></td>");
+				}
+				else {
+					echo("<td class=td_nowrap><img src=\"images/cash.png\" height=40px></td>");
+				}
                 
                 echo("<td>");
                 foreach($booking['articles'] as $articleId => $article) {
