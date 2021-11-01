@@ -37,7 +37,7 @@ $(document).ready(function(){
             var params = "basketEntryId=" + basketEntryId;
 //             console.log(params);
 
-//             setPayButtonStateEnabled(false);
+//             setcashButtonStateEnabled(false);
 //             setCancelButtonStateEnabled(false);
 //             setUpdateButtonStateEnabled(false);
             showProgressBar();  
@@ -50,10 +50,22 @@ $(document).ready(function(){
         
     
     
-    $(".payButton").off().on('click', 
+    $(".cashButton").off().on('click', 
         function(event){
             if ($("#basketTotalMoney").val() != 0) { // Basket contains something
-                moveBasketToBookings();
+                moveBasketToBookings(false);
+            }
+            else { // Basket is empty
+                firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+            }
+        }
+    ); 
+        
+    
+    $(".twintButton").off().on('click', 
+        function(event){
+            if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+                moveBasketToBookings(true);
             }
             else { // Basket is empty
                 firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
@@ -81,7 +93,7 @@ $(document).ready(function(){
 
 
 
-function moveBasketToBookings() {    
+function moveBasketToBookings(usingTwint) {    
     console.log("pay (move basket to bookings)");
     
     var xhttp = new XMLHttpRequest();
@@ -103,7 +115,16 @@ function moveBasketToBookings() {
             }
         }
     };
-    var params = "";
+	
+	var params = "usingTwint=" + usingTwint; 
+	console.log("Parameters:", params);
+
+	if (usingTwint == true) {
+		console.log("Payed with Twint");
+	}
+	else {
+		console.log("Payed with Cash");
+	}	
 
     showProgressBar();  
         
@@ -118,7 +139,7 @@ function clearBasket() {
     console.log("user requests to clear basket");
     // Note: CSS style must be inlined since it will not get picked up from an external style sheet!
     
-    if (document.getElementById("payButton")) { // we are in normal mode
+    if (document.getElementById("cashButton")) { // we are in normal mode
         if ($("#basketTotalMoney").val() == 0) { // Basket is already empty
             console.log("Basket is empty, no need to show a message");
             return;

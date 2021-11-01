@@ -18,8 +18,16 @@ function getStatsPerDay($year) {
         $bookingIds = getBookingIdsOfDate($date, false);        
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
+			//echo("<pre>");
+			//print_r($booking);
             foreach ($booking['articles'] as $articleId => $article) { // articles 
-                $articles[$articleId]['quantity'] += $article['quantity'];
+				//echo("$articleId, " . ($articleId * 10));
+				//print_r($articles);
+				//print_r($articles[$articleId]);
+				if (is_array($articles[$articleId]) and !array_key_exists('quantity', $articles[$articleId])) {
+					$articles[$articleId]['quantity'] = 0;
+				}
+				$articles[$articleId]['quantity'] += $article['quantity'];
                 $articles[$articleId]['price'] = $article['price']; // not summed up since it is per 1 pc.
             }
             $donations += $booking['donation'];
@@ -283,7 +291,12 @@ function showSummaryOfYear($year) {
     <div id="body">
      <h1>Übersicht</h1>
     <ul>
+	<li><a href=#PerDayAndYear>Umsatz pro Tag und Jahr</a></li>
+	<li><a href=#PerDay>Umsatz pro Tag (aktuelles Jahr)</a></li>
+	<ul>
 <?
+	$year = date("Y");
+	$bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $timestamp = strtotime($date);
         $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
@@ -291,8 +304,7 @@ function showSummaryOfYear($year) {
     }
 
 ?>
-    <li><a href=#PerDayAndYear>Umsatz pro Tag und Jahr</a></li>
-    <li><a href=#PerDay>Umsatz pro Tag (aktuelles Jahr)</a></li>
+    </ul>
     <li><a href=#PerYear>Zusammenfassung pro Jahr</a></li>
   </ul> 
   

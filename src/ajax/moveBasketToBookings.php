@@ -9,6 +9,32 @@ require_once("$root/framework/db.php");
 db_connect();
 
 
+if (isset($_POST['usingTwint'])) {
+	$usingTwint = $_POST['usingTwint'];
+    /*if ($_POST['usingTwint'] == "true") {
+		$usingTwint = 1;
+	}
+	else {
+		$usingTwint = 0;
+	}
+	$response_array['response']['usingTwint'] = "$usingTwint";*/ 
+}
+else {
+	$errorText = "Invalid parameters!";
+	$response_array['response']['success'] = 'false'; 
+    $response_array['response']['Text'] = $errorText; 
+    
+    errorLog(print_r($response_array, true));
+	
+	// https://www.w3schools.com/xml/ajax_xmlhttprequest_response.asp
+	$response_array['readyState'] = '4'; 
+	$response_array['status'] = '200'; 
+
+	echo json_encode($response_array);
+	exit();
+}
+
+
 $basketSummary = getBasketSummary(false, false);
 
 // print_r($basketSummary);
@@ -25,7 +51,7 @@ $success = true;
 
 $bookingId = bookingsCreateId();
 
-$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()));
+$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $usingTwint);
 if( $ret == false) {
     $errorText = "Failed to move basket to bookings (booking ID $bookingId)!";
     $success = false;
