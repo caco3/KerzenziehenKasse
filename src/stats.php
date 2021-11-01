@@ -18,8 +18,16 @@ function getStatsPerDay($year) {
         $bookingIds = getBookingIdsOfDate($date, false);        
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
+			//echo("<pre>");
+			//print_r($booking);
             foreach ($booking['articles'] as $articleId => $article) { // articles 
-                $articles[$articleId]['quantity'] += $article['quantity'];
+				//echo("$articleId, " . ($articleId * 10));
+				//print_r($articles);
+				//print_r($articles[$articleId]);
+				if (is_array($articles[$articleId]) and !array_key_exists('quantity', $articles[$articleId])) {
+					$articles[$articleId]['quantity'] = 0;
+				}
+				$articles[$articleId]['quantity'] += $article['quantity'];
                 $articles[$articleId]['price'] = $article['price']; // not summed up since it is per 1 pc.
             }
             $donations += $booking['donation'];
@@ -57,7 +65,9 @@ function showDetailsPerDayAndYear($year) {
     $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $donations = 0;
-        $total = 0;                
+        $total = 0;
+		$cash = 0;
+		$twint = 0;		
         $articles = array();
         
         $bookingIds = getBookingIdsOfDate($date, false);
@@ -107,6 +117,13 @@ function showDetailsPerDayAndYear($year) {
             }
             $donations += $booking['donation'];
             $total += $booking['total'];
+			
+			if ($booking['twint'] == 1) {
+				$twint += $booking['total'];
+			}
+			else {
+				$cash += $booking['total'];
+			}
             
 //             foreach($articles as $article) {
 //                 $total += $article['quantity'] * $article['price'];
@@ -130,7 +147,7 @@ function showDetailsPerDayAndYear($year) {
         <table id=bookingsTable>
         <tr><th>Artikel</th><th></th><th>Menge</th><th>Betrag</th></tr>
     <?
-
+	
         foreach($articles as $articleId => $article) {
             if ($article['quantity'] == 0) { // no sales for this article, ignore it 
                 continue;
@@ -147,10 +164,13 @@ function showDetailsPerDayAndYear($year) {
             echo("<tr>");
             echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
             echo("<td>" . $custom . $article['text'] . "</td><td>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+			
+			
+			
         }
         
         echo("<tr><td colspan=2>Spenden</td><td></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
-        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
+        echo("<tr><td colspan=2><b>Total</b></td><td></td><td><b>CHF " . roundMoney10($total) . " (<img src=\"images/cash.png\" height=25px> CHF " . roundMoney10($cash) . ", <img src=\"images/twint-icon.png\" height=25px> CHF " . roundMoney10($twint) .")</b></td></tr>\n");
     ?>
         </table>
         <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
@@ -283,7 +303,12 @@ function showSummaryOfYear($year) {
     <div id="body">
      <h1>Übersicht</h1>
     <ul>
+	<li><a href=#PerDayAndYear>Umsatz pro Tag und Jahr</a></li>
+	<li><a href=#PerDay>Umsatz pro Tag (aktuelles Jahr)</a></li>
+	<ul>
 <?
+	$year = date("Y");
+	$bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $timestamp = strtotime($date);
         $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
@@ -291,8 +316,7 @@ function showSummaryOfYear($year) {
     }
 
 ?>
-    <li><a href=#PerDayAndYear>Umsatz pro Tag und Jahr</a></li>
-    <li><a href=#PerDay>Umsatz pro Tag (aktuelles Jahr)</a></li>
+    </ul>
     <li><a href=#PerYear>Zusammenfassung pro Jahr</a></li>
   </ul> 
   

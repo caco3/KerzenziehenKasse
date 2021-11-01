@@ -29,7 +29,16 @@ if($bookingId == "new" ) { // error, we expect a basket loaded from bookings
     $success = false;
 }
 else { // ok, basket was loaded from bookings and can be updated in there
-    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()));
+	$booking = getDbBooking($bookingId);
+	if ( $booking['twint'] == 1) {
+		$usingTwint = true;
+	}
+	else {
+		$usingTwint = false;
+	}
+	//echo("ajax, " . $booking['twint'] . "=>  $usingTwint\n");
+
+    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $usingTwint);
     if( $ret == false) {
         $errorText = "Failed to move basket to bookings (booking ID $bookingId, updating booking)!";
         $success = false;
@@ -71,6 +80,7 @@ if ( $success == true) {
     $response_array['response']['success'] = 'true'; 
     $response_array['response']['Text'] = "updated basket in bookings.";
     $response_array['response']['bookingId'] = $bookingId;
+	$response_array['response']['usingTwint'] = $usingTwint; 
 }
 else {
     $response_array['response']['success'] = 'false'; 
