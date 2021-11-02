@@ -9,6 +9,13 @@ db_connect();
 
 ?>
 
+<script>
+$.ajaxPrefilter('script', function(options) {
+    options.cache = true;
+});
+
+</script>
+
 <!-- <script src="framework/functions.js"></script> -->
 <script src="framework/basket.js"></script>
 

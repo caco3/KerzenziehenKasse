@@ -15,7 +15,7 @@ $(document).ready(function(){
 //     updateBasketButtonsStates();
 
     
-    $(".removeFromBasketButton").off().on('click', function(event){
+    $(".removeFromBasketButton").on('click', function(event){
             var basketEntryId = $(event.target).attr('id');   
             console.log("removeFromBasket basketEntryId=" + basketEntryId);
 
@@ -48,51 +48,88 @@ $(document).ready(function(){
             xhttp.send(params);
         }
     );
-        
+	
     
-    
-    $(".cashButton").off().on('click', 
+  /*  $(".cashButton").on('click', 
         function(event){
             if ($("#basketTotalMoney").val() != 0) { // Basket contains something
                 moveBasketToBookings(false);
             }
             else { // Basket is empty
-                firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+                firework.launch("Der Warenkorb ist leer1!", 'warning', 5000);
             }
         }
     ); 
         
     
-    $(".twintButton").off().on('click', 
+    $(".twintButton").on('click', 
         function(event){
-            if ($("#basketTotalMoney").val() != 0) { // Basket contains something
-                moveBasketToBookings(true);
-            }
-            else { // Basket is empty
-                firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
-            }
+			console.log("twintButton");
+			twintClicked();
         }
     ); 
     
     
-    
-    $(".cancelButton").off().on('click', 
+    $(".cancelButton").on('click', 
         function(event){
             clearBasket();
         }
     ); 
     
     
-    
-    $(".updateButton").off().on('click', 
+    $(".updateButton").on('click', 
         function(event){
             updateBasketinBookings();
         }
-    ); 
-		  
+    ); */
+		
+    console.log("basket jquery loaded");  
 });
 
 
+
+
+
+
+
+
+function twintClicked() {
+	console.log("twintClicked");
+	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+		moveBasketToBookings(true);
+	}
+	else { // Basket is empty
+		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+	}	
+}
+	
+	
+function cashClicked(){
+	console.log("cashClicked");
+	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+		moveBasketToBookings(false);
+	}
+	else { // Basket is empty
+		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+	}
+}
+
+
+function updateClicked(){
+	console.log("updateClicked");
+	updateBasketinBookings();
+}
+
+
+function cancelClicked(){
+	console.log("cancelClicked");
+	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+		clearBasket();
+	}
+	else { // Basket is empty
+		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+	}
+}
 
 
 function moveBasketToBookings(usingTwint) {    
