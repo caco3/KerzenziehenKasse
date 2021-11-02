@@ -190,7 +190,7 @@ function clearBasket() {
     }
     
     cancelClearBasketQuestionDialogId = firework.launch(message + 
-    "<br><button style=\"font-size: 100%;\" onclick=\"definitlyClearBasket()\">Ja</button> <button style=\"font-size: 100%;\" onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
+    "<br><button class=fireworksDialogButtons onclick=\"definitlyClearBasket()\">Ja </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class=fireworksDialogButtons onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
 }
 
 

@@ -84,13 +84,21 @@ function easynum() {
     value += easy_num_value;
     if (easy_num_value == ".") {        
         var dotCount = value.split(".").length-1; // count dots
-        console.log(dotCount);
         if (dotCount > 1) {
             value = value.slice(0, -1); // undo adding dot
         }
     }
     else {
-        value = value * 1;
+       // value = value * 1;
+		// Check that we have max 2 digits behind the dot
+        var dotCount = value.split(".").length-1; // count dots
+		if (dotCount > 0) {
+			charactersBehindDot = value.length - value.indexOf(".") - 1;
+			if (charactersBehindDot > 2) {
+				value = value.slice(0, 2-charactersBehindDot);
+			}
+		}
+	   
     }
     $('#easy-numpad-output').text(prefix + value + suffix);
 }

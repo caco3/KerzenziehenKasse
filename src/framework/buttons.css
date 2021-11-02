@@ -349,3 +349,10 @@
     background-image: -o-linear-gradient(top, #faf68f, #f3ed53);
     background-image: linear-gradient(to bottom, #faf68f, #f3ed53);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#faf68f, endColorstr=#f3ed53);
 }
+
+
+.fireworksDialogButtons {
+	font-size: 100%;
+	width: 100px;
+	height: 60px;
+}
