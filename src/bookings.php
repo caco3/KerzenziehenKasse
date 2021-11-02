@@ -63,7 +63,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     
     
     <p><br></p>
-    <h2>Frühere Buchungen (nur aktuelles Jahr)</h2>
+    <h2>Alle Buchungen des aktuelles Jahrs</h2>
     <table id=bookingsTable>
     <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Bezahlung</th><th>Artikel</th><th></th></tr>
     <?    

@@ -251,6 +251,8 @@ function updateBasketinBookings() {
                 console.log("Updated basket in bookings (ID: " + obj.response.bookingId + ")");
                 showBasket();
                 firework.launch("Buchung " + obj.response.bookingId + " erfolgreich aktualisiert.", 'success', 5000);
+				
+				setTimeout(function() { window.location.replace("bookings.php#" + obj.response.bookingId); }, (1000)); // load bookings page again
             }
             else{
                 firework.launch("Konnte Buchung nicht aktualisieren!", 'error', 5000);
