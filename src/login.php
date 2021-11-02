@@ -81,7 +81,7 @@ require_once("$root/config/config_generic.php");
 
 <?
 //     echo("autorization: $autorization<br><br>"); 
-    if($autorization == CREDENTIALS_VALID){ //credentials are valid, redirect to add.php (default page)
+    if($autorization == CREDENTIALS_VALID){ //credentials are valid, redirect to index.php (default page)
 ?>
 <!--         <div class="login_info login_ok">Das Passwort ist korrekt,<br>Du wirst gleich weitergeleitet...</div>   -->
         <script>
@@ -137,7 +137,7 @@ require_once("$root/config/config_generic.php");
     
     <p></br></p>
     <h2>Hinweis</h2>
-    <p>Das Passwort erhältst Du vom Tageschef!</p>
+    <p>Das Passwort erhältst Du vom Tagesleiter!</p>
 
         <!-- content End -->
     </div>

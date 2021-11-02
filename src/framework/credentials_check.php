@@ -1,4 +1,10 @@
 <?  
+/* Disable authentification on purpose.
+ * Its now only a local system, no need to protect it */
+goto END; 
+
+
+
 
 define('INVALID_CREDENTIALS', 'INVALID_CREDENTIALS');
 define('MISSING_CREDENTIALS', 'MISSING_CREDENTIALS');
