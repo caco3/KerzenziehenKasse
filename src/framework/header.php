@@ -15,6 +15,9 @@ db_connect();
 <html lang="de">
 <head>
 
+<meta name="viewport" content="initial-scale=0.5">
+
+
 <? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
     <title>Kerzenziehen TEST-SYSTEM</title>
 <? } else { ?>
