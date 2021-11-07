@@ -87,41 +87,46 @@ function showDetailsPerDayAndYear($year) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['type'] = $product['type'];
+            $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
             $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
 
         $products = getDbProducts("guss", "name");
+		//echo("<pre>products\n");
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['type'] = $product['type'];
+            $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
             $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
 
         $products = getDbProducts("special", "name");
-        foreach($products as $product) {
+        //print_r($products);
+		foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['type'] = $product['type'];
+            $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
             $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
         
 //         echo("<pre>");
-//         print_r($articles);
+         //print_r($articles);
         
         foreach($bookingIds as $bookingId) { // for each booking            
             $booking = getBooking($bookingId);
 //             echo("<pre>");
 //             print_r($booking);
-            foreach ($booking['articles'] as $articleId => $article) { // articles                
-//                 $articles[$articleId]['text'] = $article['text'];
+            foreach ($booking['articles'] as $articleId => $article) { // articles      
                 $articles[$articleId]['quantity'] += $article['quantity'];
                 $articles[$articleId]['price'] = $article['price']; // not summed up since it is per 1 pc.
-//                 $articles[$articleId]['unit'] = $article['unit'];
-//                 $articles[$articleId]['type'] = $article['type'];
             }
             $donations += $booking['donation'];
             $total += $booking['total'];
@@ -129,7 +134,7 @@ function showDetailsPerDayAndYear($year) {
 			if ($booking['paymentMethod'] == 'cash') {
 				$cash += $booking['total'];
 			}
-			if ($booking['paymentMethod'] == 'twint') {
+			else if ($booking['paymentMethod'] == 'twint') {
 				$twint += $booking['total'];
 			}
 			else { // invoice
@@ -163,21 +168,16 @@ function showDetailsPerDayAndYear($year) {
             if ($article['quantity'] == 0) { // no sales for this article, ignore it 
                 continue;
             }
-                
-            if ($article['type'] == "custom") { 
-                $custom = "*) ";
-                $article['image'] = $customImage;
-            }
-            else {
-                $custom = ""; 
-            }
         
             echo("<tr>");
             echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
-            echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			
-			
-			
+			if ($article['subtype'] == 'food') {
+				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+			}
+			else { // normal
+				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+			}
         }
         
         echo("<tr><td colspan=2 class=td_rightBorder>Spenden</td><td class=td_rightBorder></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
@@ -209,6 +209,8 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['type'] = $product['type'];
+            $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
         }
 
@@ -217,6 +219,8 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['type'] = $product['type'];
+            $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
         }
 
@@ -225,11 +229,12 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
+            $articles[$product['articleId']]['type'] = $product['type'];
+            $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
             $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
         
-                
         $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
         $customIds = 0;
         foreach($bookingDatesOfCurrentYear as $date) {  // a day
@@ -289,7 +294,17 @@ function showSummaryOfYear($year) {
         
             echo("<tr>");
             echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
-            echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+
+			
+			if ($article['subtype'] == 'food') {
+                echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+			}
+			else { // normal
+                echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+			}
+			
+			
+			
         }
         
         echo("<tr><td colspan=2 class=td_rightBorder>Spenden</td><td class=td_rightBorder></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
