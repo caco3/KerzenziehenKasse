@@ -484,7 +484,7 @@ a:link, a:visited, a:hover, a:active {
 /* ############ Table Summary ############## */
 #bookingsTable {
     margin-right: 5px;
-    max-width: 1200px;
+    /*max-width: 1200px;*/
 }
  
  
@@ -504,7 +504,14 @@ a:link, a:visited, a:hover, a:active {
     background:  rgba(204, 255, 204, 0.8); 
 }
 
+#bookingsTable td, th {
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
+.td_rightBorder {
+	border-right: 1px solid gray;
+}
 
 
 
