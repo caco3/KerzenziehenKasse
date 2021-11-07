@@ -4,7 +4,7 @@
 $root=".";
 include "$root/framework/header.php";
 
-/* Returns the total gruped per day for each day in the given year listed in the DB */
+/* Returns the total grouped per day for each day in the given year listed in the DB */
 function getStatsPerDay($year) {
     $data = array();
     $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
@@ -12,7 +12,8 @@ function getStatsPerDay($year) {
 	
 		// echo("$date<br>\n");
         $donations = 0;
-        $total = 0;                
+        $total = 0;    
+        $food = 0;                
         $articles = array();
         
         $bookingIds = getBookingIdsOfDate($date, false);        
@@ -29,6 +30,11 @@ function getStatsPerDay($year) {
 				}
 				$articles[$articleId]['quantity'] += $article['quantity'];
                 $articles[$articleId]['price'] = $article['price']; // not summed up since it is per 1 pc.
+				
+				if ($articleId == 200) { // Food
+					//print_r($article);
+					$food += $article['quantity']; // equals the costs on food
+				}
             }
             $donations += $booking['donation'];
             $total += $booking['total'];
@@ -38,8 +44,9 @@ function getStatsPerDay($year) {
 //         $total += $donations;
         $data[$date]['donations'] = $donations;
         $data[$date]['total'] = $total;
+        $data[$date]['food'] = $food;
 		
-		//echo("$donations, $total<br>\n");
+		//echo("donations, total, food: $donations, $total, $food<br>\n");
     }
 	
 	/*if (count($data) == 0) { // No data for this year, add placeholder data
@@ -326,24 +333,19 @@ function showSummaryOfYear($year) {
   
   
 <a name="PerDayAndYear"></a><h1>Umsatz pro Tag und Jahr</h1> 
+<h2>Wachs + Gastronomie</h2> 
+<p>Hinweise:<br>
+ - Der Gastronomie-Anteil ist erst seit 2021 enthalten!<br>&nbsp;</p>
 <?    
     $statsPerDay = array();
     for ($i = 0; $i <= 10; $i++) {
         $year = date("Y") - $i; // iterate through the last 10 years
         $stats = getStatsPerDay($year);
-		/*foreach($stats as $day => $dayStats) {
-			print($day . ": ");
-			print_r($dayStats);
-			print("<br>\n");
-		}*/
         if (count($stats) == 0) { // no stats for this year => skip
             continue;
         }
         $statsPerDay[$year] = $stats;
     }
-	
-	//print_r($statsPerDay);
-	
     
     $totalPerDayAndYear = array(); // [day][year]
     
@@ -369,13 +371,53 @@ function showSummaryOfYear($year) {
             $totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
         }
     }    
-        
-    
-//     echo("<pre>");
-//     print_r($totalPerDayAndYear);   
+	
     include "$root/subpages/totalsChartYear.php"; 
 ?>  
 
+
+<h2>Nur Wachs (ohne Gastronomie)</h2>
+<?    
+    $statsPerDay = array();
+    for ($i = 0; $i <= 10; $i++) {
+        $year = date("Y") - $i; // iterate through the last 10 years
+        $stats = getStatsPerDay($year);
+        if (count($stats) == 0) { // no stats for this year => skip
+            continue;
+        }
+        $statsPerDay[$year] = $stats;
+    }
+    
+    $totalWaxPerDayAndYear = array(); // [day][year]
+    
+    /* Create one index per day for 30 days.
+     * If a day stays empty, it will get ignored in the plot */
+    for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
+        $totalWaxPerDayAndYear[$i] = array('donations' => 0, 'total' => 0);
+    }
+        
+    for ($i = 0; $i <= 10; $i++) { // for each year
+        $year = date("Y") - $i; 
+        $dayIndex = 0;
+        foreach($statsPerDay[$year] as $date => $data) { // for each day
+			//echo("$date:\n");
+			//print_r($data);
+            if ($dayIndex == 0) {
+                $firstDay = $date; 
+                $zeroOffset = date("z", strtotime($date));
+            }
+            $offset = date("z", strtotime($date)) - $zeroOffset;
+            $dayIndex++;
+            
+			//print_r($data['total']);
+            $totalWaxPerDayAndYear[$offset]['year'][$year]['total'] = $data['total'] - $data['food']; // subtract food again as we only want to see the wax part
+            $totalWaxPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
+            $totalWaxPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
+        }
+    }    
+	
+    include "$root/subpages/totalWaxChartYear.php"; 
+?>  
 
   
   

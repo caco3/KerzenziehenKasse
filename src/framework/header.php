@@ -104,7 +104,7 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
             </div>
             
             <div id=headerLinksDiv>
-                <p id=headerLinksTexts>
+                <p id=headerLinksTexts> Navigation: 
                 <? if(basename($_SERVER['PHP_SELF']) == "index.php") { ?>
                     <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
                     | <a class="headerLinks" href="stats.php" target="_self">Auswertung</a>
@@ -112,25 +112,25 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "bookings.php") { ?>
-                    <a class="headerLinks" href="index.php" target="_self">Hauptseite</a>
+                    <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="stats.php" target="_self">Auswertung</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Administration</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "stats.php") { ?>
-                    <a class="headerLinks" href="index.php" target="_self">Hauptseite</a>
+                    <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Administration</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "admin.php") { ?>
-                    <a class="headerLinks" href="index.php" target="_self">Hauptseite</a>
+                    <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
                     | <a class="headerLinks" href="stats.php" target="_self">Auswertung</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "help.php") { ?>
-                    <a class="headerLinks" href="index.php" target="_self">Hauptseite</a>
+                    <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
                     | <a class="headerLinks" href="stats.php" target="_self">Auswertung</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Administration</a>
