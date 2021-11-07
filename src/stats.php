@@ -74,7 +74,8 @@ function showDetailsPerDayAndYear($year) {
         $donations = 0;
         $total = 0;
 		$cash = 0;
-		$twint = 0;		
+		$twint = 0;	
+		$invoice = 0;		
         $articles = array();
         
         $bookingIds = getBookingIdsOfDate($date, false);
@@ -125,11 +126,14 @@ function showDetailsPerDayAndYear($year) {
             $donations += $booking['donation'];
             $total += $booking['total'];
 			
-			if ($booking['twint'] == 1) {
+			if ($booking['paymentMethod'] == 'cash') {
+				$cash += $booking['total'];
+			}
+			if ($booking['paymentMethod'] == 'twint') {
 				$twint += $booking['total'];
 			}
-			else {
-				$cash += $booking['total'];
+			else { // invoice
+				$invoice += $booking['total'];
 			}
             
 //             foreach($articles as $article) {
@@ -177,7 +181,7 @@ function showDetailsPerDayAndYear($year) {
         }
         
         echo("<tr><td colspan=2 class=td_rightBorder>Spenden</td><td class=td_rightBorder></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
-        echo("<tr><td colspan=2 class=td_rightBorder><b>Total</b></td><td class=td_rightBorder></td><td><b>CHF " . roundMoney10($total) . " (<img src=\"images/cash.png\" height=25px> CHF " . roundMoney10($cash) . ", <img src=\"images/twint-icon.png\" height=25px> CHF " . roundMoney10($twint) .")</b></td></tr>\n");
+        echo("<tr><td colspan=2 class=td_rightBorder><b>Total</b></td><td class=td_rightBorder></td><td><b>CHF " . roundMoney10($total) . " (<img src=\"images/cash.png\" height=25px> CHF " . roundMoney10($cash) . ", <img src=\"images/twint-icon.png\" height=25px> CHF " . roundMoney10($twint) . ", <img src=\"images/invoice.png\" height=25px> CHF " . roundMoney10($invoice) .")</b></td></tr>\n");
     ?>
         </table>
         <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
@@ -192,8 +196,11 @@ function showDetailsPerDayAndYear($year) {
 /* Shows the summary stats of a year */
 function showSummaryOfYear($year) {
         $articles = array();
-        $donations = 0;
-             
+        $donations = 0;		
+        $total = 0;
+		$cash = 0;
+		$twint = 0;	
+		$invoice = 0;             
         
         // Create list of all available products, so all days have the same order
         $products = getDbProducts("wachs", "articleId");
@@ -252,7 +259,6 @@ function showSummaryOfYear($year) {
         
     //     print_r($articles);
 
-        $total = 0;
         foreach($articles as $article) {
             $total += $article['quantity'] * $article['price'];
         }
@@ -260,7 +266,7 @@ function showSummaryOfYear($year) {
         
         if ($total == 0) { // no stats for this year => return
             return;
-        }
+        }		
         
     ?>
         <a name=year_<? echo($year); ?>_summary></a><h2><? echo($year); ?></h2>
