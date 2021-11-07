@@ -9,10 +9,10 @@ require_once("$root/framework/db.php");
 db_connect();
 
 
-if (isset($_POST['usingTwint'])) {
-	$usingTwint = filter_var($_POST['usingTwint'], FILTER_VALIDATE_BOOLEAN);
+if (isset($_POST['paymentMethod']) and ($_POST['paymentMethod'] == 'cash' or $_POST['paymentMethod'] == 'twint' or $_POST['paymentMethod'] == 'invoice')) {
+	$paymentMethod = $_POST['paymentMethod'];
 
-	$response_array['response']['usingTwint'] = $usingTwint; 
+	$response_array['response']['paymentMethod'] = $paymentMethod; 
 }
 else {
 	$errorText = "Invalid parameters!";
@@ -46,7 +46,9 @@ $success = true;
 
 $bookingId = bookingsCreateId();
 
-$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $usingTwint);
+//echo("moveBasketToBookings.php, $paymentMethod\n");
+
+$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod);
 if( $ret == false) {
     $errorText = "Failed to move basket to bookings (booking ID $bookingId)!";
     $success = false;

@@ -37,11 +37,14 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
             echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
             echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
-			if ($booking['twint'] == 1) {
-				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint-icon.png\" height=40px></td>");
-			}
-			else {
+			if ($booking['paymentMethod'] == 'cash') {
 				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+			}
+			else if ($booking['paymentMethod'] == 'twint') {
+				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
+			}
+			else { // invoice
+				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/invoice.png\" height=40px></td>");
 			}
             
             echo("<td>");
@@ -103,13 +106,16 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
                 echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
                 echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
-				if ($booking['twint'] == 1) {
-					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint-icon.png\" height=40px></td>");
-				}
-				else {
+				if ($booking['paymentMethod'] == 'cash') {
 					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
 				}
-                
+				else if ($booking['paymentMethod'] == 'twint') {
+					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
+				}
+				else { // invoice
+					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/invoice.png\" height=40px></td>");
+				}
+				
                 echo("<td>");
                 foreach($booking['articles'] as $articleId => $article) {
                     list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
