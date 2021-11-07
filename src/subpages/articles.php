@@ -78,7 +78,7 @@ function showFoodButton($line, $buttonStyle) {
     $header = "<h2><img class=articleImageNumpadHeader src=images/articles/".$line['image1']."> " . $line['name'] . "</h2>";
     ?>
         <div class="foodArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
-            onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', false, '', ' CHF')">
+            onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', true, '', ' CHF')">
         <div class=articlePackageDiv><!--<? echo($line['package']); ?>--></div>
 <!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
             <p><? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?></p>

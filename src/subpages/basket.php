@@ -54,18 +54,30 @@ $.ajaxPrefilter('script', function(options) {
             list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
+			
+			     
+			$cents = true;
+				
+				
             if ($unit == "g") {
                 $prefix = "";
-                $suffix = " g";
+                $suffix = " g";      
+				//$cents = false;
+            }            
+            else if($unit == "Stk.") {
+                $prefix = "";
+                $suffix = " Stk. ";      
+				//$cents = false;            
             }            
             else {
-                $prefix = "";
-                $suffix = " Stk. ";            
+                $prefix = "CHF ";
+                $suffix = "";        
+				//$cents = true;
             }
             
             $header = "<h2><img class=articleImageNumpadHeader src=images/articles/$image1> $name</h2>";
             $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity 
-            onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, '$header', false, '$prefix', '$suffix')\"> $unit";
+            onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, '$header', $cents, '$prefix', '$suffix')\"> $unit";
             $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($pricePerQuantity * $quantity, 2, ".", "") . " readonly disabled=disabled>";            
             $textField = "$name";
 //         }
