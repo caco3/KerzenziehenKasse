@@ -60,8 +60,9 @@
             backgroundColor: 'transparent',
             chartArea: {
                 top: 20,
+                bottom: 40,
                 left: 100,
-                height: '70%' 
+                right: 120,
             }, 
             hAxis: {
                 slantedText:true, 
@@ -85,4 +86,4 @@
     }
 </script>
 
-<div id="dayTotalWax" style="width: 900px; height: 600px;"></div>
+<div id="dayTotalWax" style="width: 1600px; height: 600px; background-image: url(images/chart-bg.png)"></div> 

@@ -66,7 +66,7 @@ function getStatsPerDay($year) {
 
 
 function showDetailsPerDayAndYear($year) {
-    global $germanDayOfWeek, $germanMonth;
+    global $germanDayOfWeek, $germanDayOfWeekShort, $germanMonth;
 
     $data = array();
     $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
@@ -339,7 +339,7 @@ function showSummaryOfYear($year) {
 	$bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $timestamp = strtotime($date);
-        $formatedDate = $germanDayOfWeek[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
+        $formatedDate = $germanDayOfWeekShort[date("N", $timestamp)] . ", " . date("d. ", $timestamp) . $germanMonth[date("m", $timestamp) - 1] . date(". Y", $timestamp);
         echo("<li><a href=#$date>$formatedDate</a><br></li>\n");
     }
 
@@ -355,8 +355,7 @@ function showSummaryOfYear($year) {
   
 <a name="PerDayAndYear"></a><h1>Umsatz pro Tag und Jahr</h1> 
 <h2>Wachs + Gastronomie</h2> 
-<p>Hinweise:<br>
- - Der Gastronomie-Anteil ist erst seit 2021 enthalten!<br>&nbsp;</p>
+<p>Hinweis: Der Gastronomie-Anteil ist erst seit 2021 enthalten!<br>&nbsp;</p>
 <?    
     $statsPerDay = array();
     for ($i = 0; $i <= 10; $i++) {
@@ -389,7 +388,7 @@ function showSummaryOfYear($year) {
             
             $totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
             $totalPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
-            $totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
+            $totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
         }
     }    
 	
@@ -433,7 +432,7 @@ function showSummaryOfYear($year) {
 			//print_r($data['total']);
             $totalWaxPerDayAndYear[$offset]['year'][$year]['total'] = $data['total'] - $data['food']; // subtract food again as we only want to see the wax part
             $totalWaxPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
-            $totalWaxPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeek[strftime("%w", strtotime($date))]; 
+            $totalWaxPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
         }
     }    
 	
