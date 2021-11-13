@@ -65,8 +65,8 @@
                 right: 120,
             }, 
             hAxis: {
-                slantedText:true, 
-                slantedTextAngle:90,
+                //slantedText:true, 
+                //slantedTextAngle:90,
                 textStyle: {
                     fontSize: 18
                 },
