@@ -277,12 +277,15 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #clock {
-    float: right; 
+  position: absolute;
+  top: 0;
+  right: 0;
+  
 }
 
 #clockText {
     margin: 0px;
-    font-size:200%;
+    font-size:150%;
 }
 
 

@@ -44,6 +44,7 @@ db_connect();
     
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/easy-numpad.css">
     <script src="<? echo("$root"); ?>/framework/easy-numpad.js"></script>
+    <script src="<? echo("$root"); ?>/framework/functions.js"></script>
     
 <!--    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
     <script src="<? echo("$root/"); ?>/framework/basket.js"></script>-->
@@ -57,10 +58,8 @@ db_connect();
     // var inputFieldSelection = null;
 
 
-    $(document).ready(function(){    
-        <? if (!(basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
-            startClock();
-        <? } ?>
+    $(document).ready(function(){
+        startClock();
         showArticles();
         showBasket();
         loadBibleVerse();
