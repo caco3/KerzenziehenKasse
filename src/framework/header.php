@@ -118,16 +118,16 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
                 <p id=headerLinksTexts> Navigation: 
                 <? if(basename($_SERVER['PHP_SELF']) == "index.php") { ?>
                     <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
-                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (<? echo(date("Y")); ?>)</a>
-                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Alle Jahre)</a>
+                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (Pro Tag)</a>
+                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Pro Jahr)</a>
                     | <a class="headerLinks" href="statsDiagrams.php" target="_self">Auswertung (Diagramme)</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Admin</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "bookings.php") { ?>
                     <a class="headerLinks" href="index.php" target="_self">Kasse</a>
-                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (<? echo(date("Y")); ?>)</a>
-                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Alle Jahre)</a>
+                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (Pro Tag)</a>
+                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Pro Jahr)</a>
                     | <a class="headerLinks" href="statsDiagrams.php" target="_self">Auswertung (Diagramme)</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Admin</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
@@ -135,7 +135,7 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
                     elseif(basename($_SERVER['PHP_SELF']) == "statsCurrentYear.php") { ?>
                     <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
-                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Alle Jahre)</a>
+                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Pro Jahr)</a>
                     | <a class="headerLinks" href="statsDiagrams.php" target="_self">Auswertung (Diagramme)</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Admin</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
@@ -143,7 +143,7 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
                     elseif(basename($_SERVER['PHP_SELF']) == "statsYears.php") { ?>
                     <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
-                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (<? echo(date("Y")); ?>)</a>
+                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (Pro Tag)</a>
                     | <a class="headerLinks" href="statsDiagrams.php" target="_self">Auswertung (Diagramme)</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Admin</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
@@ -151,24 +151,24 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
                     elseif(basename($_SERVER['PHP_SELF']) == "statsDiagrams.php") { ?>
                     <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
-                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (<? echo(date("Y")); ?>)</a>
-                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Alle Jahre)</a>
+                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (Pro Tag)</a>
+                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Pro Jahr)</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Admin</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "admin.php") { ?>
                     <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
-                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (<? echo(date("Y")); ?>)</a>
-                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Alle Jahre)</a>
+                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (Pro Tag)</a>
+                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Pro Jahr)</a>
                     | <a class="headerLinks" href="statsDiagrams.php" target="_self">Auswertung (Diagramme)</a>
                     | <a class="headerLinks" href="help.php" target="_self">Hilfe</a>
                 <? } 
                     elseif(basename($_SERVER['PHP_SELF']) == "help.php") { ?>
                     <a class="headerLinks" href="index.php" target="_self">Kasse</a>
                     | <a class="headerLinks" href="bookings.php" target="_self">Buchungen</a>
-                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (<? echo(date("Y")); ?>)</a>
-                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Alle Jahre)</a>
+                    | <a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (Pro Tag)</a>
+                    | <a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Pro Jahr)</a>
                     | <a class="headerLinks" href="statsDiagrams.php" target="_self">Auswertung (Diagramme)</a>
                     | <a class="headerLinks" href="admin.php" target="_self">Admin</a>
                 <? } ?>

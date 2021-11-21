@@ -142,7 +142,7 @@ function showSummaryOfYear($year) {
 ?>
     <div id="body">
   
-<a name=PerYear></a><h1>Zusammenfassung pro Jahr</h1>
+<a name=PerYear></a><h1>Umsatz pro Jahr</h1>
 <?
     // Show yearly summary
 
