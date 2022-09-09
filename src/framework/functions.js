@@ -1,4 +1,5 @@
 
+
 function blockLoaded(){
 //     contentsLoaded = contentsLoaded - 1;
 //     console.log("Loaded: " + (6 - contentsLoaded)); 
@@ -76,15 +77,25 @@ function hideFullPageOverlay() {
 
 
 function startClock() {
+	//console.log("Start Clock");
     var today = new Date();
     var h = today.getHours();
     var m = today.getMinutes();
     var s = today.getSeconds();
-    m = updateClock(m);
-//     s = updateClock(s);
-    document.getElementById('clockText').innerHTML =
-//     h + ":" + m + ":" + s;
-    h + ":" + m;
+    h = addLeadingZero(h);
+    m = addLeadingZero(m);
+//     s = addLeadingZero(s);
+	try {
+		if (s % 2 == 0) {
+			document.getElementById('clockText').innerHTML = h + ":" + m;
+		} else {
+			document.getElementById('clockText').innerHTML = h + " " + m;
+		}
+	}
+	catch {
+		console.log("clockText not loaded yet");
+	}
+
     var t = setTimeout(startClock, 1000);
     
     if((s == 0) && (m % 10 == 0)) { //every 5 minutes
@@ -93,7 +104,7 @@ function startClock() {
 }
 
 
-function updateClock(i) {
+function addLeadingZero(i) {
     if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
     return i;
 }

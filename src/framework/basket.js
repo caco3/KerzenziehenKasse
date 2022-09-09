@@ -67,7 +67,15 @@ $(document).ready(function(){
 			console.log("twintButton");
 			twintClicked();
         }
-    ); 
+    );  
+        
+    
+    $(".invoiceButton").on('click', 
+        function(event){
+			console.log("invoiceButton");
+			invoiceClicked();
+        }
+    );
     
     
     $(".cancelButton").on('click', 
@@ -96,7 +104,18 @@ $(document).ready(function(){
 function twintClicked() {
 	console.log("twintClicked");
 	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
-		moveBasketToBookings(true);
+		moveBasketToBookings('twint');
+	}
+	else { // Basket is empty
+		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+	}	
+}
+
+
+function invoiceClicked() {
+	console.log("invoiceClicked");
+	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
+		moveBasketToBookings('invoice');
 	}
 	else { // Basket is empty
 		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
@@ -107,7 +126,7 @@ function twintClicked() {
 function cashClicked(){
 	console.log("cashClicked");
 	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
-		moveBasketToBookings(false);
+		moveBasketToBookings('cash');
 	}
 	else { // Basket is empty
 		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
@@ -132,7 +151,7 @@ function cancelClicked(){
 }
 
 
-function moveBasketToBookings(usingTwint) {    
+function moveBasketToBookings(paymentMethod) {    
     console.log("pay (move basket to bookings)");
     
     var xhttp = new XMLHttpRequest();
@@ -155,15 +174,8 @@ function moveBasketToBookings(usingTwint) {
         }
     };
 	
-	var params = "usingTwint=" + usingTwint; 
+	var params = "paymentMethod=" + paymentMethod; 
 	console.log("Parameters:", params);
-
-	if (usingTwint == true) {
-		console.log("Payed with Twint");
-	}
-	else {
-		console.log("Payed with Cash");
-	}	
 
     showProgressBar();  
         

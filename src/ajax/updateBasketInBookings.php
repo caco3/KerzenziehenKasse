@@ -30,15 +30,10 @@ if($bookingId == "new" ) { // error, we expect a basket loaded from bookings
 }
 else { // ok, basket was loaded from bookings and can be updated in there
 	$booking = getDbBooking($bookingId);
-	if ( $booking['twint'] == 1) {
-		$usingTwint = true;
-	}
-	else {
-		$usingTwint = false;
-	}
-	//echo("ajax, " . $booking['twint'] . "=>  $usingTwint\n");
+	
+	$paymentMethod = $booking['paymentMethod']; // On update, we do not support changing the method, so fetch it from the booking
 
-    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $usingTwint);
+    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod);
     if( $ret == false) {
         $errorText = "Failed to move basket to bookings (booking ID $bookingId, updating booking)!";
         $success = false;
@@ -71,16 +66,11 @@ else { // ok, basket was loaded from bookings and can be updated in there
 
 
 
-
-
-
-
-
 if ( $success == true) {
     $response_array['response']['success'] = 'true'; 
     $response_array['response']['Text'] = "updated basket in bookings.";
     $response_array['response']['bookingId'] = $bookingId;
-	$response_array['response']['usingTwint'] = $usingTwint; 
+	$response_array['response']['paymentMethod'] = $paymentMethod; 
 }
 else {
     $response_array['response']['success'] = 'false'; 

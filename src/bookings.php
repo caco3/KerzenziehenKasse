@@ -16,7 +16,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th>Buchung</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Bezahlung</th><th>Artikel</th><th></th><th></th></tr>
+      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -33,18 +33,21 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 //             echo("<pre>");
 //             print_r($booking);
             echo("<tr>");
-            echo("<td>$bookingId</td>");
-            echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
-            echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
-            echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
-			if ($booking['twint'] == 1) {
-				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint-icon.png\" height=40px></td>");
+            echo("<td class=td_rightBorder>$bookingId</td>");
+            echo("<td class=\"td_nowrap td_rightBorder\">" . $booking['time'] . "</td>");
+            echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
+            echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
+			if ($booking['paymentMethod'] == 'cash') {
+				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
 			}
-			else {
-				echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+			else if ($booking['paymentMethod'] == 'twint') {
+				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
+			}
+			else { // invoice
+				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/invoice.png\" height=40px></td>");
 			}
             
-            echo("<td>");
+            echo("<td class=td_rightBorder>");
             foreach($booking['articles'] as $articleId => $article) {
                 list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
                 echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
@@ -65,7 +68,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <p><br></p>
     <h2>Alle Buchungen des aktuelles Jahrs</h2>
     <table id=bookingsTable>
-    <tr><th>Buchung</th><th>Datum</th><th>Zeit</th><th>Total</th><th>Spende</th><th>Bezahlung</th><th>Artikel</th><th></th></tr>
+    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
@@ -98,19 +101,22 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 }            
 
                 echo("<tr>");
-                echo("<td>$bookingId</td>");
+                echo("<td class=td_rightBorder>$bookingId</td>");
                 echo("<td class=td_nowrap>$formatedDate</td>");
-                echo("<td class=td_nowrap>" . $booking['time'] . "</td>");
-                echo("<td class=td_nowrap>CHF " . roundMoney10($booking['total']) . "</td>");
-                echo("<td class=td_nowrap>CHF " . roundMoney($booking['donation']) . "</td>");
-				if ($booking['twint'] == 1) {
-					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint-icon.png\" height=40px></td>");
+                echo("<td class=\"td_nowrap td_rightBorder\">" . $booking['time'] . "</td>");
+                echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
+                echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
+				if ($booking['paymentMethod'] == 'cash') {
+					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
 				}
-				else {
-					echo("<td class=td_nowrap style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+				else if ($booking['paymentMethod'] == 'twint') {
+					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
 				}
-                
-                echo("<td>");
+				else { // invoice
+					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/invoice.png\" height=40px></td>");
+				}
+				
+                echo("<td class=td_rightBorder>");
                 foreach($booking['articles'] as $articleId => $article) {
                     list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
                     echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");

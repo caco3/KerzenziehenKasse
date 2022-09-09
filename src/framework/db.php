@@ -477,22 +477,15 @@ function bookingsGetLastId() {
 
 
 
-function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $usingTwint) {
+function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $paymentMethod) {
     global $db_link;
 
     // TODO sanetize
-	
-	if ($usingTwint == true) {
-		$twint = 1;
-	}
-	else {
-		$twint = 0;
-	};
-	
-	//echo("moveBasketToBooking, $usingTwint, $twint\n");
+
+	//echo("moveBasketToBooking, $paymentMethod\n");
        
     $sql = "UPDATE `bookings`
-            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `twint`='$twint'
+            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'
             WHERE `bookingId`='$bookingId'"; 
        
 	if(mysqli_query($db_link, $sql)){
@@ -528,7 +521,7 @@ function getDbBooking($bookingId) {
     $booking['time'] = $line['time'];
     $booking['donation'] = $line['donation'];
     $booking['total'] = $line['total'];
-    $booking['twint'] = $line['twint'];
+    $booking['paymentMethod'] = $line['paymentMethod'];
 
     $booking['articles'] = unserialize($line['booking']);
 

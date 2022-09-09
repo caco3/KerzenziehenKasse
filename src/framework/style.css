@@ -277,12 +277,15 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #clock {
-    float: right; 
+  position: absolute;
+  top: 0;
+  right: 0;
+  
 }
 
 #clockText {
     margin: 0px;
-    font-size:200%;
+    font-size:150%;
 }
 
 
@@ -484,7 +487,7 @@ a:link, a:visited, a:hover, a:active {
 /* ############ Table Summary ############## */
 #bookingsTable {
     margin-right: 5px;
-    max-width: 1200px;
+    /*max-width: 1200px;*/
 }
  
  
@@ -504,7 +507,14 @@ a:link, a:visited, a:hover, a:active {
     background:  rgba(204, 255, 204, 0.8); 
 }
 
+#bookingsTable td, th {
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
+.td_rightBorder {
+	border-right: 1px solid gray;
+}
 
 
 
