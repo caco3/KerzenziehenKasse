@@ -7,6 +7,7 @@ require_once("$root/config/config.php");
 require_once("$root/config/config_generic.php");
 require_once("$root/framework/functions.php");
 require_once("$root/framework/db.php");
+require_once("$root/framework/qr_bill.php");
 
 db_connect();
 
@@ -59,6 +60,11 @@ $booking = getBooking($bookingId);
 // $total = "CHF " . number_format(roundMoney10(getDbTotal()), 2, ".", "");
 
 
+/* QR Code (QR Bill) Generation */
+generateQrCode($bookingId);
+
+
+/* Document Generation */
 $odf = new Odf("$root/templates/receipt.odt");
 
 $year = date("Y");
@@ -71,7 +77,7 @@ $odf->setVars('time', $time);
 $odf->setVars('bookingId', "$bookingId");
 $odf->setVars('priceTotal', "CHF " . number_format($booking['total'], 2, ".", ""));
 
-
+$odf->setImage('qrBill', $root . "/../tmp/qrBill_$bookingId.png", -1, 4.5, 4.5);
 
 
 $articlesList = $odf->setSegment('articles');

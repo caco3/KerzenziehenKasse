@@ -1,6 +1,6 @@
 <?php
 
-$root=".";
+$root="..";
 define('DIR_CLASSES', "$root/framework/qrBill/");
 
 
