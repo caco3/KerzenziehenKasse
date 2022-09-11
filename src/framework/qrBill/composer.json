@@ -1,5 +1,5 @@
 {
     "require": {
-        "sprain/swiss-qr-bill": "^3.3"
+        "sprain/swiss-qr-bill": "^4.3"
     }
 }

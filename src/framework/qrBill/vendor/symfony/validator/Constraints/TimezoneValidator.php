@@ -80,7 +80,7 @@ class TimezoneValidator extends ConstraintValidator
         if (null !== $countryCode) {
             try {
                 return @\DateTimeZone::listIdentifiers($zone, $countryCode) ?: [];
-            } catch (\ValueError) {
+            } catch (\ValueError $e) {
                 return [];
             }
         }
@@ -97,7 +97,7 @@ class TimezoneValidator extends ConstraintValidator
         if (null !== $countryCode) {
             try {
                 return Timezones::forCountryCode($countryCode);
-            } catch (MissingResourceException) {
+            } catch (MissingResourceException $e) {
                 return [];
             }
         }

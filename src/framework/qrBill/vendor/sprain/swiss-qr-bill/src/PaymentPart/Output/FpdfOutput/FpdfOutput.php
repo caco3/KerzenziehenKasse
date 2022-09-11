@@ -64,7 +64,7 @@ final class FpdfOutput extends AbstractOutput implements OutputInterface
         $this->setQrCodeImageFormat(QrCode::FILE_FORMAT_PNG);
     }
 
-    public function getPaymentPart()
+    public function getPaymentPart(): void
     {
         $this->fpdf->SetAutoPageBreak(false);
 
@@ -95,14 +95,11 @@ final class FpdfOutput extends AbstractOutput implements OutputInterface
     private function addSwissQrCodeImage(): void
     {
         $qrCode = $this->getQrCode();
-        $qrCode->setWriterByExtension(
-            $this->getQrCodeImageFormat()
-        );
 
         $yPosQrCode = 209.5 + $this->offsetY;
         $xPosQrCode = 67 + $this->offsetX;
 
-        $this->fpdf->Image($qrCode->writeDataUri(), $xPosQrCode, $yPosQrCode, 46, 46, 'png');
+        $this->fpdf->Image($qrCode->getDataUri($this->getQrCodeImageFormat()), $xPosQrCode, $yPosQrCode, 46, 46, 'png');
     }
 
     private function addInformationContentReceipt(): void
@@ -195,7 +192,7 @@ final class FpdfOutput extends AbstractOutput implements OutputInterface
         }
     }
 
-    private function addSeparatorContentIfNotPrintable()
+    private function addSeparatorContentIfNotPrintable(): void
     {
         if (!$this->isPrintable()) {
             $this->fpdf->SetLineWidth(0.1);

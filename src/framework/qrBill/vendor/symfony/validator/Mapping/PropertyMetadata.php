@@ -62,7 +62,7 @@ class PropertyMetadata extends MemberMetadata
 
             try {
                 return $reflProperty->getValue($object);
-            } catch (\Error) {
+            } catch (\Error $e) {
                 return null;
             }
         }
@@ -85,6 +85,9 @@ class PropertyMetadata extends MemberMetadata
             }
         }
 
-        return new \ReflectionProperty($objectOrClassName, $this->getName());
+        $member = new \ReflectionProperty($objectOrClassName, $this->getName());
+        $member->setAccessible(true);
+
+        return $member;
     }
 }
