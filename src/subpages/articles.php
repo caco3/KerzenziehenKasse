@@ -45,8 +45,7 @@ function showButton($line, $buttonStyle) {
 		<!--	<div class=articlePackageDiv><? echo($line['package']); ?></div> -->
 		<!--	<? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?> -->
 		<!--	<div class=articlePriceDiv><? echo($price); ?></div> -->
-            <p style="position: absolute; left: 0px; bottom: 0; text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
-             1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;">&nbsp; &#13;<? echo($line['name']); ?></p>
+            <p class="articleButtonText"><? echo($line['name']); ?></p>
         </div>
     <? 
 }

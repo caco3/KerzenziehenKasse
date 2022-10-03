@@ -176,7 +176,14 @@
     cursor: -webkit-grabbing; cursor: grabbing;
 }
 
-
+.articleButtonText {
+	position: absolute; 
+	left: 0px; 
+	bottom: 2px; 
+	text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff; 
+	font-size: 90%; 
+	width: 144px
+}
 
 .normalArticleButton {
     background-color: #b29af8; background-image: -webkit-gradient(linear, left top, left bottom, from(#b29af8), to(#9174ed));
