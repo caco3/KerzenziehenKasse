@@ -40,13 +40,13 @@ function showButton($line, $buttonStyle) {
 
 
     ?>
-        <div class="articleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> onclick="addArticleToBasket(this.id)">
-        <div class=articlePackageDiv><? echo($line['package']); ?></div>
-<!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
-            <? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?>
-        <div class=articlePriceDiv><? echo($price); ?></div>
-        
-            <p><? echo($line['name']); ?></p>
+        <div class="articleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> onclick="addArticleToBasket(this.id)"
+		style="background-image: url('<? echo("./images/articles/".$line['image1']); ?>');">
+		<!--	<div class=articlePackageDiv><? echo($line['package']); ?></div> -->
+		<!--	<? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?> -->
+		<!--	<div class=articlePriceDiv><? echo($price); ?></div> -->
+            <p style="position: absolute; left: 0px; bottom: 0; text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,
+             1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;">&nbsp; &#13;<? echo($line['name']); ?></p>
         </div>
     <? 
 }

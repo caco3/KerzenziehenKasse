@@ -143,7 +143,14 @@
     height: 120px;
     float: left;
     text-align: center;
-    
+	    
+    background-size: 144px; /* Background image */
+	background-repeat: no-repeat;
+	
+	text-align: center;
+	vertical-align: middle;
+    position: relative;
+	
     border-radius:8px;
     border-spacing: 0;
     
