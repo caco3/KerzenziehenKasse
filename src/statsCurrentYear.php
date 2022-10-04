@@ -170,7 +170,7 @@ function showDetailsPerDayAndYear($year) {
             }
         
             echo("<tr>");
-            echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+            echo("<td><span class=tooltip><img class=articleImage src=images/articles_small/". $article['image'] . "><span><img src=images/articles_small/". $article['image'] . "></span></span></td>");
 			
 			if ($article['subtype'] == 'food') {
 				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
