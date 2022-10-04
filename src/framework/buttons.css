@@ -135,12 +135,12 @@
 
 /* Article buttons 
    Style source: https://cssgradientbutton.com */
-.articleButton {
+.articleButton, .foodArticleButton, .dippingArticleButton {
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 120px;
+    height: 140px;
     float: left;
     text-align: center;
 	    
@@ -176,7 +176,7 @@
     cursor: -webkit-grabbing; cursor: grabbing;
 }
 
-.articleButtonText {
+.articleButtonText, .dippingArticleButtonText, .foodArticleButtonText {
 	position: absolute; 
 	left: 0px; 
 	bottom: 2px; 
@@ -265,12 +265,12 @@
 
 /* Food Article buttons 
    Style source: https://cssgradientbutton.com */
-.foodArticleButton {
+/* .foodArticleButton {
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 120px;
+    height: 140px;
     float: left;
     text-align: center;
     
@@ -280,7 +280,7 @@
     box-shadow: 3px 3px 1px #888888;
     
     cursor: -webkit-grab; cursor: grab;
-}
+} */
 
 .foodArticleButton:active {
     box-shadow: -3px -3px 1px #888888;
@@ -318,12 +318,12 @@
 
 /* Dipping Article buttons 
    Style source: https://cssgradientbutton.com */
-.dippingArticleButton {
+/* .dippingArticleButton {
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 120px;
+    height: 140px;
     float: left;
     text-align: center;
     
@@ -333,7 +333,7 @@
     box-shadow: 3px 3px 1px #888888;
     
     cursor: -webkit-grab; cursor: grab;
-}
+} */
 
 .dippingArticleButton:active {
     box-shadow: -3px -3px 1px #888888;
