@@ -135,15 +135,22 @@
 
 /* Article buttons 
    Style source: https://cssgradientbutton.com */
-.articleButton {
+.articleButton, .foodArticleButton, .dippingArticleButton {
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 120px;
+    height: 140px;
     float: left;
     text-align: center;
-    
+	    
+    background-size: 144px; /* Background image */
+	background-repeat: no-repeat;
+	
+	text-align: center;
+	vertical-align: middle;
+    position: relative;
+	
     border-radius:8px;
     border-spacing: 0;
     
@@ -169,7 +176,14 @@
     cursor: -webkit-grabbing; cursor: grabbing;
 }
 
-
+.articleButtonText, .dippingArticleButtonText, .foodArticleButtonText {
+	position: absolute; 
+	left: 0px; 
+	bottom: 2px; 
+	text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff; 
+	font-size: 90%; 
+	width: 144px
+}
 
 .normalArticleButton {
     background-color: #b29af8; background-image: -webkit-gradient(linear, left top, left bottom, from(#b29af8), to(#9174ed));
@@ -251,12 +265,12 @@
 
 /* Food Article buttons 
    Style source: https://cssgradientbutton.com */
-.foodArticleButton {
+/* .foodArticleButton {
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 120px;
+    height: 140px;
     float: left;
     text-align: center;
     
@@ -266,7 +280,7 @@
     box-shadow: 3px 3px 1px #888888;
     
     cursor: -webkit-grab; cursor: grab;
-}
+} */
 
 .foodArticleButton:active {
     box-shadow: -3px -3px 1px #888888;
@@ -304,12 +318,12 @@
 
 /* Dipping Article buttons 
    Style source: https://cssgradientbutton.com */
-.dippingArticleButton {
+/* .dippingArticleButton {
     border: 2px solid black;
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 120px;
+    height: 140px;
     float: left;
     text-align: center;
     
@@ -319,7 +333,7 @@
     box-shadow: 3px 3px 1px #888888;
     
     cursor: -webkit-grab; cursor: grab;
-}
+} */
 
 .dippingArticleButton:active {
     box-shadow: -3px -3px 1px #888888;

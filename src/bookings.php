@@ -50,7 +50,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<td class=td_rightBorder>");
             foreach($booking['articles'] as $articleId => $article) {
                 list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
-                echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
+                echo("<span class=tooltip><img class=articleImage src=images/articles_small/$image><span><img src=images/articles_small/$image></span></span>");
                 echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
             }
             
@@ -119,7 +119,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 echo("<td class=td_rightBorder>");
                 foreach($booking['articles'] as $articleId => $article) {
                     list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
-                    echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
+                    echo("<span class=tooltip><img class=articleImage src=images/articles_small/$image><span><img src=images/articles_small/$image></span></span>");
                     echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
                 }
                 
