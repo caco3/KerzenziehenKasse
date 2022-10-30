@@ -53,7 +53,7 @@ $(document).ready(function(){
         function(event){
             var bookingId = $(event.target).attr('id');
             console.log("creating receipt for booking " + bookingId);
-            
+            firework.launch("Beleg f&uuml;r Buchung " + bookingId + " wird erstellt.<br><br>Das Dokument wird in einigen Sekunden ge&ouml;ffnet...", 'success', 5000);
             window.location.replace("subpages/receipt.php?id=" + bookingId);
             
         }
