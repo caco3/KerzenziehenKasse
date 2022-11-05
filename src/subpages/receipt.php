@@ -75,7 +75,7 @@ $odf->setVars('year', $year);
 $odf->setVars('date', $date);
 $odf->setVars('time', $time);
 $odf->setVars('bookingId', "$bookingId");
-$odf->setVars('priceTotal', "CHF " . number_format($booking['total'], 2, ".", ""));
+$odf->setVars('priceTotal', number_format($booking['total'], 2, ".", ""));
 
 $odf->setImage('qrBill', $root . "/../tmp/qrBill_$bookingId.png", -1, 4.5, 4.5);
 
