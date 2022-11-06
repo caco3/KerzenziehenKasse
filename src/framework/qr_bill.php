@@ -9,7 +9,7 @@ use Sprain\SwissQrBill as QrBill;
 require $root . '/framework/qrBill/vendor/autoload.php';
 
 
-function generateQrCode($bookingId) {
+function generateQrCode($bookingId, $amount) {
     global $root;
 
     $qrBill = QrBill\QrBill::create();
@@ -33,7 +33,7 @@ function generateQrCode($bookingId) {
     // The currency must be defined.
     $qrBill->setPaymentAmountInformation(
         QrBill\DataGroup\Element\PaymentAmountInformation::create(
-            'CHF'
+            'CHF', $amount
         ));
 
     // Add payment reference

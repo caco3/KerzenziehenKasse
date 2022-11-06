@@ -61,7 +61,7 @@ $booking = getBooking($bookingId);
 
 
 /* QR Code (QR Bill) Generation */
-generateQrCode($bookingId);
+generateQrCode($bookingId, $booking['total']);
 
 
 /* Document Generation */
