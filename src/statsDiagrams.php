@@ -68,7 +68,7 @@ function showDiagram($name, $data) {
 <?
 				echo("['Tag', ");
 				
-				$yearsCovered = count($data[0]); // get the number of data columns
+				$yearsCovered = date("Y") - 2018 + 1; //count($data[0]); // get the number of data columns
 				for($i = $yearsCovered; $i > 0; $i--) {
 					$year = date("Y") - $i + 1; 
 					echo("'$year', ");
@@ -159,8 +159,8 @@ function showDiagram($name, $data) {
 
 
 $statsPerDay = array();
-for ($i = 0; $i <= 10; $i++) {
-	$year = date("Y") - $i; // iterate through the last 10 years
+for ($i = 0; $i <= (date("Y") - 2018 + 1); $i++) {
+	$year = date("Y") - $i; // iterate through the last years (since 2018)
 	$stats = getStatsPerDay($year);
 	if (count($stats) == 0) { // no stats for this year => skip
 		continue;
