@@ -125,7 +125,7 @@ a:link, a:visited, a:hover, a:active {
 
 .leftSideDiv, .midddleDiv, .rightSideDiv {
     display:inline-table;
-/*     max-width: 37%; */
+     max-width: 660px;
     vertical-align: top;
 }
 
