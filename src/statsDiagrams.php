@@ -55,7 +55,7 @@ function getStatsPerDay($year) {
 }
 
 
-function showDiagram($name, $data) {
+function showDiagram($name, $yAxisName, $data) {
 ?>
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['corechart', 'bar']});
@@ -126,17 +126,17 @@ function showDiagram($name, $data) {
 				hAxis: {
 					//slantedText:true, 
 					//slantedTextAngle:90,
-					textStyle: {
-						fontSize: 18
-					},
+					textStyle: { fontSize: 20 },
+					titleTextStyle: { italic: false }
 				},
 				
 				vAxis: {
-					title: "Umsatz in CHF",
-					textStyle: {
-						fontSize: 18
-					},
-				}
+					title: "<? echo($yAxisName); ?>",
+					textStyle: { fontSize: 20 },
+					titleTextStyle: { fontSize: 26, italic: false, bold: true }
+				},
+				bar: { groupWidth: '80%' },
+// 				 dataOpacity: 0.7,
 			};
 			
 			var formatter = new google.visualization.NumberFormat({decimalSymbol: '.',groupingSymbol: "'", prefix: 'CHF '});
@@ -191,14 +191,17 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 		$offset = date("z", strtotime($date)) - $zeroOffset;
 		$dayIndex++;
 		
+		/* Wax only in CHF */
 		$totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
 		$totalPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
+		/* Wax and food in CHF */
 		$totalWaxPerDayAndYear[$offset]['year'][$year]['total'] = $data['total'] - $data['food']; // subtract food again as we only want to see the wax part
 		$totalWaxPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalWaxPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
+		/* Food only in CHF */
 		$totalFoodPerDayAndYear[$offset]['year'][$year]['total'] = $data['food']; // We only want to see the food part
 		$totalFoodPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalFoodPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
@@ -211,21 +214,36 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <div id="body">
-<a name="PerDayAndYear"></a><h1>Umsatz pro Tag und Jahr</h1> 
-<p>Hinweise: Für 2018 ist der Gastronomie-Anteil <span style="color:red;">nicht</span> enthalten! 2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.<br>&nbsp;</p>
+<a name="PerDayAndYear"></a><h1>Umsatz und Wachs pro Tag und Jahr</h1> 
+
+<h3>Inhaltsverzeichnis</h3>
+<ul>
+    <li><a href=#Wax+Gastro_Currency>Wachs + Gastronomie</a><br><br></li>
+    <li><a href=#Wax_Currency>Nur Wachs</a><br><br></li>
+    <li><a href=#Gastro_Currency>Nur Gastronomie</a><br><br></li>
+</ul>
+
+<h3>Hinweise</h3>
+<ul>
+    <li>Für 2018 ist der Gastronomie-Anteil <span style="color:red;">nicht</span> enthalten!</li>
+    <li>2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
+</ul>
 
 
-<p><a href="?nocss", target="_self">Ohne Hintergrundbild anzeigen</a><br>&nbsp;</p>
+<p><a href="?nocss" target="_self">Ohne Hintergrundbild anzeigen</a><br>&nbsp;</p>
 
+<hr>
 
-<h2>Wachs + Gastronomie</h2> 
-<? showDiagram("Common", $totalPerDayAndYear); ?>  
+<a name=Wax+Gastro_Currency></a><h2>Wachs + Gastronomie</h2>
+<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear); ?>  
+<hr>
 
-<h2>Wachs</h2>
-<? showDiagram("Wax", $totalWaxPerDayAndYear); ?> 
+<a name=Wax_Currency></a><h2>Wachs</h2>
+<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear); ?> 
+<hr>
 
-<h2>Gastronomie</h2>
-<? showDiagram("Food", $totalFoodPerDayAndYear); ?> 
+<a name=Gastro_Currency></a><h2>Gastronomie</h2>
+<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear); ?> 
 
 <?
 include "$root/framework/footer.php"; 
