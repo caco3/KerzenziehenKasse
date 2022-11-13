@@ -513,7 +513,11 @@ a:link, a:visited, a:hover, a:active {
 }
 
 .td_rightBorder {
-	border-right: 1px solid gray;
+    border-right: 1px solid gray;
+}
+
+.tr_bottomBorder td {
+    border-bottom: 3px solid black;
 }
 
 
