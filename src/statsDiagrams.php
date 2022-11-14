@@ -12,14 +12,14 @@ function getStatsPerDay($year) {
 		// echo("$date<br>\n");
         $donations = 0;
         $total = 0;    
-        $food = 0;                
+        $food = 0;      
+        $school = 0;               
         $articles = array();
         
         $bookingIds = getBookingIdsOfDate($date, false);        
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
-			//echo("<pre>");
-			//print_r($booking);
+// 	    echo("<pre>"); print_r($booking); echo("</pre>");
             foreach ($booking['articles'] as $articleId => $article) { // articles 
 				//echo("$articleId, " . ($articleId * 10));
 				//print_r($articles);
@@ -34,18 +34,30 @@ function getStatsPerDay($year) {
 					//print_r($article);
 					$food += $article['quantity']; // equals the costs on food
 				}
+				
+// 				if ($articleId == 200) { // School
+// 					//print_r($article);
+// 					$school += $article['total'];
+// 				}
             }
             $donations += $booking['donation'];
             $total += $booking['total'];
-
+	    if ($booking['school']) {
+		$school += $booking['total']; // Count school bookings total additionally
+	    }
+	    
         }   
         
 //         $total += $donations;
         $data[$date]['donations'] = $donations;
         $data[$date]['total'] = $total;
         $data[$date]['food'] = $food;
+        $data[$date]['school'] = $school;
 		
-		//echo("donations, total, food: $donations, $total, $food<br>\n");
+// 	echo("donations, total, food, school: $donations, $total, $food, $school<br>\n");
+// 	if ($school > 0) {
+// 	    echo("SCHOOL: $school<br>");
+// 	}
     }
     
     ksort($data);
@@ -56,25 +68,28 @@ function getStatsPerDay($year) {
 
 
 function showDiagram($name, $yAxisName, $data) {
+    
+//     print_r($data);
 ?>
 	<script type="text/javascript">
-		google.charts.load('current', {'packages':['corechart', 'bar']});
+		google.load('visualization', '1.1', { 'packages': ['bar'] });
 		google.charts.setOnLoadCallback(drawChartTotalPerDay_<? echo($name); ?>);
 		
-		
-
 		function drawChartTotalPerDay_<? echo($name); ?>() {
 			var data = google.visualization.arrayToDataTable([
 <?
-				echo("['Tag', ");
+				echo("['', ");
 				
 				$yearsCovered = date("Y") - 2018 + 1; //count($data[0]); // get the number of data columns
 				for($i = $yearsCovered; $i > 0; $i--) {
 					$year = date("Y") - $i + 1; 
 					echo("'$year', ");
+					echo("'$year (Schule)', ");
 				}            
 				echo("],\n");
 				
+				
+				$maxValue = 0;
 				
 				foreach($data as $day => $dataOfDay) {
 					//echo("$day\n");
@@ -103,9 +118,17 @@ function showDiagram($name, $yAxisName, $data) {
 					for($i = $yearsCovered; $i > 0; $i--) { // for each year
 						$year = date("Y") - $i + 1; 					
 						if (is_array($dataOfDay['year']) and array_key_exists($year, $dataOfDay['year'])) {
-							echo($dataOfDay['year'][$year]['total'] . ", ");
+							if ($dataOfDay['year'][$year]['total'] > $maxValue) {
+							    $maxValue = $dataOfDay['year'][$year]['total'];
+							}
+							
+							echo(($dataOfDay['year'][$year]['total'] - $dataOfDay['year'][$year]['school']) . ", ");
+							echo($dataOfDay['year'][$year]['school'] . ", ");
+// 							echo("100" . ", "); // xxx
+							
 						}
 						else {
+							echo("0, ");
 							echo("0, ");
 						}
 
@@ -117,26 +140,68 @@ function showDiagram($name, $yAxisName, $data) {
 
 			var options = { 
 				backgroundColor: 'transparent',
+				
+				isStacked: true,
+				
+				series: {
+				    <? 
+				    
+				    for($series = 0; $series < $yearsCovered; $series++) {
+					echo (($series * 2) . ": { targetAxisIndex: $series },\n");
+					echo (($series * 2 + 1) . ": { targetAxisIndex: $series },\n");
+				    }
+				    ?>
+				    
+				},
+				
+				
+				height: 600,
+				width: 1800,
+				
 				chartArea: {
-					top: 20,
-					bottom: 40,
-					left: 100,
-					right: 120,
+// 					top: 1000,
+// 					bottom: 40,
+// 					left: 100,
+// 					right: 120,
+					backgroundColor: 'transparent',
 				}, 
+				
+// 				chartArea.top: 0,
+				
 				hAxis: {
 					//slantedText:true, 
 					//slantedTextAngle:90,
 					textStyle: { fontSize: 20 },
-					titleTextStyle: { italic: false }
+					titleTextStyle: { italic: false },
+// 					viewWindow: {
+// 					    min: 0,
+// 					    max: 300, // Needed to make all series scaled the same
+// 					},
 				},
 				
 				vAxis: {
 					title: "<? echo($yAxisName); ?>",
+// 					textPosition: 'none',
 					textStyle: { fontSize: 20 },
-					titleTextStyle: { fontSize: 26, italic: false, bold: true }
+					titleTextStyle: { fontSize: 26, italic: false, bold: true },
+					viewWindow: {
+					    min: 0,
+					    max: <? echo($maxValue * 1.1); ?>, // Needed to make all series scaled the same
+					},
 				},
+				
 				bar: { groupWidth: '80%' },
 // 				 dataOpacity: 0.7,
+				
+				
+				// Hide all except first Y axis
+				vAxes: {
+				    <?
+					for($series = 1; $series < $yearsCovered; $series++) {
+					    echo("$series: { gridlines: { count:0}, ticks: [0], textStyle: {fontSize: 0 } }, ");
+					}
+				    ?>
+				},
 			};
 			
 			var formatter = new google.visualization.NumberFormat({decimalSymbol: '.',groupingSymbol: "'", prefix: 'CHF '});
@@ -144,13 +209,20 @@ function showDiagram($name, $yAxisName, $data) {
 				formatter.format(data, i);
 			}
 			
-			var chartTotalPerDay_<? echo($name); ?> = new google.visualization.ColumnChart(document.getElementById('dayTotal_<? echo($name); ?>'));
+// 			var chartTotalPerDay_<? echo($name); ?> = new google.visualization.ColumnChart(document.getElementById('dayTotal_<? echo($name); ?>'));
 
-			chartTotalPerDay_<? echo($name); ?>.draw(data, options);
+// 			chartTotalPerDay_<? echo($name); ?>.draw(data, options);
+			
+			
+			
+			// Instantiate and draw our chart, passing in some options.
+			var chartTotalPerDay_<? echo($name); ?> = new google.charts.Bar(document.getElementById('dayTotal_<? echo($name); ?>'));
+			chartTotalPerDay_<? echo($name); ?>.draw(data, google.charts.Bar.convertOptions(options));
 		}
 	</script>
 
-	<div id="dayTotal_<? echo($name); ?>" style="width: 1600px; height: 600px; background-image: url(images/chart-bg.png)"></div> 
+	<div id="dayTotal_<? echo($name); ?>" style="width: 1600px; height: 600px; background-image: url(images/chart-bg.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px 8px;"></div> <p><br></p>
+<!-- <div id="dayTotal_<? echo($name); ?>" style="width: 1600px; height: 600px; background-image: url(images/chart-bg.png);"></div> <p><br></p> -->
 	<!--  The background image got generated with `various/chart-bg-generator.py` -->
 
 <?
@@ -162,6 +234,7 @@ $statsPerDay = array();
 for ($i = 0; $i <= (date("Y") - 2018 + 1); $i++) {
 	$year = date("Y") - $i; // iterate through the last years (since 2018)
 	$stats = getStatsPerDay($year);
+// 	echo("<pre>"); print_r($stats); echo("</pre>");
 	if (count($stats) == 0) { // no stats for this year => skip
 		continue;
 	}
@@ -175,9 +248,9 @@ $totalFoodPerDayAndYear = array(); // [day][year]
 /* Create one index per day for 30 days.
  * If a day stays empty, it will get ignored in the plot */
 for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
-	$totalPerDayAndYear[$i] = array('donations' => 0, 'total' => 0);
-	$totalWaxPerDayAndYear[$i] = array('donations' => 0, 'total' => 0);
-	$totalFoodPerDayAndYear[$i] = array('donations' => 0, 'total' => 0);
+	$totalPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
+	$totalWaxPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
+	$totalFoodPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
 }
 	
 for ($i = 0; $i <= 10; $i++) { // for each year
@@ -193,11 +266,13 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 		
 		/* Wax only in CHF */
 		$totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
+		$totalPerDayAndYear[$offset]['year'][$year]['school'] = $data['school']; 
 		$totalPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
 		/* Wax and food in CHF */
 		$totalWaxPerDayAndYear[$offset]['year'][$year]['total'] = $data['total'] - $data['food']; // subtract food again as we only want to see the wax part
+		$totalWaxPerDayAndYear[$offset]['year'][$year]['school'] = $data['school']; 
 		$totalWaxPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalWaxPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
