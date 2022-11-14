@@ -72,7 +72,7 @@ function showDiagram($name, $yAxisName, $data) {
 //     print_r($data);
 ?>
 	<script type="text/javascript">
-		google.load('visualization', '1.1', { 'packages': ['bar'] });
+		google.charts.load('current', {'packages':['corechart', 'bar']});
 		google.charts.setOnLoadCallback(drawChartTotalPerDay_<? echo($name); ?>);
 		
 		function drawChartTotalPerDay_<? echo($name); ?>() {
@@ -83,6 +83,11 @@ function showDiagram($name, $yAxisName, $data) {
 				$yearsCovered = date("Y") - 2018 + 1; //count($data[0]); // get the number of data columns
 				for($i = $yearsCovered; $i > 0; $i--) {
 					$year = date("Y") - $i + 1; 
+				    
+					if (($year == 2018) or $year == 2020) { // Do not show 2018 and 2020
+					    continue;
+					}
+						
 					echo("'$year', ");
 					echo("'$year (Schule)', ");
 				}            
@@ -116,7 +121,12 @@ function showDiagram($name, $yAxisName, $data) {
 					
 					// dataOfDay
 					for($i = $yearsCovered; $i > 0; $i--) { // for each year
-						$year = date("Y") - $i + 1; 					
+						$year = date("Y") - $i + 1;
+						
+						if (($year == 2018) or $year == 2020) { // Do not show 2018 and 2020
+						    continue;
+						}
+						
 						if (is_array($dataOfDay['year']) and array_key_exists($year, $dataOfDay['year'])) {
 							if ($dataOfDay['year'][$year]['total'] > $maxValue) {
 							    $maxValue = $dataOfDay['year'][$year]['total'];
@@ -154,36 +164,41 @@ function showDiagram($name, $yAxisName, $data) {
 				    
 				},
 				
+				height: 572,
+				width: 1738,
 				
-				height: 600,
-				width: 1800,
+				chartArea:{
+				    left:300,
+				    top:10,
+// 				    width:'80%',
+				    width:'10%',
+				    backgroundColor: 'transparent',
+				},
+// 				theme: 'material',
 				
-				chartArea: {
-// 					top: 1000,
-// 					bottom: 40,
-// 					left: 100,
-// 					right: 120,
-					backgroundColor: 'transparent',
-				}, 
+// 				legend:
+// 				{
+// // 				    position: 'top',
+// 				    titleTextStyle: { color: 'black' },
+// 				},
 				
-// 				chartArea.top: 0,
+				
+// 				chartArea.left: 100,
+				
+//     chartArea:{left:10,top:20,width:"100%",height:"100%"},
 				
 				hAxis: {
 					//slantedText:true, 
 					//slantedTextAngle:90,
 					textStyle: { fontSize: 20 },
-					titleTextStyle: { italic: false },
-// 					viewWindow: {
-// 					    min: 0,
-// 					    max: 300, // Needed to make all series scaled the same
-// 					},
+					titleTextStyle: { italic: false, color: 'black' },
 				},
 				
 				vAxis: {
 					title: "<? echo($yAxisName); ?>",
 // 					textPosition: 'none',
 					textStyle: { fontSize: 20 },
-					titleTextStyle: { fontSize: 26, italic: false, bold: true },
+					titleTextStyle: { fontSize: 26, italic: false, bold: true, color: 'black' },
 					viewWindow: {
 					    min: 0,
 					    max: <? echo($maxValue * 1.1); ?>, // Needed to make all series scaled the same
@@ -221,8 +236,7 @@ function showDiagram($name, $yAxisName, $data) {
 		}
 	</script>
 
-	<div id="dayTotal_<? echo($name); ?>" style="width: 1600px; height: 600px; background-image: url(images/chart-bg.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px 8px;"></div> <p><br></p>
-<!-- <div id="dayTotal_<? echo($name); ?>" style="width: 1600px; height: 600px; background-image: url(images/chart-bg.png);"></div> <p><br></p> -->
+	<div id="dayTotal_<? echo($name); ?>" style="border: 0px solid black; width: 1600px; height: 600px; background-image: url(images/chart-bg.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div> <p><br></p>
 	<!--  The background image got generated with `various/chart-bg-generator.py` -->
 
 <?
@@ -305,7 +319,7 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 </ul>
 
 
-<p><a href="?nocss" target="_self">Ohne Hintergrundbild anzeigen</a><br>&nbsp;</p>
+<!-- <p><a href="?nocss" target="_self">Ohne Hintergrundbild anzeigen</a><br>&nbsp;</p> -->
 
 <hr>
 
