@@ -12,7 +12,9 @@ function showSummaryOfYear($year) {
         $total = 0;
 		$cash = 0;
 		$twint = 0;	
-		$invoice = 0;             
+		$invoice = 0;   	
+        $waxAmountBee = 0;
+        $waxAmountParafin = 0;          
         
         // Create list of all available products, so all days have the same order
         $products = getDbProducts("wachs", "articleId");
@@ -24,6 +26,8 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['type'] = $product['type'];
             $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['waxType'] = $product['waxType'];
+            $articles[$product['articleId']]['waxAmount'] = $product['waxAmount'];
         }
 
         $products = getDbProducts("guss", "name");
@@ -34,6 +38,8 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['type'] = $product['type'];
             $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['waxType'] = $product['waxType'];
+            $articles[$product['articleId']]['waxAmount'] = $product['waxAmount'];
         }
 
         $products = getDbProducts("special", "name");
@@ -44,6 +50,8 @@ function showSummaryOfYear($year) {
             $articles[$product['articleId']]['type'] = $product['type'];
             $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
+            $articles[$product['articleId']]['waxType'] = $product['waxType'];
+            $articles[$product['articleId']]['waxAmount'] = $product['waxAmount'];
             $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
         }
         
@@ -64,17 +72,22 @@ function showSummaryOfYear($year) {
                         $customIds++;
                     }
                     
+//                     echo("<pre>"); print_r($article);
+                    
                     $articles[$id]['text'] = $article['text'];
                     $articles[$id]['quantity'] += $article['quantity'];
                     $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
                     $articles[$id]['unit'] = $article['unit'];
                     $articles[$id]['type'] = $article['type'];
+//                     $articles[$id]['waxType'] = $article['waxType'];
+//                     $articles[$id]['waxAmount'] = $article['waxAmount'];
                 }
                 $donations += $booking['donation'];
             }
+            
         }
         
-    //     print_r($articles);
+//         echo("<pre>"); print_r($articles); echo("</pre>");
 
         foreach($articles as $article) {
             $total += $article['quantity'] * $article['price'];
@@ -83,7 +96,32 @@ function showSummaryOfYear($year) {
         
         if ($total == 0) { // no stats for this year => return
             return;
-        }		
+        }
+        
+        
+        // Sum up wax amount
+//         echo("<pre>"); print_r($articles); echo("</pre>");
+        foreach($articles as $articleId => $article) {
+//             echo("__" . $articles[$articleId]['waxType'] . " " . $articles[$articleId]['type'] . " " . $articles[$articleId]['quantity'] . " " . $articles[$articleId]['waxAmount'] . "<br>");
+            
+            if ($articles[$articleId]['type'] == "guss") { // Gegossen, sum all up
+                if ($articles[$articleId]['waxType'] == "bee") {
+                    $waxAmountBee += $articles[$articleId]['quantity'] * $articles[$articleId]['waxAmount'];
+                }
+                else if ($articles[$articleId]['waxType'] == "parafin") {
+                    $waxAmountParafin += $articles[$articleId]['quantity'] * $articles[$articleId]['waxAmount'];
+                }
+            }
+            else if ($articles[$articleId]['type'] == "wachs") { // Gezogen
+                if ($articles[$articleId]['waxType'] == "bee") {
+                    $waxAmountBee += $articles[$articleId]['quantity'];
+                }
+                else if ($articles[$articleId]['waxType'] == "parafin") {
+                    $waxAmountParafin += $articles[$articleId]['quantity'];
+                }
+            }
+        }
+
         
     ?>
         <a name=year_<? echo($year); ?>_summary></a><h2><? echo($year); ?></h2>
@@ -111,16 +149,29 @@ function showSummaryOfYear($year) {
 			if ($article['subtype'] == 'food') {
                 echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
-			else { // normal
-                echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>" . number_format($article['quantity'], 0, ".", "'") . " " . $article['unit'] . "</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+			else { // normal     
+                                $quantity = number_format($article['quantity'], 0, ".", "'");
+                                $unit = $article['unit'];
+                                if ($article['unit'] == "g") {
+                                    $quantity = number_format($article['quantity'] / 1000, 1, ".", "'");
+                                    $unit = "kg";
+                                }
+				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
 			
 			
 			
         }
         
-        echo("<tr><td colspan=2 class=td_rightBorder>Spenden</td><td class=td_rightBorder></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+        /* Spenden */
+        echo("<tr class=tr_bottomBorder><td colspan=2 class=td_rightBorder>Spenden</td><td class=td_rightBorder></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+        
+        /* Total CHF */
         echo("<tr><td colspan=2 class=td_rightBorder><b>Total</b></td><td class=td_rightBorder></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
+        
+        /* Total Wachs */
+        echo("<tr><td colspan=2 class=td_rightBorder></td><td class=td_rightBorder></td><td class=td_rightBorder><b>
+        <img src=images/articles_small/colors.png height=25px> Parafinwachs: " . formatWeight($waxAmountParafin/1000) . " kg, <img src=images/articles_small/bee.png height=25px> Bienenwachs: " . formatWeight($waxAmountBee/1000) . " kg</b></td></tr>\n");   
     ?>
         </table>
         <p><br>CSV Export: <? echo(exportCsvButton($year)); ?></p>

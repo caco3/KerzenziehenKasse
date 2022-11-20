@@ -10,11 +10,13 @@ function db_connect(){
         MYSQL_HOST, 
         MYSQL_USER, 
         MYSQL_PASSWORD, 
-        MYSQL_DATABASE
+        MYSQL_DATABASE,
+        MYSQL_PORT
     );
 
     // Check connection
     if (mysqli_connect_errno()){
+        echo(MYSQL_HOST . ", " . MYSQL_USER . ", " . MYSQL_PASSWORD . ", " . MYSQL_DATABASE . "<br>\n");
         die("Failed to connect to MySQL: " . mysqli_connect_error());
     }
 }
@@ -84,17 +86,15 @@ function getDbArticleData($id){
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     
     
-    if($line['articleId'] == 'custom'){ // custom article
+    if($line['typ'] == 'custom'){ // custom article
         $line['unit'] = "Stk."; // TODO: replace by unit in table
     }
     
-//     echo("<pre>");
-//     print_r($line);
-//     echo("</pre>");
+//     echo("<pre>"); print_r($line); echo("</pre>");
     
     mysqli_free_result( $query_response );
 
-    return [$line['name'], $line['typ'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3']];
+    return [$line['name'], $line['typ'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3'], $line['waxAmount'], $line['waxType']];
 }
 
 
@@ -522,6 +522,7 @@ function getDbBooking($bookingId) {
     $booking['donation'] = $line['donation'];
     $booking['total'] = $line['total'];
     $booking['paymentMethod'] = $line['paymentMethod'];
+    $booking['school'] = $line['school'];
 
     $booking['articles'] = unserialize($line['booking']);
 

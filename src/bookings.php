@@ -16,22 +16,20 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
+      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
         arsort($bookingIdsToday); // sorting to show latest booking on top
         
-//         echo("<pre>");
-//         print_r($bookingIdsToday);
+//         echo("<pre>"); print_r($bookingIdsToday); echo("</pre>");
         
         foreach($bookingIdsToday as $bookingId) {
             $booking = getBooking($bookingId);
-			//print_r($booking);
+//             echo("<pre>"); print_r($booking); echo("</pre>");
             $editButton = editButton($bookingId);
             $receiptButton = receiptButton($bookingId);
-//             echo("<pre>");
-//             print_r($booking);
+//             echo("<pre>"); print_r($booking); echo("</pre>");
             echo("<tr>");
             echo("<td class=td_rightBorder>$bookingId</td>");
             echo("<td class=\"td_nowrap td_rightBorder\">" . $booking['time'] . "</td>");
@@ -58,6 +56,12 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             
             echo("<td>$editButton</td>");
             echo("<td>$receiptButton</td>");
+            if ($booking['school'] == 1) {
+                echo("<td><img src=\"images/school.png\" width=50px></td>");
+            }
+            else {
+                echo("<td></td>");            
+            }
             echo("</tr>\n");
         }        
       ?>
@@ -66,19 +70,20 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     
     
     <p><br></p>
-    <h2>Alle Buchungen des aktuelles Jahrs</h2>
+    <h2>Alle Buchungen des aktuelles Jahres</h2>
     <table id=bookingsTable>
-    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th></tr>
+    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
-//         echo("<pre>");
-//         print_r($datesWithBookings);
+//         echo("<pre>"); print_r($datesWithBookings); echo("</pre>");
     
         foreach($datesWithBookings as $date) {
             $bookingIds = getBookingIdsOfDate($date, false);
-            arsort($datesWithBookings); // sorting to show latest date on top
+            arsort($bookingIds); // sorting to show latest date on top
             
+//             echo("<pre>"); print_r($bookingIds); echo("</pre>");
+        
             $previousFormatedDate = "";
             
 //             echo("<pre>");
@@ -124,7 +129,13 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 }
                 
                 echo("</td>");
-                echo("<td>$receiptButton</td>");            
+                echo("<td>$receiptButton</td>"); 
+                if ($booking['school'] == 1) {
+                    echo("<td><img src=\"images/school.png\" width=50px></td>");
+                }
+                else {
+                    echo("<td></td>");            
+                }           
                 echo("</tr>\n");
 
             }
