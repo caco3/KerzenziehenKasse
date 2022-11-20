@@ -97,13 +97,13 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
                     strftime("%d. ", strtotime($booking['date'])) . $germanMonth[strftime("%m", strtotime($booking['date'])) - 1] ;
                 
-                if( $formatedDate != $previousFormatedDate) {
+//                 if( $formatedDate != $previousFormatedDate) {
     //                 echo("<tr><td></td></tr><tr><td></td></tr>\n");
-                    $previousFormatedDate = $formatedDate;
-                }
+                $previousFormatedDate = $formatedDate;
+                /*}
                 else {            
                     $formatedDate = "";
-                }            
+                } */           
 
                 echo("<tr>");
                 echo("<td class=td_rightBorder>$bookingId</td>");
@@ -142,6 +142,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
         }
     ?>
     </table>    
+    <p><br>CSV Export: <? echo(exportCsvButton("bookings")); ?></p>
     
     
 <?

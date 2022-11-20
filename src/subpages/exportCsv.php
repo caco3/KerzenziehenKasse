@@ -51,7 +51,67 @@ foreach($products as $product) {
 // print_r($articles);
 
 
-if (strlen($id) != 4) { // a day
+if ($id == "bookings") { // Bookings
+// Booking ID, date, time, total, donation, paymentMethod, school, Parafin, bee, form 1, form 2, ...
+//     echo("<pre>");
+    
+    $productList = [];
+    
+    // Header
+    $content = "Buchungs-Nr,Datum,Zeit,Total [CHF],Spenden [CHF],Schule,Zahlungsart,";
+    $products = getDbProducts("wachs", "articleId");
+    foreach($products as $product) {
+        $productList[$product['articleId']] = $product['name'];
+        $content .= strip_tags(html_entity_decode($product['name'])) . " [" . $product['unit'] . "],";        
+    }
+    
+    $products = getDbProducts("guss", "name");
+    foreach($products as $product) {
+        $productList[$product['articleId']] = $product['name'];
+        $content .= strip_tags(html_entity_decode($product['name'])) . " [" . $product['unit'] . "],";
+    }
+    
+    $products = getDbProducts("special", "name");
+    foreach($products as $product) {
+        $productList[$product['articleId']] = $product['name'];
+        $content .= strip_tags(html_entity_decode($product['name'])) . " [" . $product['unit'] . "],";
+    }
+    
+//     $products = getDbProducts("custom", "name");
+//     foreach($products as $product) {
+//         $productList[$product['articleId']] = $product['name'];
+//         $content .= strip_tags(html_entity_decode($product['name'])) . ",";
+//     }
+    
+    $content .= "\n";
+  
+    $bookingDatesOfCurrentYear = getBookingDatesOfYear(date("Y"));
+    asort($bookingDatesOfCurrentYear);
+    $donations = 0;
+    $customIds = 0;
+    foreach($bookingDatesOfCurrentYear as $date) {  // a day
+        $bookingIds = getBookingIdsOfDate($date, false);
+        foreach($bookingIds as $bookingId) { // a booking
+            $booking = getBooking($bookingId);
+            
+            $content .= $bookingId . "," . $booking['date'] ."," . $booking['time'] ."," . $booking['total'] ."," . $booking['donation'] ."," . $booking['school'] ."," . $booking['paymentMethod'] .","; 
+
+            foreach($productList as $productId => $productName) {
+                if (array_key_exists($productId, $booking['articles'])) {
+                    $content .= $booking['articles'][$productId]['quantity'];
+                    
+                }
+
+                $content .= $article['articles'][$productName] . ",";                    
+            }
+            
+            $content .= "\n";
+        }
+    }
+}
+
+
+else if (strlen($id) != 4) { // a day
     $bookingIds = getBookingIdsOfDate($date, false);
     $donations = 0;
     $customIds = 0;
@@ -99,6 +159,8 @@ if (strlen($id) != 4) { // a day
     }
     $content .= "Spenden;;;$donations";
 }
+
+
 else { // the whole year    
     $bookingDatesOfCurrentYear = getBookingDatesOfYear($id);
     $donations = 0;
@@ -150,11 +212,6 @@ else { // the whole year
     }    
     $content .= "Spenden;;;$donations";
 }
-
-// $content .= "\n\n*) Freie Eingabe eines Artikels\n";
-$content .= "\n\n";
-
-
 
 header("Content-Disposition: attachment; filename=\"$file\"");
 header("Content-Type: application/text");
