@@ -17,7 +17,7 @@ define ( 'PASSWORD_HASH',   '' );
 define ( 'ID',              '' );
 
 
-define ( 'LOG_FOLDER',      '' );
+define ( 'LOG_FOLDER',      explode("/src/", $_SERVER["SCRIPT_FILENAME"])[0] . '/log' );
 
 
 // List all article types and suptypes to be shown
