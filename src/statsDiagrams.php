@@ -84,7 +84,7 @@ function showDiagram($name, $yAxisName, $data) {
 				for($i = $yearsCovered; $i > 0; $i--) {
 					$year = date("Y") - $i + 1; 
 				    
-					if (($year == 2018) or $year == 2020) { // Do not show 2018 and 2020
+					if ($year == 2020) { // Do not show 2020
 					    continue;
 					}
 						
@@ -123,7 +123,7 @@ function showDiagram($name, $yAxisName, $data) {
 					for($i = $yearsCovered; $i > 0; $i--) { // for each year
 						$year = date("Y") - $i + 1;
 						
-						if (($year == 2018) or $year == 2020) { // Do not show 2018 and 2020
+						if ($year == 2020) { // Do not show 2020
 						    continue;
 						}
 						
@@ -150,6 +150,9 @@ function showDiagram($name, $yAxisName, $data) {
 
 			var options = { 
 				backgroundColor: 'transparent',
+				//colors:['#27A4AE', '#612C85', '#DA557B', '#F48F5F', '#EFC956', '#92C44A'],
+				// https://www.heavy.ai/blog/12-color-palettes-for-telling-better-stories-with-your-data
+				colors:["#b30000", "#7c1158", "#4421af", "#1a53ff", "#0d88e6", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78"], // River Nights
 				
 				isStacked: true,
 				
@@ -157,15 +160,16 @@ function showDiagram($name, $yAxisName, $data) {
 				    <? 
 				    
 				    for($series = 0; $series < $yearsCovered; $series++) {
-					echo (($series * 2) . ": { targetAxisIndex: $series },\n");
-					echo (($series * 2 + 1) . ": { targetAxisIndex: $series },\n");
+						echo (($series * 2) . ": { targetAxisIndex: $series },\n");
+						echo (($series * 2 + 1) . ": { targetAxisIndex: $series , visibleInLegend: false },\n");		
 				    }
 				    ?>
 				    
 				},
 				
 				height: 572,
-				width: 1738,
+			    //width: 1680,
+				width: 1710,
 				
 				chartArea:{
 				    left:300,
@@ -305,17 +309,11 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <div id="body">
 <a name="PerDayAndYear"></a><h1>Umsatz und Wachs pro Tag und Jahr</h1> 
 
-<h3>Inhaltsverzeichnis</h3>
+<h3>Übersicht</h3>
 <ul>
     <li><a href=#Wax+Gastro_Currency>Wachs + Gastronomie</a><br><br></li>
     <li><a href=#Wax_Currency>Nur Wachs</a><br><br></li>
     <li><a href=#Gastro_Currency>Nur Gastronomie</a><br><br></li>
-</ul>
-
-<h3>Hinweise</h3>
-<ul>
-    <li>Für 2018 ist der Gastronomie-Anteil <span style="color:red;">nicht</span> enthalten!</li>
-    <li>2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
 </ul>
 
 
@@ -323,16 +321,22 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 
 <hr>
 
-<a name=Wax+Gastro_Currency></a><h2>Wachs + Gastronomie</h2>
+<a name=Wax+Gastro_Currency></a><h2>Wachs + Gastronomie <span style="font-size: 70%">(Helle Farben = Schule, 2018 ohne Gastronomie)</span></h2>
 <? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear); ?>  
 <hr>
 
-<a name=Wax_Currency></a><h2>Wachs</h2>
+<a name=Wax_Currency></a><h2>Wachs <span style="font-size: 70%">(Helle Farben = Schule)</span></h2>
 <? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear); ?> 
 <hr>
 
-<a name=Gastro_Currency></a><h2>Gastronomie</h2>
+<a name=Gastro_Currency></a><h2>Gastronomie <span style="font-size: 70%">(Helle Farben = Schule, 2018 fehlt)</span></h2>
 <? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear); ?> 
+
+<hr>
+<h3>Hinweise</h3>
+<ul>
+    <li>2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
+</ul>
 
 <?
 include "$root/framework/footer.php"; 
