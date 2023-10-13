@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Refresh" content="0; url=statsCurrentYear.php" />
+  </head>
+</html>
+
 <? 
 $root=".";
 include "$root/framework/header.php";
