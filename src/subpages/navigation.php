@@ -2,8 +2,10 @@
 <p class=navigation><a class="headerLinks" href="statsCurrentYear.php" target="_self">Auswertung (Pro Tag)</a></p>
 <p class=navigation><a class="headerLinks" href="statsYears.php" target="_self">Auswertung (Pro Jahr)</a></p>
 <p class=navigation><a class="headerLinks" href="statsDiagrams.php" target="_self">Auswertung (Diagramme)</a></p>
-<p class=navigation><a class="headerLinks" href="admin.php" target="_self">Administration</a></p>
-<p class=navigation><a class="headerLinks" href="help.php" target="_self">Hilfe</a></p>
+<? if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */ ?>
+    <p class=navigation><a class="headerLinks" href="admin.php" target="_self">Administration</a></p>
+    <p class=navigation><a class="headerLinks" href="help.php" target="_self">Hilfe</a></p>
+<? } ?>
 <?
   $root = "..";
   require_once("$root/config/config.php");

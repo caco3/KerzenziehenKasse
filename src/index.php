@@ -1,6 +1,14 @@
 <? 
 $root=".";
 include "$root/framework/header.php";
+
+if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { // Viewer
+?>
+<h1>Kerzenziehen-Kasse (Viewer)</h1>
+<div id=navigationDiv style="width:400px"></div>
+<?
+}
+else { // Normal
 ?>
 
     <div id="body">
@@ -50,6 +58,9 @@ include "$root/framework/header.php";
 <!-- </div> -->
 
 <?
+	
+}
+
 include "$root/framework/footer.php"; 
 ?>
     

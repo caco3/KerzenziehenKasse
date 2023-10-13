@@ -18,8 +18,8 @@ function generateQrCode($bookingId, $amount) {
     // Who will receive the payment and to which bank account?
     $qrBill->setCreditor(
         QrBill\DataGroup\Element\CombinedAddress::create(
-            'Chrischona Schweiz',
-            'Chrischona-Gemeinde Uster',
+            'Viva Kirche Schweiz',
+            'Kirche Neuwies Uster',
             '4126 Bettingen',
             'CH'
         ));
