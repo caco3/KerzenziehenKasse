@@ -80,6 +80,8 @@ $odf->setVars('priceTotal', number_format($booking['total'], 2, ".", ""));
 $odf->setImage('qrBill', $root . "/../tmp/qrBill_$bookingId.png", -1, 4.5, 4.5);
 
 
+/*
+Enable again to fill out summary page
 $articlesList = $odf->setSegment('articles');
 
 foreach($booking['articles'] as $article) { // Add all articles
@@ -96,8 +98,8 @@ if ($booking['donation'] != 0) { // Add donation to list
     $articlesList->merge();
 }
 
-
 $odf->mergeSegment($articlesList);
+*/
 
 
 // We export the file
