@@ -53,15 +53,20 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             }
             
             echo("</td>");
-            
-            echo("<td>$editButton</td>");
-            echo("<td>$receiptButton</td>");
-            if ($booking['school'] == 1) {
-                echo("<td><img src=\"images/school.png\" width=50px></td>");
-            }
-            else {
-                echo("<td></td>");            
-            }
+            if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
+				// Do not show any buttons
+				echo("<td></td><td></td><td></td>");
+			}
+			else {
+				echo("<td>$editButton</td>");
+				echo("<td>$receiptButton</td>");
+				if ($booking['school'] == 1) {
+					echo("<td><img src=\"images/school.png\" width=50px></td>");
+				}
+				else {
+					echo("<td></td>");            
+				}
+			}
             echo("</tr>\n");
         }        
       ?>
@@ -129,13 +134,20 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 }
                 
                 echo("</td>");
-                echo("<td>$receiptButton</td>"); 
-                if ($booking['school'] == 1) {
-                    echo("<td><img src=\"images/school.png\" width=50px></td>");
-                }
-                else {
-                    echo("<td></td>");            
-                }           
+
+				if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
+					// Do not show any buttons
+					echo("<td></td><td></td>");
+				}
+				else {
+					echo("<td>$receiptButton</td>"); 
+					if ($booking['school'] == 1) {
+						echo("<td><img src=\"images/school.png\" width=50px></td>");
+					}
+					else {
+						echo("<td></td>");            
+					}
+				}					
                 echo("</tr>\n");
 
             }
