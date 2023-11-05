@@ -24,7 +24,11 @@ body {
 }
 
 #live {
-    background-image: url("../images/wallpaper.jpg"); 
+    background-image: url("../images/wallpaper.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 #test {
