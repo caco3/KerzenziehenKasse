@@ -235,6 +235,7 @@ function getBooking($bookingId){
             list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
             $booking['articles'][$articleId]['text'] = $name;
             $booking['articles'][$articleId]['waxAmount'] = $waxAmount;
+            $booking['articles'][$articleId]['waxType'] = $waxType;
         }
         $booking['articles'][$articleId]['type'] = $type;
         $booking['articles'][$articleId]['unit'] = $unit;

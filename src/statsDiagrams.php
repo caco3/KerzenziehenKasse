@@ -6,24 +6,26 @@ include "$root/framework/header.php";
 /* Returns the total grouped per day for each day in the given year listed in the DB */
 function getStatsPerDay($year) {
     $data = array();
-    $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
-    foreach($bookingDatesOfCurrentYear as $date) {  // a day
-	
-		// echo("$date<br>\n");
+    $bookingDates = getBookingDatesOfYear($year);
+    foreach($bookingDates as $date) {  // a day 
+		//echo("<pre>");	
+		//echo("$date<br>\n");
         $donations = 0;
         $total = 0;    
         $food = 0;      
-        $school = 0;               
+        $school = 0;    
+		$beeWax = 0;
+		$parafinWax = 0;		
         $articles = array();
         
         $bookingIds = getBookingIdsOfDate($date, false);        
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
-// 	    echo("<pre>"); print_r($booking); echo("</pre>");
-            foreach ($booking['articles'] as $articleId => $article) { // articles 
-				//echo("$articleId, " . ($articleId * 10));
-				//print_r($articles);
-				//print_r($articles[$articleId]);
+ 	    	//echo("<pre>"); print_r($booking); echo("</pre>");
+            foreach ($booking['articles'] as $articleId => $article) { // articles
+				//echo("$articleId:\n");
+			//	print_r($articles);
+			//	print_r($articles[$articleId]);
 				if (is_array($articles[$articleId]) and !array_key_exists('quantity', $articles[$articleId])) {
 					$articles[$articleId]['quantity'] = 0;
 				}
@@ -34,18 +36,38 @@ function getStatsPerDay($year) {
 					//print_r($article);
 					$food += $article['quantity']; // equals the costs on food
 				}
+				elseif($articleId == 1) { // Parafin
+					$parafinWax += $article["quantity"];
+				}
+				elseif($articleId == 2) { // Bee Wax
+					$beeWax += $article["quantity"];
+				}
+				else { // Guss
+					if ($article["waxType"] == "parafin") {
+						$parafinWax += $article["waxAmount"] * $article["quantity"];					
+					}
+					else { // bee wax
+						$beeWax += $article["waxAmount"] * $article["quantity"];					
+					}
+				}
+
+				//echo("Parafin: $parafinWax, Bee: $beeWax\n");
 				
 // 				if ($articleId == 200) { // School
 // 					//print_r($article);
 // 					$school += $article['total'];
 // 				}
+
+				 
+				//echo("--------------------\n");
             }
             $donations += $booking['donation'];
             $total += $booking['total'];
-	    if ($booking['school']) {
-		$school += $booking['total']; // Count school bookings total additionally
-	    }
+			if ($booking['school']) {
+				$school += $booking['total']; // Count school bookings total additionally
+			}
 	    
+			//echo("#############################\n");
         }   
         
 //         $total += $donations;
@@ -53,11 +75,13 @@ function getStatsPerDay($year) {
         $data[$date]['total'] = $total;
         $data[$date]['food'] = $food;
         $data[$date]['school'] = $school;
+        $data[$date]['parafinWax'] = $parafinWax;
+        $data[$date]['beeWax'] = $beeWax;
 		
-// 	echo("donations, total, food, school: $donations, $total, $food, $school<br>\n");
-// 	if ($school > 0) {
-// 	    echo("SCHOOL: $school<br>");
-// 	}
+// 		echo("donations, total, food, school: $donations, $total, $food, $school<br>\n");
+// 		if ($school > 0) {
+// 	    	echo("SCHOOL: $school<br>");
+// 		}
     }
     
     ksort($data);
@@ -67,29 +91,33 @@ function getStatsPerDay($year) {
 }
 
 
-function showDiagram($name, $yAxisName, $data) {
+function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $widthAdjustment, $paddingLeft) {
     
 //     print_r($data);
 ?>
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['corechart', 'bar']});
 		google.charts.setOnLoadCallback(drawChartTotalPerDay_<? echo($name); ?>);
-		
+				
 		function drawChartTotalPerDay_<? echo($name); ?>() {
 			var data = google.visualization.arrayToDataTable([
 <?
 				echo("['', ");
 				
 				$yearsCovered = date("Y") - 2018 + 1; //count($data[0]); // get the number of data columns
+				$years = array();
 				for($i = $yearsCovered; $i > 0; $i--) {
 					$year = date("Y") - $i + 1; 
-				    
+					
 					if ($year == 2020) { // Do not show 2020
-					    continue;
-					}
-						
-					echo("'$year', ");
-					echo("'$year (Schule)', ");
+						continue;
+					}					
+					array_push($years, $year);
+				}				
+				
+				foreach($years as $year) {
+					echo("'$year$nameLowerPart', ");
+					echo("'$year$nameUpperPart', ");
 				}            
 				echo("],\n");
 				
@@ -120,20 +148,15 @@ function showDiagram($name, $yAxisName, $data) {
 					
 					
 					// dataOfDay
-					for($i = $yearsCovered; $i > 0; $i--) { // for each year
-						$year = date("Y") - $i + 1;
-						
-						if ($year == 2020) { // Do not show 2020
-						    continue;
-						}
-						
+					
+					foreach($years as $year) {
 						if (is_array($dataOfDay['year']) and array_key_exists($year, $dataOfDay['year'])) {
-							if ($dataOfDay['year'][$year]['total'] > $maxValue) {
-							    $maxValue = $dataOfDay['year'][$year]['total'];
+							if (($dataOfDay['year'][$year]['lowerPart'] + $dataOfDay['year'][$year]['upperPart']) > $maxValue) {
+							    $maxValue = $dataOfDay['year'][$year]['lowerPart'] + $dataOfDay['year'][$year]['upperPart'];
 							}
 							
-							echo(($dataOfDay['year'][$year]['total'] - $dataOfDay['year'][$year]['school']) . ", ");
-							echo($dataOfDay['year'][$year]['school'] . ", ");
+							echo($dataOfDay['year'][$year]['lowerPart'] . ", ");
+							echo($dataOfDay['year'][$year]['upperPart'] . ", ");
 // 							echo("100" . ", "); // xxx
 							
 						}
@@ -159,9 +182,9 @@ function showDiagram($name, $yAxisName, $data) {
 				series: {
 				    <? 
 				    
-				    for($series = 0; $series < $yearsCovered; $series++) {
-						echo (($series * 2) . ": { targetAxisIndex: $series },\n");
-						echo (($series * 2 + 1) . ": { targetAxisIndex: $series , visibleInLegend: false },\n");		
+				    for($i = 0; $i < count($years); $i++) {
+						echo (($i * 2) . ": { targetAxisIndex: $i, labelInLegend: " . $years[$i]. " },\n");
+						echo (($i * 2 + 1) . ": { targetAxisIndex: $i , visibleInLegend: false },\n");		
 				    }
 				    ?>
 				    
@@ -169,7 +192,7 @@ function showDiagram($name, $yAxisName, $data) {
 				
 				height: 572,
 			    //width: 1680,
-				width: 1710,
+				width: <? echo(1710 + $widthAdjustment); ?>,
 				
 				chartArea:{
 				    left:300,
@@ -240,7 +263,7 @@ function showDiagram($name, $yAxisName, $data) {
 		}
 	</script>
 
-	<div id="dayTotal_<? echo($name); ?>" style="border: 0px solid black; width: 1600px; height: 600px; background-image: url(images/chart-bg.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div> <p><br></p>
+	<div id="dayTotal_<? echo($name); ?>" style="border: 0px solid black; width: 1600px; height: 600px; padding-left: <? echo($paddingLeft); ?>px; background-image: url(images/chart-bg.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div> <p><br></p>
 	<!--  The background image got generated with `various/chart-bg-generator.py` -->
 
 <?
@@ -262,6 +285,7 @@ for ($i = 0; $i <= (date("Y") - 2018 + 1); $i++) {
 $totalPerDayAndYear = array(); // [day][year]
 $totalWaxPerDayAndYear = array(); // [day][year]
 $totalFoodPerDayAndYear = array(); // [day][year]
+$totalWaxPerDayAndYearInKg = array(); // [day][year]
 
 /* Create one index per day for 30 days.
  * If a day stays empty, it will get ignored in the plot */
@@ -269,6 +293,7 @@ for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
 	$totalPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
 	$totalWaxPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
 	$totalFoodPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
+	$totalWaxPerDayAndYearInKg[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
 }
 	
 for ($i = 0; $i <= 10; $i++) { // for each year
@@ -283,21 +308,33 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 		$dayIndex++;
 		
 		/* Wax only in CHF */
-		$totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
-		$totalPerDayAndYear[$offset]['year'][$year]['school'] = $data['school']; 
+		//$totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
+		$totalPerDayAndYear[$offset]['year'][$year]['lowerPart'] = $data['total'] - $data['school']; 
+		$totalPerDayAndYear[$offset]['year'][$year]['upperPart'] = $data['school']; 
 		$totalPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
 		/* Wax and food in CHF */
-		$totalWaxPerDayAndYear[$offset]['year'][$year]['total'] = $data['total'] - $data['food']; // subtract food again as we only want to see the wax part
-		$totalWaxPerDayAndYear[$offset]['year'][$year]['school'] = $data['school']; 
+		//$totalWaxPerDayAndYear[$offset]['year'][$year]['total'] = $data['total'] - $data['food']; // subtract food again as we only want to see the wax part
+		$totalWaxPerDayAndYear[$offset]['year'][$year]['lowerPart'] = $data['total'] - $data['food'] - $data['school']; 
+		$totalWaxPerDayAndYear[$offset]['year'][$year]['upperPart'] = $data['school']; 
 		$totalWaxPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalWaxPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
 		/* Food only in CHF */
-		$totalFoodPerDayAndYear[$offset]['year'][$year]['total'] = $data['food']; // We only want to see the food part
+		$totalFoodPerDayAndYear[$offset]['year'][$year]['lowerPart'] = $data['food']; // We only want to see the food part
 		$totalFoodPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
 		$totalFoodPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
+		
+		/* Wax only in kg */
+		//$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['total'] = $data['total']; 
+		$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['lowerPart'] = $data['parafinWax'] / 1000; 
+		$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['upperPart'] = $data['beeWax'] / 1000; 
+		$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['date'] = $date; 
+		$totalWaxPerDayAndYearInKg[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
+		
+		//echo("<pre>");
+		//print_r($data);
 	}
 } 
 
@@ -311,9 +348,9 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 
 <h3>Übersicht</h3>
 <ul>
-    <li><a href=#Wax+Gastro_Currency>Wachs + Gastronomie</a><br><br></li>
-    <li><a href=#Wax_Currency>Nur Wachs</a><br><br></li>
-    <li><a href=#Gastro_Currency>Nur Gastronomie</a><br><br></li>
+    <li><a href=#Wax+Gastro_Currency>Umsatz gesamt (Wachs + Gastronomie)</a><br><br></li>
+    <li><a href=#Wax_Currency>Umsatz Wachs</a><br><br></li>
+    <li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
 </ul>
 
 
@@ -321,16 +358,21 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 
 <hr>
 
-<a name=Wax+Gastro_Currency></a><h2>Wachs + Gastronomie <span style="font-size: 70%">(Helle Farben = Schule, 2018 ohne Gastronomie)</span></h2>
-<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear); ?>  
+<a name=Wax+Gastro_Currency></a><h2>Umsatz gesamt (Wachs + Gastronomie) <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule, 2018 ohne Gastronomie)</span></h2>
+<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0); ?>  
 <hr>
 
-<a name=Wax_Currency></a><h2>Wachs <span style="font-size: 70%">(Helle Farben = Schule)</span></h2>
-<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear); ?> 
+<a name=Wax_Currency></a><h2>Umsatz Wachs <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule)</span></h2>
+<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0); ?> 
 <hr>
 
-<a name=Gastro_Currency></a><h2>Gastronomie <span style="font-size: 70%">(Helle Farben = Schule, 2018 fehlt)</span></h2>
-<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear); ?> 
+<a name=Gastro_Currency></a><h2>Umsatz Gastronomie <span style="font-size: 70%">(2018 fehlt)</span></h2>
+<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", 0, 0); ?> 
+<hr>
+
+<a name=Wax_amount></a><h2>Wachsmenge <span style="font-size: 70%">(Dunkle Farbe = Parafin, helle Farben = Bienenwachs)</span></h2>
+<? //showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, " (Parafin)", " (Bienenwachs)"); ?> 
+<? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20); ?> 
 
 <hr>
 <h3>Hinweise</h3>
