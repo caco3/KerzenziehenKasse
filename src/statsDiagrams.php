@@ -351,6 +351,7 @@ for ($i = 0; $i <= 10; $i++) { // for each year
     <li><a href=#Wax+Gastro_Currency>Umsatz gesamt (Wachs + Gastronomie)</a><br><br></li>
     <li><a href=#Wax_Currency>Umsatz Wachs</a><br><br></li>
     <li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
+    <li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
 </ul>
 
 
