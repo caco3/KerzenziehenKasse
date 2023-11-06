@@ -91,7 +91,7 @@ function getStatsPerDay($year) {
 }
 
 
-function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $widthAdjustment, $paddingLeft) {
+function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $widthAdjustment, $paddingLeft, $prefix, $suffix, $fractionDigits) {
     
 //     print_r($data);
 ?>
@@ -155,8 +155,8 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 							    $maxValue = $dataOfDay['year'][$year]['lowerPart'] + $dataOfDay['year'][$year]['upperPart'];
 							}
 							
-							echo($dataOfDay['year'][$year]['lowerPart'] . ", ");
-							echo($dataOfDay['year'][$year]['upperPart'] . ", ");
+							echo(number_format($dataOfDay['year'][$year]['lowerPart'], 1, ".", "") . ", ");
+							echo(number_format($dataOfDay['year'][$year]['upperPart'], 1, ".", "") . ", ");
 // 							echo("100" . ", "); // xxx
 							
 						}
@@ -246,8 +246,8 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 				},
 			};
 			
-			var formatter = new google.visualization.NumberFormat({decimalSymbol: '.',groupingSymbol: "'", prefix: 'CHF '});
-			for (var i = 1; i <= <? echo($yearsCovered); ?>; i++) {
+			var formatter = new google.visualization.NumberFormat({decimalSymbol: '.', fractionDigits: <? echo($fractionDigits); ?>, groupingSymbol: "'", prefix: '<? echo($prefix); ?> ', suffix: ' <? echo($suffix); ?>'});
+			for (var i = 1; i <= <? echo(($yearsCovered-1)*2); ?>; i++) {
 				formatter.format(data, i);
 			}
 			
@@ -360,20 +360,19 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <hr>
 
 <a name=Wax+Gastro_Currency></a><h2>Umsatz gesamt (Wachs + Gastronomie) <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule, 2018 ohne Gastronomie)</span></h2>
-<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0); ?>  
+<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2); ?>  
 <hr>
 
 <a name=Wax_Currency></a><h2>Umsatz Wachs <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule)</span></h2>
-<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0); ?> 
+<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2); ?> 
 <hr>
 
 <a name=Gastro_Currency></a><h2>Umsatz Gastronomie <span style="font-size: 70%">(2018 fehlt)</span></h2>
-<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", 0, 0); ?> 
+<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", 0, 0, "CHF ", "", 2); ?> 
 <hr>
 
 <a name=Wax_amount></a><h2>Wachsmenge <span style="font-size: 70%">(Dunkle Farbe = Parafin, helle Farben = Bienenwachs)</span></h2>
-<? //showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, " (Parafin)", " (Bienenwachs)"); ?> 
-<? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20); ?> 
+<? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1); ?> 
 
 <hr>
 <h3>Hinweise</h3>
