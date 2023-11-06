@@ -150,12 +150,13 @@ function showSummaryOfYear($year) {
                 echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
 			else { // normal     
-                                $quantity = number_format($article['quantity'], 0, ".", "'");
-                                $unit = $article['unit'];
-                                if ($article['unit'] == "g") {
-                                    $quantity = number_format($article['quantity'] / 1000, 1, ".", "'");
-                                    $unit = "kg";
-                                }
+				$quantity = number_format($article['quantity'], 0, ".", "'");
+				$unit = $article['unit'];
+				if ($article['unit'] == "g") {
+					$quantity = number_format($article['quantity'] / 1000, 1, ".", "'");
+					$unit = "kg";
+					$article['text'] .= " (ohne Gussformen)";
+				}
 				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
 			
