@@ -360,15 +360,15 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <hr>
 
 <a name=Wax+Gastro_Currency></a><h2>Umsatz gesamt (Wachs + Gastronomie) <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule, 2018 ohne Gastronomie)</span></h2>
-<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-schol.png"); ?>  
+<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?>  
 <hr>
 
 <a name=Wax_Currency></a><h2>Umsatz Wachs <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule)</span></h2>
-<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-schol.png"); ?> 
+<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?> 
 <hr>
 
 <a name=Gastro_Currency></a><h2>Umsatz Gastronomie <span style="font-size: 70%">(2018 fehlt)</span></h2>
-<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", 0, 0, "CHF ", "", 2, "chart-bg-public-schol.png"); ?> 
+<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", 0, 0, "CHF ", "", 2, "chart-bg-public-school.png"); ?> 
 <hr>
 
 <a name=Wax_amount></a><h2>Wachsmenge <span style="font-size: 70%">(Dunkle Farbe = Parafin, helle Farben = Bienenwachs)</span></h2>
