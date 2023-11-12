@@ -91,7 +91,7 @@ function getStatsPerDay($year) {
 }
 
 
-function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $widthAdjustment, $paddingLeft, $prefix, $suffix, $fractionDigits) {
+function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $widthAdjustment, $paddingLeft, $prefix, $suffix, $fractionDigits, $bgImage) {
     
 //     print_r($data);
 ?>
@@ -263,7 +263,7 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 		}
 	</script>
 
-	<div id="dayTotal_<? echo($name); ?>" style="border: 0px solid black; width: 1600px; height: 600px; padding-left: <? echo($paddingLeft); ?>px; background-image: url(images/chart-bg.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div> <p><br></p>
+	<div id="dayTotal_<? echo($name); ?>" style="border: 0px solid black; width: 1600px; height: 600px; padding-left: <? echo($paddingLeft); ?>px; background-image: url(images/<? echo($bgImage); ?>); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div> <p><br></p>
 	<!--  The background image got generated with `various/chart-bg-generator.py` -->
 
 <?
@@ -360,19 +360,19 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <hr>
 
 <a name=Wax+Gastro_Currency></a><h2>Umsatz gesamt (Wachs + Gastronomie) <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule, 2018 ohne Gastronomie)</span></h2>
-<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2); ?>  
+<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-schol.png"); ?>  
 <hr>
 
 <a name=Wax_Currency></a><h2>Umsatz Wachs <span style="font-size: 70%">(Dunkle Farbe = Öffentlich, helle Farben = Schule)</span></h2>
-<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2); ?> 
+<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-schol.png"); ?> 
 <hr>
 
 <a name=Gastro_Currency></a><h2>Umsatz Gastronomie <span style="font-size: 70%">(2018 fehlt)</span></h2>
-<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", 0, 0, "CHF ", "", 2); ?> 
+<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", 0, 0, "CHF ", "", 2, "chart-bg-public-schol.png"); ?> 
 <hr>
 
 <a name=Wax_amount></a><h2>Wachsmenge <span style="font-size: 70%">(Dunkle Farbe = Parafin, helle Farben = Bienenwachs)</span></h2>
-<? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1); ?> 
+<? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png"); ?> 
 
 <hr>
 <h3>Hinweise</h3>
