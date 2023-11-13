@@ -175,7 +175,19 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 				backgroundColor: 'transparent',
 				//colors:['#27A4AE', '#612C85', '#DA557B', '#F48F5F', '#EFC956', '#92C44A'],
 				// https://www.heavy.ai/blog/12-color-palettes-for-telling-better-stories-with-your-data
-				colors:["#b30000", "#7c1158", "#4421af", "#1a53ff", "#0d88e6", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78"], // River Nights
+				//colors:["#b30000", "#7c1158", "#4421af", "#1a53ff", "#0d88e6", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78"], // River Nights
+				
+				<?
+				/* The current year shall have an outstanding color */
+				$colors = ["#b30000", "#7c1158", "#4421af", "#1a53ff", "#00b7c7", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78"];
+				$colors = ["#0a481b", "#590058", "#0b448c", "#781f07", "#424006", "#481d32", "#132945", "#4f260c"];
+				$colors = array_slice($colors, 0, count($years) - 1); // cut off current and future years
+				array_push($colors, "#00af00"); // insert outstanding color
+				//array_push($colors, "#af0000"); // insert outstanding color
+				echo("colors:[");
+				foreach($colors as $color) { echo("\"$color\", "); }
+				echo("],");				
+				?>				
 				
 				isStacked: true,
 				
@@ -286,6 +298,7 @@ for ($i = 0; $i <= (date("Y") - 2018 + 1); $i++) {
 }
 
 $totalPerDayAndYear = array(); // [day][year]
+$totalPerDayAndYearSummed = array(); // [day][year]
 $totalWaxPerDayAndYear = array(); // [day][year]
 $totalFoodPerDayAndYear = array(); // [day][year]
 $totalWaxPerDayAndYearInKg = array(); // [day][year]
@@ -302,42 +315,60 @@ for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
 for ($i = 0; $i <= 10; $i++) { // for each year
 	$year = date("Y") - $i; 
 	$dayIndex = 0;
+	$totalSummed = 0;
+	//echo("<br>$year<br>");
 	foreach($statsPerDay[$year] as $date => $data) { // for each day
 		if ($dayIndex == 0) {
 			$firstDay = $date; 
-			$zeroOffset = date("z", strtotime($date));
+			$zerodayOffset = date("z", strtotime($date));
 		}
-		$offset = date("z", strtotime($date)) - $zeroOffset;
+		$dayOffset = date("z", strtotime($date)) - $zerodayOffset;
 		$dayIndex++;
 		
-		/* Wax only in CHF */
-		//$totalPerDayAndYear[$offset]['year'][$year]['total'] = $data['total']; 
-		$totalPerDayAndYear[$offset]['year'][$year]['lowerPart'] = $data['total'] - $data['school']; 
-		$totalPerDayAndYear[$offset]['year'][$year]['upperPart'] = $data['school']; 
-		$totalPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
-		$totalPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
-		
 		/* Wax and food in CHF */
-		//$totalWaxPerDayAndYear[$offset]['year'][$year]['total'] = $data['total'] - $data['food']; // subtract food again as we only want to see the wax part
-		$totalWaxPerDayAndYear[$offset]['year'][$year]['lowerPart'] = $data['total'] - $data['food'] - $data['school']; 
-		$totalWaxPerDayAndYear[$offset]['year'][$year]['upperPart'] = $data['school']; 
-		$totalWaxPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
-		$totalWaxPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
+		$totalWaxPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['total'] - $data['food'] - $data['school']; 
+		$totalWaxPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = $data['school']; 
+		$totalWaxPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date; 
+		$totalWaxPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
 		
+		/* Wax and food in CHF, summed up */
+		$totalSummed += $data['total'];
+		//echo("$dayOffset: $totalSummed<br>");
+		$totalPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $totalSummed; 
+		$totalPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date; 
+		$totalPerDayAndYearSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
+
+		/* Wax only in CHF */
+		$totalPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['total'] - $data['school']; 
+		$totalPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = $data['school']; 
+		$totalPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date; 
+		$totalPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];  
 		/* Food only in CHF */
-		$totalFoodPerDayAndYear[$offset]['year'][$year]['lowerPart'] = $data['food']; // We only want to see the food part
-		$totalFoodPerDayAndYear[$offset]['year'][$year]['date'] = $date; 
-		$totalFoodPerDayAndYear[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
+		$totalFoodPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['food']; // We only want to see the food part
+		$totalFoodPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date; 
+		$totalFoodPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
 		/* Wax only in kg */
-		//$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['total'] = $data['total']; 
-		$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['lowerPart'] = $data['parafinWax'] / 1000; 
-		$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['upperPart'] = $data['beeWax'] / 1000; 
-		$totalWaxPerDayAndYearInKg[$offset]['year'][$year]['date'] = $date; 
-		$totalWaxPerDayAndYearInKg[$offset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
-		
-		//echo("<pre>");
-		//print_r($data);
+		$totalWaxPerDayAndYearInKg[$dayOffset]['year'][$year]['lowerPart'] = $data['parafinWax'] / 1000; 
+		$totalWaxPerDayAndYearInKg[$dayOffset]['year'][$year]['upperPart'] = $data['beeWax'] / 1000; 
+		$totalWaxPerDayAndYearInKg[$dayOffset]['year'][$year]['date'] = $date; 
+		$totalWaxPerDayAndYearInKg[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
+	}
+	
+	/* Fill up empty days on the summed up data */
+	for ($x = 1; $x < 15; $x++) {
+		if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == 0) {
+			$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['lowerPart'];
+		}
+	}
+	
+	/* Remove future days on the summed data of the current year */
+	if ($year == date("Y")) {
+		for ($x = 14; $x > 0; $x--) {
+			if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == $totalPerDayAndYearSummed[$x-1]['year'][$year]['lowerPart']) {
+				$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+			}
+		}	
 	}
 } 
 
@@ -351,7 +382,8 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 
 <h3>Übersicht</h3>
 <ul>
-    <li><a href=#Wax+Gastro_Currency>Umsatz gesamt (Wachs + Gastronomie)</a><br><br></li>
+    <li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs + Gastronomie)</a><br><br></li>
+    <li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs + Gastronomie)</a><br><br></li>
     <li><a href=#Wax_Currency>Umsatz Wachs</a><br><br></li>
     <li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
     <li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
@@ -362,8 +394,12 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 
 <hr>
 
-<a name=Wax+Gastro_Currency></a><h2>Umsatz gesamt (Wachs + Gastronomie) <span style="font-size: 70%">(2018 ohne Gastronomie)</span></h2>
+<a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie) <span style="font-size: 70%">(2018 ohne Gastronomie)</span></h2>
 <? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?>  
+<hr>
+
+<a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie) <span style="font-size: 70%">(2018 ohne Gastronomie)</span></h2>
+<? showDiagram("CommonSummed", "Umsatz aufsummiert in CHF", $totalPerDayAndYearSummed, "", "", -15, 15, "CHF", "", 2, "chart-bg.png"); ?>  
 <hr>
 
 <a name=Wax_Currency></a><h2>Umsatz Wachs <span style="font-size: 70%"></span></h2>
@@ -381,6 +417,13 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <h3>Hinweise</h3>
 <ul>
     <li>2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
+	<li>Wachspreise:
+		<ul>
+			<li>Bis 2021: Bienenwachs: CHF 4.40, Parafinwachs: CHF 3.30</li>
+			<li>2022: Bienenwachs: CHF 4.50, Parafinwachs: CHF 3.50</li>
+			<li>Ab 2023: Bienenwachs: CHF 4.60, Parafinwachs: CHF 3.60</li>
+		</ul>
+	</li>
 </ul>
 
 <?
