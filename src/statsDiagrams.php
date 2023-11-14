@@ -104,7 +104,7 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 <?
 				echo("['', ");
 				
-				$yearsCovered = date("Y") - 2018 + 1; //count($data[0]); // get the number of data columns
+				$yearsCovered = date("Y") - 2017 + 1; //count($data[0]); // get the number of data columns
 				$years = array();
 				for($i = $yearsCovered; $i > 0; $i--) {
 					$year = date("Y") - $i + 1; 
@@ -204,7 +204,7 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 				
 				height: 572,
 			    //width: 1680,
-				width: <? echo(1710 + $widthAdjustment); ?>,
+				width: <? echo(1735 + $widthAdjustment); ?>,
 				
 				chartArea:{
 				    left:300,
@@ -287,8 +287,8 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 
 
 $statsPerDay = array();
-for ($i = 0; $i <= (date("Y") - 2018 + 1); $i++) {
-	$year = date("Y") - $i; // iterate through the last years (since 2018)
+for ($i = 0; $i <= (date("Y") - 2017 + 1); $i++) {
+	$year = date("Y") - $i; // iterate through the last years (since 2017)
 	$stats = getStatsPerDay($year);
 // 	echo("<pre>"); print_r($stats); echo("</pre>");
 	if (count($stats) == 0) { // no stats for this year => skip

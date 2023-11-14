@@ -39,7 +39,7 @@ include "$root/framework/header.php";
         Mobile: 076/418'22'61
 		<p><br></p>
       <h2>Copyright</h2>
-      <p>&copy; 2018-2021 by George Ruinelli</p>
+      <p>&copy; 2018-2023 by George Ruinelli</p>
 	  <p><br></p>
     </div>
 
