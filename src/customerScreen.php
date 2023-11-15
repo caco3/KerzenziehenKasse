@@ -1,5 +1,5 @@
 <? 
-$root=".";
+$root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 ?>
 
 
@@ -65,7 +65,7 @@ $root=".";
         function periodicallyUpdatePage() {
             console.log("fetch");
             let basket = fetch( 
-            "http://<? echo(gethostname()); ?>/ajax/getBasket.php"); 
+            "<? echo("$root"); ?>/ajax/getBasket.php"); 
             // basket is the promise to resolve 
             // it by using.then() method 
             basket.then(res => 
