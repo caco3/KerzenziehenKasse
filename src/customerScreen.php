@@ -65,7 +65,7 @@ $root=".";
         function periodicallyUpdatePage() {
             console.log("fetch");
             let basket = fetch( 
-            "http://192.168.1.99/KerzenziehenKasse/src/ajax/getBasket.php"); 
+            "http://<? echo("$root"); ?>/ajax/getBasket.php"); 
             // basket is the promise to resolve 
             // it by using.then() method 
             basket.then(res => 
