@@ -38,7 +38,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         h1 {
             text-align: center;
 /*             margin-top: -20px; */
-            line-height: 30px;
+            line-height: 35px;
         }
         table {
             width: 100%;
@@ -52,6 +52,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             margin-top: 5px;
             margin-bottom: 5px;
 /*             border: 1px solid black; */
+            font-size: 40px;
         }
     </style>
 
@@ -167,7 +168,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         &nbsp;&nbsp;&nbsp;
         <img src=images/bargeld.png height=100px>
 <p><br></p>
-        Wir sind Teil von:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/viva-kirche.png" height=130px>
+        Wir sind Teil von:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/viva-kirche.png" height=100px>
       </div>
     </div>
 </body>
