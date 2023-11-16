@@ -81,14 +81,29 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             console.log(data);
             document.getElementById("total").innerHTML = data["total"];
             
-            
             const table = document.getElementById("bookingsTable");
             
             while(table.rows.length > 0) {
                 table.deleteRow(0);
             }
             
+            /* Header */
+//             let header = table.createTHead();
+//             let row = header.insertRow();
+            let row = table.insertRow();
+//             let cellImage = row.insertCell();
+            let cellAmount = row.insertCell();
+            let cellName = row.insertCell();
+            let cellCost = row.insertCell();
+
+            cellAmount.innerHTML = "<b>Menge</b>";
+            cellName.innerHTML = "<b>Artikel</b>";
+            cellCost.innerHTML = "<b>Preis</b>";
+            
+            
+//             let body = table.createTBody();
             data["entries"].forEach( item => {
+//                 let row = body.insertRow();
                 let row = table.insertRow();
 //                 let cellImage = row.insertCell();
                 let cellAmount = row.insertCell();
