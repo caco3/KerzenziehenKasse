@@ -50,6 +50,8 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
                 //todo validate
                 
                 list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+
+                updateArticlePriceInBasket($basketEntryId, $quantity * $pricePerQuantity); // TODO validate response
                                                     
                 // List all fields that changed  
                 $response_array['updatedFields']['article'][$basketEntryId]['price'] = $quantity * $pricePerQuantity;

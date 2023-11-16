@@ -119,9 +119,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
                 else if (item.unit == "CHF") {
                      quantity = "";
                 }
-                else if (item.unit == "Stk.") {
-                     price = quantity * price;
-                }
+
                 cellAmount.innerHTML = "<nobr>" + quantity + suffix + "</nobr>";
 //                 cellImage.innerHTML = "<img src=images/articles_small/" + item.image + " height=40px>";
                 cellName.innerHTML = item.name;
