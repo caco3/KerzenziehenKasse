@@ -302,6 +302,7 @@ $totalPerDayAndYearSummed = array(); // [day][year]
 $totalWaxPerDayAndYear = array(); // [day][year]
 $totalFoodPerDayAndYear = array(); // [day][year]
 $totalWaxPerDayAndYearInKg = array(); // [day][year]
+$totalWaxPerDayAndYearInKgSummed = array(); // [day][year]
 
 /* Create one index per day for 30 days.
  * If a day stays empty, it will get ignored in the plot */
@@ -310,12 +311,15 @@ for ($i = 0; $i <= 30; $i++) { // for each day add a placeholder index
 	$totalWaxPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
 	$totalFoodPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
 	$totalWaxPerDayAndYearInKg[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
+	$totalWaxPerDayAndYearInKgSummed[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
 }
 	
 for ($i = 0; $i <= 10; $i++) { // for each year
 	$year = date("Y") - $i; 
 	$dayIndex = 0;
 	$totalSummed = 0;
+	$beeWaxSummed = 0;
+	$parafinWaxSummed = 0;
 	//echo("<br>$year<br>");
 	foreach($statsPerDay[$year] as $date => $data) { // for each day
 		if ($dayIndex == 0) {
@@ -353,20 +357,39 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 		$totalWaxPerDayAndYearInKg[$dayOffset]['year'][$year]['upperPart'] = $data['beeWax'] / 1000; 
 		$totalWaxPerDayAndYearInKg[$dayOffset]['year'][$year]['date'] = $date; 
 		$totalWaxPerDayAndYearInKg[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
+		
+		/* Wax only in kg summed up */
+		$parafinWaxSummed += $data['parafinWax'] / 1000;
+		$beeWaxSummed += $data['beeWax'] / 1000;
+		$totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['lowerPart'] = $parafinWaxSummed; 
+		$totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['upperPart'] = $beeWaxSummed; 
+		$totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['date'] = $date; 
+		$totalWaxPerDayAndYearInKgSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
 	}
+	
+	//echo("<pre>"); print_r($totalWaxPerDayAndYearInKgSummed); echo("</pre>");
 	
 	/* Fill up empty days on the summed up data */
 	for ($x = 1; $x < 15; $x++) {
 		if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == 0) {
 			$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['lowerPart'];
 		}
+		
+		if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] == 0) {
+			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['lowerPart'];
+		}
+		if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] == 0) {
+			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['upperPart'];
+		}
 	}
 	
 	/* Remove future days on the summed data of the current year */
 	if ($year == date("Y")) {
 		for ($x = 14; $x > 0; $x--) {
-			if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == $totalPerDayAndYearSummed[$x-1]['year'][$year]['lowerPart']) {
+			if ($totalWaxPerDayAndYearInKg[$x]['year'][$year]['lowerPart'] == 0) { // This day has no booking yet and is therefore most likely in the future
 				$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
+				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
 			}
 		}	
 	}
@@ -387,6 +410,7 @@ for ($i = 0; $i <= 10; $i++) { // for each year
     <li><a href=#Wax_Currency>Umsatz Wachs</a><br><br></li>
     <li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
     <li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
+    <li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a><br><br></li>
 </ul>
 
 
@@ -413,15 +437,18 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <a name=Wax_amount></a><h2>Wachsmenge <span style="font-size: 70%"></span></h2>
 <? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png"); ?> 
 
+<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert<span style="font-size: 70%"></span></h2>
+<? showDiagram("WaxAmountSummed", "Wachsmenge in kg", $totalWaxPerDayAndYearInKgSummed, ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png"); ?> 
+
 <hr>
 <h3>Hinweise</h3>
 <ul>
     <li>2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
 	<li>Wachspreise:
 		<ul>
-			<li>Bis 2021: Bienenwachs: CHF 4.40, Parafinwachs: CHF 3.30</li>
-			<li>2022: Bienenwachs: CHF 4.50, Parafinwachs: CHF 3.50</li>
 			<li>Ab 2023: Bienenwachs: CHF 4.60, Parafinwachs: CHF 3.60</li>
+			<li>2022: Bienenwachs: CHF 4.50, Parafinwachs: CHF 3.50</li>
+			<li>Bis 2021: Bienenwachs: CHF 4.40, Parafinwachs: CHF 3.30</li>
 		</ul>
 	</li>
 </ul>
