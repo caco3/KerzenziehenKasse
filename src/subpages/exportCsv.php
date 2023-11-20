@@ -37,14 +37,14 @@ $products = getDbProducts("wachs", "articleId");
 // print_r($products);
 foreach($products as $product) {
     $articles[$product['articleId']]['text'] = strip_tags(html_entity_decode($product['name']));
-    $articles[$product['articleId']]['quantity'] = $product['quantity'];
+//     $articles[$product['articleId']]['quantity'] = $product['quantity'];
     $articles[$product['articleId']]['unit'] = $product['unit'];
 }
 
 $products = getDbProducts("guss", "name");
 foreach($products as $product) {
     $articles[$product['articleId']]['text'] = strip_tags(html_entity_decode($product['name']));
-    $articles[$product['articleId']]['quantity'] = $product['quantity'];
+//     $articles[$product['articleId']]['quantity'] = $product['quantity'];
     $articles[$product['articleId']]['unit'] = $product['unit'];
 }
 
@@ -89,25 +89,43 @@ if ($id == "bookings") { // Bookings
     asort($bookingDatesOfCurrentYear);
     $donations = 0;
     $customIds = 0;
+//     print_r($bookingDatesOfCurrentYear);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $bookingIds = getBookingIdsOfDate($date, false);
+//         print_r($bookingIds);
         foreach($bookingIds as $bookingId) { // a booking
+//             echo("\n\n## booking $bookingId\n");
             $booking = getBooking($bookingId);
             
+            if ($booking['total'] == 0) {  // Ignore empty bookings
+                continue;
+            }
+            
+//             echo($bookingId . "," . $booking['date'] ."," . $booking['time'] . "<br>");
+            
             $content .= $bookingId . "," . $booking['date'] ."," . $booking['time'] ."," . $booking['total'] ."," . $booking['donation'] ."," . $booking['school'] ."," . $booking['paymentMethod'] .","; 
-
+// echo("$bookingId<br>");
             foreach($productList as $productId => $productName) {
-                if (array_key_exists($productId, $booking['articles'])) {
+//                 echo($productId . ", " . gettype($booking['articles']));
+                
+                if (gettype($booking['articles']) == array() && array_key_exists($productId, $booking['articles'])) {
                     $content .= $booking['articles'][$productId]['quantity'];
                     
                 }
 
-                $content .= $article['articles'][$productName] . ",";                    
+                if (array_key_exists($productId, $booking['articles'])) {
+                    $content .= $booking['articles'][$productId]["quantity"] . ",";  
+                }
+                else {
+                    $content .= "0,"; 
+                }
+
             }
             
             $content .= "\n";
         }
     }
+//     echo($content);
 }
 
 
