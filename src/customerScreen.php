@@ -33,16 +33,25 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             height: 600px;
 /*             width: 100%; */
             margin: 5px;
+			background-position: -80px 0px;
+			overflow: hidden; /* Hide scrollbars */
         }
         
         h1 {
             text-align: center;
-/*             margin-top: -20px; */
+             margin-top: 10px; 
+             margin-bottom: 20px; 
             line-height: 35px;
         }
         table {
             width: 100%;
         }
+		
+		p {
+			font-size: 150%;
+			margin-top: 30px;
+			margin-bottom: 20px;
+		}
         
         .cellCost, .cellAmount, .total {
             text-align: right;
@@ -52,7 +61,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             margin-top: 5px;
             margin-bottom: 5px;
 /*             border: 1px solid black; */
-            font-size: 40px;
+            font-size: 50px;
         }
     </style>
 
@@ -60,7 +69,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         $(document).ready(function() {        
             console.log("start");
             periodicallyUpdatePage();
-            setInterval(periodicallyUpdatePage, 1000);
+            setInterval(periodicallyUpdatePage, 500);
         });
 
         function periodicallyUpdatePage() {
@@ -166,24 +175,38 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
                 <p id=clockText></p>
             </div>-->
         </div>
-        <hr>
 <!--       <h2>Warenkorb</h2> -->
       
         
       <table id=bookingsTable></table>
       <table id=bookingsTable style="margin-top: 10px">
-        <tr><td colspan=3><h2 class=total>Total: CHF <span id=total>0.00</span></h2></td></tr>
+        <tr><td colspan=3>
+		  <div style="float:left;">
+			<h2 class=total>Total</h2>
+		  </div>		  
+		  <div style="float:right;">
+			<h2 class=total>CHF <span id=total>0.00</span></h2>
+		  </div>
+		</td></tr>
       </table>
+	  
+	  
+
+	  
+	  
       
-<p><br></p>
-      <div style="margin: auto; width: 300px;">
+	  <p>Zahlungsmöglichkeiten:</p>
+      <div style="margin: auto; width: 350px; margin-bottom: 20px;">
         <img src=images/twint-logo-black.jpg height=100px>
-        &nbsp;&nbsp;&nbsp;
+        <img src="" height=0 width=50px>
         <img src=images/bargeld.png height=100px>
-<p><br></p>
-        Wir sind Teil von:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/viva-kirche.png" height=100px>
+      </div>
+	  <hr>
+      <div style="margin: auto; width: 500px; margin-top: 30px;">
+		<p style="display:inline-block; vertical-align: text-bottom;">Wir sind Teil der &nbsp;&nbsp;&nbsp;</p><img src="images/viva-kirche.png" height=100px>
       </div>
     </div>
+</div>
 </body>
 
 
