@@ -31,15 +31,14 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
     <style>
         body {
             height: 600px;
-/*             width: 100%; */
-            margin: 5px;
+            margin: 10px;
 			background-position: -80px 0px;
 			overflow: hidden; /* Hide scrollbars */
         }
         
         h1 {
             text-align: center;
-             margin-top: 10px; 
+             margin-top: 5px; 
              margin-bottom: 20px; 
             line-height: 35px;
         }
@@ -56,21 +55,64 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         .cellCost, .cellAmount, .total {
             text-align: right;
         }
+	    
+		.cellAmount, .cellName, .cellCost{
+            font-size: 150%;
+        }
+		
+		.cellName {
+			width: 100%; /* Used to make sure it fills full table width */
+		}
         
         .total {
             margin-top: 5px;
             margin-bottom: 5px;
-/*             border: 1px solid black; */
             font-size: 50px;
         }
+		
+		#lastUpdate {
+			color: gray;
+			font-size: 70%;
+		}
+		
+		#roundingText {
+			font-size: 80%;
+			margin-top: 0;
+			margin-bottom: 10px;
+			text-align: right;
+			
+		}
+				
+		.bookingsTable {
+			display:  block;
+			overflow: auto;
+			max-height: 790px;
+		}
+		
+		.bookingsTableTotal {
+			margin-top: 10px;
+		}
+		
     </style>
 
     <script>
+		var lastUpdate = Date.now();
+	
         $(document).ready(function() {        
             console.log("start");
             periodicallyUpdatePage();
             setInterval(periodicallyUpdatePage, 500);
+            setInterval(updateLastUpdated, 1000);
+			
         });
+		
+		
+		function updateLastUpdated() {
+			console.log(Date.now());
+			console.log(lastUpdate);
+			console.log("Last Update: " + (Date.now() - lastUpdate) + " ms ago");
+			document.getElementById("lastUpdate").innerHTML = "Letztes Update: " + (Date.now() - lastUpdate) + " ms";
+		}
 
         function periodicallyUpdatePage() {
             console.log("fetch");
@@ -87,6 +129,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
     
         function updatePage(data) {
             console.log("update page");
+			lastUpdate = Date.now();
             console.log(data);
             document.getElementById("total").innerHTML = data["total"];
             
@@ -107,7 +150,10 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 
             cellAmount.innerHTML = "<b>Menge</b>";
             cellName.innerHTML = "<b>Artikel</b>";
-            cellCost.innerHTML = "<b>Preis</b>";
+			cellCost.innerHTML = "<b>Preis</b>";
+			cellAmount.className = "cellAmount";
+			cellName.className = "cellName";
+			cellCost.className = "cellCost";
             
             
 //             let body = table.createTBody();
@@ -152,7 +198,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
                 cellName.className = "cellName";
                 cellCost.className = "cellCost";
                 
-                cellName.innerHTML = "❤️&nbsp;<i>Spende</i>";
+                cellName.innerHTML = "<span style=\"color:red\">❤️</span>&nbsp;<i>Spende</i>";
                 cellCost.innerHTML = "<i>" + (data["donation"] * 1.0).toFixed(2) + "</i>";
             }
             
@@ -178,14 +224,15 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 <!--       <h2>Warenkorb</h2> -->
       
         
-      <table id=bookingsTable></table>
-      <table id=bookingsTable style="margin-top: 10px">
+      <table id=bookingsTable class=bookingsTable></table>
+      <table id=bookingsTable class=bookingsTableTotal>
         <tr><td colspan=3>
 		  <div style="float:left;">
 			<h2 class=total>Total</h2>
 		  </div>		  
 		  <div style="float:right;">
 			<h2 class=total>CHF <span id=total>0.00</span></h2>
+			<p id=roundingText>(Auf 10 Rappen gerundet)</p>
 		  </div>
 		</td></tr>
       </table>
@@ -207,6 +254,9 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
       </div>
     </div>
 </div>
+<p></p>
+	<hr>
+	  <span id=lastUpdate>Letztes Update: ? ms</span>
 </body>
 
 
