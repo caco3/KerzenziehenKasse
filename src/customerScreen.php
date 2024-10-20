@@ -112,9 +112,33 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			left: 0;
 		}
 		
+		#alert {
+			position: fixed; /* Sit on top of the page content */
+			display: none; /* Hidden by default */
+			width: 100%; /* Full width (cover the whole page) */
+			height: 100%; /* Full height (cover the whole page) */
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0,0,0, 0.8); /* Black background with opacity */
+			z-index: 2;
+		}
+		
+		#alertText {
+			margin-top: 300px;
+			color: red;
+		}
     </style>
 
     <script>
+		var updateInterval = 500; // in ms
+		var watchdogInterval = 500; // in ms
+		var screensaverTimeout = 60 * 60 * 1000; // 1h in ms
+		var screensaverMoveInterval = 5 * 1000; // 5s in ms
+		var alertTimeout = 10 * 1000; // 10s in ms
+	
+	
 		var lastUpdateTimestamp = Date.now();
 		var lastChangeTimestamp = Date.now();
 		var lastChangeData = "";
@@ -123,19 +147,22 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         $(document).ready(function() {        
             //console.log("start");
             periodicallyUpdatePage();
-            setInterval(periodicallyUpdatePage, 500);
-            setInterval(watchdog, 500);	
+            setInterval(periodicallyUpdatePage, updateInterval);
+            setInterval(watchdog, watchdogInterval);	
         });
 		
 		
 		function watchdog() {
-			//console.log(Date.now() + ", " + lastUpdateTimestamp + " (" + (Date.now() - lastUpdateTimestamp) + "), " + lastChangeTimestamp);
-			
+			//console.log(Date.now() + ", " + lastUpdateTimestamp + " (" + (Date.now() - lastUpdateTimestamp) + "), " + lastChangeTimestamp);			
 			document.getElementById("lastUpdateTimestamp").innerHTML = Date.now() - lastUpdateTimestamp;
-			// TODO show alert
-			
-			
 			document.getElementById("lastChangeTimestamp").innerHTML = Date.now() - lastChangeTimestamp;
+			
+			if (Date.now() - lastUpdateTimestamp > alertTimeout) {			
+				document.getElementById("alert").style.display = "block"; // Show alert			
+			}
+			else {
+				document.getElementById("alert").style.display = "none"; // Hide alert
+			}			
 		}
 
         function periodicallyUpdatePage() {
@@ -158,10 +185,10 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 						}
 					}
 					else {
-						if (Date.now() - lastChangeTimestamp > 0) {
+						if (Date.now() - lastChangeTimestamp > screensaverTimeout) {
 							document.getElementById("screensaver").style.display = "block"; // Show screensaver (Screensaver)
 							if (moveScreensaverTimerHandle == "") {
-								moveScreensaverTimerHandle = setInterval(moveScreensaverImg, 5000);
+								moveScreensaverTimerHandle = setInterval(moveScreensaverImg, screensaverMoveInterval);
 							}
 						}
 					}
@@ -296,6 +323,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 
 <body id=live>
 <div id="screensaver"><img id=screensaverImg src="<? echo("$root"); ?>/images/Logo-Kirche-Neuwies.png" width=200px></img></div> 
+<div id="alert"><h1 id=alertText><img id=alertImg src="<? echo("$root"); ?>/images/alert.png" width=200px></img><br><br>Keine Verbindung<br>zur Kasse!</h1></div> 
 <div id="container">
    <div id="header">
         <div style="clear:both;">
