@@ -93,7 +93,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			margin-top: 10px;
 		}
 		
-		#overlay {
+		#screensaver {
 			position: fixed; /* Sit on top of the page content */
 			display: none; /* Hidden by default */
 			width: 100%; /* Full width (cover the whole page) */
@@ -106,23 +106,30 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			z-index: 2;
 		}
 		
+		#screensaverImg {
+			position: fixed; /* Sit on top of the page content */
+			top: 0;
+			left: 0;
+		}
+		
     </style>
 
     <script>
 		var lastUpdateTimestamp = Date.now();
 		var lastChangeTimestamp = Date.now();
 		var lastChangeData = "";
+		var moveScreensaverTimerHandle = "";
 	
         $(document).ready(function() {        
-            console.log("start");
+            //console.log("start");
             periodicallyUpdatePage();
             setInterval(periodicallyUpdatePage, 500);
-            setInterval(watchdog, 100);			
+            setInterval(watchdog, 500);	
         });
 		
 		
 		function watchdog() {
-			console.log(Date.now() + ", " + lastUpdateTimestamp + " (" + (Date.now() - lastUpdateTimestamp) + "), " + lastChangeTimestamp);
+			//console.log(Date.now() + ", " + lastUpdateTimestamp + " (" + (Date.now() - lastUpdateTimestamp) + "), " + lastChangeTimestamp);
 			
 			document.getElementById("lastUpdateTimestamp").innerHTML = Date.now() - lastUpdateTimestamp;
 			// TODO show alert
@@ -132,35 +139,85 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		}
 
         function periodicallyUpdatePage() {
-            console.log("fetch");
+            //console.log("fetch");
             let basket = fetch( 
             "<? echo("$root"); ?>/ajax/getBasket.php"); 
             // basket is the promise to resolve 
             // it by using.then() method 
             basket.then(res => 
                 res.json()).then(data => {
-					console.log(lastChangeData);
-					console.log(data);
+					//console.log(lastChangeData);
+					//console.log(data);
 					if (JSON.stringify(data) !== JSON.stringify(lastChangeData)) {
-						console.log("Data changed");
+						//console.log("Data changed");
 						lastChangeTimestamp = Date.now();
 						lastChangeData = data;
-						document.getElementById("overlay").style.display = "none"; // Hide overlay
+						document.getElementById("screensaver").style.display = "none"; // Hide screensaver
+						if (moveScreensaverTimerHandle != "") {
+							clearInterval(moveScreensaverTimerHandle);
+						}
 					}
 					else {
-						if (Date.now() - lastChangeTimestamp > 5000) {
-							document.getElementById("overlay").style.display = "block"; // Show overlay (Screensaver)
+						if (Date.now() - lastChangeTimestamp > 0) {
+							document.getElementById("screensaver").style.display = "block"; // Show screensaver (Screensaver)
+							if (moveScreensaverTimerHandle == "") {
+								moveScreensaverTimerHandle = setInterval(moveScreensaverImg, 5000);
+							}
 						}
 					}
                     updatePage(data);
                 }); 
         }
+		
+		
+		var screensaverImgWidth = 200;
+		var screensaverImgHeight = 92;
+		var screensaverImgMaxX = 600 - screensaverImgWidth;
+		var screensaverImgMaxY = 1024 - screensaverImgHeight;
+		//var screensaverImgX = getRandomInt(screensaverImgMaxX);
+		//var screensaverImgY = getRandomInt(screensaverImgMaxY);
+		//var screensaverImgTargetX = getRandomInt(screensaverImgMaxX);
+		//var screensaverImgTargetY = getRandomInt(screensaverImgMaxY);
+		
+		
+		function getRandomInt(max) {
+			return Math.floor(Math.random() * (max + 1));
+		}
+		
+		
+		function moveScreensaverImg() {
+			document.getElementById("screensaverImg").style.setProperty("top", getRandomInt(screensaverImgMaxY) + "px");
+			document.getElementById("screensaverImg").style.setProperty("left", getRandomInt(screensaverImgMaxX) + "px");
+
+			/*if ((screensaverImgX == screensaverImgTargetX) && (screensaverImgY == screensaverImgTargetY)) { // Target reached
+				screensaverImgTargetX = getRandomInt(screensaverImgMaxX);
+				screensaverImgTargetY = getRandomInt(screensaverImgMaxY);				
+			}
+			else { // Move to target
+				if (screensaverImgX < screensaverImgTargetX) {
+					screensaverImgX += 1;
+				}
+				else if (screensaverImgX > screensaverImgTargetX) {
+					screensaverImgX -= 1;
+				}
+				
+				if (screensaverImgY < screensaverImgTargetY) {
+					screensaverImgY += 1;
+				}
+				else if (screensaverImgY > screensaverImgTargetY) {					
+					screensaverImgY -= 1;
+				}
+				//console.log("Screensaver Img: " + screensaverImgX + "/" + screensaverImgY + " (Target: " + screensaverImgTargetX + "/" + screensaverImgTargetY + ")");
+				document.getElementById("screensaverImg").style.setProperty("top", screensaverImgY + "px");
+				document.getElementById("screensaverImg").style.setProperty("left", screensaverImgX + "px");				
+			}*/
+		}
     
     
         function updatePage(data) {
-            console.log("update page");
+            //console.log("update page");
 			lastUpdateTimestamp = Date.now();
-            console.log(data);
+            //console.log(data);
             document.getElementById("total").innerHTML = data["total"];
             
             const table = document.getElementById("bookingsTable");
@@ -231,8 +288,6 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
                 cellName.innerHTML = "<span style=\"color:red\">❤️</span>&nbsp;<i>Spende</i>";
                 cellCost.innerHTML = "<i>" + (data["donation"] * 1.0).toFixed(2) + "</i>";
             }
-            
-            
         }
     
     </script>
@@ -240,7 +295,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 </head>
 
 <body id=live>
-<div id="overlay"></div> 
+<div id="screensaver"><img id=screensaverImg src="<? echo("$root"); ?>/images/Logo-Kirche-Neuwies.png" width=200px></img></div> 
 <div id="container">
    <div id="header">
         <div style="clear:both;">
