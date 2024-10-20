@@ -70,7 +70,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             font-size: 50px;
         }
 		
-		#lastUpdate {
+		#legend {
 			color: gray;
 			font-size: 70%;
 		}
@@ -93,25 +93,42 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			margin-top: 10px;
 		}
 		
+		#overlay {
+			position: fixed; /* Sit on top of the page content */
+			display: none; /* Hidden by default */
+			width: 100%; /* Full width (cover the whole page) */
+			height: 100%; /* Full height (cover the whole page) */
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: rgba(0,0,0, 1); /* Black background with opacity */
+			z-index: 2;
+		}
+		
     </style>
 
     <script>
-		var lastUpdate = Date.now();
+		var lastUpdateTimestamp = Date.now();
+		var lastChangeTimestamp = Date.now();
+		var lastChangeData = "";
 	
         $(document).ready(function() {        
             console.log("start");
             periodicallyUpdatePage();
             setInterval(periodicallyUpdatePage, 500);
-            setInterval(updateLastUpdated, 1000);
-			
+            setInterval(watchdog, 100);			
         });
 		
 		
-		function updateLastUpdated() {
-			console.log(Date.now());
-			console.log(lastUpdate);
-			console.log("Last Update: " + (Date.now() - lastUpdate) + " ms ago");
-			document.getElementById("lastUpdate").innerHTML = "Letztes Update: " + (Date.now() - lastUpdate) + " ms";
+		function watchdog() {
+			console.log(Date.now() + ", " + lastUpdateTimestamp + " (" + (Date.now() - lastUpdateTimestamp) + "), " + lastChangeTimestamp);
+			
+			document.getElementById("lastUpdateTimestamp").innerHTML = Date.now() - lastUpdateTimestamp;
+			// TODO show alert
+			
+			
+			document.getElementById("lastChangeTimestamp").innerHTML = Date.now() - lastChangeTimestamp;
 		}
 
         function periodicallyUpdatePage() {
@@ -121,7 +138,20 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             // basket is the promise to resolve 
             // it by using.then() method 
             basket.then(res => 
-                res.json()).then(data => { 
+                res.json()).then(data => {
+					console.log(lastChangeData);
+					console.log(data);
+					if (JSON.stringify(data) !== JSON.stringify(lastChangeData)) {
+						console.log("Data changed");
+						lastChangeTimestamp = Date.now();
+						lastChangeData = data;
+						document.getElementById("overlay").style.display = "none"; // Hide overlay
+					}
+					else {
+						if (Date.now() - lastChangeTimestamp > 5000) {
+							document.getElementById("overlay").style.display = "block"; // Show overlay (Screensaver)
+						}
+					}
                     updatePage(data);
                 }); 
         }
@@ -129,7 +159,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
     
         function updatePage(data) {
             console.log("update page");
-			lastUpdate = Date.now();
+			lastUpdateTimestamp = Date.now();
             console.log(data);
             document.getElementById("total").innerHTML = data["total"];
             
@@ -210,6 +240,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 </head>
 
 <body id=live>
+<div id="overlay"></div> 
 <div id="container">
    <div id="header">
         <div style="clear:both;">
@@ -236,12 +267,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		  </div>
 		</td></tr>
       </table>
-	  
-	  
 
-	  
-	  
-      
 	  <p>Zahlungsmöglichkeiten:</p>
       <div style="margin: auto; width: 350px; margin-bottom: 20px;">
         <img src=images/twint-logo-black.jpg height=100px>
@@ -256,7 +282,10 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 </div>
 <p></p>
 	<hr>
-	  <span id=lastUpdate>Letztes Update: ? ms</span>
+	<div id=legend>
+	  Letztes Update: <span id=lastUpdateTimestamp>?</span> ms, 
+	  Last Change: <span id=lastChangeTimestamp>?</span> ms.
+	  </div>
 </body>
 
 
