@@ -103,7 +103,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			right: 0;
 			bottom: 0;
 			background-color: rgba(0,0,0, 1); /* Black background with opacity */
-			z-index: 2;
+			z-index: 3;
 		}
 		
 		#screensaverImg {
