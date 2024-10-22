@@ -352,10 +352,13 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
       </table>
 
 	  <p>Zahlungsmöglichkeiten:</p>
-      <div style="margin: auto; width: 350px; margin-bottom: 20px;">
-        <img src=images/twint-logo-black.jpg height=100px>
-        <img src="" height=0 width=50px>
-        <img src=images/bargeld.png height=100px>
+      <div style="margin: auto; width: 580px; margin-bottom: 20px;">
+      <!--  <img src=images/twint-logo-black.jpg height=100px>
+        <img src="" height=0 width=10px>-->
+        <img src="" height=0 width=20px>
+        <img src=images/twint-code.png height=200px>
+        <img src="" height=0 width=20px>
+        <img src=images/bargeld.png height=160px>
       </div>
 	  <hr>
       <div style="margin: auto; width: 500px; margin-top: 30px;">
