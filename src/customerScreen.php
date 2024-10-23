@@ -86,7 +86,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		.bookingsTable {
 			display:  block;
 			overflow: auto;
-			max-height: 790px;
+			max-height: 606px;
 		}
 		
 		.bookingsTableTotal {
@@ -315,6 +315,17 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
                 cellName.innerHTML = "<span style=\"color:red\">❤️</span>&nbsp;<i>Spende</i>";
                 cellCost.innerHTML = "<i>" + (data["donation"] * 1.0).toFixed(2) + "</i>";
             }
+			
+		
+			/* Make sure the Twint Code is always visible */
+			if (document.getElementById("bookingTableDiv").offsetHeight > 400) {
+				document.getElementById("headerBanner").style.display = "none"; // Hide Banner
+				document.getElementById("bookingsTable").style.maxHeight = "600px";
+			}
+			else {
+				document.getElementById("headerBanner").style.display = "block"; // Show Banner
+				document.getElementById("bookingsTable").style.maxHeight = "1000px";
+			}
         }
     
     </script>
@@ -326,7 +337,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 <div id="alert"><h1 id=alertText><img id=alertImg src="<? echo("$root"); ?>/images/alert.png" width=200px></img><br><br>Keine Verbindung<br>zur Kasse!</h1></div> 
 <div id="container">
    <div id="header">
-        <div style="clear:both;">
+        <div id=headerBanner style="clear:both; display: block;">
             <div id=logo>
 <!--                 <h1><img src="images/candle.png" width=30px> Kerzenziehen<br>&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/logo.png" height=25px></h1> -->
                 <h1>&nbsp;&nbsp;&nbsp;Kerzenziehen<br>&nbsp;&nbsp;&nbsp;<img src="images/logo.png" height=25px></h1>
@@ -338,7 +349,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 <!--       <h2>Warenkorb</h2> -->
       
         
-      <table id=bookingsTable class=bookingsTable></table>
+      <div id=bookingTableDiv><table id=bookingsTable class=bookingsTable></table></div>
       <table id=bookingsTable class=bookingsTableTotal>
         <tr><td colspan=3>
 		  <div style="float:left;">
@@ -356,9 +367,9 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
       <!--  <img src=images/twint-logo-black.jpg height=100px>
         <img src="" height=0 width=10px>-->
         <img src="" height=0 width=20px>
-        <img src=images/twint-code.png height=200px>
-        <img src="" height=0 width=20px>
         <img src=images/bargeld.png height=160px>
+        <img src="" height=0 width=20px>
+        <img id=twintCode src=images/twint-code.png height=200px>
       </div>
 	  <hr>
       <div style="margin: auto; width: 500px; margin-top: 30px;">
