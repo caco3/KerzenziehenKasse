@@ -318,7 +318,8 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			
 		
 			/* Make sure the Twint Code is always visible */
-			if (document.getElementById("bookingTableDiv").offsetHeight > 400) {
+			console.log(document.getElementById("bookingTableDiv").offsetHeight);
+			if (document.getElementById("bookingTableDiv").offsetHeight > 450) {
 				document.getElementById("headerBanner").style.display = "none"; // Hide Banner
 				document.getElementById("bookingsTable").style.maxHeight = "600px";
 			}
@@ -340,7 +341,8 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         <div id=headerBanner style="clear:both; display: block;">
             <div id=logo>
 <!--                 <h1><img src="images/candle.png" width=30px> Kerzenziehen<br>&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/logo.png" height=25px></h1> -->
-                <h1>&nbsp;&nbsp;&nbsp;Kerzenziehen<br>&nbsp;&nbsp;&nbsp;<img src="images/logo.png" height=25px></h1>
+                <h1 style="font-size: 50px; margin-left: -150px">Kerzenziehen</h1>
+				<img src="images/logo.png" height=40px style="margin-left: 100px; margin-bottom: 10px">
             </div>
 <!--            <div id=clock>
                 <p id=clockText></p>
