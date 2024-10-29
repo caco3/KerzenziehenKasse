@@ -152,22 +152,29 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         });
 		
 		
+		async function remoteLog(message) {
+			const response = await fetch("https://www.ruinelli.ch/kerzenziehen/kundendisplay-log.php?data=" + message);
+		}
+		
+		
 		function watchdog() {
 			//console.log(Date.now() + ", " + lastUpdateTimestamp + " (" + (Date.now() - lastUpdateTimestamp) + "), " + lastChangeTimestamp);			
 			document.getElementById("lastUpdateTimestamp").innerHTML = Date.now() - lastUpdateTimestamp;
 			document.getElementById("lastChangeTimestamp").innerHTML = Date.now() - lastChangeTimestamp;
 			
 			if (Date.now() - lastUpdateTimestamp > alertTimeout) {			
-				document.getElementById("alert").style.display = "block"; // Show alert			
+				document.getElementById("alert").style.display = "block"; // Show alert	
+				remoteLog(Date.now() - lastUpdateTimestamp + ";watchdog");
 			}
 			else {
+				remoteLog(Date.now() - lastUpdateTimestamp + ";ok");
 				document.getElementById("alert").style.display = "none"; // Hide alert
 			}			
 		}
 
         function periodicallyUpdatePage() {
             //console.log("fetch");
-            let basket = fetch( 
+            const basket = fetch( 
             "<? echo("$root"); ?>/ajax/getBasket.php"); 
             // basket is the promise to resolve 
             // it by using.then() method 
@@ -200,12 +207,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		var screensaverImgWidth = 200;
 		var screensaverImgHeight = 92;
 		var screensaverImgMaxX = 600 - screensaverImgWidth;
-		var screensaverImgMaxY = 1024 - screensaverImgHeight;
-		//var screensaverImgX = getRandomInt(screensaverImgMaxX);
-		//var screensaverImgY = getRandomInt(screensaverImgMaxY);
-		//var screensaverImgTargetX = getRandomInt(screensaverImgMaxX);
-		//var screensaverImgTargetY = getRandomInt(screensaverImgMaxY);
-		
+		var screensaverImgMaxY = 1024 - screensaverImgHeight;		
 		
 		function getRandomInt(max) {
 			return Math.floor(Math.random() * (max + 1));
@@ -216,28 +218,6 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			document.getElementById("screensaverImg").style.setProperty("top", getRandomInt(screensaverImgMaxY) + "px");
 			document.getElementById("screensaverImg").style.setProperty("left", getRandomInt(screensaverImgMaxX) + "px");
 
-			/*if ((screensaverImgX == screensaverImgTargetX) && (screensaverImgY == screensaverImgTargetY)) { // Target reached
-				screensaverImgTargetX = getRandomInt(screensaverImgMaxX);
-				screensaverImgTargetY = getRandomInt(screensaverImgMaxY);				
-			}
-			else { // Move to target
-				if (screensaverImgX < screensaverImgTargetX) {
-					screensaverImgX += 1;
-				}
-				else if (screensaverImgX > screensaverImgTargetX) {
-					screensaverImgX -= 1;
-				}
-				
-				if (screensaverImgY < screensaverImgTargetY) {
-					screensaverImgY += 1;
-				}
-				else if (screensaverImgY > screensaverImgTargetY) {					
-					screensaverImgY -= 1;
-				}
-				//console.log("Screensaver Img: " + screensaverImgX + "/" + screensaverImgY + " (Target: " + screensaverImgTargetX + "/" + screensaverImgTargetY + ")");
-				document.getElementById("screensaverImg").style.setProperty("top", screensaverImgY + "px");
-				document.getElementById("screensaverImg").style.setProperty("left", screensaverImgX + "px");				
-			}*/
 		}
     
     
@@ -318,7 +298,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			
 		
 			/* Make sure the Twint Code is always visible */
-			console.log(document.getElementById("bookingTableDiv").offsetHeight);
+			//console.log(document.getElementById("bookingTableDiv").offsetHeight);
 			if (document.getElementById("bookingTableDiv").offsetHeight > 450) {
 				document.getElementById("headerBanner").style.display = "none"; // Hide Banner
 				document.getElementById("bookingsTable").style.maxHeight = "600px";
