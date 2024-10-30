@@ -132,17 +132,24 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
     </style>
 
     <script>
-		var updateInterval = 500; // in ms
-		var watchdogInterval = 500; // in ms
+		var updateInterval = 1000; // in ms
+		var watchdogInterval = 1000; // in ms
 		var screensaverTimeout = 60 * 60 * 1000; // 1h in ms
 		var screensaverMoveInterval = 5 * 1000; // 5s in ms
 		var alertTimeout = 10 * 1000; // 10s in ms
-	
-	
+		
 		var lastUpdateTimestamp = Date.now();
 		var lastChangeTimestamp = Date.now();
 		var lastChangeData = "";
 		var moveScreensaverTimerHandle = "";
+			
+		let controller = null;
+		
+		var screensaverImgWidth = 200;
+		var screensaverImgHeight = 92;
+		var screensaverImgMaxX = 600 - screensaverImgWidth;
+		var screensaverImgMaxY = 1024 - screensaverImgHeight;	
+	
 	
         $(document).ready(function() {        
             //console.log("start");
@@ -151,9 +158,63 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             setInterval(watchdog, watchdogInterval);	
         });
 		
+    
+		const fetchTodo = async (signal) => {
+			try {
+				const response = await fetch("<? echo("$root"); ?>/ajax/getBasket.php", { signal: signal });
+				
+				if (!response.ok) {
+				  remoteLog(response.status);
+				  throw new Error(`Response status: ${response.status}`);
+				}
+
+				const data = await response.json();
+				if (JSON.stringify(data) !== JSON.stringify(lastChangeData)) {
+					//console.log("Data changed");
+					lastChangeTimestamp = Date.now();
+					lastChangeData = data;
+					document.getElementById("screensaver").style.display = "none"; // Hide screensaver
+					if (moveScreensaverTimerHandle != "") {
+						clearInterval(moveScreensaverTimerHandle);
+					}
+				}
+				else {
+					if (Date.now() - lastChangeTimestamp > screensaverTimeout) {
+						document.getElementById("screensaver").style.display = "block"; // Show screensaver (Screensaver)
+						if (moveScreensaverTimerHandle == "") {
+							moveScreensaverTimerHandle = setInterval(moveScreensaverImg, screensaverMoveInterval);
+						}
+					}
+				}
+				updatePage(data);					
+			} catch (error){
+				console.log(error);
+				remoteLog(error);
+			}
+		}
 		
-		async function remoteLog(message) {
-			const response = await fetch("https://www.ruinelli.ch/kerzenziehen/kundendisplay-log.php?data=" + message);
+		
+		async function periodicallyUpdatePage() {			
+			// In the first time controller is null  
+			if(controller){
+				controller.abort();
+				controller = null
+			}
+			// Now set controller 
+			controller = new AbortController();        try {
+				// Here passing signal in fetchTodo
+				await fetchTodo(controller.signal);
+			} catch (error) {
+				console.log(error)
+			} finally {
+				// once request is completed controller will be in initial step 
+				controller = null
+			}			
+		}
+		
+		
+		function remoteLog(message) {
+			fetch("https://www.ruinelli.ch/kerzenziehen/kundendisplay-log.php?data=" + message);
 		}
 		
 		
@@ -171,43 +232,8 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 				document.getElementById("alert").style.display = "none"; // Hide alert
 			}			
 		}
-
-        function periodicallyUpdatePage() {
-            //console.log("fetch");
-            const basket = fetch( 
-            "<? echo("$root"); ?>/ajax/getBasket.php"); 
-            // basket is the promise to resolve 
-            // it by using.then() method 
-            basket.then(res => 
-                res.json()).then(data => {
-					//console.log(lastChangeData);
-					//console.log(data);
-					if (JSON.stringify(data) !== JSON.stringify(lastChangeData)) {
-						//console.log("Data changed");
-						lastChangeTimestamp = Date.now();
-						lastChangeData = data;
-						document.getElementById("screensaver").style.display = "none"; // Hide screensaver
-						if (moveScreensaverTimerHandle != "") {
-							clearInterval(moveScreensaverTimerHandle);
-						}
-					}
-					else {
-						if (Date.now() - lastChangeTimestamp > screensaverTimeout) {
-							document.getElementById("screensaver").style.display = "block"; // Show screensaver (Screensaver)
-							if (moveScreensaverTimerHandle == "") {
-								moveScreensaverTimerHandle = setInterval(moveScreensaverImg, screensaverMoveInterval);
-							}
-						}
-					}
-                    updatePage(data);
-                }); 
-        }
 		
-		
-		var screensaverImgWidth = 200;
-		var screensaverImgHeight = 92;
-		var screensaverImgMaxX = 600 - screensaverImgWidth;
-		var screensaverImgMaxY = 1024 - screensaverImgHeight;		
+					
 		
 		function getRandomInt(max) {
 			return Math.floor(Math.random() * (max + 1));
