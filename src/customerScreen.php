@@ -136,7 +136,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		var watchdogInterval = 1000; // in ms
 		var screensaverTimeout = 60 * 60 * 1000; // 1h in ms
 		var screensaverMoveInterval = 5 * 1000; // 5s in ms
-		var alertTimeout = 10 * 1000; // 10s in ms
+		var alertTimeout = 5 * 1000; // 5s in ms
 		
 		var lastUpdateTimestamp = Date.now();
 		var lastChangeTimestamp = Date.now();
@@ -161,7 +161,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
     
 		const fetchTodo = async (signal) => {
 			try {
-				const response = await fetch("<? echo("$root"); ?>/ajax/getBasket.php", { signal: signal });
+				const response = await fetch("<? echo("$root"); ?>/ajax/getBasket.php", { signal: AbortSignal.timeout(updateInterval*0.8) });
 				
 				if (!response.ok) {
 				  remoteLog(response.status);
@@ -223,17 +223,25 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			document.getElementById("lastUpdateTimestamp").innerHTML = Date.now() - lastUpdateTimestamp;
 			document.getElementById("lastChangeTimestamp").innerHTML = Date.now() - lastChangeTimestamp;
 			
-			if (Date.now() - lastUpdateTimestamp > alertTimeout) {			
-				document.getElementById("alert").style.display = "block"; // Show alert	
-				remoteLog(Date.now() - lastUpdateTimestamp + ";watchdog");
+			now = Date.now();
+			//now = Date.now() + 10000; // Testing
+			lastUpdateTimestamp2 = lastUpdateTimestamp
+			
+			if (now - lastUpdateTimestamp2 > alertTimeout) {			
+				//document.getElementById("alert").style.display = "block"; // Show alert
+				document.getElementById("tables").style.display = "none"; // Hide Tables
+				document.getElementById("alertDiv").style.display = "block"; // Show alert
+				
+				remoteLog(now - lastUpdateTimestamp2 + ";watchdog: no connection to server, " + now + ", " + lastUpdateTimestamp2);
 			}
 			else {
+				//document.getElementById("alert").style.display = "none"; // Hide alert
+				document.getElementById("tables").style.display = "block"; // Show Tables
+				document.getElementById("alertDiv").style.display = "none"; // Hide alert
 				remoteLog(Date.now() - lastUpdateTimestamp + ";ok");
-				document.getElementById("alert").style.display = "none"; // Hide alert
 			}			
 		}
 		
-					
 		
 		function getRandomInt(max) {
 			return Math.floor(Math.random() * (max + 1));
@@ -356,19 +364,20 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         </div>
 <!--       <h2>Warenkorb</h2> -->
       
-        
-      <div id=bookingTableDiv><table id=bookingsTable class=bookingsTable></table></div>
-      <table id=bookingsTable class=bookingsTableTotal>
-        <tr><td colspan=3>
-		  <div style="float:left;">
-			<h2 class=total>Total</h2>
-		  </div>		  
-		  <div style="float:right;">
-			<h2 class=total>CHF <span id=total>0.00</span></h2>
-			<p id=roundingText>(Auf 10 Rappen gerundet)</p>
-		  </div>
-		</td></tr>
-      </table>
+      <div id=tables>	   
+		  <div id=bookingTableDiv><table id=bookingsTable class=bookingsTable></table></div>
+		  <table id=bookingsTable class=bookingsTableTotal>
+			<tr><td colspan=3>
+			  <div style="float:left;">
+				<h2 class=total>Total</h2>
+			  </div>		  
+			  <div style="float:right;">
+				<h2 class=total>CHF <span id=total>0.00</span></h2>
+				<p id=roundingText>(Auf 10 Rappen gerundet)</p>
+			  </div>
+			</td></tr>
+		  </table>
+	  </div>
 
 	  <p>Zahlungsmöglichkeiten:</p>
       <div style="margin: auto; width: 580px; margin-bottom: 20px;">
@@ -390,6 +399,9 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 	<div id=legend>
 	  Letztes Update: <span id=lastUpdateTimestamp>?</span> ms, 
 	  Last Change: <span id=lastChangeTimestamp>?</span> ms.
+		  <div id=alertDiv style="display: none;">
+		  Keine Verbindung zum Server!
+		  </div>
 	  </div>
 </body>
 
