@@ -204,7 +204,7 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 				
 				height: 572,
 			    //width: 1680,
-				width: <? echo(1735 + $widthAdjustment); ?>,
+				width: <? echo(1735 + $widthAdjustment + 35); ?>,
 				
 				chartArea:{
 				    left:300,
