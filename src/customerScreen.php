@@ -132,7 +132,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
     </style>
 
     <script>
-		var updateInterval = 500; // in ms
+		var updateInterval = 1000; // in ms
 		var watchdogInterval = updateInterval; // in ms
 		var screensaverTimeout = 60 * 60 * 1000; // 1h in ms
 		var screensaverMoveInterval = 5 * 1000; // 5s in ms
