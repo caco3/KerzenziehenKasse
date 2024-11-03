@@ -85,4 +85,5 @@ a#easy-numpad-close {
 }
 .easy-numpad-number-container .done {
     background-color: #388E3C;
+    padding: 64px 64px;	
 }

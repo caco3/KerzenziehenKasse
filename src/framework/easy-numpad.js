@@ -11,11 +11,15 @@ var value;
 var prefix;
 var suffix;
 var type;
+var initialValue;
 
-function show_easy_numpad(id, newType, initialValue, header, showDecimalPoint, newPrefix, newSuffix) {
-    console.log(id, newType, initialValue, showDecimalPoint, newPrefix, newSuffix);
+
+function show_easy_numpad(id, newType, initialValue1, header, showDecimalPoint, newPrefix, newSuffix) {
+    console.log(id, newType, initialValue1, showDecimalPoint, newPrefix, newSuffix);
     articleId = id;
-    value = initialValue;
+    //value = initialValue;
+	initialValue = initialValue1;
+	value = 0;
     prefix = newPrefix;
     suffix = newSuffix;
     type = newType;
@@ -31,19 +35,19 @@ function show_easy_numpad(id, newType, initialValue, header, showDecimalPoint, n
                             <td><a href="7" onclick="easynum()">7</a></td>
                             <td><a href="8" onclick="easynum()">8</a></td>
                             <td><a href="9" onclick="easynum()">9</a></td>
-                            <td><a href="Del" class="del" id="del" onclick="easy_numpad_del()">Zurück</a></td>
+                            <td><a href="Del" class="del" id="del" onclick="easy_numpad_del()">&#8678; Zurück</a></td>
                         </tr>
                         <tr>
                             <td><a href="4" onclick="easynum()">4</a></td>
                             <td><a href="5" onclick="easynum()">5</a></td>
                             <td><a href="6" onclick="easynum()">6</a></td>
-                            <td><a href="Clear" class="clear" id="clear" onclick="easy_numpad_clear()">Löschen</a></td>
+                            <td><a href="Cancel" class="cancel" id="cancel" onclick="easy_numpad_cancel()">&#10008 Abbrechen</a></td>
                         </tr>
                         <tr>
                             <td><a href="1" onclick="easynum()">1</a></td>
                             <td><a href="2" onclick="easynum()">2</a></td>
                             <td><a href="3" onclick="easynum()">3</a></td>
-                            <td><a href="Cancel" class="cancel" id="cancel" onclick="easy_numpad_cancel()">Abbrechen</a></td>
+                            <td rowspan="2"><a href="Done" class="done" id="done" onclick="easy_numpad_done()">OK</a></td>
                         </tr>
                         <tr>`;
                         
@@ -56,20 +60,31 @@ function show_easy_numpad(id, newType, initialValue, header, showDecimalPoint, n
                         }
                         
                         easy_numpad += `
-                            <td><a href="Done" class="done" id="done" onclick="easy_numpad_done()">OK</a></td>
                         </tr>
                     </table>
                 </div>
             </div>
         </div>
     `;
-    $('body').append(easy_numpad);
-    $('#easy-numpad-output').text(prefix + value + suffix);
+    $('body').append(easy_numpad);    
+    updateValueField(value);
 }
+
 
 function easy_numpad_close() {
     $('#easy-numpad-frame').remove();
 }
+
+
+function updateValueField(value) {	
+	if (initialValue != 0) {
+		$('#easy-numpad-output').html("<span style=\"color: gray\">" + prefix + initialValue + suffix + "&nbsp;&nbsp;&#x2192;&nbsp;&nbsp;</span>" + prefix + value + suffix);
+	}
+	else {
+		$('#easy-numpad-output').html(prefix + value + suffix);
+	}
+}
+
 
 function easynum() {
     event.preventDefault();
@@ -98,43 +113,70 @@ function easynum() {
 				value = value.slice(0, 2-charactersBehindDot);
 			}
 		}
-	   
     }
-    $('#easy-numpad-output').text(prefix + value + suffix);
+	
+	// Remove leading zero
+	if (value.length > 1 && value.charAt(0) == "0") {
+		value = value.slice(1);  // Cut off first character
+		console.log("Removed leading 0");
+	}
+	
+    updateValueField(value);
 }
+
+
 function easy_numpad_del() {
     event.preventDefault();
     console.log(value);
     var value_del = ("" + value).slice(0, -1);
     value = value_del;
-    $('#easy-numpad-output').text(prefix + value + suffix);
-    
+	console.log(value);
+	if (value == "") {
+		value = "0";
+	}
+    updateValueField(value);    
 }
+
+
 function easy_numpad_clear() {
     event.preventDefault();   
-    value = "";
-    $('#easy-numpad-output').text(prefix + value + suffix);
+    value = "0";    
+    updateValueField(value);
 }
+
+
 function easy_numpad_cancel() {
     event.preventDefault();
     $('#easy-numpad-frame').remove();
 }
+
+
 function easy_numpad_done() {
     event.preventDefault();
-    
+	
+	if (value == "") {
+		value = 0;
+	}
+	    
     error = false;
     if((type == "articleQuantity") || (type == "basketQuantity")) {
         if (value == 0) {
             error = true;
+			if (suffix == " g") {
+				firework.launch("Gewicht kann nicht 0 sein!", 'error', 3000);
+			}
+			else {
+				firework.launch("Menge kann nicht 0 sein!", 'error', 3000);
+			}
         }
     }
     else if(value === "") {
         error = true;
+        firework.launch("Ungültige Eingabe!", 'error', 3000);
     }
     
     if (error == true) {
         console.log("Invalid input!");
-        firework.launch("Ungültige Eingabe!", 'error', 3000);
         return; // Do not close numpad   
     }
     
