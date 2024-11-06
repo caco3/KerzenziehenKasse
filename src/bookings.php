@@ -12,7 +12,13 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <script src="<? echo("$root/"); ?>/framework/bookings.js"></script>
 
     <div id="body">
-      <h2>Buchungen Heute (<? echo($todayDE); ?>)</h2>
+		<h1>Buchungen</h1>
+	<ul>
+    <li><a href=#today>Heute</a><br><br></li>
+    <li><a href=#year>Aktuelles Jahr</a></li>
+</ul>
+	
+      <h2><a name=today>Buchungen Heute (<? echo($todayDE); ?>)</h2>
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
@@ -75,7 +81,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     
     
     <p><br></p>
-    <h2>Alle Buchungen des aktuelles Jahres</h2>
+    <h2><a name=year>Alle Buchungen des aktuelles Jahres</h2>
     <table id=bookingsTable>
     <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
     <?    

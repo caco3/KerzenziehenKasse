@@ -402,8 +402,6 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 
 <div id="body">
 <a name="PerDayAndYear"></a><h1>Umsatz und Wachs pro Tag und Jahr</h1> 
-
-<h3>Übersicht</h3>
 <ul>
     <li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs + Gastronomie)</a><br><br></li>
     <li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs + Gastronomie)</a><br><br></li>
