@@ -114,8 +114,8 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
                 <h1><img src="images/candle.png" width=30px> Kerzenziehen &ndash; <a href="http://www.kirche-neuwies.ch" target="_blank"><img src="images/logo_small.png"></a></h1>
             </div>
             
-            <div id=headerLinksDiv>
-                <p id=headerLinksTexts> Navigation: 
+            <div>
+                <p id=headerLinksTexts> 
                 <? if(basename($_SERVER['PHP_SELF']) != "index.php") { ?>
                     <? if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */ ?>
                         <a class="headerLinks" href="index.php" target="_self"><img src=images/Shopping-basket-icon.png height=30px> Kasse</a> | 
@@ -126,9 +126,9 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
 
                     <a class="headerLinks" href="bookings.php" target="_self"><img src=images/bookings.png height=30px> Buchungen</a> |
 					<b>Auswertung:</b>
-                    <a class="headerLinks" href="statsCurrentYear.php" target="_self"><img src=images/day.png height=30px style="margin-left: 10px; margin-right: 5px"></a> 
+                    <a class="headerLinks" href="statsCurrentYear.php" target="_self"><img src=images/day.png height=30px style="margin-left: 5px; margin-right: 5px"></a> 
                     <a class="headerLinks" href="statsYears.php" target="_self"><img src=images/year.png height=30px style="margin-left: 5px; margin-right: 5px"></a> 
-                    <a class="headerLinks" href="statsDiagrams.php" target="_self"><img src=images/chart.png height=30px style="margin-left: 5px; margin-right: 10px"></a> | 
+                    <a class="headerLinks" href="statsDiagrams.php" target="_self"><img src=images/chart.png height=30px style="margin-left: 5px; margin-right: 5px"></a> | 
                     <? if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */ ?> 
 						<a class="headerLinks" href="admin.php" target="_self"><img src=images/gear.png height=30px> Admin</a> | 
                         <a class="headerLinks" href="help.php" target="_self"><img src=images/help.png height=30px> Hilfe</a> | 
