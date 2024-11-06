@@ -1,7 +1,8 @@
 <? 
 $root=".";
 include "$root/framework/header.php";
-?>
+
+if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */ ?>
     <div id="body">
       <h1>Administration</h1>
 
@@ -19,11 +20,10 @@ include "$root/framework/header.php";
       
 <!--       <iframe name="content" style="width: 1600px; height: 450px; background: white;"></iframe> -->
     </div>
-
-
-
-
+ <? } else { ?>
+	<br><br><b>Duhhh, Keine Ahnung, wie Du diese Seite gefunden hast.<br>Aber auf jeden Fall gibt es hier für dich nichts zu sehen :)</b>
 <?
+ }
 include "$root/framework/footer.php"; 
 ?>
     

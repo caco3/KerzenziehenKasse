@@ -111,7 +111,7 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
 ?>
         <div style="clear:both;">
             <div id=logo>
-                <h1><img src="images/candle.png" width=30px> Kerzenziehen &ndash; <a href="http://www.kirche-neuwies.ch" target="_blank"><img src="images/logo_small.png"></a></h1>
+                <h1><img src="images/candle.png" width=30px> Kerzenziehen &ndash; <img src="images/logo_small.png"></h1>
             </div>
             
             <div>

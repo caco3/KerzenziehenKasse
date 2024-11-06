@@ -1,7 +1,7 @@
 <? 
 $root=".";
 include "$root/framework/header.php";
-?>
+if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */ ?>
     <div id="body">
       <h1>Hilfe</h1>
       <h2>FAQ</h2>
@@ -43,7 +43,9 @@ include "$root/framework/header.php";
 	  <p><br></p>
     </div>
 
-<?
+ <? } else { ?>
+	<br><br><b>Duhhh, Keine Ahnung, wie Du diese Seite gefunden hast.<br>Aber auf jeden Fall gibt es hier für dich nichts zu sehen :)</b>
+ <? }
 include "$root/framework/footer.php"; 
 ?>
     
