@@ -13,7 +13,7 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
       <p><a href=../../phpmyadmin target=_blank>phpmyadmin</a>.<br><br></p>
       
       <h2>Buchungen exportieren</h2>
-      <p>Das ist direkt über die <a href=stats.php target="_self">Statistik-Seite</a> möglich.<br><br></p>
+      <p>Der CSV-Export ist direkt über die Buchungs- und Statistik-Seiten möglich.<br><br></p>
       
       <!--<h2>Datenbank exportieren</h2>
       <p><a href=subpages/exportDb.php target="_self">Export im SQL-Format</a>.<br><br></p>-->
