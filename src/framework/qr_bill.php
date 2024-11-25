@@ -51,7 +51,7 @@ function generateQrCode($bookingId, $amount) {
     );
 
 
-    $qrBill->getQrCode()->writeFile($root . "/../tmp/qrBill_$bookingId.png");
+    $qrBill->getQrCode()->writeFile("/tmp/qrBill_$bookingId.png");
 
 }
 
