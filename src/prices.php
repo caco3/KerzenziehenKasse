@@ -53,11 +53,11 @@ $articles = array_merge($articles, getDbProductsEx("wachs", "name", "effect"));
 <tr><th colspan=2>Artikel</th><th>Preis</th><th>Ungefähre Dauer</th></tr>
 <?
 foreach($articles as $article) {
-    if (($article['typ'] == "wachs") && ($article['subtype'] != "effect")) { // Ziehen (ohne Effektwachs)
+    if (($article['type'] == "wachs") && ($article['subtype'] != "effect")) { // Ziehen (ohne Effektwachs)
         $article['pricePerQuantity'] = $article['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
 		$duration = $article['duration'] . " h für &Oslash; 1 - 1.5 cm";
     }
-	elseif (($article['typ'] == "guss") && ($article['subtype'] != "preMade")) { // Giessen (ohne Rosenkerze)
+	elseif (($article['type'] == "guss") && ($article['subtype'] != "preMade")) { // Giessen (ohne Rosenkerze)
 		$duration = $article['duration'] . " h";
     }
 	else {

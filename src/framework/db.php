@@ -26,7 +26,7 @@ function db_connect(){
 function getDbProducts($type, $orderByColumn) {
     global $db_link;
     
-    $sql = "SELECT * FROM articles WHERE typ = '$type' ORDER by `$orderByColumn` ASC";  
+    $sql = "SELECT * FROM articles WHERE type = '$type' ORDER by `$orderByColumn` ASC";
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
@@ -39,8 +39,18 @@ function getDbProducts($type, $orderByColumn) {
     } 
     mysqli_free_result( $query_response );
     
-//     echo("<pre>");
-//     print_r($lines);
+    // Add missing "Quantity" values
+    foreach($lines as $key => $data) {
+        if (! array_key_exists("quantity", $data)) {
+            $lines[$key]['quantity'] = 0;
+        }
+        if (! array_key_exists("price", $data)) {
+            $lines[$key]['price'] = 0;
+        }
+    }
+
+     //echo("<pre>");
+     //print_r($lines);
 
     return $lines;
 }
@@ -86,7 +96,7 @@ function getDbArticleData($id){
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
     
     
-    if($line['typ'] == 'custom'){ // custom article
+    if($line['type'] == 'custom'){ // custom article
         $line['unit'] = "Stk."; // TODO: replace by unit in table
     }
     
@@ -94,7 +104,7 @@ function getDbArticleData($id){
     
     mysqli_free_result( $query_response );
 
-    return [$line['name'], $line['typ'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3'], $line['waxAmount'], $line['waxType']];
+    return [$line['name'], $line['type'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3'], $line['waxAmount'], $line['waxType']];
 }
 
 

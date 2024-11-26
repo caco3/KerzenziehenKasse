@@ -18,7 +18,7 @@ function showSummaryOfYear($year) {
         
         // Create list of all available products, so all days have the same order
         $products = getDbProducts("wachs", "articleId");
-        // print_r($products);
+        // echo("<pre>"); print_r($products);
         foreach($products as $product) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
@@ -61,8 +61,6 @@ function showSummaryOfYear($year) {
             $bookingIds = getBookingIdsOfDate($date, false);
             foreach($bookingIds as $bookingId) { // a booking
                 $booking = getBooking($bookingId);
-    //             echo("<pre>");
-    //             print_r($booking);
                 foreach ($booking['articles'] as $articleId => $article) { // articles
                     if($article['type'] != "custom") { // normal article   
                         $id = $articleId;
@@ -72,7 +70,7 @@ function showSummaryOfYear($year) {
                         $customIds++;
                     }
                     
-//                     echo("<pre>"); print_r($article);
+                    // echo("<pre>"); print_r($article);
                     
                     $articles[$id]['text'] = $article['text'];
                     $articles[$id]['quantity'] += $article['quantity'];
@@ -82,12 +80,20 @@ function showSummaryOfYear($year) {
 //                     $articles[$id]['waxType'] = $article['waxType'];
 //                     $articles[$id]['waxAmount'] = $article['waxAmount'];
                 }
+
                 $donations += $booking['donation'];
             }
             
         }
         
-//         echo("<pre>"); print_r($articles); echo("</pre>");
+        // Add missing price field (missing on articles which have quantity=0)
+        foreach($articles as $key => $data) {
+            if (! array_key_exists("price", $data)) {
+                $articles[$key]['price'] = 0;
+            }
+        }
+
+        // echo("<pre>"); print_r($articles); echo("</pre>");
 
         foreach($articles as $article) {
             $total += $article['quantity'] * $article['price'];

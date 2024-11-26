@@ -88,7 +88,7 @@ function showDetailsPerDayAndYear($year) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
-            $articles[$product['articleId']]['type'] = $product['typ'];
+            $articles[$product['articleId']]['type'] = $product['type'];
             $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
             $articles[$product['articleId']]['waxType'] = $product['waxType'];
@@ -102,7 +102,7 @@ function showDetailsPerDayAndYear($year) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
-            $articles[$product['articleId']]['type'] = $product['typ'];
+            $articles[$product['articleId']]['type'] = $product['type'];
             $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
             $articles[$product['articleId']]['waxType'] = $product['waxType'];
@@ -116,7 +116,7 @@ function showDetailsPerDayAndYear($year) {
             $articles[$product['articleId']]['text'] = $product['name'];
             $articles[$product['articleId']]['quantity'] = $product['quantity'];
             $articles[$product['articleId']]['unit'] = $product['unit'];
-            $articles[$product['articleId']]['type'] = $product['typ'];
+            $articles[$product['articleId']]['type'] = $product['type'];
             $articles[$product['articleId']]['subtype'] = $product['subtype'];
             $articles[$product['articleId']]['image'] = $product['image1'];
             $articles[$product['articleId']]['waxType'] = $product['waxType'];
@@ -199,12 +199,18 @@ function showDetailsPerDayAndYear($year) {
             if ($article['quantity'] == 0) { // no sales for this article, ignore it 
                 continue;
             }
+
+            if (! array_key_exists("price", $article)) { // Add missing (neutral) value
+                $article['price'] = $article['quantity'] * $article['pricePerQuantity'];
+            }
         
             echo("<tr>");
             echo("<td><span class=tooltip><img class=articleImage src=images/articles_small/". $article['image'] . "><span><img src=images/articles_small/". $article['image'] . "></span></span></td>");
+            //echo("<pre>"); print_r($article);
 			
 			if ($article['subtype'] == 'food') {
-				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+				// echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+				echo("<td class=td_rightBorder>" . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
 			else { // normal                            
                                 $quantity = number_format($article['quantity'], 0, ".", "'");
@@ -213,7 +219,8 @@ function showDetailsPerDayAndYear($year) {
                                     $quantity = number_format($article['quantity'] / 1000, 1, ".", "'");
                                     $unit = "kg";
                                 }
-				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+				// echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+				echo("<td class=td_rightBorder>" . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
         }
         

@@ -226,21 +226,28 @@ function getBooking($bookingId){
 	
 //     echo("<pre>"); print_r($articleIds); echo("</pre>");
     
-    foreach ($articleIds as $articleId) {
-        if (strpos("$articleId", 'custom') === 0) { // custom article
-            $booking['articles'][$articleId]['quantity'] = 1;
-            list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData('custom');
+    // $booking['articles'] = array();
+
+    if (count($articleIds) > 0) {
+        foreach ($articleIds as $articleId) {
+            if (strpos("$articleId", 'custom') === 0) { // custom article
+                $booking['articles'][$articleId]['quantity'] = 1;
+                list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData('custom');
+            }
+            else { // normal article
+                list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
+                $booking['articles'][$articleId]['text'] = $name;
+                $booking['articles'][$articleId]['waxAmount'] = $waxAmount;
+                $booking['articles'][$articleId]['waxType'] = $waxType;
+            }
+            $booking['articles'][$articleId]['type'] = $type;
+            $booking['articles'][$articleId]['unit'] = $unit;
         }
-        else { // normal article
-            list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
-            $booking['articles'][$articleId]['text'] = $name;
-            $booking['articles'][$articleId]['waxAmount'] = $waxAmount;
-            $booking['articles'][$articleId]['waxType'] = $waxType;
-        }
-        $booking['articles'][$articleId]['type'] = $type;
-        $booking['articles'][$articleId]['unit'] = $unit;
     }
-    
+    else {
+        $booking['articles'] = array();
+    }
+
 //     echo("<pre>"); print_r($booking); echo("</pre>   ");
     
     return $booking;
