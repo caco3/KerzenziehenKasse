@@ -10,7 +10,7 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
       <p><a href=prices.php target="_self">Generator für die Preisliste</a>.<br><br></p>
       
       <h2>Artikel und Preise ändern</h2>
-      <p><a href=../../phpmyadmin target=_blank>phpmyadmin</a>.<br><br></p>
+      <p><a href=http://localhost:8080 target=_blank>phpmyadmin</a>.<br><br></p>
       
       <h2>Buchungen exportieren</h2>
       <p>Der CSV-Export ist direkt über die Buchungs- und Statistik-Seiten möglich.<br><br></p>
