@@ -144,10 +144,23 @@ else if (strlen($id) != 4) { // a day
 //                 $id = $article['text'] . "_$customIds";
 //                 $customIds++;
 //             }
-                    
+
+            if (! array_key_exists($id, $articles)) {
+                $articles[$id] = array();
+                $articles[$id]['text'] = "";
+                $articles[$id]['quantity'] = 0;
+                $articles[$id]['price'] = 0;
+                $articles[$id]['unit'] = 0;
+                $articles[$id]['type'] = 0;
+            }
+
+            if (! array_key_exists("quantity", $articles[$id])) {
+                $articles[$id]['quantity'] = 0;
+            }
+
             $articles[$id]['text'] = strip_tags(html_entity_decode($article['text']));
             $articles[$id]['quantity'] += $article['quantity'];
-                $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
+            $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
             $articles[$id]['unit'] = $article['unit'];
             $articles[$id]['type'] = $article['type'];
         }
@@ -157,16 +170,23 @@ else if (strlen($id) != 4) { // a day
 //     print_r($articles);
 
     $total = 0;
-    foreach($articles as $article) {
-        $total += $article['quantity'] * $article['price'];
+    foreach($articles as $key => $article) {
+        if (array_key_exists('quantity', $article) and array_key_exists('price', $article)) {
+            $total += $article['quantity'] * $article['price'];
+        }
+        else {
+            $articles[$key]['quantity'] = 0;
+            $articles[$key]['price'] = 0;
+        }
     }
+
     $total += $donations;
 
     $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney10($total) . "\n\n";
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {
-        if ($article['type'] == "custom") { 
+        if (array_key_exists('type', $article) and $article['type'] == "custom") {
             $custom = "*) ";
         }
         else {
@@ -188,7 +208,7 @@ else { // the whole year
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
             foreach ($booking['articles'] as $articleId => $article) { // articles
-        //         print_r($article);
+                 //print_r($article);
 //                 if($article['type'] == "normal") { // normal article   
                     $id = $articleId;
 //                 }
@@ -196,6 +216,19 @@ else { // the whole year
 //                     $id = $article['text'] . "_$customIds";
 //                     $customIds++;
 //                 }
+
+                if (! array_key_exists($id, $articles)) {
+                    $articles[$id] = array();
+                    $articles[$id]['text'] = "";
+                    $articles[$id]['quantity'] = 0;
+                    $articles[$id]['price'] = 0;
+                    $articles[$id]['unit'] = 0;
+                    $articles[$id]['type'] = 0;
+                }
+
+                if (! array_key_exists("quantity", $articles[$id])) {
+                    $articles[$id]['quantity'] = 0;
+                }
                         
                 $articles[$id]['text'] = strip_tags(html_entity_decode($article['text']));
                 $articles[$id]['quantity'] += $article['quantity'];
@@ -210,8 +243,14 @@ else { // the whole year
     // print_r($articles);
 
     $total = 0;
-    foreach($articles as $article) {
-        $total += $article['quantity'] * $article['price'];
+    foreach($articles as $key => $article) {
+        if (array_key_exists('quantity', $article) and array_key_exists('price', $article)) {
+            $total += $article['quantity'] * $article['price'];
+        }
+        else {
+            $articles[$key]['quantity'] = 0;
+            $articles[$key]['price'] = 0;
+        }
     }
     $total += $donations;
 
@@ -219,7 +258,7 @@ else { // the whole year
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {
-        if ($article['type'] == "custom") { 
+        if (array_key_exists('type', $article) and $article['type'] == "custom") {
             $custom = "*) ";
         }
         else {

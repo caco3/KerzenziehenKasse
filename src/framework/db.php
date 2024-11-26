@@ -59,7 +59,7 @@ function getDbProducts($type, $orderByColumn) {
 function getDbProductsEx($type, $orderByColumn, $subType) {
     global $db_link;
     
-    $sql = "SELECT * FROM articles WHERE (typ = '$type' AND subtype = '$subType') ORDER by `$orderByColumn` ASC";  
+    $sql = "SELECT * FROM articles WHERE (type = '$type' AND subtype = '$subType') ORDER by `$orderByColumn` ASC";
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {

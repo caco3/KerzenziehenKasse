@@ -23,7 +23,10 @@ function getStatsPerDay($year) {
             $booking = getBooking($bookingId);
  	    	//echo("<pre>"); print_r($booking); echo("</pre>");
             foreach ($booking['articles'] as $articleId => $article) { // articles
-				//echo("$articleId:\n");
+				if (! array_key_exists($articleId, $articles))  {
+					$articles[$articleId] = array();
+				}
+			//	echo("$articleId:\n");
 			//	print_r($articles);
 			//	print_r($articles[$articleId]);
 				if (is_array($articles[$articleId]) and !array_key_exists('quantity', $articles[$articleId])) {
@@ -141,7 +144,10 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 					
 	//                 echo("['" . $dataOfDay[$year - $yearsCovered + 1]['formatedDate'] . "', ");
 
-					if ($dataOfDay['formatedDate'] == "") {
+
+
+
+					if ((!array_key_exists("formatedDate", $dataOfDay)) or ($dataOfDay['formatedDate'] == "")) {
 						continue;
 					}
 					echo("['" . $dataOfDay['formatedDate'] . "', ");
@@ -321,6 +327,10 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 	$beeWaxSummed = 0;
 	$parafinWaxSummed = 0;
 	//echo("<br>$year<br>");
+	if (! array_key_exists($year, $statsPerDay))  {
+		$statsPerDay[$year] = array();
+
+	}
 	foreach($statsPerDay[$year] as $date => $data) { // for each day
 		if ($dayIndex == 0) {
 			$firstDay = $date; 
@@ -339,6 +349,7 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 		$totalSummed += $data['total'];
 		//echo("$dayOffset: $totalSummed<br>");
 		$totalPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $totalSummed; 
+		$totalPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = 0;
 		$totalPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date; 
 		$totalPerDayAndYearSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
 
@@ -349,6 +360,7 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 		$totalPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];  
 		/* Food only in CHF */
 		$totalFoodPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['food']; // We only want to see the food part
+		$totalFoodPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = 0;
 		$totalFoodPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date; 
 		$totalFoodPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 		
@@ -369,10 +381,34 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 	
 	//echo("<pre>"); print_r($totalWaxPerDayAndYearInKgSummed); echo("</pre>");
 	
+	if (! array_key_exists($year, $totalPerDayAndYearSummed[0]['year']))  {
+		$totalPerDayAndYearSummed[0]['year'][$year] = array();
+		$totalPerDayAndYearSummed[0]['year'][$year]['lowerPart'] = 0;
+		$totalPerDayAndYearSummed[0]['year'][$year]['upperPart'] = 0;
+	}
+
+	if (! array_key_exists($year, $totalWaxPerDayAndYearInKgSummed[0]['year']))  {
+		$totalWaxPerDayAndYearInKgSummed[0]['year'][$year] = array();
+		$totalWaxPerDayAndYearInKgSummed[0]['year'][$year]['lowerPart'] = 0;
+		$totalWaxPerDayAndYearInKgSummed[0]['year'][$year]['upperPart'] = 0;
+	}
+
 	/* Fill up empty days on the summed up data */
 	for ($x = 1; $x < 15; $x++) {
+		if (! array_key_exists($year, $totalPerDayAndYearSummed[$x]['year']))  {
+			$totalPerDayAndYearSummed[$x]['year'][$year] = array();
+			$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+			$totalPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = 0;
+		}
+
 		if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == 0) {
 			$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['lowerPart'];
+		}
+
+		if (! array_key_exists($year, $totalWaxPerDayAndYearInKgSummed[$x]['year']))  {
+			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year] = array();
+			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
+			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
 		}
 		
 		if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] == 0) {
