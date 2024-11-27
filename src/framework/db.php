@@ -30,7 +30,7 @@ function getDbProducts($type, $orderByColumn) {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
@@ -63,7 +63,7 @@ function getDbProductsEx($type, $orderByColumn, $subType) {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     while ($line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC))
@@ -90,7 +90,7 @@ function getDbArticleData($id){
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -116,7 +116,7 @@ function getDbDonation(){
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -134,7 +134,7 @@ function getDbTotal(){
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -151,7 +151,7 @@ function getDbBookingId(){
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -179,7 +179,6 @@ function addToBasket($id, $quantity, $price, $text) {
         return true;
     }
     else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to add article $id to basket: $sql");
         errorLog("SQL Error: Failed to add article $id to basket: $sql");
         return false;
@@ -195,7 +194,7 @@ function getArticleIdInBasket($basketEntryId) {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -223,7 +222,6 @@ function updateArticleQuantityInBasket($basketEntryId, $quantity) {
 //         }
     }
     else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update $id in basket: $sql");
         errorLog("SQL Error: Failed to update $id in basket: $sql");
         return false;
@@ -249,7 +247,6 @@ function updateArticlePriceInBasket($basketEntryId, $price) {
 //         }
     }
     else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update $id in basket: $sql");
         errorLog("SQL Error: Failed to update $id in basket: $sql");
         return false;
@@ -275,7 +272,6 @@ function updateDonationInBasket($money) {
 //         }
     }
     else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update donation in basket: $sql");
         errorLog("SQL Error: Failed to update donation in basket: $sql");
         return false;
@@ -301,7 +297,6 @@ function updateTotalInBasket($money) {
 //         }
     }
     else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update total in basket: $sql");
         errorLog("SQL Error: Failed to update total in basket: $sql");
         return false;
@@ -327,7 +322,6 @@ function updateBookingIdInBasket($bookingId) {
 //         }
     }
     else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to update bookingId in basket: $sql");
         errorLog("SQL Error: Failed to update bookingId in basket: $sql");
         return false;
@@ -347,7 +341,6 @@ function deleteFromBasket($basketEntryId) {
         return true;
     }
     else { // fail
-//         echo('Invalid MySQL request: ' . mysqli_error($db_link) . "<br>");
         sql_transaction_logger("-- [ERROR] Failed to delete article $basketEntryId from basket: $sql");
         errorLog("SQL Error: Failed to delete article $basketEntryId from basket: $sql");
         return false;
@@ -366,7 +359,7 @@ function getDbBasket() {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
 //     echo("<pre>");
@@ -441,11 +434,12 @@ function bookingsCreateId() {
     global $db_link;
     
     // create entry
-    $sql = "INSERT INTO bookings (`bookingId`) values (null)"; 
+    $sql = "INSERT INTO bookings (`bookingId`, `date`, `time`, `booking`, `donation`, `total`) values (null, '" . date("Y-m-d") . "', '" . date("H:i:s") . "', '', 0, 0)";
+    // echo("SQL: $sql");
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
     
     $bookingId = bookingsGetLastId();
@@ -454,10 +448,11 @@ function bookingsCreateId() {
     $sql = "UPDATE `bookings`
             SET `date`='" . date("Y-m-d") . "', `time`='" . date("H:i:s") . "'
             WHERE `bookingId`='$bookingId'"; 
+    // echo("SQL: $sql");
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
         
     return $bookingId;
@@ -471,7 +466,7 @@ function bookingsGetLastId() {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -519,7 +514,7 @@ function getDbBooking($bookingId) {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -556,7 +551,7 @@ function getBookingIdsOfDate($date, $invertDateFilter) {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
     
     $lines = array();
@@ -585,7 +580,7 @@ function getBookingDatesOfYear($year) {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
     
     $lines = array();
@@ -626,7 +621,7 @@ function dbCheckBasketIsEmpty() {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
@@ -658,7 +653,7 @@ function getBibleVerse() {
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
     {
-      die('Invalid MySQL request: ' . mysqli_error($db_link));
+      die(__FUNCTION__ . ' Invalid MySQL request: ' . mysqli_error($db_link) . "! Caused by query '" .$sql . "'");
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
