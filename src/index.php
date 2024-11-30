@@ -12,7 +12,7 @@ else { // Normal
 ?>
 
     <div id="body">
-        <div id=clock><p id=clockText></p></div>
+        <div id=clock><p><span id=clockText></span> <button type=button id=minimizeButton class=minimizeButton onclick="minimizeClicked();"><img src=<? echo("$root"); ?>/images/minimize.png height=28px></button></p></div>
         <table id=mainPageTable>
             <tr style="vertical-align: top; padding: 0px;">
                 <td>
