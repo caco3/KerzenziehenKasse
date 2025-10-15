@@ -29,7 +29,8 @@ $articles = array_merge($articles, getDbProductsEx("guss", "name", "normal"));
 $articles = array_merge($articles, getDbProductsEx("guss", "name", "floatingCandle"));
 
 /* Premade Articles */
-$articles = array_merge($articles, getDbProductsEx("guss", "name", "premade"));
+// $articles = array_merge($articles, getDbProductsEx("guss", "name", "premade"));
+$articles = array_merge($articles, getDbProductsEx("special", "name", "premade"));
 
 /* Effect Articles */
 $articles = array_merge($articles, getDbProductsEx("wachs", "name", "effect"));
