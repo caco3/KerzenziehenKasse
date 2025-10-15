@@ -46,7 +46,8 @@ function onMessage(evt)
             update_display(null, "Nicht verbunden!", false);
         }
         else if (data.code == "NO_DATA") {
-            update_display(null, "Datenfehler!", false);
+            // update_display(null, "Datenfehler!", false);
+            update_display(0, 0 + " g", true);
         }
         else {
             update_display(null, "Fehler: " + data.code, false);

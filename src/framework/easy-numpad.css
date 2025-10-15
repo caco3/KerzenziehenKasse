@@ -111,4 +111,5 @@ a#scale_done {
     justify-content: right;
     -webkit-justify-content: right;
     font-size: 120%;
+    padding-left: 200px;
 }

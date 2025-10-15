@@ -29,27 +29,33 @@ function show_easy_numpad(id, newType, initialValue1, header, showDecimalPoint, 
                     <div id="scale-div" class="scale-div">
                         <p><br></p>
                         <hr>
-                        <p class=scale-output><br><br></p>
+                        <h3>Waage:</h3>
+                        <p class=scale-output>&nbsp;</p>
                         <div style="display: flex; justify-content: space-between;">
-                            <p class="scale-output" style="width: 100px">Waage:&nbsp;</p>
                             <p id="scale-output" class="scale-output"></p>
                             <p id="scale-button"><a href="scale_done" class="scale_done" id="scale_done" style="background-color: #388E3C; padding: 32px 64px; color: white;" onclick="scale_done()">&Uuml;bernehmen</a></p>
                         </div>
                         <p><br><br></p>
                         <hr>
-                        <p><br></p>
                     </div>
                     `;
+        var sub_header = `Manuelle Eingabe:`;
     }
     else {
         var scale_div = ``;
+        if (initialValue != 0) {
+            var sub_header = `Korrektur:`;
+        }
+        else {
+            var sub_header = ``;
+        }
     }
 
     var easy_numpad = `
         <div class="easy-numpad-frame" id="easy-numpad-frame">
             <div class="easy-numpad-container">
                 <div class="easy-numpad-output-container">`+ header +`
-                    ` + scale_div + `
+                    ` + scale_div + `<h3>` + sub_header + `</h3>
                     <p class="easy-numpad-output" id="easy-numpad-output"></p>
                 </div>
                 <div class="easy-numpad-number-container">
@@ -101,6 +107,7 @@ function easy_numpad_close() {
 
 function updateValueField(value) {	
 	if (initialValue != 0) {
+
 		$('#easy-numpad-output').html("<span style=\"color: gray\">" + prefix + initialValue + suffix + "&nbsp;&nbsp;&#x2192;&nbsp;&nbsp;</span>" + prefix + value + suffix);
 	}
 	else {
