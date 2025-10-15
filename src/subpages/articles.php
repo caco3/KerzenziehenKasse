@@ -45,7 +45,15 @@ function showButton($line, $buttonStyle) {
 		<!--	<div class=articlePackageDiv><? echo($line['package']); ?></div> -->
 		<!--	<? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?> -->
 		<!--	<div class=articlePriceDiv><? echo($price); ?></div> -->
-            <p class="articleButtonText"><? echo($line['name']); ?></p>
+
+		<?
+		/* Working around ugly text outlining (shadow) when using &shy; as dash */
+        $name = $line['name'];
+        if ($name == "Rhomben&shy;konus") {
+            $name = str_replace("&shy;", "-", $name);
+        }
+		?>
+            <p class="articleButtonText"><? echo($name); ?></p>
         </div>
     <? 
 }
@@ -118,14 +126,6 @@ if (in_array('floatingCandle', $articlesToShow['guss'])) {
 	}
 }
 
-/* Premade Articles */
-if (in_array('premade', $articlesToShow['guss'])) {
-	$lines = getDbProductsEx("guss", "name", "premade");
-	foreach($lines as $line) {     
-		showButton($line, "preMadeArticleButton");
-	} 
-}
-
 /* Effect Articles */
 if (in_array('effect', $articlesToShow['wachs'])) {
 	$lines = getDbProductsEx("wachs", "name", "effect");
@@ -142,6 +142,18 @@ if (in_array('food', $articlesToShow['special'])) {
 	} 
 }
 
+
+/* Premade Articles */
+if (in_array('preMade', $articlesToShow['special'])) {
+ //    $lines = getDbProductsEx("guss", "name", "preMade");
+	// foreach($lines as $line) {
+	// 	showButton($line, "preMadeArticleButton");
+	// }
+	$lines = getDbProductsEx("special", "name", "preMade");
+	foreach($lines as $line) {
+		showButton($line, "preMadeArticleButton");
+	}
+}
 
 
 ?>

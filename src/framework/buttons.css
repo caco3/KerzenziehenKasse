@@ -140,7 +140,7 @@
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 140px;
+    height: 137px;
     float: left;
     text-align: center;
 	    
@@ -171,7 +171,7 @@
     margin-right: 2px;
     
     margin-top: 8px;
-    margin-bottom: 2px;  
+    margin-bottom: 2px;
     
     cursor: -webkit-grabbing; cursor: grabbing;
 }
@@ -179,9 +179,12 @@
 .articleButtonText, .dippingArticleButtonText, .foodArticleButtonText {
 	position: absolute; 
 	left: 0px; 
-	bottom: 2px; 
-	text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff; 
-	font-size: 90%; 
+	bottom: 4px;
+    font-weight: 800;
+/* 	text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff;  */
+    -webkit-text-stroke: 8px white;
+    paint-order: stroke fill;
+	font-size: 85%;
 	width: 144px
 }
 
@@ -270,7 +273,7 @@
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 140px;
+    height: 137px;
     float: left;
     text-align: center;
     
@@ -323,7 +326,7 @@
     margin: 5px;
     padding: 2px;
     width: 140px;
-    height: 140px;
+    height: 137px;
     float: left;
     text-align: center;
     
