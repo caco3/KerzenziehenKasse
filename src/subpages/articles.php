@@ -41,9 +41,9 @@ function showButton($line, $buttonStyle) {
 
     ?>
         <div class="articleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> onclick="addArticleToBasket(this.id)"
-		style="background-image: url('<? echo("./images/articles/".$line['image1']); ?>');">
+		style="background-image: url('<? echo("./images/articles_buttons/".$line['image1']); ?>');">
 		<!--	<div class=articlePackageDiv><? echo($line['package']); ?></div> -->
-		<!--	<? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?> -->
+		<!--	<? echo("<img class=articleImageLarge src=images/articles_buttons/".$line['image1'].">"); ?> -->
 		<!--	<div class=articlePriceDiv><? echo($price); ?></div> -->
 
 		<?
@@ -63,14 +63,14 @@ function showDippingButton($line, $buttonStyle) {
     $price = $line['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
     $price = formatMoney($price);
     
-    $header = "<h2><img class=articleImageNumpadHeader src=images/articles/".$line['image1']."> " . $line['name'] . "</h2>";
+    $header = "<h2><img class=articleImageNumpadHeader src=images/articles_buttons/".$line['image1']."> " . $line['name'] . "</h2>";
     ?>
         <div class="dippingArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
             onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', false, '', ' g')"
-			style="background-image: url('<? echo("./images/articles/".$line['image1']); ?>');">
+			style="background-image: url('<? echo("./images/articles_buttons/".$line['image1']); ?>');">
     <!--    <div class=articlePackageDiv><? echo($line['package']); ?></div> -->
-<!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
-     <!--       <p><? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?></p> -->
+<!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles_buttons/".$line['image1']."><span><img src=images/articles_buttons/".$line['image1']."></span></span>"); ?></p> -->
+     <!--       <p><? echo("<img class=articleImageLarge src=images/articles_buttons/".$line['image1'].">"); ?></p> -->
     <!--    <div class=articlePriceDiv><? echo($price); ?></div> -->
         
             <p class="dippingArticleButtonText"><? echo($line['name']); ?></p>
@@ -83,14 +83,14 @@ function showDippingButton($line, $buttonStyle) {
 function showFoodButton($line, $buttonStyle) {
     $price = "";
     
-    $header = "<h2><img class=articleImageNumpadHeader src=images/articles/".$line['image1']."> " . $line['name'] . "</h2>";
+    $header = "<h2><img class=articleImageNumpadHeader src=images/articles_buttons/".$line['image1']."> " . $line['name'] . "</h2>";
     ?>
         <div class="foodArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
             onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', true, '', ' CHF')"
-			style="background-image: url('<? echo("./images/articles/".$line['image1']); ?>');">
+			style="background-image: url('<? echo("./images/articles_buttons/".$line['image1']); ?>');">
     <!--    <div class=articlePackageDiv><! --<? echo($line['package']); ?>-- ></div> -->
-<!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles/".$line['image1']."><span><img src=images/articles/".$line['image1']."></span></span>"); ?></p> -->
-    <!--        <p><? echo("<img class=articleImageLarge src=images/articles/".$line['image1'].">"); ?></p> -->
+<!--             <p><? echo("<span class=tooltip><img class=articleImage src=images/articles_buttons/".$line['image1']."><span><img src=images/articles_buttons/".$line['image1']."></span></span>"); ?></p> -->
+    <!--        <p><? echo("<img class=articleImageLarge src=images/articles_buttons/".$line['image1'].">"); ?></p> -->
     <!--    <div class=articlePriceDiv><? echo($price); ?></div>-->
         
             <p class="foodArticleButtonText"><? echo($line['name']); ?></p>

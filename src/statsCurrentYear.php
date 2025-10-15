@@ -205,7 +205,7 @@ function showDetailsPerDayAndYear($year) {
             }
         
             echo("<tr>");
-            echo("<td><span class=tooltip><img class=articleImage src=images/articles_small/". $article['image'] . "><span><img src=images/articles_small/". $article['image'] . "></span></span></td>");
+            echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
             //echo("<pre>"); print_r($article);
 			
 			if ($article['subtype'] == 'food') {
@@ -232,7 +232,7 @@ function showDetailsPerDayAndYear($year) {
         
         /* Total Wachs */
         echo("<tr><td colspan=2 class=td_rightBorder></td><td class=td_rightBorder></td><td class=td_rightBorder><b>
-        <img src=images/articles_small/colors.png height=25px> Parafinwachs: " . formatWeight($waxAmountParafin/1000) . " kg, <img src=images/articles_small/bee.png height=25px> Bienenwachs: " . formatWeight($waxAmountBee/1000) . " kg</b></td></tr>\n");    
+        <img src=images/articles/colors.png height=25px> Parafinwachs: " . formatWeight($waxAmountParafin/1000) . " kg, <img src=images/articles/bee.png height=25px> Bienenwachs: " . formatWeight($waxAmountBee/1000) . " kg</b></td></tr>\n");
     ?>
         </table>
         <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>

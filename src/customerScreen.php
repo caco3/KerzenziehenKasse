@@ -305,7 +305,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
                 }
 
                 cellAmount.innerHTML = "<nobr>" + quantity + suffix + "</nobr>";
-//                 cellImage.innerHTML = "<img src=images/articles_small/" + item.image + " height=40px>";
+//                 cellImage.innerHTML = "<img src=images/articles/" + item.image + " height=40px>";
                 cellName.innerHTML = item.name;
 //                 cellCost.innerHTML = (item.price * item.quantity).toFixed(2);
                 cellCost.innerHTML = (price * 1.0).toFixed(2);

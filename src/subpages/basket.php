@@ -75,7 +75,7 @@ $.ajaxPrefilter('script', function(options) {
 				//$cents = true;
             }
             
-            $header = "<h2><img class=articleImageNumpadHeader src=images/articles_small/$image1> $name</h2>";
+            $header = "<h2><img class=articleImageNumpadHeader src=images/articles/$image1> $name</h2>";
             $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity 
             onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, '$header', $cents, '$prefix', '$suffix')\"> $unit";
             $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($pricePerQuantity * $quantity, 2, ".", "") . " readonly disabled=disabled>";            
@@ -90,12 +90,12 @@ $.ajaxPrefilter('script', function(options) {
         
         echo("<tr>
             <td>");
-        echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles_small/$image1><span><img src=images/articles_small/$image1></span></span>");
+        echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
         if( $image2 != "") {
-            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles_small/$image2><span><img src=images/articles_small/$image2></span></span>");
+            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
         }
         if( $image3 != "") {
-            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles_small/$image3><span><img src=images/articles_small/$image3></span></span>");
+            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
         }
         
         echo("</td><td>$textField</td>
