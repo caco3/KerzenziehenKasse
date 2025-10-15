@@ -14,79 +14,14 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <div id="body">
 		<h1>Buchungen</h1>
 	<ul>
-    <li><a href=#today>Heute</a><br><br></li>
-    <li><a href=#year>Aktuelles Jahr</a><br><br></li>
-    <li><a href=bookings_last_year.php>Letztes Jahr</a></li>
+    <li><a href=bookings.php>Aktuelles Jahr</a></li>
 </ul>
-	
-      <h2><a name=today>Buchungen Heute (<? echo($todayDE); ?>)</h2>
-      <!--<p>Noch nicht implementiert</p>-->
-      
-      <table id=bookingsTable>
-      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th><th></th></tr>
-      <?
-      
-        $bookingIdsToday = getBookingIdsOfDate($today, false);
-        arsort($bookingIdsToday); // sorting to show latest booking on top
-        
-//         echo("<pre>"); print_r($bookingIdsToday); echo("</pre>");
-        
-        foreach($bookingIdsToday as $bookingId) {
-            $booking = getBooking($bookingId);
-//             echo("<pre>"); print_r($booking); echo("</pre>");
-            $editButton = editButton($bookingId);
-            $receiptButton = receiptButton($bookingId);
-//             echo("<pre>"); print_r($booking); echo("</pre>");
-            echo("<tr>");
-            echo("<td class=td_rightBorder>$bookingId</td>");
-            echo("<td class=\"td_nowrap td_rightBorder\">" . $booking['time'] . "</td>");
-            echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
-            echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
-			if ($booking['paymentMethod'] == 'cash') {
-				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
-			}
-			else if ($booking['paymentMethod'] == 'twint') {
-				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
-			}
-			else { // invoice
-				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/invoice.png\" height=40px></td>");
-			}
-            
-            echo("<td class=td_rightBorder>");
-            foreach($booking['articles'] as $articleId => $article) {
-                list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
-                echo("<span class=tooltip><img class=articleImage src=images/articles_small/$image><span><img src=images/articles_small/$image></span></span>");
-                echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
-            }
-            
-            echo("</td>");
-            if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
-				// Do not show any buttons
-				echo("<td></td><td></td>");
-			}
-			else {
-				echo("<td>$editButton</td>");
-				echo("<td>$receiptButton</td>");
-			}
-			if ($booking['school'] == 1) {
-				echo("<td><img src=\"images/school.png\" width=50px></td>");
-			}
-			else {
-				echo("<td></td>");            
-			}
-            echo("</tr>\n");
-        }        
-      ?>
-    </table>
-
-    
-    
     <p><br></p>
-    <h2><a name=year>Alle Buchungen des aktuellen Jahres</h2>
+    <h2><a name=year>Alle Buchungen des letzten Jahres</h2>
     <table id=bookingsTable>
     <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
     <?    
-        $datesWithBookings = getBookingDatesOfYear(date("Y"));
+        $datesWithBookings = getBookingDatesOfYear(date("Y") - 1);
     
 //         echo("<pre>"); print_r($datesWithBookings); echo("</pre>");
     
@@ -107,7 +42,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     //             echo("<pre>");
     //             print_r($booking); 
                 $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
-                    strftime("%d. ", strtotime($booking['date'])) . $germanMonth[strftime("%m", strtotime($booking['date'])) - 1] . "." ;
+                    strftime("%d. ", strtotime($booking['date'])) . $germanMonth[strftime("%m", strtotime($booking['date'])) - 1] . ". " . date("Y") - 1 ;
                 
 //                 if( $formatedDate != $previousFormatedDate) {
     //                 echo("<tr><td></td></tr><tr><td></td></tr>\n");
