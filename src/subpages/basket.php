@@ -28,7 +28,7 @@ $.ajaxPrefilter('script', function(options) {
         echo("<table id=basketTableNew>");
     }
     else { // basket loaded to edit an already completed booking
-        echo("<h2 id=editBookingTitle>Nachbearbeitung von Buchung $bookingId</h2>");
+        echo("<h2 id=editBookingTitle>Korrektur von Buchung $bookingId</h2>");
         echo("<table id=basketTableEdit>");
     }
     
