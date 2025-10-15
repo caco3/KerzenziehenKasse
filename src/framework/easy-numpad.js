@@ -23,10 +23,33 @@ function show_easy_numpad(id, newType, initialValue1, header, showDecimalPoint, 
     prefix = newPrefix;
     suffix = newSuffix;
     type = newType;
+
+    if (type == "articleQuantity" && suffix.trim() == "g") {
+        var scale_div = `
+                    <div id="scale-div" class="scale-div">
+                        <p><br></p>
+                        <hr>
+                        <p class=scale-output><br><br></p>
+                        <div style="display: flex; justify-content: space-between;">
+                            <p class="scale-output" style="width: 100px">Waage:&nbsp;</p>
+                            <p id="scale-output" class="scale-output"></p>
+                            <p id="scale-button"><a href="scale_done" class="scale_done" id="scale_done" style="background-color: #388E3C; padding: 32px 64px; color: white;" onclick="scale_done()">&Uuml;bernehmen</a></p>
+                        </div>
+                        <p><br><br></p>
+                        <hr>
+                        <p><br></p>
+                    </div>
+                    `;
+    }
+    else {
+        var scale_div = ``;
+    }
+
     var easy_numpad = `
         <div class="easy-numpad-frame" id="easy-numpad-frame">
             <div class="easy-numpad-container">
                 <div class="easy-numpad-output-container">`+ header +`
+                    ` + scale_div + `
                     <p class="easy-numpad-output" id="easy-numpad-output"></p>
                 </div>
                 <div class="easy-numpad-number-container">
@@ -193,5 +216,63 @@ function easy_numpad_done() {
         console.log("Invalid type!");
     }
     
+    easy_numpad_close();
+}
+
+
+
+var scale_value = 0;
+
+function update_display(value, text, is_value) {
+    // console.log("is_value: ", is_value, text);
+    output = document.getElementById("scale-output");
+    button = document.getElementById("scale-button");
+
+    scale_value = value;
+
+    if (output != null) {
+        output.innerHTML = text;
+    }
+
+    if (button != null) {
+        if (is_value) {
+            // console.log("Show scale button");
+            button.style.display = 'inline-block';
+        }
+        else {
+            // console.log("Hide scale button");
+            button.style.display = 'none';
+        }
+    }
+}
+
+
+function scale_done() {
+    event.preventDefault();
+
+    if (scale_value == "" || scale_value == null) {
+        scale_value = 0;
+    }
+
+    error = false;
+
+    if (scale_value == 0) {
+        error = true;
+        firework.launch("Gewicht kann nicht 0 sein!", 'error', 3000);
+    }
+    else if (scale_value < 0) {
+        error = true;
+        firework.launch("Bitte zuerst tarieren (Gewicht darf nicht negativ sein)!", 'error', 3000);
+    }
+
+    if (error == true) {
+        console.log("Invalid input!");
+        return; // Do not close numpad
+    }
+
+    console.log("articleId: " + articleId + ", value: " + scale_value);
+
+    addArticleWithQuantityToBasket(articleId, scale_value);
+
     easy_numpad_close();
 }

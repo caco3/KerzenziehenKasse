@@ -87,3 +87,28 @@ a#easy-numpad-close {
     background-color: #388E3C;
     padding: 64px 64px;	
 }
+
+
+a#scale_done {
+    background-color: #388E3C;
+    padding: 64px 64px;
+}
+
+
+#scale_done {
+    background-color: #388E3C;
+    padding: 64px 64px;
+}
+.scale_done {
+    background-color: #388E3C;
+    padding: 64px 64px;
+}
+
+.scale-output {
+    text-align: right;
+    align-items: right;
+    -webkit-align-items: right;
+    justify-content: right;
+    -webkit-justify-content: right;
+    font-size: 120%;
+}
