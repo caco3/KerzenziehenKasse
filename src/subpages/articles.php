@@ -120,7 +120,7 @@ if (in_array('normal', $articlesToShow['guss'])) {
 
 /* Floating Articles */
 if (in_array('floatingCandle', $articlesToShow['guss'])) {
-	$lines = getDbProductsEx("guss", "name", "floatingCandle");
+	$lines = getDbProductsEx("guss", "articleId", "floatingCandle");
 	foreach($lines as $line) {     
 		showButton($line, "floatingArticleButton");
 	}

@@ -210,7 +210,7 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 				
 				height: 572,
 			    //width: 1680,
-				width: <? echo(1735 + $widthAdjustment + 35); ?>,
+				width: <? echo(1735 + $widthAdjustment + 60); ?>, // Needed to change it from 35 to 60 in 2025
 				
 				chartArea:{
 				    left:300,
@@ -395,39 +395,44 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 
 	/* Fill up empty days on the summed up data */
 	for ($x = 1; $x < 15; $x++) {
-		if (! array_key_exists($year, $totalPerDayAndYearSummed[$x]['year']))  {
-			$totalPerDayAndYearSummed[$x]['year'][$year] = array();
-			$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
-			$totalPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = 0;
-		}
+		// echo("x: $x<br>");
+		if (array_key_exists($x, $totalPerDayAndYearSummed))  {
+			if (! array_key_exists($year, $totalPerDayAndYearSummed[$x]['year']))  {
+				$totalPerDayAndYearSummed[$x]['year'][$year] = array();
+				$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+				$totalPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = 0;
+			}
 
-		if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == 0) {
-			$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['lowerPart'];
-		}
+			if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == 0) {
+				$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['lowerPart'];
+			}
 
-		if (! array_key_exists($year, $totalWaxPerDayAndYearInKgSummed[$x]['year']))  {
-			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year] = array();
-			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
-			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
-		}
-		
-		if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] == 0) {
-			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['lowerPart'];
-		}
-		if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] == 0) {
-			$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['upperPart'];
+			if (! array_key_exists($year, $totalWaxPerDayAndYearInKgSummed[$x]['year']))  {
+				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year] = array();
+				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
+				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
+			}
+
+			if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] == 0) {
+				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['lowerPart'];
+			}
+			if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] == 0) {
+				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['upperPart'];
+			}
 		}
 	}
 	
 	/* Remove future days on the summed data of the current year */
 	if ($year == date("Y")) {
 		for ($x = 14; $x > 0; $x--) {
-			if ($totalWaxPerDayAndYearInKg[$x]['year'][$year]['lowerPart'] == 0) { // This day has no booking yet and is therefore most likely in the future
-				$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
-				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
-				$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
+			if (array_key_exists($x, $totalPerDayAndYearSummed))  {
+				if ($totalWaxPerDayAndYearInKg[$x]['year'][$year]['lowerPart'] == 0) { // This day has no booking yet and is therefore most likely in the future
+					$totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+					$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
+					$totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
+				}
 			}
-		}	
+		}
 	}
 } 
 
