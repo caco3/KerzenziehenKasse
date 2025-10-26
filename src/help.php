@@ -27,7 +27,7 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
             <p class=answer><b>Antwort:</b> Die Artikel und Preise können über <a href="../../phpmyadmin/" target="_blank">phpMyAdmin</a> angepasst werden.<br><br></p></li>
             
         <li><p class=question><b>Frage:</b> Gibt es einen Backup?</p>
-            <p class=answer><b>Antwort:</b> Es wird stündlich ein Backup der Datenbank gemacht. Die Daten werden abgelegt unter D:\Nextcloud\Kasse\Database-Backups.<br><br></p></li>
+            <p class=answer><b>Antwort:</b> Es wird stündlich ein Backup der Datenbank gemacht. Die Daten werden abgelegt unter /home/kerzenziehen/Nextcloud/Kerzenziehen-Kasse/Database-Backups.<br><br></p></li>
             
         <li><p class=question><b>Frage:</b> Wo finde ich den Quellcode dieser Buchungssoftware?</p>
             <p class=answer><b>Antwort:</b> Siehe <a href="https://github.com/caco3/KerzenziehenKasse" target="_blank">https://github.com/caco3/KerzenziehenKasse</a>.<br><br></p></li>
