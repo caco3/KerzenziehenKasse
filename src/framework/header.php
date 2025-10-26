@@ -154,8 +154,7 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
 <!--                     | <img id=timerIcon src="images/timer/0.png" width=18px> -->
                 </p>
             </div>
-            <div id=clock>
-                <p id=clockText></p>
+            <div id=clock><p><span id=clockText></span> <button type=button id=minimizeButton class=minimizeButton onclick="minimizeClicked();"><img src=<? echo("$root"); ?>/images/minimize.png height=28px></button></p>
             </div>
         </div>
         <hr>
