@@ -86,7 +86,29 @@ db_connect();
             firework.launch("Du verwendest das Test-System! Damit kannst spielen und testen. Die Eingaben haben keinen Einfluss auf die richtige Kasse!", 'error', 9999999000);
         <? } ?>
 
+        let scrollUpButton = document.getElementById("scrollUpButton");
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
     });
+
+    function pleaseWaitBanner() {
+        firework.launch("Laden...", 'success', 50000);
+    }
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            scrollUpButton.style.display = "block";
+        } else {
+            scrollUpButton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
     </script>
 
 </head>
@@ -96,6 +118,8 @@ db_connect();
 <? } else { ?>
     <body id=live>
 <? } ?>
+
+<button onclick="topFunction()" id="scrollUpButton" title="Go to top"><img src=images/to-top.png width=60px></button>
 
 <div id="container">
 
@@ -124,11 +148,11 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
 
 				?>
 
-                    <a class="headerLinks" href="bookings.php" target="_self"><img src=images/bookings.png height=30px> Buchungen</a> |
+                    <a class="headerLinks" href="bookings.php" target="_self" onclick="pleaseWaitBanner()"><img src=images/bookings.png height=30px> Buchungen</a> |
 					<b>Auswertung:</b>
-                    <a class="headerLinks" href="statsCurrentYear.php" target="_self"><img src=images/day.png height=30px style="margin-left: 5px; margin-right: 5px"></a> 
-                    <a class="headerLinks" href="statsYears.php" target="_self"><img src=images/year.png height=30px style="margin-left: 5px; margin-right: 5px"></a> 
-                    <a class="headerLinks" href="statsDiagrams.php" target="_self"><img src=images/chart.png height=30px style="margin-left: 5px; margin-right: 5px"></a> | 
+                    <a class="headerLinks" href="statsCurrentYear.php" target="_self" onclick="pleaseWaitBanner()"><img src=images/day.png height=30px style="margin-left: 5px; margin-right: 5px"></a>
+                    <a class="headerLinks" href="statsYears.php" target="_self" onclick="pleaseWaitBanner()"><img src=images/year.png height=30px style="margin-left: 5px; margin-right: 5px"></a>
+                    <a class="headerLinks" href="statsDiagrams.php" target="_self" onclick="pleaseWaitBanner()"><img src=images/chart.png height=30px style="margin-left: 5px; margin-right: 5px"></a> |
                     <? if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */ ?> 
 						<a class="headerLinks" href="admin.php" target="_self"><img src=images/gear.png height=30px> Admin</a> | 
                         <a class="headerLinks" href="help.php" target="_self"><img src=images/help.png height=30px> Hilfe</a> | 
