@@ -381,6 +381,15 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 	
 	//echo("<pre>"); print_r($totalWaxPerDayAndYearInKgSummed); echo("</pre>");
 	
+
+	if (! array_key_exists(0, $totalPerDayAndYearSummed)) { // No data for this year
+		continue;
+	}
+
+	if (! array_key_exists("year", $totalPerDayAndYearSummed[0])) { // No data for this year
+		continue;
+	}
+
 	if (! array_key_exists($year, $totalPerDayAndYearSummed[0]['year']))  {
 		$totalPerDayAndYearSummed[0]['year'][$year] = array();
 		$totalPerDayAndYearSummed[0]['year'][$year]['lowerPart'] = 0;
