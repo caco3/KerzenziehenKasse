@@ -14,8 +14,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <div id="body">
 		<h1>Buchungen</h1>
 	<ul>
-    <li><a href=#today>Heute</a><br><br></li>
-    <li><a href=#year>Aktuelles Jahr</a><br><br></li>
+    <li><a href=bookings.php#today>Heute</a><br><br></li>
+    <li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
     <li><a href=bookings_last_year.php>Letztes Jahr</a></li>
 </ul>
 	

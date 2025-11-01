@@ -12,6 +12,9 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <script src="<? echo("$root/"); ?>/framework/bookings.js"></script>
 
     <div id="body">
+
+    <? die("<br><br><br>Noch nicht implementiert"); ?>
+
       <h2>Buchungen Heute (<? echo($todayDE); ?>)</h2>
       <!--<p>Noch nicht implementiert</p>-->
       
