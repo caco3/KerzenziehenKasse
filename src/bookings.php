@@ -69,7 +69,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 				echo("<td>$receiptButton</td>");
 			}
 			if ($booking['school'] == 1) {
-				echo("<td><img src=\"images/school.png\" width=50px></td>");
+				echo("<td><img src=\"images/school.png\" width=50px title=\"Schule/Geschlossene Gesellschaft/Private Gruppe\"></td>");
 			}
 			else {
 				echo("<td></td>");            

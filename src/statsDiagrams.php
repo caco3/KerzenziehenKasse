@@ -467,7 +467,7 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <hr>
 
 <a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie) <span style="font-size: 70%"></span></h2>
-<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?>  
+<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?>  
 <hr>
 
 <a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie) <span style="font-size: 70%"></span></h2>
@@ -475,7 +475,7 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <hr>
 
 <a name=Wax_Currency></a><h2>Umsatz Wachs <span style="font-size: 70%"></span></h2>
-<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?> 
+<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?> 
 <hr>
 
 <a name=Gastro_Currency></a><h2>Umsatz Gastronomie <span style="font-size: 70%"></span></h2>
