@@ -4,6 +4,9 @@ $germanDayOfWeek = array("Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnersta
 $germanDayOfWeekShort = array("So", "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So");
 $germanMonth = array("Jan", "Feb", "Mrz", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez");
 
+/* Set the correct timezone */
+date_default_timezone_set('Europe/Zurich');
+
 
 function addButton($id) {
     return "<button type=button id=$id class=addToBasketButton></button> ";
@@ -33,14 +36,6 @@ function sql_transaction_logger($message){
     file_put_contents(LOG_FOLDER . "/db_transaction_log.sql", "-- " . date(DATE_RFC2822) . "\r\n", FILE_APPEND);
     file_put_contents(LOG_FOLDER . "/db_transaction_log.sql", "$message\r\n", FILE_APPEND);
 }
-
-
-
-
-
-
-
-
 
 
 
