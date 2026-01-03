@@ -146,7 +146,8 @@ function cancelClicked(){
 		clearBasket();
 	}
 	else { // Basket is empty
-		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+        definitlyClearBasket(); // clear meta data
+		//firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
 	}
 }
 

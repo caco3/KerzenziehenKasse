@@ -485,7 +485,7 @@ function bookingsGetLastId() {
 function updateMetaInBasket($meta) {
     global $db_link;
     if ($meta === null) {
-        $sql = "UPDATE `basket_various` SET `meta` = NULL";
+        $sql = "UPDATE `basket_various` SET `meta` = \"\"";
     } else {
         $metaEscaped = mysqli_real_escape_string($db_link, $meta);
         $sql = "UPDATE `basket_various` SET `meta` = '$metaEscaped'";
