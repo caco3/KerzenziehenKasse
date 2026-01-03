@@ -51,5 +51,16 @@ db_connect();
 			</td>
 		<? } ?>
     </tr>
+	<? if($bookingId == "new" ) { ?>
+	<tr><td colspan=4 style="height: 5px;"></td></tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td>
+			<button type=button id=metaDataButton class=metaDataButton onclick="editMetaDataClicked();"><img src="images/receipt.png" height=40px><br>Meta-Daten</button>
+		</td>
+	</tr>
+	<? } ?>
 </table>
    

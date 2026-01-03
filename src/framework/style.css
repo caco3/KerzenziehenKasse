@@ -7,6 +7,33 @@ html, body {
     touch-action: pan-y pan-x;
 }
 
+/* Full-page overlay for dialogs */
+.fullPageOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: none;
+}
+.fullPageOverlayContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    min-width: 300px;
+    text-align: center;
+}
+.fullPageOverlayContentButton {
+    margin-top: 15px;
+}
+
 body {
 /*     background-repeat: no-repeat; */
     background-attachment: fixed;
