@@ -22,11 +22,7 @@ if ( $success == true) {
     updateDonationInBasket(0);
     updateTotalInBasket(0);
     updateBookingIdInBasket("new");
-    
-    // Clear meta data from basket_various
-    if (!updateMetaInBasket(null)) {
-        errorLog("Failed to clear basket_various.meta");
-    }
+    updateMetaInBasket(null);
 }
 
 

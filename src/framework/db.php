@@ -484,14 +484,26 @@ function bookingsGetLastId() {
 
 function updateMetaInBasket($meta) {
     global $db_link;
-    $metaEscaped = $meta === null ? 'NULL' : ("'" . mysqli_real_escape_string($db_link, $meta) . "'");
-    $sql = "UPDATE basket_various SET meta = $metaEscaped LIMIT 1";
-    return mysqli_query($db_link, $sql);
+    if ($meta === null) {
+        $sql = "UPDATE `basket_various` SET `meta` = NULL";
+    } else {
+        $metaEscaped = mysqli_real_escape_string($db_link, $meta);
+        $sql = "UPDATE `basket_various` SET `meta` = '$metaEscaped'";
+    }
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+    }
+    else { // fail
+        sql_transaction_logger("-- [ERROR] Failed to update meta in basket: $sql");
+        errorLog("SQL Error: Failed to update meta in basket: $sql");
+        return false;
+    }
 }
 
 function getMetaFromBasket() {
     global $db_link;
-    $sql = "SELECT meta FROM basket_various LIMIT 1";
+    $sql = "SELECT `meta` FROM `basket_various`";
     $query_response = mysqli_query($db_link, $sql);
     if (!$query_response) {
         return null;
@@ -499,7 +511,8 @@ function getMetaFromBasket() {
     $row = mysqli_fetch_assoc($query_response);
     mysqli_free_result($query_response);
     if (!empty($row['meta'])) {
-        $meta = unserialize($row['meta']);
+        $raw = $row['meta'];
+        $meta = unserialize($raw);
         return is_array($meta) ? $meta : [];
     }
     return [];
