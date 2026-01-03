@@ -434,7 +434,7 @@ function bookingsCreateId() {
     global $db_link;
     
     // create entry
-    $sql = "INSERT INTO bookings (`bookingId`, `date`, `time`, `booking`, `donation`, `total`) values (null, '" . date("Y-m-d") . "', '" . date("H:i:s") . "', '', 0, 0)";
+    $sql = "INSERT INTO bookings (`bookingId`, `date`, `time`, `booking`, `donation`, `total`, `meta`) values (null, '" . date("Y-m-d") . "', '" . date("H:i:s") . "', '', 0, 0, \"\")";
     // echo("SQL: $sql");
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )

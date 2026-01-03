@@ -84,6 +84,7 @@ if($success == true) { // ok, whole basket transfered, empty basket
     updateDonationInBasket(0);
     updateTotalInBasket(0);
     updateBookingIdInBasket("new");
+    updateMetaInBasket(null);
 }
 
 
