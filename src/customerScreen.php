@@ -215,7 +215,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		
 		
 		function remoteLog(message) {
-			fetch("https://www.ruinelli.ch/kerzenziehen/kundendisplay-log.php?data=" + message);
+			//fetch("https://www.ruinelli.ch/kerzenziehen/kundendisplay-log.php?data=" + message); // TODO remove me again
 		}
 		
 		
