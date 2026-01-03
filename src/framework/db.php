@@ -482,7 +482,40 @@ function bookingsGetLastId() {
 
 
 
-function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $paymentMethod) {
+function updateMetaInBasket($meta) {
+    global $db_link;
+    $metaEscaped = $meta === null ? 'NULL' : ("'" . mysqli_real_escape_string($db_link, $meta) . "'");
+    $sql = "UPDATE basket_various SET meta = $metaEscaped LIMIT 1";
+    return mysqli_query($db_link, $sql);
+}
+
+function getMetaFromBasket() {
+    global $db_link;
+    $sql = "SELECT meta FROM basket_various LIMIT 1";
+    $query_response = mysqli_query($db_link, $sql);
+    if (!$query_response) {
+        return null;
+    }
+    $row = mysqli_fetch_assoc($query_response);
+    mysqli_free_result($query_response);
+    if (!empty($row['meta'])) {
+        $meta = unserialize($row['meta']);
+        return is_array($meta) ? $meta : [];
+    }
+    return [];
+}
+
+function setMetaInBasket($metaArray) {
+    global $db_link;
+    if (!is_array($metaArray)) {
+        return false;
+    }
+    $serialized = serialize($metaArray);
+    return updateMetaInBasket($serialized);
+}
+
+
+function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $paymentMethod, $meta = null) {
     global $db_link;
 
     // TODO sanetize
@@ -490,8 +523,12 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $
 	//echo("moveBasketToBooking, $paymentMethod\n");
        
     $sql = "UPDATE `bookings`
-            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'
-            WHERE `bookingId`='$bookingId'"; 
+            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'";
+    if ($meta !== null) {
+        $metaEscaped = mysqli_real_escape_string($db_link, $meta);
+        $sql .= ", `meta`='$metaEscaped'";
+    }
+    $sql .= " WHERE `bookingId`='$bookingId'"; 
        
 	if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);

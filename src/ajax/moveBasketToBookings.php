@@ -46,9 +46,17 @@ $success = true;
 
 $bookingId = bookingsCreateId();
 
+// Read meta from basket_various
+$meta = getMetaFromBasket();
+if ($meta === null) {
+    $meta = null; // ensure null on error
+} else {
+    $meta = serialize($meta); // ensure serialized for DB
+}
+
 //echo("moveBasketToBookings.php, $paymentMethod\n");
 
-$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod);
+$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod, $meta);
 if( $ret == false) {
     $errorText = "Failed to move basket to bookings (booking ID $bookingId)!";
     $success = false;
