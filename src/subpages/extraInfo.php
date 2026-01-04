@@ -9,9 +9,7 @@ db_connect();
 
 $bookingId = getDbBookingId();
 ?>
-<? if($bookingId == "new" ) { ?>
 <div style="text-align: left; padding: 5px; cursor: pointer;" onclick="editExtraDataClicked();" id="extraInfoLine">
 	<small><em>Extra-Daten: <span id="extraSummaryText">Klicken zum Bearbeiten</span></em></small>
 	<img src="images/receipt.png" height=30px style="float: right; margin-left: 10px;">
 </div>
-<? } ?>

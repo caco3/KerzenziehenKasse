@@ -280,6 +280,13 @@ function copyBookingToBasket($bookingId) {
         return(false);
     }
     
+    // Copy extra data from booking to basket
+    if (isset($data['extra']) && !empty($data['extra'])) {
+        if (updateExtraInBasket($data['extra']) != true) {
+            return(false);
+        }
+    }
+    
 //     return(false);
     return(true);
 }
