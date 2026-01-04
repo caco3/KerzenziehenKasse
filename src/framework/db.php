@@ -485,7 +485,7 @@ function bookingsGetLastId() {
 function updateExtraInBasket($extra) {
     global $db_link;
     if ($extra === null) {
-        $sql = "UPDATE `basket_various` SET `extra` = NULL";
+        $sql = "UPDATE `basket_various` SET `extra` = \"\"";
     } else {
         $extraEscaped = mysqli_real_escape_string($db_link, $extra);
         $sql = "UPDATE `basket_various` SET `extra` = '$extraEscaped'";
