@@ -132,10 +132,13 @@ $(document).ready(function(){
 function callReceiptGenerator(bookingData, outputType) {
     console.log("Calling receipt-generator with data:", bookingData, "outputType:", outputType);
     
-    var message = outputType === 'print' ? 
-        "Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird gedruckt..." :
-        "Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird erstellt.<br><br>Das Dokument wird in einigen Sekunden ge&ouml;ffnet...";
+    if (outputType !== 'pdf') {
+        console.error("callReceiptGenerator only supports PDF output now. Use callReceiptGeneratorWithPrinter for printing.");
+        firework.launch("Fehler: Ungültiger Ausgabetyp!", 'error', 5000);
+        return;
+    }
     
+    var message = "Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird erstellt.<br><br>Das Dokument wird in einigen Sekunden ge&ouml;ffnet...";
     firework.launch(message, 'success', 5000);
     
     var xhttp = new XMLHttpRequest();
@@ -156,20 +159,6 @@ function callReceiptGenerator(bookingData, outputType) {
                 window.URL.revokeObjectURL(url);
                 
                 console.log("PDF generated and downloaded successfully");
-            } else if (outputType === 'print') {
-                // Handle print response
-                try {
-                    var response = JSON.parse(this.responseText);
-                    if (response.status === 'printed') {
-                        firework.launch("Beleg wurde erfolgreich an Drucker gesendet!<br>Job ID: " + response.job_id, 'success', 5000);
-                        console.log("Print job sent successfully:", response);
-                    } else {
-                        firework.launch("Fehler beim Drucken!", 'error', 5000);
-                    }
-                } catch (e) {
-                    console.error("Error parsing print response:", e);
-                    firework.launch("Fehler beim Drucken!", 'error', 5000);
-                }
             }
         }
         else if (this.readyState == XMLHttpRequest.DONE) {
@@ -185,8 +174,8 @@ function callReceiptGenerator(bookingData, outputType) {
     var requestData = {
         value: bookingData.value,
         booking_id: bookingData.booking_id,
-        teacher: bookingData.teacher || "",
-        class: bookingData.class || "",
+        teacher: bookingData.teacher,
+        class: bookingData.class,
         payment_type: bookingData.payment_type,
         output_type: outputType
     };
@@ -197,7 +186,7 @@ function callReceiptGenerator(bookingData, outputType) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     
     if (outputType === 'pdf') {
-        xhttp.responseType = 'blob'; // Important for PDF download
+        xhttp.responseType = 'blob';
     }
     
     xhttp.send(JSON.stringify(requestData));
@@ -417,9 +406,23 @@ function callReceiptGeneratorWithPrinter(bookingData, outputType, printerName) {
         return;
     }
     
+    // Find printer description from the stored printer data
+    var printerDescription = printerName; // fallback to name
+    // Try to get description from the dialog's printer list
+    var printerItems = document.querySelectorAll('.printer-item');
+    printerItems.forEach(function(item) {
+        var radio = item.querySelector('input[type="radio"]');
+        if (radio && radio.checked) {
+            var nameElement = item.querySelector('.printer-name');
+            if (nameElement) {
+                printerDescription = nameElement.textContent.trim();
+            }
+        }
+    });
+    
     console.log("Calling receipt-generator with data:", bookingData, "outputType:", outputType, "printer:", printerName);
     
-    firework.launch("Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird an Drucker '" + printerName + "' gesendet...", 'success', 5000);
+    firework.launch("Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird an Drucker '" + printerDescription + "' gesendet...", 'success', 5000);
     
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -431,7 +434,7 @@ function callReceiptGeneratorWithPrinter(bookingData, outputType, printerName) {
                 try {
                     var response = JSON.parse(this.responseText);
                     if (response.status === 'printed') {
-                        firework.launch("Beleg wurde erfolgreich an Drucker '" + printerName + "' gesendet!<br>Job ID: " + response.job_id, 'success', 5000);
+                        firework.launch("Beleg wurde erfolgreich an Drucker '" + printerDescription + "' gesendet!", 'success', 5000);
                         console.log("Print job sent successfully:", response);
                     } else {
                         firework.launch("Fehler beim Drucken!", 'error', 5000);
