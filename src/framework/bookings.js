@@ -191,6 +191,11 @@ function callReceiptGenerator(bookingData, outputType) {
         output_type: outputType
     };
     
+    // Add printer queue for print requests
+    if (outputType === 'print' && printerQueue && printerQueue.length > 0 && printerQueue[0]) {
+        requestData.cups_queue_name = printerQueue[0];
+    }
+    
     console.log("Sending request to receipt-generator:", requestData);
     
     xhttp.open("POST", receiptGeneratorUrl + "/api/generate-receipt", true);

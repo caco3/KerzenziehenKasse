@@ -62,6 +62,9 @@ db_connect();
     
     // Receipt generator URL
     var receiptGeneratorUrl = '<? echo "http://" . $_SERVER['HTTP_HOST'] . ":5000"; ?>';
+    
+    // Printer queue configuration
+    var printerQueue = <? echo json_encode($printer_queue ?? []); ?>;
 
 
     $(document).ready(function(){
