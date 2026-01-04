@@ -31,9 +31,13 @@ function showBasket() {
     $("#basketDiv").load("subpages/basket.php", blockLoaded());
     $("#basketButtonsDiv").load("subpages/basketButtons.php", blockLoaded());
     $("#extraInfoDiv").load("subpages/extraInfo.php", function() {
+        console.log("extraInfoDiv loaded, checking for refreshExtraSummary function");
         blockLoaded();
         if (typeof refreshExtraSummary === 'function') {
+            console.log("refreshExtraSummary function exists, calling it");
             refreshExtraSummary();
+        } else {
+            console.error("refreshExtraSummary function not found");
         }
     });
 }

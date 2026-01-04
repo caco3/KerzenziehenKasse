@@ -50,9 +50,7 @@ db_connect();
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/easy-numpad.css">
     <script src="<? echo("$root"); ?>/framework/easy-numpad.js"></script>
     <script src="<? echo("$root"); ?>/framework/scale.js"></script>
-    
-<!--    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
-    <script src="<? echo("$root/"); ?>/framework/basket.js"></script>-->
+    <script src="<? echo("$root/"); ?>/framework/basket.js"></script>
 
 
 
