@@ -239,9 +239,16 @@ function callReceiptGenerator(bookingData, outputType) {
 var currentBookingData = null;
 var selectedPrinter = null;
 
+// Debug function to track variable changes
+function debugVariables(context) {
+    console.log("DEBUG [" + context + "] - currentBookingData:", currentBookingData, "selectedPrinter:", selectedPrinter);
+}
+
 function showPrinterDialog(bookingData) {
+    console.log("showPrinterDialog called with bookingData:", bookingData);
     currentBookingData = bookingData;
     selectedPrinter = null;
+    debugVariables("after showPrinterDialog init");
     
     // Reset dialog state
     document.getElementById('printerList').innerHTML = '';
@@ -265,21 +272,25 @@ function loadPrinters() {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             try {
                 var response = JSON.parse(this.responseText);
+                console.log("Printer status response:", response);
                 displayPrinters(response.printers);
             } catch (e) {
                 console.error("Error parsing printer data:", e);
                 document.getElementById('printerLoading').innerHTML = '<p style="color: red;">Fehler beim Laden der Drucker</p>';
             }
         } else if (this.readyState == XMLHttpRequest.DONE) {
+            console.error("Printer status request failed. Status:", this.status, "Response:", this.responseText);
             document.getElementById('printerLoading').innerHTML = '<p style="color: red;">Fehler beim Laden der Drucker</p>';
         }
     };
     
+    console.log("Loading printers from:", receiptGeneratorUrl + '/api/printer-status');
     xhttp.open('GET', receiptGeneratorUrl + '/api/printer-status', true);
     xhttp.send();
 }
 
 function displayPrinters(printers) {
+    console.log("displayPrinters called with printers:", printers);
     document.getElementById('printerLoading').style.display = 'none';
     
     if (!printers || printers.length === 0) {
@@ -297,10 +308,12 @@ function displayPrinters(printers) {
                         printer.status === 'disabled' ? 'Deaktiviert' : 'Unbekannt';
         
         var displayName = printer.description && printer.description.trim() ? printer.description : printer.name;
+        console.log("Processing printer:", printer.name, "display:", displayName, "status:", printer.status);
         
         // Check if this printer has USB in description and is enabled
         if (printer.status === 'enabled' && displayName.toLowerCase().includes('usb')) {
             usbPrinterName = printer.name;
+            console.log("Found USB printer:", usbPrinterName);
         }
         
         var details = [];
@@ -326,6 +339,11 @@ function displayPrinters(printers) {
     if (usbPrinterName) {
         selectedPrinter = usbPrinterName;
         document.getElementById('confirmPrintBtn').disabled = false;
+        console.log("Auto-selected USB printer:", usbPrinterName);
+        debugVariables("after USB auto-selection");
+    } else {
+        console.log("No USB printer found or enabled");
+        debugVariables("after no USB found");
     }
 }
 
@@ -336,6 +354,7 @@ function selectPrinter(printerName, printerStatus) {
     }
     
     selectedPrinter = printerName;
+    debugVariables("after manual selection");
     
     // Update radio button selection
     document.querySelectorAll('.printer-item').forEach(function(item) {
@@ -357,8 +376,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (confirmBtn) {
         confirmBtn.addEventListener('click', function() {
             if (selectedPrinter && currentBookingData) {
-                closePrinterDialog();
+                // Call the function BEFORE closing the dialog to preserve the variables
                 callReceiptGeneratorWithPrinter(currentBookingData, 'print', selectedPrinter);
+                closePrinterDialog();
             }
         });
     }
@@ -366,13 +386,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Alternative click handler for inline onclick
 function confirmPrint() {
-    if (selectedPrinter && currentBookingData) {
-        closePrinterDialog();
-        callReceiptGeneratorWithPrinter(currentBookingData, 'print', selectedPrinter);
+    debugVariables("confirmPrint start");
+    
+    if (!selectedPrinter) {
+        firework.launch('Bitte wählen Sie einen Drucker aus.', 'error', 3000);
+        return;
     }
+    
+    if (!currentBookingData) {
+        firework.launch('Keine Buchungsdaten verfügbar.', 'error', 3000);
+        return;
+    }
+    
+    debugVariables("before calling callReceiptGeneratorWithPrinter");
+    
+    // Call the function BEFORE closing the dialog to preserve the variables
+    callReceiptGeneratorWithPrinter(currentBookingData, 'print', selectedPrinter);
+    closePrinterDialog();
 }
 
 function callReceiptGeneratorWithPrinter(bookingData, outputType, printerName) {
+    debugVariables("inside callReceiptGeneratorWithPrinter");
+    console.log("Function parameters - bookingData:", bookingData, "outputType:", outputType, "printerName:", printerName);
+    console.log("Globals - currentBookingData:", currentBookingData, "selectedPrinter:", selectedPrinter);
+    
+    if (!bookingData || !bookingData.booking_id) {
+        console.error("Invalid booking data:", bookingData);
+        firework.launch("Ungültige Buchungsdaten!", 'error', 5000);
+        hideProgressBar();
+        return;
+    }
+    
     console.log("Calling receipt-generator with data:", bookingData, "outputType:", outputType, "printer:", printerName);
     
     firework.launch("Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird an Drucker '" + printerName + "' gesendet...", 'success', 5000);
