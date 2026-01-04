@@ -62,9 +62,6 @@ db_connect();
     
     // Receipt generator URL
     var receiptGeneratorUrl = '<? echo "http://" . $_SERVER['HTTP_HOST'] . ":5000"; ?>';
-    
-    // Printer queue configuration
-    var printerQueue = <? echo json_encode($printer_queue ?? []); ?>;
 
 
     $(document).ready(function(){
@@ -173,6 +170,29 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
         <? } ?>
   
         <div class="modal"></div>
+        
+        <!-- Printer Selection Dialog -->
+        <div id="printerSelectionDialog" class="printer-dialog" style="display: none;">
+            <div class="printer-dialog-content">
+                <div class="printer-dialog-header">
+                    <h3>Drucker auswählen</h3>
+                    <button type="button" class="printer-dialog-close" onclick="closePrinterDialog()">&times;</button>
+                </div>
+                <div class="printer-dialog-body">
+                    <p>Bitte Drucker für den Beleg auswählen:</p>
+                    <div id="printerList" class="printer-list">
+                        <!-- Printers will be loaded here -->
+                    </div>
+                    <div class="printer-dialog-loading" id="printerLoading" style="display: none;">
+                        <p>Drucker werden geladen...</p>
+                    </div>
+                </div>
+                <div class="printer-dialog-footer">
+                    <button type="button" class="cashButton" id="confirmPrintBtn" disabled style="width: 150px; height: 60px; font-size: 20px; margin-right: 20px;" onclick="confirmPrint()">Drucken</button>
+                    <button type="button" class="cancelButton" onclick="closePrinterDialog()" style="width: 150px; height: 60px; font-size: 20px;">Abbrechen</button>
+                </div>
+            </div>
+        </div>
     </div>
     
 

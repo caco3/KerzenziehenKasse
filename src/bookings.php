@@ -119,6 +119,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             foreach($bookingIds as $bookingId) {
                 $booking = getBooking($bookingId);
                 $receiptButtonView = receiptButtonView($bookingId);
+                $receiptButtonPrint = receiptButtonPrint($bookingId);
     //             echo("<pre>");
     //             print_r($booking); 
                 $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
