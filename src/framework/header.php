@@ -59,6 +59,9 @@ db_connect();
     // global variables used in basket
     // var inputFieldActive = null;
     // var inputFieldSelection = null;
+    
+    // Receipt generator URL
+    var receiptGeneratorUrl = '<? echo "http://" . $_SERVER['HTTP_HOST'] . ":5000"; ?>';
 
 
     $(document).ready(function(){
