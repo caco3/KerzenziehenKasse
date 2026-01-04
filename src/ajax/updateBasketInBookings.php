@@ -61,7 +61,7 @@ else { // ok, basket was loaded from bookings and can be updated in there
         updateDonationInBasket(0);
         updateTotalInBasket(0);
         updateBookingIdInBasket("new");
-        updateMetaInBasket(null);
+        updateExtraInBasket(null);
     }
 }
 

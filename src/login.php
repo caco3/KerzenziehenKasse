@@ -16,21 +16,13 @@ require_once("$root/config/config_generic.php");
 <html lang="de">
 <head>
 
-<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
-    <title>Kerzenziehen TEST-SYSTEM</title>
-<? } else { ?>
     <title>Kerzenziehen</title>
-<? } ?>
 
     <meta charset="UTF-8">
     <http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="shortcut icon" href="favicon.ico">
     
-<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
-    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style_testsystem.css"> 
-<? } else { ?>
-    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css"> 
-<? } ?>
+    <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/buttons.css">  
     
     
@@ -42,22 +34,13 @@ require_once("$root/config/config_generic.php");
 </head>
 
 
-<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
-    <body id=test>
-<? } else { ?>
     <body id=live>
-<? } ?>
 
 
 
     <div style="clear:both;">
-        <?
-            // If this variable is set (in config.php), a separate database and files/folders will be used!
-            if(isset($testystem)) {
-                echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
-            }
-        ?>
-        <div id=logo>
+    </div>
+    <div id=logo>
             <h1><img src="images/candle.png" width=30px> Kerzenziehen &ndash; <img src="images/logo_small.png"></h1>
         </div>
         <div id=clock><p id=clockText></p></div>

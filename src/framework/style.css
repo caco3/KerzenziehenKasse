@@ -238,12 +238,12 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* border */
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     border-radius:8px;
     border-spacing: 0;
 }
 
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv, #navigationDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     border: 3px solid black; 
 }
 
@@ -256,13 +256,14 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* Shade */
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     box-shadow: 5px 5px 5px #888888;
 }
 
 
 #dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit {
     width: 100%;
+    margin-bottom: -5px;
 }
 
 /* ############ Bibleverse Content ############## */
@@ -300,6 +301,16 @@ a:link, a:visited, a:hover, a:active {
 #navigationDiv {
     background: rgba(167, 232, 246, 0.8);  
     padding: 10px;
+}
+
+#extraInfoDiv {
+    background: rgba(62, 138, 92, 0.8);
+    padding: 10px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+#extraInfoLine {
+    text-align: left;
 }
 
 

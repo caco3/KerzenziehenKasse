@@ -12,12 +12,12 @@ header('Content-Type: application/json');
 $response = ['success' => false, 'data' => null];
 
 try {
-    $metaData = getMetaFromBasket();
-    if ($metaData === null) {
-        throw new Exception("Failed to fetch meta data");
+    $extraData = getExtraFromBasket();
+    if ($extraData === null) {
+        throw new Exception("Failed to fetch extra data");
     }
     $response['success'] = true;
-    $response['data'] = $metaData;
+    $response['data'] = $extraData;
 } catch (Exception $e) {
     $response['error'] = $e->getMessage();
 }

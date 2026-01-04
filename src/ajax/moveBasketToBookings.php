@@ -46,17 +46,17 @@ $success = true;
 
 $bookingId = bookingsCreateId();
 
-// Read meta from basket_various
-$meta = getMetaFromBasket();
-if ($meta === null) {
-    $meta = null; // ensure null on error
+// Read Extra Data from basket_various
+$extra = getExtraFromBasket();
+if ($extra === null) {
+    $extra = null; // ensure null on error
 } else {
-    $meta = serialize($meta); // ensure serialized for DB
+    $extra = serialize($extra); // ensure serialized for DB
 }
 
 //echo("moveBasketToBookings.php, $paymentMethod\n");
 
-$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod, $meta);
+$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod, $extra);
 if( $ret == false) {
     $errorText = "Failed to move basket to bookings (booking ID $bookingId)!";
     $success = false;
@@ -84,7 +84,7 @@ if($success == true) { // ok, whole basket transfered, empty basket
     updateDonationInBasket(0);
     updateTotalInBasket(0);
     updateBookingIdInBasket("new");
-    updateMetaInBasket(null);
+    updateExtraInBasket(null);
 }
 
 

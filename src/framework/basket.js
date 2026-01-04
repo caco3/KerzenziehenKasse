@@ -146,58 +146,82 @@ function cancelClicked(){
 		clearBasket();
 	}
 	else { // Basket is empty
-        definitlyClearBasket(); // clear meta data
+        definitlyClearBasket(); // clear extra data
 		//firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
 	}
 }
 
 
-function editMetaDataClicked(){
-	console.log("editMetaDataClicked");
-	// Load current meta data
+function refreshExtraSummary() {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-			var obj = JSON.parse(this.responseText);
-			var meta = obj.success && obj.data ? obj.data : {};
-			var schulklasse = meta.schulklasse || "";
-			var leiter = meta.leiter || "";
-
-			var content = ""
-				+ "<h2>Meta-Daten</h2>"
-				+ "<table>"
-				+ "<tr><td>Schulklasse:</td><td><input type=text id='metaSchulklasse' placeholder='Schulklasse eingeben' value='" + schulklasse + "'></td></tr>"
-				+ "<tr><td>Leiter/in:</td><td><input type=text id='metaLeiter' placeholder='Leiter/in eingeben' value='" + leiter + "'></td></tr>"
-				+ "</table>"
-				+ "<br><button class=fireworksDialogButtons onclick='saveMetaData()'>Speichern</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class=fireworksDialogButtons onclick='hideFullPageOverlay()'>Abbrechen</button>";
-			showFullPageOverlay(content);
+			try {
+				var obj = JSON.parse(this.responseText);
+				var extra = obj.success && obj.data ? obj.data : {};
+				var parts = [];
+				if (extra.schulklasse) parts.push("Klasse: " + extra.schulklasse);
+				if (extra.leiter) parts.push("Leiter: " + extra.leiter);
+				var summary = parts.length ? parts.join(" | ") : "Klicken zum Bearbeiten";
+				var el = document.getElementById("extraSummaryText");
+				if (el) el.innerText = summary;
+			} catch (e) {
+				console.error("Failed to parse extra summary", e);
+			}
 		}
 	};
-	xhttp.open("GET", "ajax/getMetaData.php", true);
+	xhttp.open("GET", "ajax/getExtraData.php", true);
 	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhttp.send();
 }
 
-function saveMetaData(){
-	var schulklasse = document.getElementById('metaSchulklasse').value;
-	var leiter = document.getElementById('metaLeiter').value;
-	var meta = {schulklasse: schulklasse, leiter: leiter};
+function editExtraDataClicked(){
+	console.log("editExtraDataClicked");
+	// Load current extra data
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+			var obj = JSON.parse(this.responseText);
+			var extra = obj.success && obj.data ? obj.data : {};
+			var schulklasse = extra.schulklasse || "";
+			var leiter = extra.leiter || "";
+
+			var content = ""
+				+ "<h2>Extra-Daten</h2>"
+				+ "<table>"
+				+ "<tr><td>Schulklasse:</td><td><input type=text id='extraSchulklasse' placeholder='Schulklasse eingeben' value='" + schulklasse + "'></td></tr>"
+				+ "<tr><td>Leiter/in:</td><td><input type=text id='extraLeiter' placeholder='Leiter/in eingeben' value='" + leiter + "'></td></tr>"
+				+ "</table>"
+				+ "<br><button class=fireworksDialogButtons onclick='saveExtraData()'>Speichern</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class=fireworksDialogButtons onclick='hideFullPageOverlay()'>Abbrechen</button>";
+			showFullPageOverlay(content);
+		}
+	};
+	xhttp.open("GET", "ajax/getExtraData.php", true);
+	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhttp.send();
+}
+
+function saveExtraData(){
+	var schulklasse = document.getElementById('extraSchulklasse').value;
+	var leiter = document.getElementById('extraLeiter').value;
+	var extra = {schulklasse: schulklasse, leiter: leiter};
 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 			var obj = JSON.parse(this.responseText);
 			if (obj.success) {
-				console.log("Meta data saved:", meta);
-				firework.launch("Meta-Daten gespeichert.", 'success', 3000);
+				console.log("Extra data saved:", extra);
+				firework.launch("Extra-Daten gespeichert.", 'success', 3000);
 				hideFullPageOverlay();
+				refreshExtraSummary(); // Update the summary line
 			} else {
 				firework.launch("Fehler beim Speichern: " + (obj.error || "Unbekannt"), 'error', 5000);
 			}
 		}
 	};
-	var params = "meta=" + encodeURIComponent(JSON.stringify(meta));
-	xhttp.open("POST", "ajax/setMetaData.php", true);
+	var params = "extra=" + encodeURIComponent(JSON.stringify(extra));
+	xhttp.open("POST", "ajax/setExtraData.php", true);
 	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhttp.send(params);
 }

@@ -30,6 +30,12 @@ function showBasket() {
     console.log("load basket");
     $("#basketDiv").load("subpages/basket.php", blockLoaded());
     $("#basketButtonsDiv").load("subpages/basketButtons.php", blockLoaded());
+    $("#extraInfoDiv").load("subpages/extraInfo.php", function() {
+        blockLoaded();
+        if (typeof refreshExtraSummary === 'function') {
+            refreshExtraSummary();
+        }
+    });
 }
 
 function loadBibleVerse() {

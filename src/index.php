@@ -43,6 +43,7 @@ else { // Normal
                     <div class=rightSideDiv>
                         <div id=basketDiv></div>
                         <div id=basketButtonsDiv></div>
+                        <div id=extraInfoDiv></div>
                         <!--<div id=bibleVerseDiv></div>-->
                         <div id=navigationDiv></div>
                     </div>
