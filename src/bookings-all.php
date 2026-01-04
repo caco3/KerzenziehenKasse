@@ -32,7 +32,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             $booking = getBooking($bookingId);
 //             echo("<pre>"); print_r($booking); echo("</pre>");
             $editButton = editButton($bookingId);
-            $receiptButton = receiptButton($bookingId);
+            $receiptButtonView = receiptButtonView($bookingId);
+            $receiptButtonPrint = receiptButtonPrint($bookingId);
 //             echo("<pre>");
 //             print_r($booking);
             echo("<tr>");
@@ -60,7 +61,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("</td>");
             
             echo("<td>$editButton</td>");
-            echo("<td>$receiptButton</td>");
+            echo("<td>$receiptButtonView</td>");
+            echo("<td>$receiptButtonPrint</td>");
             if ($booking['school'] == 1) {
                 echo("<td><img src=\"images/school.png\" width=50px></td>");
             }
@@ -95,7 +97,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             
             foreach($bookingIds as $bookingId) {
                 $booking = getBooking($bookingId);
-                $receiptButton = receiptButton($bookingId);
+                $receiptButtonView = receiptButtonView($bookingId);
     //             echo("<pre>");
     //             print_r($booking); 
                 $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
@@ -133,7 +135,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 }
                 
                 echo("</td>");
-                echo("<td>$receiptButton</td>"); 
+                echo("<td>$receiptButtonView</td>"); 
                 if ($booking['school'] == 1) {
                     echo("<td><img src=\"images/school.png\" width=50px></td>");
                 }

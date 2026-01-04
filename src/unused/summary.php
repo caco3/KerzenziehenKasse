@@ -18,7 +18,7 @@ $id = 99;
         <div id=leftSideDiv>
             <form method="get" target="_blank" action="receipt.php">
                 <input type=hidden name="id" value="<? echo($id); ?>">
-                <button type=submit id=createReceiptButton class=createReceiptButton><img src="images/receipt.png" width=50px><br>Beleg</button>
+                <button type=submit id=createreceiptButtonView class=createreceiptButtonView><img src="images/receipt.png" width=50px><br>Beleg</button>
                 
             </form>
             <p><br></p>

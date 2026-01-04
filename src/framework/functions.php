@@ -20,8 +20,12 @@ function editButton($id) {
     return "<button type=button id=$id class=editButton title=\"Diese Buchung zurück in den Warenkorb laden\"></button> ";
 }
 
-function receiptButton($id) {
-    return "<button type=button id=$id class=receiptButton title=\"Einen Beleg für diese Buchung erstellen\"></button> ";
+function receiptButtonPrint($id) {
+    return "<button type=button id=$id class=receiptButtonPrint title=\"Die Rechnung/Quittung für diese Buchung drucken\"></button> ";
+}
+
+function receiptButtonView($id) {
+    return "<button type=button id=$id class=receiptButtonView title=\"Die Rechnung/Quittung für diese Buchung ansehen\"></button> ";
 }
 
 function exportCsvButton($id) {

@@ -49,7 +49,7 @@ $(document).ready(function(){
     ); 
     
     
-    $(".receiptButton").off().on('click', 
+    $(".receiptButtonView").off().on('click', 
         function(event){
             var bookingId = $(event.target).attr('id');
             console.log("creating receipt for booking " + bookingId);
