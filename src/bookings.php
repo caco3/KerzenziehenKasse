@@ -23,7 +23,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th><th></th></tr>
+      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th class=td_rightBorder>Extra-Daten</th><th></th><th></th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -60,6 +60,19 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             }
             
             echo("</td>");
+            
+            // Extra-Daten column
+            echo("<td class=td_rightBorder>");
+            if (!empty($booking['extra'])) {
+                $extraData = @unserialize($booking['extra']);
+                if (is_array($extraData)) {
+                    $extraParts = [];
+                    if (!empty($extraData['schulklasse'])) $extraParts[] = "Schulklasse: " . $extraData['schulklasse'];
+                    if (!empty($extraData['leiter'])) $extraParts[] = "Leiter/in: " . $extraData['leiter'];
+                    echo(implode("<br>", $extraParts));
+                }
+            }
+            echo("</td>");
             if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
 				// Do not show any buttons
 				echo("<td></td><td></td>");
@@ -84,7 +97,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <p><br></p>
     <h2><a name=year>Alle Buchungen des aktuellen Jahres</h2>
     <table id=bookingsTable>
-    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
+    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th class=td_rightBorder>Extra-Daten</th><th></th><th></th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
@@ -140,6 +153,19 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                     echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
                 }
                 
+                echo("</td>");
+                
+                // Extra-Daten column
+                echo("<td class=td_rightBorder>");
+                if (!empty($booking['extra'])) {
+                    $extraData = @unserialize($booking['extra']);
+                    if (is_array($extraData)) {
+                        $extraParts = [];
+                        if (!empty($extraData['schulklasse'])) $extraParts[] = "Schulklasse: " . $extraData['schulklasse'];
+                        if (!empty($extraData['leiter'])) $extraParts[] = "Leiter/in: " . $extraData['leiter'];
+                        echo(implode("<br>", $extraParts));
+                    }
+                }
                 echo("</td>");
 
 				if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {

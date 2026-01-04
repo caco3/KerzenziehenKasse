@@ -588,6 +588,7 @@ function getDbBooking($bookingId) {
     $booking['total'] = $line['total'];
     $booking['paymentMethod'] = $line['paymentMethod'];
     $booking['school'] = $line['school'];
+    $booking['extra'] = $line['extra'];
 
     $booking['articles'] = unserialize($line['booking']);
 
