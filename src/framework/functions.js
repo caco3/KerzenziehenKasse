@@ -72,16 +72,22 @@ function hideProgressBar() {
 }
 
 
-function showFullPageOverlay(content) {
+function showFullPageOverlay(content, addCloseButton = true) {
     console.log("Showing full page overlay");
-    content = content + "<br><br><input type=button class=fullPageOverlayContentButton value=Schliessen onclick=hideFullPageOverlay()>";
-    $('.fullPageOverlayContent').html(content);
+    // Only wrap in easy-numpad-container if close button is needed
+    if (addCloseButton) {
+        var wrappedContent = "<div class='easy-numpad-container'>" + content + "</div>";
+        wrappedContent = wrappedContent + "<br><br><input type=button class=fullPageOverlayContentButton value=Schliessen onclick=hideFullPageOverlay()>";
+        $('.fullPageOverlayContent').html(wrappedContent);
+    } else {
+        $('.fullPageOverlayContent').html(content);
+    }
     $('.fullPageOverlay').show();
 }
 
 function hideFullPageOverlay() {    
     console.log("Hiding full page overlay");
-    $('.fullPageOverlay').hide(500);
+    $('.fullPageOverlay').hide();
 }
 
 

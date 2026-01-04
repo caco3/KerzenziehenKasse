@@ -191,13 +191,14 @@ function editExtraDataClicked(){
 			var leiter = extra.leiter || "";
 
 			var content = ""
-				+ "<h2>Extra-Daten</h2>"
-				+ "<table>"
-				+ "<tr><td>Schulklasse:</td><td><input type=text id='extraSchulklasse' placeholder='Schulklasse eingeben' value='" + schulklasse + "'></td></tr>"
-				+ "<tr><td>Leiter/in:</td><td><input type=text id='extraLeiter' placeholder='Leiter/in eingeben' value='" + leiter + "'></td></tr>"
+				+ "<h2 style='margin-bottom: 20px; color: #333;'>Extra-Daten</h2>"
+                + "<p style='margin-bottom: 20px; color: #666;'>Diese Informationen werden auf der Rechnung/Quittung verwendet.</p>" 
+				+ "<table style='margin: 0 auto; border-collapse: collapse; width: 500px;'>"
+				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; width: 120px; font-size: 20px;'>Schulklasse:</td><td style='padding: 15px;'><input type=text id='extraSchulklasse' placeholder='Schulklasse eingeben' value='" + schulklasse + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
+				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; font-size: 20px;'>Leiter/in:</td><td style='padding: 15px;'><input type=text id='extraLeiter' placeholder='Leiter/in eingeben' value='" + leiter + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
 				+ "</table>"
-				+ "<br><button class=fireworksDialogButtons onclick='saveExtraData()'>Speichern</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class=fireworksDialogButtons onclick='hideFullPageOverlay()'>Abbrechen</button>";
-			showFullPageOverlay(content);
+				+ "<br><div style='text-align: center; margin-top: 30px;'><button class='cashButton' onclick='saveExtraData()' style='margin-right: 20px; width: 150px; height: 60px; font-size: 20px;'>Speichern</button><button class='cancelButton' onclick='hideFullPageOverlay()' style='width: 150px; height: 60px; font-size: 20px;'>Abbrechen</button></div>";
+			showFullPageOverlay(content, false);
 		}
 	};
 	xhttp.open("GET", "ajax/getExtraData.php", true);
