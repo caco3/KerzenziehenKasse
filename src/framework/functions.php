@@ -28,6 +28,11 @@ function receiptButtonView($id) {
     return "<button type=button id=$id class=receiptButtonView title=\"Die Rechnung/Quittung für diese Buchung ansehen\"></button> ";
 }
 
+function schoolFlagButton($id, $isActive) {
+    $activeClass = $isActive ? ' active' : '';
+    return "<button type=button id=school_$id class=\"schoolFlagButton$activeClass\" title=\"Schul-Markierung umschalten\"></button> ";
+}
+
 function exportCsvButton($id) {
     return "<button type=button id=$id class=exportCsvButton title=\"Als CSV exportieren\" onclick=\"location.href='subpages/exportCsv.php?id=$id'\"></button> ";
 }

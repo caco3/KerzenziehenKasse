@@ -6,6 +6,74 @@
 // });
 
 
+// School flag confirmation dialog variables
+var currentSchoolFlagBookingId = null;
+
+function showSchoolFlagDialog(bookingId) {
+    currentSchoolFlagBookingId = bookingId;
+    document.getElementById('schoolFlagMessage').textContent = 
+        'Soll die Schul-Markierung für Buchung ' + bookingId + ' wirklich umgeschaltet werden?';
+    document.getElementById('schoolFlagDialog').style.display = 'flex';
+}
+
+function closeSchoolFlagDialog() {
+    document.getElementById('schoolFlagDialog').style.display = 'none';
+    currentSchoolFlagBookingId = null;
+}
+
+function confirmSchoolFlag() {
+    if (!currentSchoolFlagBookingId) {
+        return;
+    }
+    
+    var bookingId = currentSchoolFlagBookingId;
+    closeSchoolFlagDialog();
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {                    
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            try {
+                console.log("Raw response:", this.responseText);
+                var response = JSON.parse(this.responseText);
+                hideProgressBar();
+                
+                if (response.success) {
+                    // Toggle the button appearance
+                    var button = document.getElementById('school_' + bookingId);
+                    
+                    if (response.newSchoolFlag == 1) {
+                        button.classList.add('active');
+                        firework.launch("Die Buchung wurde als 'von einer Schulklasse' markiert", 'success', 3000);
+                    } else {
+                        button.classList.remove('active');
+                        firework.launch("Die Buchung wurde als 'nicht von einer Schulklasse' markiert", 'success', 3000);
+                    }
+                } else {
+                    firework.launch("Fehler: " + response.error, 'error', 5000);
+                }
+                
+            } catch (e) {
+                console.error("Error parsing response:", e);
+                console.error("Response text:", this.responseText);
+                hideProgressBar();
+                firework.launch("Fehler beim Aktualisieren der Schul-Markierung!", 'error', 5000);
+            }
+        }
+        else if (this.readyState == XMLHttpRequest.DONE) {
+            hideProgressBar();
+            console.error("Request failed. Status:", this.status, "Response:", this.responseText);
+            firework.launch("Fehler beim Aktualisieren der Schul-Markierung!", 'error', 5000);
+        }
+    };
+    
+    showProgressBar();
+    
+    var params = "bookingId=" + bookingId;
+    xhttp.open("POST", "ajax/toggleSchoolFlag.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
 $(document).ready(function(){
     console.log("Bookings loaded");    
     
@@ -124,6 +192,17 @@ $(document).ready(function(){
             xhttp.open("GET", "ajax/getBookingData.php?id=" + bookingId, true);
             xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhttp.send();
+        }
+    );
+    
+    $(".schoolFlagButton").off().on('click', 
+        function(event){
+            var buttonId = $(event.target).closest('button').attr('id');
+            var bookingId = buttonId.replace('school_', '');
+            console.log("school flag button clicked for booking " + bookingId);
+            
+            // Show confirmation dialog
+            showSchoolFlagDialog(bookingId);
         }
     );
     

@@ -25,15 +25,56 @@
     background: url("../images/csv.png") no-repeat top center;
 }
 
+.schoolFlagButton {
+    background: url("../images/public.png") no-repeat center center;
+    background-size: 40px 40px;
+}
+
+.schoolFlagButton.active {
+    background: url("../images/school.png") no-repeat center center;
+    background-size: 40px 40px;
+}
 
 
-.addToBasketButton, .removeFromBasketButton, .editButton, .receiptButtonView, .receiptButtonPrint, .exportCsvButton {    
+
+.addToBasketButton, .removeFromBasketButton, .editButton, .receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton {    
     background-size: 40px 40px;
     width: 56px;
     height: 50px;
     border-radius: 6px;
-    background-position: center left 5px, center left 5px;
-    margin: 10px;
+    background-position: center;
+    margin: 2px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* Clearfix for button containers */
+.button-container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Make booking tables use full screen width without fixing cell widths */
+#bookingsTable {
+    width: 100%;
+}
+
+/* Ensure last column doesn't wrap buttons */
+#bookingsTable th:last-child,
+#bookingsTable td:last-child {
+    white-space: nowrap;
+    width: auto;
+    min-width: 280px; /* Ensure minimum width for buttons */
+}
+
+/* Prevent button containers from wrapping and right-align buttons */
+.button-container {
+    white-space: nowrap;
+    min-width: 280px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 2px;
 }
 
 
