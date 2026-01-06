@@ -31,14 +31,22 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
 
     <div id="body">
 		<h1>Buchungen</h1>
-		<div style="display: flex; align-items: flex-start; gap: 40px; justify-content: space-between;">
-			<ul>
-				<li><a href=bookings.php#today>Heute</a><br><br></li>
-				<li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
-				<li><a href=bookings_last_year.php>Letztes Jahr</a></li>
-			</ul>
+		<div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Navigation:</h4>
+				<ul style="margin: 0; padding-left: 20px;">
+					<li><a href=bookings.php#today>Heute</a><br><br></li>
+					<li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
+					<li><a href=bookings_last_year.php>Vergangene Jahre</a></li>
+				</ul>
+			</div>
 			
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 25px; margin-top: 10px; margin-left: auto; backdrop-filter: blur(5px);">
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">CSV Export:</h4>
+				<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;"><? echo(exportCsvButton("bookings")); ?></div>
+			</div>
+			
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 25px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
 				<h4 style="margin: 0 0 20px 0; color: rgba(73, 80, 87, 0.65); font-size: 18px; font-weight: 600;">Legende:</h4>
 				<div style="display: flex; gap: 20px; font-size: 16px; align-items: center;">
 					<div style="display: flex; align-items: center; gap: 8px;">
@@ -235,7 +243,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
         }
     ?>
     </table>    
-    <p><br>CSV Export: <? echo(exportCsvButton("bookings")); ?></p>
+    <p><br></p>
     
     
 <?
