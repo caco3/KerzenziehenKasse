@@ -31,11 +31,30 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
 
     <div id="body">
 		<h1>Buchungen</h1>
-	<ul>
-    <li><a href=bookings.php#today>Heute</a><br><br></li>
-    <li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
-    <li><a href=bookings_last_year.php>Letztes Jahr</a></li>
-</ul>
+		<div style="display: flex; align-items: flex-start; gap: 40px;">
+			<ul>
+				<li><a href=bookings.php#today>Heute</a><br><br></li>
+				<li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
+				<li><a href=bookings_last_year.php>Letztes Jahr</a></li>
+			</ul>
+			
+			<div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-top: 10px;">
+				<h4 style="margin: 0 0 10px 0; color: #495057; font-size: 14px;">Button-Legende:</h4>
+				<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; font-size: 12px;">
+					<div style="width: 20px; height: 20px; background: url('images/edit.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
+					<div style="color: #495057; padding-top: 2px;">Bearbeiten</div>
+					
+					<div style="width: 20px; height: 20px; background: url('images/receipt-view.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
+					<div style="color: #495057; padding-top: 2px;">Quittung ansehen</div>
+					
+					<div style="width: 20px; height: 20px; background: url('images/receipt-print.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
+					<div style="color: #495057; padding-top: 2px;">Quittung drucken</div>
+					
+					<div style="width: 20px; height: 20px; background: url('images/school.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
+					<div style="color: #495057; padding-top: 2px;">Schul-Markierung</div>
+				</div>
+			</div>
+		</div>
 	
       <h2><a name=today>Buchungen Heute (<? echo($todayDayOfWeek); ?>, <? echo($todayDE); ?>)</h2>
       <!--<p>Noch nicht implementiert</p>-->
@@ -62,7 +81,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
             echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
             echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
 			if ($booking['paymentMethod'] == 'cash') {
-				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/bargeld.png\" height=40px></td>");
 			}
 			else if ($booking['paymentMethod'] == 'twint') {
 				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
@@ -160,7 +179,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
                 echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
 				if ($booking['paymentMethod'] == 'cash') {
-					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/bargeld.png\" height=40px></td>");
 				}
 				else if ($booking['paymentMethod'] == 'twint') {
 					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");

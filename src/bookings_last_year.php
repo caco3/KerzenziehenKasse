@@ -62,7 +62,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
                 echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
 				if ($booking['paymentMethod'] == 'cash') {
-					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/bargeld.png\" height=40px></td>");
 				}
 				else if ($booking['paymentMethod'] == 'twint') {
 					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
