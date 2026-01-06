@@ -246,7 +246,7 @@ function showDetailsPerDayAndYear($year) {
 
 
 ?>
-<div id="body">  
+<div id="body" class="statsCurrentYear">  
 <a name="PerDay"></a><h1>Umsatz pro Tag (aktuelles Jahr)</h1>
 <?
     $year = date("Y"); 

@@ -198,7 +198,7 @@ function showSummaryOfYear($year) {
 
 
 ?>
-    <div id="body">
+    <div id="body" class="statsYears">
   
 <a name=PerYear></a><h1>Umsatz pro Jahr</h1>
 <?
