@@ -1,7 +1,6 @@
 <? 
 
 $root=".";
-include "$root/framework/header.php";
 
 // Make sure the german day names are available
 global $germanDayOfWeekShort;
