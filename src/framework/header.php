@@ -71,12 +71,6 @@ db_connect();
         loadBibleVerse();
         loadNavigation();
         
-//         console.log("Webbrowser: " + BrowserDetect.browser);
-//         if (BrowserDetect.browser != "Firefox") {
-//             firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
-//         }
-
-
         let scrollUpButton = document.getElementById("scrollUpButton");
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function() {scrollFunction()};
