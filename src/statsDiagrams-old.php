@@ -210,7 +210,7 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 				
 				height: 572,
 			    //width: 1680,
-				width: <? echo(1735 + $widthAdjustment + 60); ?>, // Needed to change it from 35 to 60 in 2025
+				width: <? echo(1735 + $widthAdjustment + 95); ?>, // Needed to change it from 35 to 60 in 2025 and to 95 in 2026
 				
 				chartArea:{
 				    left:300,
