@@ -6,6 +6,7 @@ include "$root/framework/header.php";
 // Today
 $today = date("Y-m-d");
 $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
+$todayDayOfWeek = $germanDayOfWeek[date("w")];
 
 ?>
 
@@ -36,7 +37,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <li><a href=bookings_last_year.php>Letztes Jahr</a></li>
 </ul>
 	
-      <h2><a name=today>Buchungen Heute (<? echo($todayDE); ?>)</h2>
+      <h2><a name=today>Buchungen Heute (<? echo($todayDayOfWeek); ?>, <? echo($todayDE); ?>)</h2>
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
