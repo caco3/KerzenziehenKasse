@@ -9,7 +9,7 @@ db_connect();
 
 ?>
 
-<!-- <button type=submit id=createReceiptButton class=createReceiptButton><img src="images/receipt.png" width=50px><br>Beleg</button>         -->
+<!-- <button type=submit id=createreceiptButtonView class=createreceiptButtonView><img src="images/receipt.png" width=50px><br>Beleg</button>         -->
 
 
 <table id=basketButtonsTable>
@@ -51,5 +51,5 @@ db_connect();
 			</td>
 		<? } ?>
     </tr>
-</table>
+	</table>
    

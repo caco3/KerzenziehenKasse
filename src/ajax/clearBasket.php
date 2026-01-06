@@ -22,6 +22,7 @@ if ( $success == true) {
     updateDonationInBasket(0);
     updateTotalInBasket(0);
     updateBookingIdInBasket("new");
+    updateExtraInBasket(null);
 }
 
 

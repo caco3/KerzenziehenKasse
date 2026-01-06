@@ -7,6 +7,33 @@ html, body {
     touch-action: pan-y pan-x;
 }
 
+/* Full-page overlay for dialogs */
+.fullPageOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: none;
+}
+.fullPageOverlayContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    min-width: 300px;
+    text-align: center;
+}
+.fullPageOverlayContentButton {
+    margin-top: 15px;
+}
+
 body {
 /*     background-repeat: no-repeat; */
     background-attachment: fixed;
@@ -211,12 +238,12 @@ a:link, a:visited, a:hover, a:active {
 
 
 /* border */
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     border-radius:8px;
     border-spacing: 0;
 }
 
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv, #navigationDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     border: 3px solid black; 
 }
 
@@ -229,13 +256,14 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* Shade */
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     box-shadow: 5px 5px 5px #888888;
 }
 
 
 #dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit {
     width: 100%;
+    margin-bottom: -5px;
 }
 
 /* ############ Bibleverse Content ############## */
@@ -273,6 +301,16 @@ a:link, a:visited, a:hover, a:active {
 #navigationDiv {
     background: rgba(167, 232, 246, 0.8);  
     padding: 10px;
+}
+
+#extraInfoDiv {
+    background: rgba(62, 138, 92, 0.8);
+    padding: 10px;
+    margin-top: 0px;
+    margin-bottom: 15px;
+}
+#extraInfoLine {
+    text-align: left;
 }
 
 
@@ -694,6 +732,173 @@ a.headerLinks:link, a.headerLinks:visited, a.headerLinks:hover, a.headerLinks:ac
 
 .answer {
     margin-top: 0px;
+}
+
+/* Printer Selection Dialog Styles */
+.printer-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.printer-dialog-content {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    min-width: 500px;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.printer-dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.printer-dialog-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.printer-dialog-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.printer-dialog-close:hover {
+    color: #333;
+}
+
+.printer-dialog-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.printer-dialog-body p {
+    margin: 0 0 15px 0;
+    color: #666;
+}
+
+.printer-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.printer-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.printer-item:last-child {
+    border-bottom: none;
+}
+
+.printer-item:hover {
+    background-color: #f5f5f5;
+}
+
+.printer-item.selected {
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.printer-item.selected .printer-radio {
+    accent-color: #2196f3;
+}
+
+.printer-radio {
+    margin-right: 12px;
+}
+
+.printer-info {
+    flex: 1;
+}
+
+.printer-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 2px;
+}
+
+.printer-details {
+    font-size: 12px;
+    color: #666;
+}
+
+.printer-status {
+    margin-left: auto;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.printer-status.enabled {
+    background-color: #e8f5e8;
+    color: #2e7d32;
+}
+
+.printer-status.disabled {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.printer-status.unknown {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+.printer-dialog-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.printer-dialog-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .printer-dialog-content {
+        min-width: 90%;
+        margin: 20px;
+    }
 }
 
 

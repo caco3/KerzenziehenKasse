@@ -40,8 +40,8 @@ function onMessage(evt)
         }
     }
     else { // Generic error handler
-        console.log('Scale: Error: ' + data.code + ' (' + data.description + ')!\n');
-        console.log('Scale: data: ' + evt.data);
+        //console.log('Scale: Error: ' + data.code + ' (' + data.description + ')!\n');
+        //console.log('Scale: data: ' + evt.data);
         if (data.code == "NO_SCALE") {
             update_display(null, "Nicht verbunden!", false);
         }

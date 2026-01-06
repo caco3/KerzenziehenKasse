@@ -146,8 +146,89 @@ function cancelClicked(){
 		clearBasket();
 	}
 	else { // Basket is empty
-		firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
+        definitlyClearBasket(); // clear extra data
+		//firework.launch("Der Warenkorb ist leer!", 'warning', 5000);
 	}
+}
+
+
+function refreshExtraSummary() {
+	console.log("refreshExtraSummary called");
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+			try {
+				var obj = JSON.parse(this.responseText);
+				var extra = obj.success && obj.data ? obj.data : {};
+				var parts = [];
+				if (extra.schulklasse) parts.push("Klasse: " + extra.schulklasse);
+				if (extra.leiter) parts.push("Leiter: " + extra.leiter);
+				var summary = parts.length ? parts.join(", ") : "Klicken zum Bearbeiten";
+				var el = document.getElementById("extraSummaryText");
+				if (el) el.innerText = summary;
+				console.log("Extra summary updated:", summary);
+			} catch (e) {
+				console.error("Failed to parse extra summary", e);
+			}
+		} else if (this.readyState == XMLHttpRequest.DONE) {
+			console.error("Failed to load extra data. Status:", this.status, "Response:", this.responseText);
+		}
+	};
+	xhttp.open("GET", "ajax/getExtraData.php", true);
+	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhttp.send();
+}
+
+function editExtraDataClicked(){
+	console.log("editExtraDataClicked");
+	// Load current extra data
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+			var obj = JSON.parse(this.responseText);
+			var extra = obj.success && obj.data ? obj.data : {};
+			var schulklasse = extra.schulklasse || "";
+			var leiter = extra.leiter || "";
+
+			var content = ""
+				+ "<h2 style='margin-bottom: 20px; color: #333;'>Extra-Daten</h2>"
+                + "<p style='margin-bottom: 20px; color: #666;'>Diese Informationen werden auf der Rechnung/Quittung verwendet.</p>" 
+				+ "<table style='margin: 0 auto; border-collapse: collapse; width: 500px;'>"
+				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; width: 120px; font-size: 20px;'>Schulklasse:</td><td style='padding: 15px;'><input type=text id='extraSchulklasse' placeholder='Schulklasse eingeben' value='" + schulklasse + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
+				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; font-size: 20px;'>Leiter/in:</td><td style='padding: 15px;'><input type=text id='extraLeiter' placeholder='Leiter/in eingeben' value='" + leiter + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
+				+ "</table>"
+				+ "<br><div style='text-align: center; margin-top: 30px;'><button class='cashButton' onclick='saveExtraData()' style='margin-right: 20px; width: 150px; height: 60px; font-size: 20px;'>Speichern</button><button class='cancelButton' onclick='hideFullPageOverlay()' style='width: 150px; height: 60px; font-size: 20px;'>Abbrechen</button></div>";
+			showFullPageOverlay(content, false);
+		}
+	};
+	xhttp.open("GET", "ajax/getExtraData.php", true);
+	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhttp.send();
+}
+
+function saveExtraData(){
+	var schulklasse = document.getElementById('extraSchulklasse').value;
+	var leiter = document.getElementById('extraLeiter').value;
+	var extra = {schulklasse: schulklasse, leiter: leiter};
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+			var obj = JSON.parse(this.responseText);
+			if (obj.success) {
+				console.log("Extra data saved:", extra);
+				firework.launch("Extra-Daten gespeichert.", 'success', 3000);
+				hideFullPageOverlay();
+				refreshExtraSummary(); // Update the summary line
+			} else {
+				firework.launch("Fehler beim Speichern: " + (obj.error || "Unbekannt"), 'error', 5000);
+			}
+		}
+	};
+	var params = "extra=" + encodeURIComponent(JSON.stringify(extra));
+	xhttp.open("POST", "ajax/setExtraData.php", true);
+	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhttp.send(params);
 }
 
 

@@ -19,7 +19,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th><th></th></tr>
+      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -32,7 +32,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             $booking = getBooking($bookingId);
 //             echo("<pre>"); print_r($booking); echo("</pre>");
             $editButton = editButton($bookingId);
-            $receiptButton = receiptButton($bookingId);
+            $receiptButtonView = receiptButtonView($bookingId);
+            $receiptButtonPrint = receiptButtonPrint($bookingId);
 //             echo("<pre>");
 //             print_r($booking);
             echo("<tr>");
@@ -59,14 +60,9 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             
             echo("</td>");
             
-            echo("<td>$editButton</td>");
-            echo("<td>$receiptButton</td>");
-            if ($booking['school'] == 1) {
-                echo("<td><img src=\"images/school.png\" width=50px></td>");
-            }
-            else {
-                echo("<td></td>");            
-            }
+            echo("<td class=td_rightBorder>");
+            echo("$editButton");
+            echo("</td>");
             echo("</tr>\n");
         }        
       ?>
@@ -77,7 +73,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <p><br></p>
     <h2>Alle Buchungen des aktuelles Jahrs</h2>
     <table id=bookingsTable>
-    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
+    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y")-1);
     
@@ -95,7 +91,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             
             foreach($bookingIds as $bookingId) {
                 $booking = getBooking($bookingId);
-                $receiptButton = receiptButton($bookingId);
+                $receiptButtonView = receiptButtonView($bookingId);
     //             echo("<pre>");
     //             print_r($booking); 
                 $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
@@ -133,13 +129,6 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 }
                 
                 echo("</td>");
-                echo("<td>$receiptButton</td>"); 
-                if ($booking['school'] == 1) {
-                    echo("<td><img src=\"images/school.png\" width=50px></td>");
-                }
-                else {
-                    echo("<td></td>");            
-                }           
                 echo("</tr>\n");
 
             }

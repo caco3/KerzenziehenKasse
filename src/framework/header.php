@@ -18,11 +18,7 @@ db_connect();
 <meta name="viewport" content="initial-scale=0.5">
 
 
-<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
-    <title>Kerzenziehen TEST-SYSTEM</title>
-<? } else { ?>
     <title>Kerzenziehen</title>
-<? } ?>
 
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -35,13 +31,10 @@ db_connect();
    
    
     if (!isset($_GET['nocss'])) {
-       if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
-        <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style_testsystem.css"> 
-    <? } else { ?>
+        ?>
         <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css"> 
-    <? 
-       } 
-   }
+        <? 
+    }
 ?> 
 
 
@@ -57,9 +50,7 @@ db_connect();
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/easy-numpad.css">
     <script src="<? echo("$root"); ?>/framework/easy-numpad.js"></script>
     <script src="<? echo("$root"); ?>/framework/scale.js"></script>
-    
-<!--    <script src="<? echo("$root/"); ?>/framework/articles.js"></script>
-    <script src="<? echo("$root/"); ?>/framework/basket.js"></script>-->
+    <script src="<? echo("$root/"); ?>/framework/basket.js"></script>
 
 
 
@@ -68,6 +59,9 @@ db_connect();
     // global variables used in basket
     // var inputFieldActive = null;
     // var inputFieldSelection = null;
+    
+    // Receipt generator URL
+    var receiptGeneratorUrl = '<? echo "http://" . $_SERVER['HTTP_HOST'] . ":5000"; ?>';
 
 
     $(document).ready(function(){
@@ -77,15 +71,6 @@ db_connect();
         loadBibleVerse();
         loadNavigation();
         
-//         console.log("Webbrowser: " + BrowserDetect.browser);
-//         if (BrowserDetect.browser != "Firefox") {
-//             firework.launch("Dieser Webbrowser (" + BrowserDetect.browser + ") wird nicht unterstützt! Bitte verwende Firefox!", 'error', 9999999000);
-//         }
-
-        <? if(isset($TEST_SYSTEM) && $TEST_SYSTEM and (basename($_SERVER['PHP_SELF']) == "index.php")) { ?>
-            firework.launch("Du verwendest das Test-System! Damit kannst spielen und testen. Die Eingaben haben keinen Einfluss auf die richtige Kasse!", 'error', 9999999000);
-        <? } ?>
-
         let scrollUpButton = document.getElementById("scrollUpButton");
         // When the user scrolls down 20px from the top of the document, show the button
         window.onscroll = function() {scrollFunction()};
@@ -113,11 +98,7 @@ db_connect();
 
 </head>
 
-<? if(isset($TEST_SYSTEM) && $TEST_SYSTEM) { ?>
-    <body id=test>
-<? } else { ?>
     <body id=live>
-<? } ?>
 
 <button onclick="topFunction()" id="scrollUpButton" title="Go to top"><img src=images/to-top.png width=60px></button>
 
@@ -127,9 +108,7 @@ db_connect();
    
 <?
 // If this variable is set (in config.php), a separate database and files/folders will be used!
-if(isset($TEST_SYSTEM) && $TEST_SYSTEM) {
-    echo("<h1 style=\"color: red;\">TEST-SYSTEM (Separate Datenbank)!!!</h1>\n");
-}  
+  
 
 if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
 ?>
@@ -185,6 +164,29 @@ if (!(basename($_SERVER['PHP_SELF']) == "index.php")) {
         <? } ?>
   
         <div class="modal"></div>
+        
+        <!-- Printer Selection Dialog -->
+        <div id="printerSelectionDialog" class="printer-dialog" style="display: none;">
+            <div class="printer-dialog-content">
+                <div class="printer-dialog-header">
+                    <h3>Drucker auswählen</h3>
+                    <button type="button" class="printer-dialog-close" onclick="closePrinterDialog()">&times;</button>
+                </div>
+                <div class="printer-dialog-body">
+                    <p>Bitte Drucker für den Beleg auswählen:</p>
+                    <div id="printerList" class="printer-list">
+                        <!-- Printers will be loaded here -->
+                    </div>
+                    <div class="printer-dialog-loading" id="printerLoading" style="display: none;">
+                        <p>Drucker werden geladen...</p>
+                    </div>
+                </div>
+                <div class="printer-dialog-footer">
+                    <button type="button" class="cashButton" id="confirmPrintBtn" disabled style="width: 150px; height: 60px; font-size: 20px; margin-right: 20px;" onclick="confirmPrint()">Drucken</button>
+                    <button type="button" class="cancelButton" onclick="closePrinterDialog()" style="width: 150px; height: 60px; font-size: 20px;">Abbrechen</button>
+                </div>
+            </div>
+        </div>
     </div>
     
 

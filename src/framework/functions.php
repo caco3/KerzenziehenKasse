@@ -20,8 +20,17 @@ function editButton($id) {
     return "<button type=button id=$id class=editButton title=\"Diese Buchung zurück in den Warenkorb laden\"></button> ";
 }
 
-function receiptButton($id) {
-    return "<button type=button id=$id class=receiptButton title=\"Einen Beleg für diese Buchung erstellen\"></button> ";
+function receiptButtonPrint($id) {
+    return "<button type=button id=$id class=receiptButtonPrint title=\"Die Rechnung/Quittung für diese Buchung drucken\"></button> ";
+}
+
+function receiptButtonView($id) {
+    return "<button type=button id=$id class=receiptButtonView title=\"Die Rechnung/Quittung für diese Buchung ansehen\"></button> ";
+}
+
+function schoolFlagButton($id, $isActive) {
+    $activeClass = $isActive ? ' active' : '';
+    return "<button type=button id=school_$id class=\"schoolFlagButton$activeClass\" title=\"Schul-Markierung umschalten\"></button> ";
 }
 
 function exportCsvButton($id) {
@@ -278,6 +287,13 @@ function copyBookingToBasket($bookingId) {
     
     if (updateBookingIdInBasket($bookingId) != true) {
         return(false);
+    }
+    
+    // Copy extra data from booking to basket
+    if (isset($data['extra']) && !empty($data['extra'])) {
+        if (updateExtraInBasket($data['extra']) != true) {
+            return(false);
+        }
     }
     
 //     return(false);

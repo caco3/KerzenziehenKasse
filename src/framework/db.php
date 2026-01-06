@@ -434,7 +434,7 @@ function bookingsCreateId() {
     global $db_link;
     
     // create entry
-    $sql = "INSERT INTO bookings (`bookingId`, `date`, `time`, `booking`, `donation`, `total`) values (null, '" . date("Y-m-d") . "', '" . date("H:i:s") . "', '', 0, 0)";
+    $sql = "INSERT INTO bookings (`bookingId`, `date`, `time`, `booking`, `donation`, `total`, `extra`) values (null, '" . date("Y-m-d") . "', '" . date("H:i:s") . "', '', 0, 0, \"\")";
     // echo("SQL: $sql");
     $query_response = mysqli_query($db_link, $sql );
     if ( ! $query_response )
@@ -482,7 +482,63 @@ function bookingsGetLastId() {
 
 
 
-function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $paymentMethod) {
+function updateExtraInBasket($extra) {
+    global $db_link;
+    if ($extra === null) {
+        $sql = "UPDATE `basket_various` SET `extra` = \"\"";
+    } else {
+        $extraEscaped = mysqli_real_escape_string($db_link, $extra);
+        $sql = "UPDATE `basket_various` SET `extra` = '$extraEscaped'";
+    }
+    if(mysqli_query($db_link, $sql)){
+        sql_transaction_logger($sql);
+        return true;
+    }
+    else { // fail
+        sql_transaction_logger("-- [ERROR] Failed to update extra in basket: $sql");
+        errorLog("SQL Error: Failed to update extra in basket: $sql");
+        return false;
+    }
+}
+
+function getExtraFromBasket() {
+    global $db_link;
+    $sql = "SELECT `extra` FROM `basket_various`";
+    $query_response = mysqli_query($db_link, $sql);
+    if (!$query_response) {
+        return null;
+    }
+    $row = mysqli_fetch_assoc($query_response);
+    mysqli_free_result($query_response);
+    if (!empty($row['extra'])) {
+        $raw = $row['extra'];
+        errorLog("getExtraFromBasket raw extra: " . $raw);
+        $extra = @unserialize($raw);
+        if ($extra === false && $raw !== serialize(false)) {
+            // unserialize failed and not because the value is boolean false
+            errorLog("getExtraFromBasket unserialize failed, trying JSON decode");
+            $extra = json_decode($raw, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                errorLog("getExtraFromBasket JSON decode failed: " . json_last_error_msg());
+                return [];
+            }
+        }
+        return is_array($extra) ? $extra : [];
+    }
+    return [];
+}
+
+function setExtraInBasket($extraArray) {
+    global $db_link;
+    if (!is_array($extraArray)) {
+        return false;
+    }
+    $serialized = serialize($extraArray);
+    return updateExtraInBasket($serialized);
+}
+
+
+function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $paymentMethod, $extra = null) {
     global $db_link;
 
     // TODO sanetize
@@ -490,8 +546,12 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $
 	//echo("moveBasketToBooking, $paymentMethod\n");
        
     $sql = "UPDATE `bookings`
-            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'
-            WHERE `bookingId`='$bookingId'"; 
+            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'";
+    if ($extra !== null) {
+        $extraEscaped = mysqli_real_escape_string($db_link, $extra);
+        $sql .= ", `extra`='$extraEscaped'";
+    }
+    $sql .= " WHERE `bookingId`='$bookingId'"; 
        
 	if(mysqli_query($db_link, $sql)){
         sql_transaction_logger($sql);
@@ -528,6 +588,7 @@ function getDbBooking($bookingId) {
     $booking['total'] = $line['total'];
     $booking['paymentMethod'] = $line['paymentMethod'];
     $booking['school'] = $line['school'];
+    $booking['extra'] = $line['extra'];
 
     $booking['articles'] = unserialize($line['booking']);
 

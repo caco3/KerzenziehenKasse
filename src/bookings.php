@@ -6,10 +6,28 @@ include "$root/framework/header.php";
 // Today
 $today = date("Y-m-d");
 $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
+$todayDayOfWeek = $germanDayOfWeek[date("w")];
 
 ?>
 
     <script src="<? echo("$root/"); ?>/framework/bookings.js"></script>
+
+    <!-- School Flag Confirmation Dialog -->
+    <div id="schoolFlagDialog" class="printer-dialog" style="display: none;">
+        <div class="printer-dialog-content">
+            <div class="printer-dialog-header">
+                <h3>Buchungen von Schulklassen</h3>
+                <button type="button" class="printer-dialog-close" onclick="closeSchoolFlagDialog()">&times;</button>
+            </div>
+            <div class="printer-dialog-body">
+                <p id="schoolFlagMessage">Möchten Sie die Schul-Markierung wirklich umschalten?</p>
+            </div>
+            <div class="printer-dialog-footer">
+                <button type="button" class="cashButton" id="confirmSchoolFlagBtn" style="width: 150px; height: 60px; font-size: 20px; margin-right: 20px;" onclick="confirmSchoolFlag()">Umschalten</button>
+                <button type="button" class="cancelButton" onclick="closeSchoolFlagDialog()" style="width: 150px; height: 60px; font-size: 20px;">Abbrechen</button>
+            </div>
+        </div>
+    </div>
 
     <div id="body">
 		<h1>Buchungen</h1>
@@ -19,11 +37,11 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <li><a href=bookings_last_year.php>Letztes Jahr</a></li>
 </ul>
 	
-      <h2><a name=today>Buchungen Heute (<? echo($todayDE); ?>)</h2>
+      <h2><a name=today>Buchungen Heute (<? echo($todayDayOfWeek); ?>, <? echo($todayDE); ?>)</h2>
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable>
-      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th><th></th></tr>
+      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th class=td_rightBorder>Extra-Daten</th><th></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -35,7 +53,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             $booking = getBooking($bookingId);
 //             echo("<pre>"); print_r($booking); echo("</pre>");
             $editButton = editButton($bookingId);
-            $receiptButton = receiptButton($bookingId);
+            $receiptButtonView = receiptButtonView($bookingId);
+            $receiptButtonPrint = receiptButtonPrint($bookingId);
 //             echo("<pre>"); print_r($booking); echo("</pre>");
             echo("<tr>");
             echo("<td class=td_rightBorder>$bookingId</td>");
@@ -60,19 +79,30 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             }
             
             echo("</td>");
+            
+            // Extra-Daten column
+            echo("<td class=td_rightBorder>");
+            if (!empty($booking['extra'])) {
+                $extraData = @unserialize($booking['extra']);
+                if (is_array($extraData)) {
+                    $extraParts = [];
+                    if (!empty($extraData['schulklasse'])) $extraParts[] = "Schulklasse: " . $extraData['schulklasse'];
+                    if (!empty($extraData['leiter'])) $extraParts[] = "Leiter/in: " . $extraData['leiter'];
+                    echo(implode("<br>", $extraParts));
+                }
+            }
+            echo("</td>");
             if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
 				// Do not show any buttons
-				echo("<td></td><td></td>");
+				echo("<td></td><td></td><td></td>");
 			}
 			else {
-				echo("<td>$editButton</td>");
-				echo("<td>$receiptButton</td>");
-			}
-			if ($booking['school'] == 1) {
-				echo("<td><img src=\"images/school.png\" width=50px title=\"Schule/Geschlossene Gesellschaft/Private Gruppe\"></td>");
-			}
-			else {
-				echo("<td></td>");            
+				echo("<td class=td_rightBorder><div class='button-container'>");
+				echo("$editButton");
+                echo("$receiptButtonView");
+                echo("$receiptButtonPrint");
+                echo(schoolFlagButton($bookingId, $booking['school'] == 1));
+				echo("</div></td>");
 			}
             echo("</tr>\n");
         }        
@@ -82,15 +112,20 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     
     
     <p><br></p>
-    <h2><a name=year>Alle Buchungen des aktuellen Jahres</h2>
+    <h2><a name=year>Weitere Buchungen des aktuellen Jahres</h2>
     <table id=bookingsTable>
-    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th><th></th></tr>
+    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th class=td_rightBorder>Extra-Daten</th><th></th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
 //         echo("<pre>"); print_r($datesWithBookings); echo("</pre>");
     
         foreach($datesWithBookings as $date) {
+            // Skip today's date in the lower table
+            if ($date == $today) {
+                continue;
+            }
+            
             $bookingIds = getBookingIdsOfDate($date, false);
             arsort($bookingIds); // sorting to show latest date on top
             
@@ -103,7 +138,8 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             
             foreach($bookingIds as $bookingId) {
                 $booking = getBooking($bookingId);
-                $receiptButton = receiptButton($bookingId);
+                $receiptButtonView = receiptButtonView($bookingId);
+                $receiptButtonPrint = receiptButtonPrint($bookingId);
     //             echo("<pre>");
     //             print_r($booking); 
                 $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
@@ -141,20 +177,31 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 }
                 
                 echo("</td>");
+                
+                // Extra-Daten column
+                echo("<td class=td_rightBorder>");
+                if (!empty($booking['extra'])) {
+                    $extraData = @unserialize($booking['extra']);
+                    if (is_array($extraData)) {
+                        $extraParts = [];
+                        if (!empty($extraData['schulklasse'])) $extraParts[] = "Schulklasse: " . $extraData['schulklasse'];
+                        if (!empty($extraData['leiter'])) $extraParts[] = "Leiter/in: " . $extraData['leiter'];
+                        echo(implode("<br>", $extraParts));
+                    }
+                }
+                echo("</td>");
 
 				if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
 					// Do not show any buttons
 					echo("<td></td>");
 				}
 				else {
-					echo("<td>$receiptButton</td>"); 
-				}	
-				if ($booking['school'] == 1) {
-					echo("<td><img src=\"images/school.png\" width=50px></td>");
-				}
-				else {
-					echo("<td></td>");            
-				}				
+				echo("<td class=td_rightBorder><div class='button-container'>");
+				echo("$receiptButtonView");
+				echo("$receiptButtonPrint");
+				echo(schoolFlagButton($bookingId, $booking['school'] == 1));
+				echo("</div></td>");
+			}
                 echo("</tr>\n");
 
             }
@@ -168,3 +215,4 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 include "$root/framework/footer.php"; 
 ?>
     
+

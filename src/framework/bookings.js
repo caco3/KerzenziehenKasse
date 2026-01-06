@@ -6,6 +6,74 @@
 // });
 
 
+// School flag confirmation dialog variables
+var currentSchoolFlagBookingId = null;
+
+function showSchoolFlagDialog(bookingId) {
+    currentSchoolFlagBookingId = bookingId;
+    document.getElementById('schoolFlagMessage').textContent = 
+        'Soll die Schul-Markierung für Buchung ' + bookingId + ' wirklich umgeschaltet werden?';
+    document.getElementById('schoolFlagDialog').style.display = 'flex';
+}
+
+function closeSchoolFlagDialog() {
+    document.getElementById('schoolFlagDialog').style.display = 'none';
+    currentSchoolFlagBookingId = null;
+}
+
+function confirmSchoolFlag() {
+    if (!currentSchoolFlagBookingId) {
+        return;
+    }
+    
+    var bookingId = currentSchoolFlagBookingId;
+    closeSchoolFlagDialog();
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {                    
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            try {
+                console.log("Raw response:", this.responseText);
+                var response = JSON.parse(this.responseText);
+                hideProgressBar();
+                
+                if (response.success) {
+                    // Toggle the button appearance
+                    var button = document.getElementById('school_' + bookingId);
+                    
+                    if (response.newSchoolFlag == 1) {
+                        button.classList.add('active');
+                        firework.launch("Die Buchung wurde als 'von einer Schulklasse' markiert", 'success', 3000);
+                    } else {
+                        button.classList.remove('active');
+                        firework.launch("Die Buchung wurde als 'nicht von einer Schulklasse' markiert", 'success', 3000);
+                    }
+                } else {
+                    firework.launch("Fehler: " + response.error, 'error', 5000);
+                }
+                
+            } catch (e) {
+                console.error("Error parsing response:", e);
+                console.error("Response text:", this.responseText);
+                hideProgressBar();
+                firework.launch("Fehler beim Aktualisieren der Schul-Markierung!", 'error', 5000);
+            }
+        }
+        else if (this.readyState == XMLHttpRequest.DONE) {
+            hideProgressBar();
+            console.error("Request failed. Status:", this.status, "Response:", this.responseText);
+            firework.launch("Fehler beim Aktualisieren der Schul-Markierung!", 'error', 5000);
+        }
+    };
+    
+    showProgressBar();
+    
+    var params = "bookingId=" + bookingId;
+    xhttp.open("POST", "ajax/toggleSchoolFlag.php", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send(params);
+}
+
 $(document).ready(function(){
     console.log("Bookings loaded");    
     
@@ -49,19 +117,159 @@ $(document).ready(function(){
     ); 
     
     
-    $(".receiptButton").off().on('click', 
+    $(".receiptButtonView").off().on('click', 
         function(event){
             var bookingId = $(event.target).attr('id');
             console.log("creating receipt for booking " + bookingId);
-            firework.launch("Beleg f&uuml;r Buchung " + bookingId + " wird erstellt.<br><br>Das Dokument wird in einigen Sekunden ge&ouml;ffnet...", 'success', 5000);
-            window.location.replace("subpages/receipt.php?id=" + bookingId);
             
+            // First get booking data from database
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {                    
+                if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                    try {
+                        var bookingData = JSON.parse(this.responseText);
+                        hideProgressBar();
+                        
+                        if (bookingData.error) {
+                            firework.launch("Fehler: " + bookingData.error, 'error', 5000);
+                            return;
+                        }
+                        
+                        // Call receipt-generator API for PDF
+                        callReceiptGenerator(bookingData, 'pdf');
+                        
+                    } catch (e) {
+                        console.error("Error parsing booking data:", e);
+                        firework.launch("Fehler beim Lesen der Buchungsdaten!", 'error', 5000);
+                    }
+                }
+                else if (this.readyState == XMLHttpRequest.DONE) {
+                    hideProgressBar();
+                    firework.launch("Fehler beim Abrufen der Buchungsdaten!", 'error', 5000);
+                }
+            };
+            
+            showProgressBar();
+            xhttp.open("GET", "ajax/getBookingData.php?id=" + bookingId, true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.send();
+        }
+    );
+    
+    $(".receiptButtonPrint").off().on('click', 
+        function(event){
+            var bookingId = $(event.target).attr('id');
+            console.log("print button clicked for booking " + bookingId);
+            
+            // First get booking data from database
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {                    
+                if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                    try {
+                        var bookingData = JSON.parse(this.responseText);
+                        hideProgressBar();
+                        
+                        if (bookingData.error) {
+                            firework.launch("Fehler: " + bookingData.error, 'error', 5000);
+                            return;
+                        }
+                        
+                        // Show printer selection dialog
+                        showPrinterDialog(bookingData);
+                        
+                    } catch (e) {
+                        console.error("Error parsing booking data:", e);
+                        firework.launch("Fehler beim Lesen der Buchungsdaten!", 'error', 5000);
+                    }
+                }
+                else if (this.readyState == XMLHttpRequest.DONE) {
+                    hideProgressBar();
+                    firework.launch("Fehler beim Abrufen der Buchungsdaten!", 'error', 5000);
+                }
+            };
+            
+            showProgressBar();
+            xhttp.open("GET", "ajax/getBookingData.php?id=" + bookingId, true);
+            xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhttp.send();
+        }
+    );
+    
+    $(".schoolFlagButton").off().on('click', 
+        function(event){
+            var buttonId = $(event.target).closest('button').attr('id');
+            var bookingId = buttonId.replace('school_', '');
+            console.log("school flag button clicked for booking " + bookingId);
+            
+            // Show confirmation dialog
+            showSchoolFlagDialog(bookingId);
         }
     );
     
 });
 
-
+function callReceiptGenerator(bookingData, outputType) {
+    console.log("Calling receipt-generator with data:", bookingData, "outputType:", outputType);
+    
+    if (outputType !== 'pdf') {
+        console.error("callReceiptGenerator only supports PDF output now. Use callReceiptGeneratorWithPrinter for printing.");
+        firework.launch("Fehler: Ungültiger Ausgabetyp!", 'error', 5000);
+        return;
+    }
+    
+    var message = "Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird erstellt.<br><br>Das Dokument wird in einigen Sekunden ge&ouml;ffnet...";
+    firework.launch(message, 'success', 5000);
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {                    
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            hideProgressBar();
+            
+            if (outputType === 'pdf') {
+                // Create blob from response and download as PDF
+                var blob = new Blob([this.response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'Kerzenziehen-Beleg-' + bookingData.booking_id + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                console.log("PDF generated and downloaded successfully");
+            }
+        }
+        else if (this.readyState == XMLHttpRequest.DONE) {
+            hideProgressBar();
+            console.error("Error generating receipt:", this.responseText);
+            firework.launch("Fehler beim Erstellen des Belegs!", 'error', 5000);
+        }
+    };
+    
+    showProgressBar();
+    
+    // Prepare data for receipt-generator API
+    var requestData = {
+        value: bookingData.value,
+        booking_id: bookingData.booking_id,
+        teacher: bookingData.teacher,
+        class: bookingData.class,
+        payment_type: bookingData.payment_type,
+        output_type: outputType
+    };
+    
+    console.log("Sending request to receipt-generator:", requestData);
+    
+    xhttp.open("POST", receiptGeneratorUrl + "/api/generate-receipt", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    
+    if (outputType === 'pdf') {
+        xhttp.responseType = 'blob';
+    }
+    
+    xhttp.send(JSON.stringify(requestData));
+}
 
 
 // function copyBookingToBasket(bookingId) {
@@ -94,4 +302,252 @@ $(document).ready(function(){
 //     
 //     
 // }
+
+// Printer selection dialog functions
+var currentBookingData = null;
+var selectedPrinter = null;
+
+// Debug function to track variable changes
+function debugVariables(context) {
+    console.log("DEBUG [" + context + "] - currentBookingData:", currentBookingData, "selectedPrinter:", selectedPrinter);
+}
+
+function showPrinterDialog(bookingData) {
+    console.log("showPrinterDialog called with bookingData:", bookingData);
+    currentBookingData = bookingData;
+    selectedPrinter = null;
+    debugVariables("after showPrinterDialog init");
+    
+    // Reset dialog state
+    document.getElementById('printerList').innerHTML = '';
+    document.getElementById('printerLoading').style.display = 'block';
+    document.getElementById('confirmPrintBtn').disabled = true;
+    document.getElementById('printerSelectionDialog').style.display = 'flex';
+    
+    // Load available printers
+    loadPrinters();
+}
+
+function closePrinterDialog() {
+    document.getElementById('printerSelectionDialog').style.display = 'none';
+    currentBookingData = null;
+    selectedPrinter = null;
+}
+
+function loadPrinters() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            try {
+                var response = JSON.parse(this.responseText);
+                console.log("Printer status response:", response);
+                displayPrinters(response.printers);
+            } catch (e) {
+                console.error("Error parsing printer data:", e);
+                document.getElementById('printerLoading').innerHTML = '<p style="color: red;">Fehler beim Laden der Drucker</p>';
+            }
+        } else if (this.readyState == XMLHttpRequest.DONE) {
+            console.error("Printer status request failed. Status:", this.status, "Response:", this.responseText);
+            document.getElementById('printerLoading').innerHTML = '<p style="color: red;">Fehler beim Laden der Drucker</p>';
+        }
+    };
+    
+    console.log("Loading printers from:", receiptGeneratorUrl + '/api/printer-status');
+    xhttp.open('GET', receiptGeneratorUrl + '/api/printer-status', true);
+    xhttp.send();
+}
+
+function displayPrinters(printers) {
+    console.log("displayPrinters called with printers:", printers);
+    document.getElementById('printerLoading').style.display = 'none';
+    
+    if (!printers || printers.length === 0) {
+        document.getElementById('printerList').innerHTML = '<p style="padding: 20px; text-align: center; color: #666;">Keine Drucker gefunden</p>';
+        return;
+    }
+    
+    var printerListHtml = '';
+    var usbPrinterName = null;
+    
+    printers.forEach(function(printer) {
+        var statusClass = printer.status === 'enabled' ? 'enabled' : 
+                         printer.status === 'disabled' ? 'disabled' : 'unknown';
+        var statusText = printer.status === 'enabled' ? 'Bereit' : 
+                        printer.status === 'disabled' ? 'Deaktiviert' : 'Unbekannt';
+        
+        var displayName = printer.description && printer.description.trim() ? printer.description : printer.name;
+        console.log("Processing printer:", printer.name, "display:", displayName, "status:", printer.status);
+        
+        // Check if this printer has USB in description and is enabled
+        if (printer.status === 'enabled' && displayName.toLowerCase().includes('usb')) {
+            usbPrinterName = printer.name;
+            console.log("Found USB printer:", usbPrinterName);
+        }
+        
+        var details = [];
+        if (printer.type === 'network' && printer.ip_address) {
+            details.push('IP: ' + printer.ip_address);
+        }
+        
+        var isSelected = (printer.name === usbPrinterName) ? 'selected' : '';
+        
+        printerListHtml += '<div class="printer-item ' + isSelected + '" onclick="selectPrinter(\'' + printer.name + '\', \'' + printer.status + '\')">' +
+            '<input type="radio" name="printer" class="printer-radio" id="printer_' + printer.name.replace(/[^a-zA-Z0-9]/g, '_') + '"' + (isSelected ? ' checked' : '') + '>' +
+            '<div class="printer-info">' +
+                '<div class="printer-name">' + displayName + '</div>' +
+                (details.length > 0 ? '<div class="printer-details">' + details.join(' | ') + '</div>' : '') +
+            '</div>' +
+            '<!--<div class="printer-status ' + statusClass + '">' + statusText + '</div>-->' +
+        '</div>';
+    });
+    
+    document.getElementById('printerList').innerHTML = printerListHtml;
+    
+    // If USB printer was found and selected, enable the confirm button
+    if (usbPrinterName) {
+        selectedPrinter = usbPrinterName;
+        document.getElementById('confirmPrintBtn').disabled = false;
+        console.log("Auto-selected USB printer:", usbPrinterName);
+        debugVariables("after USB auto-selection");
+    } else {
+        console.log("No USB printer found or enabled");
+        debugVariables("after no USB found");
+    }
+}
+
+function selectPrinter(printerName, printerStatus) {
+    if (printerStatus !== 'enabled') {
+        firework.launch('Dieser Drucker ist nicht verfügbar.', 'error', 3000);
+        return;
+    }
+    
+    selectedPrinter = printerName;
+    debugVariables("after manual selection");
+    
+    // Update radio button selection
+    document.querySelectorAll('.printer-item').forEach(function(item) {
+        item.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
+    
+    // Update radio button
+    var radioId = 'printer_' + printerName.replace(/[^a-zA-Z0-9]/g, '_');
+    document.getElementById(radioId).checked = true;
+    
+    // Enable confirm button
+    document.getElementById('confirmPrintBtn').disabled = false;
+}
+
+// Confirm print button click handler
+document.addEventListener('DOMContentLoaded', function() {
+    var confirmBtn = document.getElementById('confirmPrintBtn');
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            if (selectedPrinter && currentBookingData) {
+                // Call the function BEFORE closing the dialog to preserve the variables
+                callReceiptGeneratorWithPrinter(currentBookingData, 'print', selectedPrinter);
+                closePrinterDialog();
+            }
+        });
+    }
+});
+
+// Alternative click handler for inline onclick
+function confirmPrint() {
+    debugVariables("confirmPrint start");
+    
+    if (!selectedPrinter) {
+        firework.launch('Bitte wählen Sie einen Drucker aus.', 'error', 3000);
+        return;
+    }
+    
+    if (!currentBookingData) {
+        firework.launch('Keine Buchungsdaten verfügbar.', 'error', 3000);
+        return;
+    }
+    
+    debugVariables("before calling callReceiptGeneratorWithPrinter");
+    
+    // Call the function BEFORE closing the dialog to preserve the variables
+    callReceiptGeneratorWithPrinter(currentBookingData, 'print', selectedPrinter);
+    closePrinterDialog();
+}
+
+function callReceiptGeneratorWithPrinter(bookingData, outputType, printerName) {
+    debugVariables("inside callReceiptGeneratorWithPrinter");
+    console.log("Function parameters - bookingData:", bookingData, "outputType:", outputType, "printerName:", printerName);
+    console.log("Globals - currentBookingData:", currentBookingData, "selectedPrinter:", selectedPrinter);
+    
+    if (!bookingData || !bookingData.booking_id) {
+        console.error("Invalid booking data:", bookingData);
+        firework.launch("Ungültige Buchungsdaten!", 'error', 5000);
+        hideProgressBar();
+        return;
+    }
+    
+    // Find printer description from the stored printer data
+    var printerDescription = printerName; // fallback to name
+    // Try to get description from the dialog's printer list
+    var printerItems = document.querySelectorAll('.printer-item');
+    printerItems.forEach(function(item) {
+        var radio = item.querySelector('input[type="radio"]');
+        if (radio && radio.checked) {
+            var nameElement = item.querySelector('.printer-name');
+            if (nameElement) {
+                printerDescription = nameElement.textContent.trim();
+            }
+        }
+    });
+    
+    console.log("Calling receipt-generator with data:", bookingData, "outputType:", outputType, "printer:", printerName);
+    
+    firework.launch("Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird an Drucker '" + printerDescription + "' gesendet...", 'success', 5000);
+    
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+            hideProgressBar();
+            
+            if (outputType === 'print') {
+                // Handle print response
+                try {
+                    var response = JSON.parse(this.responseText);
+                    if (response.status === 'printed') {
+                        firework.launch("Beleg wurde erfolgreich an Drucker '" + printerDescription + "' gesendet!", 'success', 5000);
+                        console.log("Print job sent successfully:", response);
+                    } else {
+                        firework.launch("Fehler beim Drucken!", 'error', 5000);
+                    }
+                } catch (e) {
+                    console.error("Error parsing print response:", e);
+                    firework.launch("Fehler beim Drucken!", 'error', 5000);
+                }
+            }
+        }
+        else if (this.readyState == XMLHttpRequest.DONE) {
+            hideProgressBar();
+            console.error("Error generating receipt:", this.responseText);
+            firework.launch("Fehler beim Erstellen des Belegs!", 'error', 5000);
+        }
+    };
+    
+    showProgressBar();
+    
+    // Prepare data for receipt-generator API
+    var requestData = {
+        value: bookingData.value,
+        booking_id: bookingData.booking_id,
+        teacher: bookingData.teacher,
+        class: bookingData.class,
+        payment_type: bookingData.payment_type,
+        output_type: outputType,
+        cups_queue_name: printerName
+    };
+    
+    console.log("Sending request to receipt-generator:", requestData);
+    
+    xhttp.open("POST", receiptGeneratorUrl + "/api/generate-receipt", true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(requestData));
+}
 
