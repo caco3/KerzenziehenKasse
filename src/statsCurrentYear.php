@@ -189,8 +189,8 @@ function showDetailsPerDayAndYear($year) {
                     strftime(", %e. ", strtotime($date)) . $germanMonth[strftime("%m", strtotime($date)) - 1] .
                     ". " . strftime("%Y", strtotime($date)); 
         ?>
-        
-        <a name="<? echo($date); ?>"></a><h2><? echo($formatedDate); ?></h2>
+        <p><br></p>
+        <a name="<? echo($date); ?>"></a><h2><? echo($formatedDate); ?> <? echo(exportCsvButton($date)); ?></h2>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th class=td_rightBorder></th><th class=td_rightBorder>Menge</th><th class=td_rightBorder>Betrag</th></tr>
     <?
@@ -235,7 +235,6 @@ function showDetailsPerDayAndYear($year) {
         <img src=images/articles/colors.png height=25px> Parafinwachs: " . formatWeight($waxAmountParafin/1000) . " kg, <img src=images/articles/bee.png height=25px> Bienenwachs: " . formatWeight($waxAmountBee/1000) . " kg</b></td></tr>\n");
     ?>
         </table>
-        <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
         <?
     }
 }

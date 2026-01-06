@@ -2,6 +2,8 @@
 $root=".";
 include "$root/framework/header.php";
 
+// Get selected year from GET parameter, default to last year
+$selectedYear = isset($_GET['year']) ? intval($_GET['year']) : date("Y") - 1;
 
 // Today
 $today = date("Y-m-d");
@@ -22,12 +24,32 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 				</ul>
 			</div>
 			
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Jahr auswählen:</h4>
+				<form method="GET" style="margin: 0;">
+					<select name="year" onchange="this.form.submit()" style="padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; background: rgba(255, 255, 255, 0.8); color: rgba(73, 80, 87, 0.8); font-size: 14px;">
+						<?php
+							$currentYear = date("Y");
+							for ($year = $currentYear; $year >= 2020; $year--) {
+								$selected = ($year == $selectedYear) ? 'selected' : '';
+								echo "<option value=\"$year\" $selected>$year</option>";
+							}
+						?>
+					</select>
+				</form>
+			</div>
+			
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">CSV Export:</h4>
+				<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;"><? echo(exportCsvButton($selectedYear)); ?></div>
+			</div>
+			
 		</div>
-    <h2><a name=year>Alle Buchungen des letzten Jahres</h2>
+    <h2><a name=year>Alle Buchungen des Jahres <? echo($selectedYear); ?></h2>
     <table id=bookingsTable>
     <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th></th></tr>
     <?    
-        $datesWithBookings = getBookingDatesOfYear(date("Y") - 1);
+        $datesWithBookings = getBookingDatesOfYear($selectedYear);
     
 //         echo("<pre>"); print_r($datesWithBookings); echo("</pre>");
     
@@ -49,7 +71,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     //             echo("<pre>");
     //             print_r($booking); 
                 $formatedDate = $germanDayOfWeek[strftime("%w", strtotime($booking['date']))] . ", " . 
-                    strftime("%d. ", strtotime($booking['date'])) . $germanMonth[strftime("%m", strtotime($booking['date'])) - 1] . ". " . date("Y") - 1 ;
+                    strftime("%d. ", strtotime($booking['date'])) . $germanMonth[strftime("%m", strtotime($booking['date'])) - 1] . ". " . $selectedYear ;
                 
 //                 if( $formatedDate != $previousFormatedDate) {
     //                 echo("<tr><td></td></tr><tr><td></td></tr>\n");
