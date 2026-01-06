@@ -31,27 +31,35 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
 
     <div id="body">
 		<h1>Buchungen</h1>
-		<div style="display: flex; align-items: flex-start; gap: 40px;">
+		<div style="display: flex; align-items: flex-start; gap: 40px; justify-content: space-between;">
 			<ul>
 				<li><a href=bookings.php#today>Heute</a><br><br></li>
 				<li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
 				<li><a href=bookings_last_year.php>Letztes Jahr</a></li>
 			</ul>
 			
-			<div style="background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 15px; margin-top: 10px;">
-				<h4 style="margin: 0 0 10px 0; color: #495057; font-size: 14px;">Button-Legende:</h4>
-				<div style="display: grid; grid-template-columns: auto 1fr; gap: 8px; font-size: 12px;">
-					<div style="width: 20px; height: 20px; background: url('images/edit.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
-					<div style="color: #495057; padding-top: 2px;">Bearbeiten</div>
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 25px; margin-top: 10px; margin-left: auto; backdrop-filter: blur(5px);">
+				<h4 style="margin: 0 0 20px 0; color: rgba(73, 80, 87, 0.65); font-size: 18px; font-weight: 600;">Legende:</h4>
+				<div style="display: flex; gap: 20px; font-size: 16px; align-items: center;">
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/edit.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Bearbeiten</div>
+					</div>
 					
-					<div style="width: 20px; height: 20px; background: url('images/receipt-view.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
-					<div style="color: #495057; padding-top: 2px;">Quittung ansehen</div>
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/receipt-view.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Quittung ansehen</div>
+					</div>
 					
-					<div style="width: 20px; height: 20px; background: url('images/receipt-print.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
-					<div style="color: #495057; padding-top: 2px;">Quittung drucken</div>
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/receipt-print.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Quittung drucken</div>
+					</div>
 					
-					<div style="width: 20px; height: 20px; background: url('images/school.png') no-repeat center center; background-size: 16px 16px; background-color: #B0E0E6; border: 1px solid #87CEEB; border-radius: 4px;"></div>
-					<div style="color: #495057; padding-top: 2px;">Schul-Markierung</div>
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/school.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Schul-Markierung</div>
+					</div>
 				</div>
 			</div>
 		</div>
