@@ -31,11 +31,46 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
 
     <div id="body">
 		<h1>Buchungen</h1>
-	<ul>
-    <li><a href=bookings.php#today>Heute</a><br><br></li>
-    <li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
-    <li><a href=bookings_last_year.php>Letztes Jahr</a></li>
-</ul>
+		<div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Navigation:</h4>
+				<ul style="margin: 0; padding-left: 20px;">
+					<li><a href=bookings.php#today>Heute</a><br><br></li>
+					<li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
+					<li><a href=bookings_last_year.php>Vergangene Jahre</a></li>
+				</ul>
+			</div>
+			
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">CSV Export:</h4>
+				<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;"><? echo(exportCsvButton("bookings")); ?></div>
+			</div>
+			
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 25px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
+				<h4 style="margin: 0 0 20px 0; color: rgba(73, 80, 87, 0.65); font-size: 18px; font-weight: 600;">Legende:</h4>
+				<div style="display: flex; gap: 20px; font-size: 16px; align-items: center;">
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/edit.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Bearbeiten</div>
+					</div>
+					
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/receipt-view.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Quittung ansehen</div>
+					</div>
+					
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/receipt-print.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Quittung drucken</div>
+					</div>
+					
+					<div style="display: flex; align-items: center; gap: 8px;">
+						<div style="width: 28px; height: 28px; background: url('images/school.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
+						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Schul-Markierung</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	
       <h2><a name=today>Buchungen Heute (<? echo($todayDayOfWeek); ?>, <? echo($todayDE); ?>)</h2>
       <!--<p>Noch nicht implementiert</p>-->
@@ -62,7 +97,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
             echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
             echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
 			if ($booking['paymentMethod'] == 'cash') {
-				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/bargeld.png\" height=40px></td>");
 			}
 			else if ($booking['paymentMethod'] == 'twint') {
 				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
@@ -160,7 +195,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
                 echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
 				if ($booking['paymentMethod'] == 'cash') {
-					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/cash.png\" height=40px></td>");
+					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/bargeld.png\" height=40px></td>");
 				}
 				else if ($booking['paymentMethod'] == 'twint') {
 					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/twint.png\" height=30px></td>");
@@ -208,7 +243,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
         }
     ?>
     </table>    
-    <p><br>CSV Export: <? echo(exportCsvButton("bookings")); ?></p>
+    <p><br></p>
     
     
 <?

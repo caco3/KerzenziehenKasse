@@ -451,15 +451,34 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <div id="body">
-<a name="PerDayAndYear"></a><h1>Umsatz und Wachs pro Tag und Jahr</h1> 
-<ul>
-    <li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs + Gastronomie)</a><br><br></li>
-    <li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs + Gastronomie)</a><br><br></li>
-    <li><a href=#Wax_Currency>Umsatz Wachs</a><br><br></li>
-    <li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
-    <li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
-    <li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a><br><br></li>
-</ul>
+<h1>Umsatz und Wachs pro Tag und Jahr</h1>
+<div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
+	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Diagramme:</h4>
+		<ul style="margin: 0; padding-left: 20px;">
+			<li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs + Gastronomie)</a><br><br></li>
+			<li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs + Gastronomie)</a><br><br></li>
+			<li><a href=#Wax_Currency>Umsatz Wachs</a><br><br></li>
+			<li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
+			<li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
+			<li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a></li>
+		</ul>
+	</div>
+	
+	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
+		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Hinweise:</h4>
+		<ul style="margin: 0; padding-left: 20px; color: rgba(73, 80, 87, 0.65); font-size: 16px;">
+			<li style="margin-bottom: 10px;">2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
+			<li style="margin-bottom: 10px;">Wachspreise:
+				<ul style="margin-top: 8px; padding-left: 20px; font-size: 15px;">
+					<li style="margin-bottom: 6px;">Ab 2023: Bienenwachs: CHF 4.60, Parafinwachs: CHF 3.60</li>
+					<li style="margin-bottom: 6px;">2022: Bienenwachs: CHF 4.50, Parafinwachs: CHF 3.50</li>
+					<li>Bis 2021: Bienenwachs: CHF 4.40, Parafinwachs: CHF 3.30</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+</div>
 
 
 <!-- <p><a href="?nocss" target="_self">Ohne Hintergrundbild anzeigen</a><br>&nbsp;</p> -->
@@ -489,17 +508,6 @@ for ($i = 0; $i <= 10; $i++) { // for each year
 <? showDiagram("WaxAmountSummed", "Wachsmenge in kg", $totalWaxPerDayAndYearInKgSummed, ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png"); ?> 
 
 <hr>
-<h3>Hinweise</h3>
-<ul>
-    <li>2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
-	<li>Wachspreise:
-		<ul>
-			<li>Ab 2023: Bienenwachs: CHF 4.60, Parafinwachs: CHF 3.60</li>
-			<li>2022: Bienenwachs: CHF 4.50, Parafinwachs: CHF 3.50</li>
-			<li>Bis 2021: Bienenwachs: CHF 4.40, Parafinwachs: CHF 3.30</li>
-		</ul>
-	</li>
-</ul>
 
 <?
 include "$root/framework/footer.php"; 

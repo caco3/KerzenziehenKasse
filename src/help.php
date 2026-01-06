@@ -39,7 +39,7 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
         Mobile: 076/418'22'61
 		<p><br></p>
       <h2>Copyright</h2>
-      <p>&copy; 2018-2025 by George Ruinelli</p>
+      <p>&copy; 2018-2026 by George Ruinelli</p>
 	  <p><br></p>
     </div>
 

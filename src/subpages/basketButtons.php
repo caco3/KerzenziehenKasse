@@ -22,7 +22,7 @@ db_connect();
 			if($bookingId == "new" ) { // basket filled with articles for a new booking
 		?>
 			<td>
-					<button type=button id=cashButton class=cashButton onclick="cashClicked();"><img src="images/cash.png" height=45px><br>Bar bezahlt</button>
+					<button type=button id=cashButton class=cashButton onclick="cashClicked();"><img src="images/bargeld.png" height=45px><br>Bar bezahlt</button>
 			</td>
 			<td>
 					<button type=button id=twintButton class=twintButton onclick="twintClicked();"><img src="images/twint.png" height=40px><br>Mit Twint bez.</button>
@@ -41,7 +41,7 @@ db_connect();
 				$paymentMethod = $booking['paymentMethod'];
 				
 				if ($paymentMethod == 'cash') { ?>
-					<img src="images/cash.png" height=40px>
+					<img src="images/bargeld.png" height=40px>
 				<? } else if ($paymentMethod == 'twint') { ?>
 					<img src="images/twint.png" height=40px>
 				<? } else { /* invoice */ ?>

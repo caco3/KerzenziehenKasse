@@ -163,7 +163,7 @@ function refreshExtraSummary() {
 				var parts = [];
 				if (extra.schulklasse) parts.push("Klasse: " + extra.schulklasse);
 				if (extra.leiter) parts.push("Leiter: " + extra.leiter);
-				var summary = parts.length ? parts.join(", ") : "Klicken zum Bearbeiten";
+				var summary = parts.length ? parts.join(", ") : "Drücken zum Bearbeiten";
 				var el = document.getElementById("extraSummaryText");
 				if (el) el.innerText = summary;
 				console.log("Extra summary updated:", summary);
@@ -283,7 +283,7 @@ function clearBasket() {
     }
     
     cancelClearBasketQuestionDialogId = firework.launch(message + 
-    "<br><button class=fireworksDialogButtons onclick=\"definitlyClearBasket()\">Ja </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class=fireworksDialogButtons onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
+    "<br><button class=clearBasket onclick=\"definitlyClearBasket()\">Ja </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button class=cancelClearBasketButton onclick=\"cancelClearBasket()\">Nein</button>", 'warning', 60000);
 }
 
 

@@ -130,7 +130,8 @@ function showSummaryOfYear($year) {
 
         
     ?>
-        <a name=year_<? echo($year); ?>_summary></a><h2><? echo($year); ?></h2>
+        <p><br></p>
+        <a name=year_<? echo($year); ?>_summary></a><h2><? echo($year); ?><? echo(exportCsvButton($year)); ?></h2>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th class=td_rightBorder></th><th class=td_rightBorder>Menge</th><th class=td_rightBorder>Betrag</th></tr>
     <?
@@ -181,7 +182,6 @@ function showSummaryOfYear($year) {
         <img src=images/articles/colors.png height=25px> Parafinwachs: " . formatWeight($waxAmountParafin/1000) . " kg, <img src=images/articles/bee.png height=25px> Bienenwachs: " . formatWeight($waxAmountBee/1000) . " kg</b></td></tr>\n");
     ?>
         </table>
-        <p><br>CSV Export: <? echo(exportCsvButton($year)); ?></p>
         </div>
     <?
 }
@@ -198,7 +198,7 @@ function showSummaryOfYear($year) {
 
 
 ?>
-    <div id="body">
+    <div id="body" class="statsYears">
   
 <a name=PerYear></a><h1>Umsatz pro Jahr</h1>
 <?

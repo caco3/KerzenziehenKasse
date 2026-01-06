@@ -189,8 +189,8 @@ function showDetailsPerDayAndYear($year) {
                     strftime(", %e. ", strtotime($date)) . $germanMonth[strftime("%m", strtotime($date)) - 1] .
                     ". " . strftime("%Y", strtotime($date)); 
         ?>
-        
-        <a name="<? echo($date); ?>"></a><h2><? echo($formatedDate); ?></h2>
+        <p><br></p>
+        <a name="<? echo($date); ?>"></a><h2><? echo($formatedDate); ?> <? echo(exportCsvButton($date)); ?></h2>
         <table id=bookingsTable>
         <tr><th>Artikel</th><th class=td_rightBorder></th><th class=td_rightBorder>Menge</th><th class=td_rightBorder>Betrag</th></tr>
     <?
@@ -228,14 +228,13 @@ function showDetailsPerDayAndYear($year) {
         echo("<tr class=tr_bottomBorder><td colspan=2 class=td_rightBorder>Spenden</td><td class=td_rightBorder></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
         
         /* Total CHF */
-        echo("<tr><td colspan=2 class=td_rightBorder><b>Total</b></td><td class=td_rightBorder></td><td><b>CHF " . roundMoney10($total) . " (<img src=\"images/cash.png\" height=25px> CHF " . roundMoney10($cash) . ", <img src=\"images/twint-icon.png\" height=25px> CHF " . roundMoney10($twint) . ", <img src=\"images/invoice.png\" height=25px> CHF " . roundMoney10($invoice) .")</b></td></tr>\n");
+        echo("<tr><td colspan=2 class=td_rightBorder><b>Total</b></td><td class=td_rightBorder></td><td><b>CHF " . roundMoney10($total) . " (<img src=\"images/bargeld.png\" height=25px> CHF " . roundMoney10($cash) . ", <img src=\"images/twint-icon.png\" height=25px> CHF " . roundMoney10($twint) . ", <img src=\"images/invoice.png\" height=25px> CHF " . roundMoney10($invoice) .")</b></td></tr>\n");
         
         /* Total Wachs */
         echo("<tr><td colspan=2 class=td_rightBorder></td><td class=td_rightBorder></td><td class=td_rightBorder><b>
         <img src=images/articles/colors.png height=25px> Parafinwachs: " . formatWeight($waxAmountParafin/1000) . " kg, <img src=images/articles/bee.png height=25px> Bienenwachs: " . formatWeight($waxAmountBee/1000) . " kg</b></td></tr>\n");
     ?>
         </table>
-        <p><br>CSV Export: <? echo(exportCsvButton($date)); ?></p>
         <?
     }
 }
@@ -246,7 +245,7 @@ function showDetailsPerDayAndYear($year) {
 
 
 ?>
-<div id="body">  
+<div id="body" class="statsCurrentYear">  
 <a name="PerDay"></a><h1>Umsatz pro Tag (aktuelles Jahr)</h1>
 <?
     $year = date("Y"); 
