@@ -22,17 +22,4 @@ $articlesToShow =           [
                                 'wachs' => ['normal', 'effect'],
                                 'guss'  => ['normal', 'floatingCandle', 'premade']
                             ];
-                    
-// Printer configuration for receipt generator
-$printer_queue = ['']; // Add CUPS printer queue name here, e.g., ['HP_LaserJet'] or leave empty for default printer// Printer (CUPS) queues on the host system.
-// Call following cmd on the host to get them:
-// lpstat -v
-$printer_queue = ["Drucker_in_der_Ecke_rechts_USB",
-                  "Drucker_rechts_in_der_Ecke_P1102w",
-                  "Drucker_vor_Chris_Büro"];
-// Corrsponding human readable names
-$printer_queue_names = ["Drucker rechts in der Eccke (via USB)",
-                        "Drucker in der Ecke (via WLAN)",
-                        "Drucker vor Chris's Büro (via WLAN)"]
-
 ?>
