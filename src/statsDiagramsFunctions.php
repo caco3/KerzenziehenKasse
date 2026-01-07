@@ -91,7 +91,7 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 				
 				<?
 				/* The current year shall have an outstanding color */
-				$colors = ["#b30000", "#7c1158", "#4421af", "#1a53ff", "#00b7c7", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78"];
+			//	$colors = ["#b30000", "#7c1158", "#4421af", "#1a53ff", "#00b7c7", "#00b7c7", "#5ad45a", "#8be04e", "#ebdc78"];
 				$colors = ["#0a481b", "#590058", "#0b448c", "#781f07", "#424006", "#481d32", "#132945", "#4f260c"];
 				$colors = array_slice($colors, 0, count($years) - 1); // cut off current and future years
 				array_push($colors, "#00af00"); // insert outstanding color
