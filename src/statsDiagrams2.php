@@ -196,6 +196,7 @@ function loadDiagram(name, yTitle, dataId, nameLowerPart, nameUpperPart, widthAd
     container.innerHTML = chartHtml;
     
     // Create the chart using consolidated data file
+    console.log("dataId:", dataId);
     createChart(chartId, legendId, 'getChartData.php?type=' + dataId, yTitle);
 }
 

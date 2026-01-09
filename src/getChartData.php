@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: application/json');
-/*
-// Include only the essential framework files (no HTML output)
+
 $root=".";
 require_once("$root/framework/credentials_check.php");
 require_once("$root/config/config_generic.php");
@@ -21,35 +20,29 @@ $statsData = getStatsData();
 // Get the chart type from the URL parameter
 $chartType = $_GET['type'] ?? '';
 
-// Map chart types to data IDs and column names
+// Map chart types to column names
 $chartConfig = [
     'totalPerDayAndYear' => [
-        'dataId' => 'totalPerDayAndYear',
         'lowerName' => ': Öffentlich',
         'upperName' => ': Schule/Geschlossene Gesellschaft/Private Gruppe'
     ],
     'totalPerDayAndYearSummed' => [
-        'dataId' => 'totalPerDayAndYearSummed',
         'lowerName' => ': Öffentlich',
         'upperName' => ': Schule/Geschlossene Gesellschaft/Private Gruppe'
     ],
     'totalWaxPerDayAndYear' => [
-        'dataId' => 'totalWaxPerDayAndYear',
         'lowerName' => ': Öffentlich',
         'upperName' => ': Schule/Geschlossene Gesellschaft/Private Gruppe'
     ],
     'totalFoodPerDayAndYear' => [
-        'dataId' => 'totalFoodPerDayAndYear',
         'lowerName' => ': Öffentlich',
         'upperName' => ': Schule/Geschlossene Gesellschaft/Private Gruppe'
     ],
     'totalWaxPerDayAndYearInKg' => [
-        'dataId' => 'totalWaxPerDayAndYearInKg',
         'lowerName' => ': Parafinwachs',
         'upperName' => ': Bienenwachs'
     ],
     'totalWaxPerDayAndYearInKgSummed' => [
-        'dataId' => 'totalWaxPerDayAndYearInKgSummed',
         'lowerName' => ': Parafinwachs',
         'upperName' => ': Bienenwachs'
     ]
@@ -62,7 +55,7 @@ if (!isset($chartConfig[$chartType])) {
 }
 
 $config = $chartConfig[$chartType];
-$data = $statsData[$config['dataId']];
+$data = $statsData[$chartType];
 
 // Format the data for Google Charts using the same logic as statsDiagramsFunctions.php
 $formattedData = [];
@@ -103,8 +96,8 @@ foreach($data as $day => $dataOfDay) {
     
     foreach($years as $year) {
         if (is_array($dataOfDay['year']) and array_key_exists($year, $dataOfDay['year'])) {
-            $row[] = number_format($dataOfDay['year'][$year]['lowerPart'], 1, ".", "");
-            $row[] = number_format($dataOfDay['year'][$year]['upperPart'], 1, ".", "");
+            $row[] = $dataOfDay['year'][$year]['lowerPart'];
+            $row[] = $dataOfDay['year'][$year]['upperPart'];
         }
         else {
             $row[] = 0;
@@ -114,8 +107,8 @@ foreach($data as $day => $dataOfDay) {
     
     $formattedData[] = $row;
 }
-*/
 
+/*
 // Testing - use hardcoded data for now
 $formattedData = [
     ['', '2017: Öffentlich', '2017: Schule/Geschlossene Gesellschaft/Private Gruppe', '2018: Öffentlich', '2018: Schule/Geschlossene Gesellschaft/Private Gruppe', '2019: Öffentlich', '2019: Schule/Geschlossene Gesellschaft/Private Gruppe', '2021: Öffentlich', '2021: Schule/Geschlossene Gesellschaft/Private Gruppe', '2022: Öffentlich', '2022: Schule/Geschlossene Gesellschaft/Private Gruppe', '2023: Öffentlich', '2023: Schule/Geschlossene Gesellschaft/Private Gruppe', '2024: Öffentlich', '2024: Schule/Geschlossene Gesellschaft/Private Gruppe', '2025: Öffentlich', '2025: Schule/Geschlossene Gesellschaft/Private Gruppe', '2026: Öffentlich', '2026: Schule/Geschlossene Gesellschaft/Private Gruppe'],
@@ -134,7 +127,7 @@ $formattedData = [
     ['Fr', 765.5, 0.0, 883.2, 0.0, 883.1, 0.0, 1317.9, 229.7, 1705.4, 406.9, 1186.3, 371.5, 1424.6, 150.0, 1388.8, 250.0, 3000, 0],
     ['Sa', 1394.6, 0.0, 1852.3, 0.0, 2313.1, 0.0, 2583.8, 0.0, 3871.1, 0.0, 2830.4, 0.0, 3092.0, 0.0, 2848.6, 0.0, 2000, 0],
     ['So', 1275.8, 0.0, 1594.3, 0.0, 1909.8, 105.0, 1724.3, 0.0, 2604.4, 0.0, 2751.9, 0.0, 2729.6, 0.0, 3179.1, 0.0, 1000, 500]
-];
+];*/
 
 
 
