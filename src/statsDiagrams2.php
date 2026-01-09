@@ -15,34 +15,38 @@ google.charts.setOnLoadCallback(function() {
     window.googleChartsReady = true;
 });
 
-// Reusable chart function
+// Reusable chart function - now returns a promise
 function createChart(chartId, legendId, dataUrl, chartTitle) {
-    var data = [];
-    var headers = [];
-    
-    // Load chart data via AJAX
-    console.log("Loading " + dataUrl);
-    fetch(dataUrl)
-        .then(response => response.json())
-        .then(chartData => {
-            data = chartData;
-            headers = data[0].slice(1);
-            
-            // Wait for Google Charts to be ready
-            function waitForGoogleCharts() {
-                if (window.googleChartsReady && google.visualization) {
-                    drawChart(chartId, data, headers, chartTitle);
-                    drawLegendChart(legendId, headers);
-                } else {
-                    setTimeout(waitForGoogleCharts, 100);
+    return new Promise(function(resolve, reject) {
+        var data = [];
+        var headers = [];
+        
+        // Load chart data via AJAX
+        console.log("Loading " + dataUrl);
+        fetch(dataUrl)
+            .then(response => response.json())
+            .then(chartData => {
+                data = chartData;
+                headers = data[0].slice(1);
+                
+                // Wait for Google Charts to be ready
+                function waitForGoogleCharts() {
+                    if (window.googleChartsReady && google.visualization) {
+                        drawChart(chartId, data, headers, chartTitle);
+                        drawLegendChart(legendId, headers);
+                        resolve();
+                    } else {
+                        setTimeout(waitForGoogleCharts, 100);
+                    }
                 }
-            }
-            waitForGoogleCharts();
-        })
-        .catch(error => {
-            console.error('Error loading chart data:', error);
-            firework.launch('Fehler beim Laden der Chart-Daten: ' + error, 'error', 5000);
-        });
+                waitForGoogleCharts();
+            })
+            .catch(error => {
+                console.error('Error loading chart data:', error);
+                firework.launch('Fehler beim Laden der Chart-Daten: ' + error, 'error', 5000);
+                reject(error);
+            });
+    });
 
     function drawChart(chartId, data, headers, chartTitle) {
         // Prepare data for Google Charts - each year with 2 stacked values
@@ -130,7 +134,7 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
                 textStyle: { fontSize: 14 },
                 viewWindow: {
                     min: 0,
-                    max: maxValue * 1.1,
+                    max: maxValue * 1.05,
                 },
                 gridlines: {
                     color: 'transparent'
@@ -151,6 +155,12 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
 
         var chart = new google.charts.Bar(document.getElementById(chartId));
         chart.draw(chartDataForGoogle, google.charts.Bar.convertOptions(options));
+        
+        // Hide loading indicator
+        var loadingElement = document.getElementById('loading_' + chartId);
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
     }
     
     // HTML Legend
@@ -178,26 +188,34 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
     }
 }
 
-// Load diagram function
-function loadDiagram(name, yTitle, dataId, nameLowerPart, nameUpperPart, widthAdjustment, paddingLeft, prefix, suffix, fractionDigits, bgImage) {
-    // Create chart container
+// Create container immediately (without data loading)
+function createDiagramContainer(name, yTitle, dataId, nameLowerPart, nameUpperPart, widthAdjustment, paddingLeft, prefix, suffix, fractionDigits, bgImage) {
     var chartId = 'chart_' + name;
     var legendId = 'legend_' + name;
     
     var container = document.getElementById(dataId);
     if (!container) {
         console.error('Container not found: ' + dataId);
-        return;
+        return null;
     }
     
-    var chartHtml = '<div id="' + chartId + '" style="width: 1999px; margin: 0; padding: 0; height: 470px; background-image: url(images/' + bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div>';
+    // Show chart container with background image and loading indicator immediately
+    var chartHtml = '<div id="' + chartId + '" style="width: 1999px; margin: 0; padding: 0; height: 470px; background-image: url(images/' + bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px; position: relative;">';
+    chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
+    chartHtml += '</div>';
     chartHtml += '<div id="' + legendId + '" style="max-width: 1400px; margin: 0; height: 100px;"></div>';
     
     container.innerHTML = chartHtml;
     
-    // Create the chart using consolidated data file
-    console.log("dataId:", dataId);
-    createChart(chartId, legendId, 'getChartData.php?type=' + dataId, yTitle);
+    return { chartId: chartId, legendId: legendId, dataId: dataId, yTitle: yTitle };
+}
+
+// Load data into existing container
+function loadDiagramData(containerInfo) {
+    if (!containerInfo) return Promise.reject('Invalid container info');
+    
+    // Start loading data in background
+    return createChart(containerInfo.chartId, containerInfo.legendId, 'getChartData.php?type=' + containerInfo.dataId, containerInfo.yTitle);
 }
 
 var data = [];
@@ -357,14 +375,32 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 
 
 <script>
-loadDiagram("Common", "Umsatz in CHF", "totalPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
-/*
-loadDiagram("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed", "", "", -2, 2, "CHF", "", 2, "chart-bg.png");
-loadDiagram("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
-loadDiagram("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", "", "", -8, 8, "CHF ", "", 2, "chart-bg.png");
-loadDiagram("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png");
-loadDiagram("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png"); 
-*/
+// Create all containers immediately, then load data sequentially
+function loadAllDiagrams() {
+    // Create all containers first (immediate display)
+    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
+    var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed", "", "", -2, 2, "CHF", "", 2, "chart-bg.png");
+    var waxContainer = createDiagramContainer("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
+    var foodContainer = createDiagramContainer("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", "", "", -8, 8, "CHF ", "", 2, "chart-bg.png");
+    var waxAmountContainer = createDiagramContainer("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png");
+    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png");
+    
+    // Now load data sequentially into existing containers
+    loadDiagramData(commonContainer)
+        .then(() => loadDiagramData(commonSummedContainer))
+        .then(() => loadDiagramData(waxContainer))
+        .then(() => loadDiagramData(foodContainer))
+        .then(() => loadDiagramData(waxAmountContainer))
+        .then(() => loadDiagramData(waxAmountSummedContainer))
+        .catch(error => console.error('Error loading diagrams:', error));
+}
+
+// Start loading when page is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadAllDiagrams);
+} else {
+    loadAllDiagrams();
+}
 </script>
 
 
