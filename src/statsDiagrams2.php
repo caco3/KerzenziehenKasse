@@ -2,21 +2,9 @@
 
 $root=".";
 include "$root/framework/header.php";
-/*include "statsDataProvider.php";
-include "statsDiagramsFunctions.php";
-
-
-
-$statsData = getStatsData();
-$totalPerDayAndYear = $statsData['totalPerDayAndYear'];
-$totalPerDayAndYearSummed = $statsData['totalPerDayAndYearSummed'];
-$totalWaxPerDayAndYear = $statsData['totalWaxPerDayAndYear'];
-$totalFoodPerDayAndYear = $statsData['totalFoodPerDayAndYear'];
-$totalWaxPerDayAndYearInKg = $statsData['totalWaxPerDayAndYearInKg'];
-$totalWaxPerDayAndYearInKgSummed = $statsData['totalWaxPerDayAndYearInKgSummed']; */
-
 ?>
 
+<script type="text/javascript" src="<? echo("$root"); ?>/framework/google-charts-loader.js"></script>
 <script>
 var data = [];
 
@@ -74,16 +62,6 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 }
 
 </script>
-
-
-<div id="body" style="margin: 0; padding: 0;">
-<h1 style="margin: 0; padding: 0;">Umsatz und Wachs pro Tag und Jahr</h1>
-
-<!-- Google Charts Bar Chart -->
-<div id="chart" style="width: 1999px; margin: 0; padding: 0; height: 470px; background-image: url(images/chart-bg-public-school.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div>
-
-<!-- Google Charts Legend (HTML) -->
-<div id="legendChart" style="max-width: 1400px; margin: 0; height: 100px;"></div>
 
 <style>
     /* Override Google Charts default padding */
@@ -275,6 +253,25 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
         document.getElementById('legendChart').innerHTML = legendHTML;
     }
 </script>
+
+
+
+
+
+
+
+
+<div id="body" style="margin: 0; padding: 0;">
+<h1 style="margin: 0; padding: 0;">Umsatz und Wachs pro Tag und Jahr</h1>
+
+
+<a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie)</span></h2>
+<div id="chart" style="width: 1999px; margin: 0; padding: 0; height: 470px; background-image: url(images/chart-bg-public-school.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div>
+<div id="legendChart" style="max-width: 1400px; margin: 0; height: 100px;"></div>
+
+
+
+
 
 
 
