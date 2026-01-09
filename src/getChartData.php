@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: application/json');
 
-// Chart data
 $data = [
     ['', '2017: Öffentlich', '2017: Schule/Geschlossene Gesellschaft/Private Gruppe', '2018: Öffentlich', '2018: Schule/Geschlossene Gesellschaft/Private Gruppe', '2019: Öffentlich', '2019: Schule/Geschlossene Gesellschaft/Private Gruppe', '2021: Öffentlich', '2021: Schule/Geschlossene Gesellschaft/Private Gruppe', '2022: Öffentlich', '2022: Schule/Geschlossene Gesellschaft/Private Gruppe', '2023: Öffentlich', '2023: Schule/Geschlossene Gesellschaft/Private Gruppe', '2024: Öffentlich', '2024: Schule/Geschlossene Gesellschaft/Private Gruppe', '2025: Öffentlich', '2025: Schule/Geschlossene Gesellschaft/Private Gruppe', '2026: Öffentlich', '2026: Schule/Geschlossene Gesellschaft/Private Gruppe'],
     ['So', 900.0, 400.0, 2000.0, 400.0, 1920.3, 500.0, 1382.5, 500.0, 1914.2, 500.0, 2026.5, 0.0, 1568.4, 0.0, 1630.2, 0.0, 2009.0, 1700.5],
@@ -22,4 +21,6 @@ $data = [
 ];
 
 echo json_encode($data);
+
+//echo json_encode($formattedData);
 ?>
