@@ -97,7 +97,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <h1 style="margin: 0; padding: 0;">Umsatz und Wachs pro Tag und Jahr</h1>
 
 <!-- Google Charts Bar Chart -->
-<div id="chart" style="width: 2000px; margin: 0; padding: 0; height: 470px; background-image: url(images/chart-bg-public-school.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div>
+<div id="chart" style="width: 1999px; margin: 0; padding: 0; height: 470px; background-image: url(images/chart-bg-public-school.png); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px;"></div>
 
 <!-- Google Charts Legend (HTML) -->
 <div id="legendChart" style="max-width: 1400px; margin: 0; height: 100px;"></div>
