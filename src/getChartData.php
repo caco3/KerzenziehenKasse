@@ -1,6 +1,10 @@
 <?php
 header('Content-Type: application/json');
 
+// Start timing for getChartData.php
+$startTime = microtime(true);
+error_log("getChartData.php starting execution...");
+
 // Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 0); // Don't display errors in output
@@ -116,6 +120,12 @@ foreach ($allChartTypes as $type) {
 
 // Clear any output buffering and output clean JSON
 ob_end_clean();
+
+// Calculate and log total execution time
+$endTime = microtime(true);
+$totalTime = ($endTime - $startTime) * 1000;
+error_log("getChartData.php completed in " . number_format($totalTime, 2) . " ms");
+
 echo json_encode($allFormattedData);
 exit;
 ?>

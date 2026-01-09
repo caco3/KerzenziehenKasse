@@ -429,6 +429,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 // Create all containers immediately, then load data once and render all charts
 function loadAllDiagrams() {
     var totalStartTime = performance.now();
+    console.log('=== DIAGRAM LOADING START ===');
     console.log('Starting to load all diagrams...');
     
     // Create all containers first (immediate display)
@@ -445,7 +446,7 @@ function loadAllDiagrams() {
     loadAllChartData()
         .then(function() {
             var dataLoadTime = performance.now() - totalStartTime;
-            console.log('Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
+            console.log('✓ Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
             
             // Render all charts simultaneously
             var promises = containers.map(function(container) {
@@ -455,15 +456,20 @@ function loadAllDiagrams() {
             Promise.all(promises)
                 .then(function() {
                     var totalTime = performance.now() - totalStartTime;
-                    console.log('All diagrams loaded and rendered in ' + totalTime.toFixed(2) + ' ms total');
+                    console.log('✓ All charts rendered successfully');
+                    console.log('=== DIAGRAM LOADING COMPLETE ===');
+                    console.log('Total time: ' + totalTime.toFixed(2) + ' ms');
+                    console.log('Charts rendered: ' + containers.length);
                 })
                 .catch(function(error) {
-                    console.error('Error rendering diagrams:', error);
+                    var totalTime = performance.now() - totalStartTime;
+                    console.error('✗ Error rendering diagrams after ' + totalTime.toFixed(2) + ' ms:', error);
                     firework.launch('Fehler beim Rendern der Diagramme: ' + error, 'error', 5000);
                 });
         })
         .catch(function(error) {
-            console.error('Error loading diagrams:', error);
+            var totalTime = performance.now() - totalStartTime;
+            console.error('✗ Error loading diagrams after ' + totalTime.toFixed(2) + ' ms:', error);
             firework.launch('Fehler beim Laden der Diagramme: ' + error, 'error', 5000);
         });
 }
