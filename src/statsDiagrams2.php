@@ -108,11 +108,12 @@ function drawChart(chartId, data, headers, chartTitle) {
         
         var chartDataForGoogle = google.visualization.arrayToDataTable(chartData);
         
-        // Calculate max value for scaling
+        // Calculate max value for scaling - use sum of stacked values
         var maxValue = 0;
         for (var i = 1; i < chartData.length; i++) {
-            for (var j = 1; j < chartData[i].length; j++) {
-                if (chartData[i][j] > maxValue) maxValue = chartData[i][j];
+            for (var j = 1; j < chartData[i].length; j += 2) {
+                var stackedValue = (parseFloat(chartData[i][j]) || 0) + (parseFloat(chartData[i][j + 1]) || 0);
+                if (stackedValue > maxValue) maxValue = stackedValue;
             }
         }
         console.log("maxValue:", maxValue);
@@ -158,7 +159,7 @@ function drawChart(chartId, data, headers, chartTitle) {
                 textStyle: { fontSize: 14 },
                 viewWindow: {
                     min: 0,
-                    max: maxValue * 1.05,
+                    max: maxValue * 1.02,
                 },
                 gridlines: {
                     color: 'transparent'
