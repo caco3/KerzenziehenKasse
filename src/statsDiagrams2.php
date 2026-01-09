@@ -87,6 +87,7 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
                 if (chartData[i][j] > maxValue) maxValue = chartData[i][j];
             }
         }
+        console.log("maxValue:", maxValue);
         
         // Generate series configuration - each year gets 2 series (stacked)
         var series = {};
@@ -129,7 +130,7 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
                 textStyle: { fontSize: 14 },
                 viewWindow: {
                     min: 0,
-                    max: maxValue * 1.1,
+                    max: maxValue * 1.1 * 0.04,
                 },
                 gridlines: {
                     color: 'transparent'
@@ -356,12 +357,13 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 
 <script>
 loadDiagram("Common", "Umsatz in CHF", "totalPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
+/*
 loadDiagram("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed", "", "", -2, 2, "CHF", "", 2, "chart-bg.png");
 loadDiagram("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
 loadDiagram("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", "", "", -8, 8, "CHF ", "", 2, "chart-bg.png");
 loadDiagram("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png");
 loadDiagram("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png"); 
-
+*/
 </script>
 
 
