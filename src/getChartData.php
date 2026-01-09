@@ -24,9 +24,6 @@ include "statsDataProvider.php";
 // Get the stats data
 $statsData = getStatsData();
 
-// Get the chart type from the URL parameter
-$chartType = $_GET['type'] ?? '';
-
 // Map chart types to column names
 $chartConfig = [
     'totalPerDayAndYear' => [
@@ -55,79 +52,70 @@ $chartConfig = [
     ]
 ];
 
-// Special case: return all formatted data at once
-if ($chartType === 'all') {
-    $allFormattedData = [];
+// Return all formatted data
+$allFormattedData = [];
+
+// Get all chart types and format their data
+$allChartTypes = array_keys($chartConfig);
+foreach ($allChartTypes as $type) {
+    // Process this chart type
+    $config = $chartConfig[$type];
+    $data = $statsData[$type];
     
-    // Get all chart types and format their data
-    $allChartTypes = array_keys($chartConfig);
-    foreach ($allChartTypes as $type) {
-        // Temporarily set chart type for processing
-        $tempChartType = $chartType;
-        $chartType = $type;
+    // Format the data for this chart type
+    $formattedData = [];
+    
+    // Create headers
+    $headers = [''];
+    $yearsCovered = date("Y") - 2017 + 1;
+    $years = array();
+    for($i = $yearsCovered; $i > 0; $i--) {
+        $year = date("Y") - $i + 1; 
         
-        // Process this chart type
-        $config = $chartConfig[$chartType];
-        $data = $statsData[$chartType];
-        
-        // Format the data for this chart type
-        $formattedData = [];
-        
-        // Create headers
-        $headers = [''];
-        $yearsCovered = date("Y") - 2017 + 1;
-        $years = array();
-        for($i = $yearsCovered; $i > 0; $i--) {
-            $year = date("Y") - $i + 1; 
-            
-            if ($year == 2020) {
-                continue;
-            }					
-            array_push($years, $year);
-        }				
+        if ($year == 2020) {
+            continue;
+        }					
+        array_push($years, $year);
+    }				
 
+    foreach($years as $year) {
+        $headers[] = $year . $config['lowerName'];
+        $headers[] = $year . $config['upperName'];
+    }
+
+    $formattedData[] = $headers;
+
+    // Add data rows
+    foreach($data as $day => $dataOfDay) {
+        if(count($dataOfDay) == 0) {
+            continue;
+        }
+
+        if ((!array_key_exists("formatedDate", $dataOfDay)) or ($dataOfDay['formatedDate'] == "")) {
+            continue;
+        }
+        
+        $row = [$dataOfDay['formatedDate']];
+        
         foreach($years as $year) {
-            $headers[] = $year . $config['lowerName'];
-            $headers[] = $year . $config['upperName'];
-        }
-
-        $formattedData[] = $headers;
-
-        // Add data rows
-        foreach($data as $day => $dataOfDay) {
-            if(count($dataOfDay) == 0) {
-                continue;
+            if (is_array($dataOfDay['year']) and array_key_exists($year, $dataOfDay['year'])) {
+                $row[] = $dataOfDay['year'][$year]['lowerPart'];
+                $row[] = $dataOfDay['year'][$year]['upperPart'];
             }
-
-            if ((!array_key_exists("formatedDate", $dataOfDay)) or ($dataOfDay['formatedDate'] == "")) {
-                continue;
+            else {
+                $row[] = 0;
+                $row[] = 0;
             }
-            
-            $row = [$dataOfDay['formatedDate']];
-            
-            foreach($years as $year) {
-                if (is_array($dataOfDay['year']) and array_key_exists($year, $dataOfDay['year'])) {
-                    $row[] = $dataOfDay['year'][$year]['lowerPart'];
-                    $row[] = $dataOfDay['year'][$year]['upperPart'];
-                }
-                else {
-                    $row[] = 0;
-                    $row[] = 0;
-                }
-            }
-            
-            $formattedData[] = $row;
         }
         
-        $allFormattedData[$type] = $formattedData;
-        
-        // Restore original chart type
-        $chartType = $tempChartType;
+        $formattedData[] = $row;
     }
     
-    // Clear any output buffering and output clean JSON
-    ob_end_clean();
-    echo json_encode($allFormattedData);
-    exit;
+    $allFormattedData[$type] = $formattedData;
 }
+
+// Clear any output buffering and output clean JSON
+ob_end_clean();
+echo json_encode($allFormattedData);
+exit;
 ?>

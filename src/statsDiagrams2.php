@@ -26,7 +26,7 @@ function loadAllChartData() {
             return;
         }
         
-        fetch('getChartData.php?type=all')
+        fetch('getChartData.php')
             .then(response => response.json())
             .then(data => {
                 allChartData = data;
@@ -40,7 +40,7 @@ function loadAllChartData() {
 }
 
 // Reusable chart function - now uses shared data
-function createChart(chartId, legendId, chartType, chartTitle) {
+function createChart(chartId, legendId, chartType, chartTitle, prefix, suffix, fractionDigits) {
     return new Promise(function(resolve, reject) {
         loadAllChartData()
             .then(allData => {
@@ -55,7 +55,7 @@ function createChart(chartId, legendId, chartType, chartTitle) {
                 // Wait for Google Charts to be ready
                 function waitForGoogleCharts() {
                     if (window.googleChartsReady && google.visualization) {
-                        drawChart(chartId, data, headers, chartTitle);
+                        drawChart(chartId, data, headers, chartTitle, prefix, suffix, fractionDigits);
                         drawLegendChart(legendId, headers);
                         resolve();
                     } else {
@@ -72,7 +72,7 @@ function createChart(chartId, legendId, chartType, chartTitle) {
     });
 }
 
-function drawChart(chartId, data, headers, chartTitle) {
+function drawChart(chartId, data, headers, chartTitle, prefix, suffix, fractionDigits) {
         // Prepare data for Google Charts - each year with 2 stacked values
         var chartData = [];
         
@@ -156,7 +156,6 @@ function drawChart(chartId, data, headers, chartTitle) {
             },
             
             vAxis: {
-                textStyle: { fontSize: 14 },
                 viewWindow: {
                     min: 0,
                     max: maxValue * 1.02,
@@ -180,6 +179,18 @@ function drawChart(chartId, data, headers, chartTitle) {
 
         var chart = new google.charts.Bar(document.getElementById(chartId));
         chart.draw(chartDataForGoogle, google.charts.Bar.convertOptions(options));
+        
+        // Apply number formatting for tooltips like the original implementation
+        var formatter = new google.visualization.NumberFormat({
+            decimalSymbol: '.', 
+            fractionDigits: fractionDigits || 2, 
+            groupingSymbol: "'", 
+            prefix: (prefix || '') + ' ', 
+            suffix: ' ' + (suffix || '')
+        });
+        for (var i = 1; i < chartDataForGoogle.getNumberOfColumns(); i++) {
+            formatter.format(chartDataForGoogle, i);
+        }
         
         // Hide loading indicator
         var loadingElement = document.getElementById('loading_' + chartId);
@@ -231,7 +242,7 @@ function createDiagramContainer(name, yTitle, dataId, nameLowerPart, nameUpperPa
     
     container.innerHTML = chartHtml;
     
-    return { chartId: chartId, legendId: legendId, dataId: dataId, yTitle: yTitle };
+    return { chartId: chartId, legendId: legendId, dataId: dataId, yTitle: yTitle, prefix: prefix, suffix: suffix, fractionDigits: fractionDigits };
 }
 
 // Load data into existing container
@@ -239,7 +250,7 @@ function loadDiagramData(containerInfo) {
     if (!containerInfo) return Promise.reject('Invalid container info');
     
     // Start loading data in background using shared data
-    return createChart(containerInfo.chartId, containerInfo.legendId, containerInfo.dataId, containerInfo.yTitle);
+    return createChart(containerInfo.chartId, containerInfo.legendId, containerInfo.dataId, containerInfo.yTitle, containerInfo.prefix, containerInfo.suffix, containerInfo.fractionDigits);
 }
 
 var data = [];
@@ -394,16 +405,16 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <hr>
 <a name=Gastro_Currency></a><h2>Umsatz Gastronomie</span></h2><div id="totalFoodPerDayAndYear"></div>
 <hr>
-<a name=Wax_amount></a><h2>Wachsmenge</span></h2><div id="totalWaxPerDayAndYearInKg"></div>
+<a name=Wax_amount></a><h2>Wachsmenge in kg</span></h2><div id="totalWaxPerDayAndYearInKg"></div>
 <hr>
-<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert<span style="font-size: 70%"></span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div>
+<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert in kg</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div>
 
 
 <script>
 // Create all containers immediately, then load data once and render all charts
 function loadAllDiagrams() {
     // Create all containers first (immediate display)
-    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
+    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear", ": aaaÖffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
     var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed", "", "", -2, 2, "CHF", "", 2, "chart-bg.png");
     var waxContainer = createDiagramContainer("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
     var foodContainer = createDiagramContainer("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", "", "", -8, 8, "CHF ", "", 2, "chart-bg.png");
@@ -436,9 +447,6 @@ if (document.readyState === 'loading') {
     loadAllDiagrams();
 }
 </script>
-
-
-
 
 <?
 include "$root/framework/footer.php"; 
