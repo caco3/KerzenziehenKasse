@@ -239,7 +239,7 @@ function drawLegendChart(legendId, headers) {
     }
 
 // Create container immediately (without data loading)
-function createDiagramContainer(name, yTitle, dataId, nameLowerPart, nameUpperPart, widthAdjustment, paddingLeft, prefix, suffix, fractionDigits, bgImage) {
+function createDiagramContainer(name, yTitle, dataId, widthAdjustment, paddingLeft, prefix, suffix, fractionDigits, bgImage) {
     var chartId = 'chart_' + name;
     var legendId = 'legend_' + name;
     
@@ -429,12 +429,12 @@ function loadAllDiagrams() {
     console.log('Starting to load all diagrams...');
     
     // Create all containers first (immediate display)
-    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear", ": aaaÖffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
-    var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed", "", "", -2, 2, "CHF", "", 2, "chart-bg.png");
-    var waxContainer = createDiagramContainer("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
-    var foodContainer = createDiagramContainer("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", "", "", -8, 8, "CHF ", "", 2, "chart-bg.png");
-    var waxAmountContainer = createDiagramContainer("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png");
-    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png");
+    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
+    var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed", -2, 2, "CHF", "", 2, "chart-bg.png");
+    var waxContainer = createDiagramContainer("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
+    var foodContainer = createDiagramContainer("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", -8, 8, "CHF ", "", 2, "chart-bg.png");
+    var waxAmountContainer = createDiagramContainer("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png");
+    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png");
     
     var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
     
