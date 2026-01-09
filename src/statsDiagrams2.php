@@ -15,19 +15,42 @@ google.charts.setOnLoadCallback(function() {
     window.googleChartsReady = true;
 });
 
-// Reusable chart function - now returns a promise
-function createChart(chartId, legendId, dataUrl, chartTitle) {
+// Global data cache for client-side sharing
+var allChartData = null;
+
+// Load all chart data once
+function loadAllChartData() {
     return new Promise(function(resolve, reject) {
-        var data = [];
-        var headers = [];
+        if (allChartData) {
+            resolve(allChartData);
+            return;
+        }
         
-        // Load chart data via AJAX
-        console.log("Loading " + dataUrl);
-        fetch(dataUrl)
+        fetch('getChartData.php?type=all')
             .then(response => response.json())
-            .then(chartData => {
-                data = chartData;
-                headers = data[0].slice(1);
+            .then(data => {
+                allChartData = data;
+                resolve(allChartData);
+            })
+            .catch(error => {
+                console.error('Error loading all chart data:', error);
+                reject(error);
+            });
+    });
+}
+
+// Reusable chart function - now uses shared data
+function createChart(chartId, legendId, chartType, chartTitle) {
+    return new Promise(function(resolve, reject) {
+        loadAllChartData()
+            .then(allData => {
+                if (!allData[chartType]) {
+                    reject('Data not found for chart type: ' + chartType);
+                    return;
+                }
+                
+                var data = allData[chartType];
+                var headers = data[0].slice(1);
                 
                 // Wait for Google Charts to be ready
                 function waitForGoogleCharts() {
@@ -47,8 +70,9 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
                 reject(error);
             });
     });
+}
 
-    function drawChart(chartId, data, headers, chartTitle) {
+function drawChart(chartId, data, headers, chartTitle) {
         // Prepare data for Google Charts - each year with 2 stacked values
         var chartData = [];
         
@@ -162,9 +186,9 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
             loadingElement.style.display = 'none';
         }
     }
-    
-    // HTML Legend
-    function drawLegendChart(legendId, headers) {
+
+// HTML Legend
+function drawLegendChart(legendId, headers) {
         var legendHTML = '<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px; margin-top: 0; padding-top: 0; background: transparent;">';
         
         for (var i = 0; i < headers.length; i += 2) {
@@ -186,7 +210,6 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
         
         document.getElementById(legendId).innerHTML = legendHTML;
     }
-}
 
 // Create container immediately (without data loading)
 function createDiagramContainer(name, yTitle, dataId, nameLowerPart, nameUpperPart, widthAdjustment, paddingLeft, prefix, suffix, fractionDigits, bgImage) {
@@ -214,8 +237,8 @@ function createDiagramContainer(name, yTitle, dataId, nameLowerPart, nameUpperPa
 function loadDiagramData(containerInfo) {
     if (!containerInfo) return Promise.reject('Invalid container info');
     
-    // Start loading data in background
-    return createChart(containerInfo.chartId, containerInfo.legendId, 'getChartData.php?type=' + containerInfo.dataId, containerInfo.yTitle);
+    // Start loading data in background using shared data
+    return createChart(containerInfo.chartId, containerInfo.legendId, containerInfo.dataId, containerInfo.yTitle);
 }
 
 var data = [];
@@ -286,6 +309,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
     /* Remove any body margins */
     body {
         margin: 0 !important;
+        /*margin: 0 0 0 5px !important;*/
         padding: 0 !important;
         overflow-x: hidden !important; /* Hide horizontal overflow */
     }
@@ -360,7 +384,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 		</ul>
 	</div>
 </div>
-
+<hr>
 <a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYear"></div>
 <hr>
 <a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYearSummed"></div>
@@ -375,7 +399,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 
 
 <script>
-// Create all containers immediately, then load data sequentially
+// Create all containers immediately, then load data once and render all charts
 function loadAllDiagrams() {
     // Create all containers first (immediate display)
     var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear", ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
@@ -385,13 +409,22 @@ function loadAllDiagrams() {
     var waxAmountContainer = createDiagramContainer("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png");
     var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png");
     
-    // Now load data sequentially into existing containers
-    loadDiagramData(commonContainer)
-        .then(() => loadDiagramData(commonSummedContainer))
-        .then(() => loadDiagramData(waxContainer))
-        .then(() => loadDiagramData(foodContainer))
-        .then(() => loadDiagramData(waxAmountContainer))
-        .then(() => loadDiagramData(waxAmountSummedContainer))
+    var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
+    
+    // Load all data once, then render all charts in parallel
+    loadAllChartData()
+        .then(function() {
+            // Render all charts simultaneously
+            var promises = containers.map(function(container) {
+                return loadDiagramData(container);
+            });
+            
+            // Wait for all charts to complete
+            return Promise.all(promises);
+        })
+        .then(function() {
+            console.log('All diagrams loaded successfully');
+        })
         .catch(error => console.error('Error loading diagrams:', error));
 }
 
