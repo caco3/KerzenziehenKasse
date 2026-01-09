@@ -412,18 +412,14 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 	</div>
 </div>
 <hr>
-<a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYear"></div>
-<hr>
-<a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYearSummed"></div>
-<hr>
-<a name=Wax_Currency></a><h2>Umsatz Wachs</span></h2><div id="totalWaxPerDayAndYear"></div>
-<hr>
-<a name=Gastro_Currency></a><h2>Umsatz Gastronomie</span></h2><div id="totalFoodPerDayAndYear"></div>
-<hr>
-<a name=Wax_amount></a><h2>Wachsmenge in kg</span></h2><div id="totalWaxPerDayAndYearInKg"></div>
-<hr>
-<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert in kg</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div>
 
+<hr>
+<a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYear"></div><hr>
+<a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYearSummed"></div><hr>
+<a name=Wax_Currency></a><h2>Umsatz Wachs</span></h2><div id="totalWaxPerDayAndYear"></div><hr>
+<a name=Gastro_Currency></a><h2>Umsatz Gastronomie</span></h2><div id="totalFoodPerDayAndYear"></div><hr>
+<a name=Wax_amount></a><h2>Wachsmenge in kg</span></h2><div id="totalWaxPerDayAndYearInKg"></div><hr>
+<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert in kg</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div>
 
 <script>
 // Create all containers immediately, then load data once and render all charts
