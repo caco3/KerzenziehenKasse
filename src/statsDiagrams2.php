@@ -130,7 +130,7 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
                 textStyle: { fontSize: 14 },
                 viewWindow: {
                     min: 0,
-                    max: maxValue * 1.1 * 0.04,
+                    max: maxValue * 1.1,
                 },
                 gridlines: {
                     color: 'transparent'
