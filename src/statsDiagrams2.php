@@ -224,7 +224,7 @@ function createDiagramContainer(name, yTitle, dataId, nameLowerPart, nameUpperPa
     }
     
     // Show chart container with background image and loading indicator immediately
-    var chartHtml = '<div id="' + chartId + '" style="width: 1999px; margin: 0; padding: 0; height: 470px; background-image: url(images/' + bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -2px -20px; position: relative;">';
+    var chartHtml = '<div id="' + chartId + '" style="width: 1994px; margin: 0; padding: 0; height: 470px; background-image: url(images/' + bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -9px -20px; position: relative;">';
     chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
     chartHtml += '</div>';
     chartHtml += '<div id="' + legendId + '" style="max-width: 1400px; margin: 0; height: 100px;"></div>';
@@ -309,7 +309,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
     
     /* Remove any body margins */
     body {
-        margin: 0 !important;
+       /* margin: 0 !important;*/
         /*margin: 0 0 0 5px !important;*/
         padding: 0 !important;
         overflow-x: hidden !important; /* Hide horizontal overflow */
