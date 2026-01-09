@@ -21,6 +21,7 @@ function createChart(chartId, legendId, dataUrl, chartTitle) {
     var headers = [];
     
     // Load chart data via AJAX
+    console.log("Loading " + dataUrl);
     fetch(dataUrl)
         .then(response => response.json())
         .then(chartData => {
@@ -194,7 +195,7 @@ function loadDiagram(name, yTitle, dataId, nameLowerPart, nameUpperPart, widthAd
     container.innerHTML = chartHtml;
     
     // Create the chart using consolidated data file
-    createChart(chartId, legendId, 'getChartData.php?type=' + name, yTitle);
+    createChart(chartId, legendId, 'getChartData.php?type=' + dataId, yTitle);
 }
 
 var data = [];
