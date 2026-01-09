@@ -26,14 +26,23 @@ function loadAllChartData() {
             return;
         }
         
+        var startTime = performance.now();
+        console.log('Starting to load chart data...');
+        
         fetch('getChartData.php')
             .then(response => response.json())
             .then(data => {
+                var endTime = performance.now();
+                var loadTime = endTime - startTime;
+                console.log('Chart data loaded in ' + loadTime.toFixed(2) + ' ms');
+                
                 allChartData = data;
                 resolve(allChartData);
             })
             .catch(error => {
-                console.error('Error loading all chart data:', error);
+                var endTime = performance.now();
+                var loadTime = endTime - startTime;
+                console.error('Error loading chart data after ' + loadTime.toFixed(2) + ' ms:', error);
                 reject(error);
             });
     });
@@ -73,8 +82,11 @@ function createChart(chartId, legendId, chartType, chartTitle, prefix, suffix, f
 }
 
 function drawChart(chartId, data, headers, chartTitle, prefix, suffix, fractionDigits) {
-        // Prepare data for Google Charts - each year with 2 stacked values
-        var chartData = [];
+    var startTime = performance.now();
+    console.log('Starting to render chart: ' + chartId);
+    
+    // Prepare data for Google Charts - each year with 2 stacked values
+    var chartData = [];
         
         // Add header row
         var headerRow = [''];
@@ -116,7 +128,6 @@ function drawChart(chartId, data, headers, chartTitle, prefix, suffix, fractionD
                 if (stackedValue > maxValue) maxValue = stackedValue;
             }
         }
-        console.log("maxValue:", maxValue);
         
         // Generate series configuration - each year gets 2 series (stacked)
         var series = {};
@@ -197,6 +208,10 @@ function drawChart(chartId, data, headers, chartTitle, prefix, suffix, fractionD
         if (loadingElement) {
             loadingElement.style.display = 'none';
         }
+        
+        var endTime = performance.now();
+        var renderTime = endTime - startTime;
+        console.log('Chart ' + chartId + ' rendered in ' + renderTime.toFixed(2) + ' ms');
     }
 
 // HTML Legend
@@ -413,6 +428,9 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <script>
 // Create all containers immediately, then load data once and render all charts
 function loadAllDiagrams() {
+    var totalStartTime = performance.now();
+    console.log('Starting to load all diagrams...');
+    
     // Create all containers first (immediate display)
     var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear", ": aaaÖffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png");
     var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed", "", "", -2, 2, "CHF", "", 2, "chart-bg.png");
@@ -426,18 +444,28 @@ function loadAllDiagrams() {
     // Load all data once, then render all charts in parallel
     loadAllChartData()
         .then(function() {
+            var dataLoadTime = performance.now() - totalStartTime;
+            console.log('Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
+            
             // Render all charts simultaneously
             var promises = containers.map(function(container) {
                 return loadDiagramData(container);
             });
-            
-            // Wait for all charts to complete
-            return Promise.all(promises);
+
+            Promise.all(promises)
+                .then(function() {
+                    var totalTime = performance.now() - totalStartTime;
+                    console.log('All diagrams loaded and rendered in ' + totalTime.toFixed(2) + ' ms total');
+                })
+                .catch(function(error) {
+                    console.error('Error rendering diagrams:', error);
+                    firework.launch('Fehler beim Rendern der Diagramme: ' + error, 'error', 5000);
+                });
         })
-        .then(function() {
-            console.log('All diagrams loaded successfully');
-        })
-        .catch(error => console.error('Error loading diagrams:', error));
+        .catch(function(error) {
+            console.error('Error loading diagrams:', error);
+            firework.launch('Fehler beim Laden der Diagramme: ' + error, 'error', 5000);
+        });
 }
 
 // Start loading when page is ready
