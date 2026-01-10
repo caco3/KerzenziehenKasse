@@ -7,81 +7,91 @@ global $germanDayOfWeekShort;
 
 /* Returns the total grouped per day for each day in the given year listed in the DB */
 function getStatsPerDay($year) {
-    global $db_link;
-    
-    // Single optimized query to get all data for the year
-    $nextYear = $year + 1;
-    $query = "SELECT b.bookingId, b.date, b.donation, b.total, b.school, b.booking as serialized_articles
-              FROM bookings b
-              WHERE b.date >= '$year-01-01' AND b.date < '$nextYear-01-01'
-              ORDER BY b.date, b.bookingId";
-    
-    $result = mysqli_query($db_link, $query);
-    if (!$result) {
-        return array();
-    }
-    
-    // Process all data in memory - replicate original structure exactly
     $data = array();
-    
-    while ($row = mysqli_fetch_assoc($result)) {
-        $date = $row['date'];
+    $bookingDates = getBookingDatesOfYear($year);
+    foreach($bookingDates as $date) {  // a day 
+		//echo("<pre>");	
+		//echo("$date<br>\n");
+        $donations = 0;
+        $total = 0;    
+        $food = 0;      
+        $school = 0;    
+		$beeWax = 0;
+		$parafinWax = 0;		
+        $articles = array();
         
-        // Initialize date data if not exists (matches original structure)
-        if (!isset($data[$date])) {
-            $data[$date]['donations'] = 0;
-            $data[$date]['total'] = 0;
-            $data[$date]['food'] = 0;
-            $data[$date]['school'] = 0;
-            $data[$date]['parafinWax'] = 0;
-            $data[$date]['beeWax'] = 0;
-        }
-        
-        // Process booking data exactly like original
-        $booking = array();
-        $booking['donation'] = floatval($row['donation']);
-        $booking['total'] = floatval($row['total']);
-        $booking['school'] = $row['school'] == 1;
-        $booking['articles'] = unserialize($row['serialized_articles']);
-        
-        // Process articles exactly like original logic
-        $food = 0;
-        $beeWax = 0;
-        $parafinWax = 0;
-        
-        foreach ($booking['articles'] as $articleId => $article) {
-            if ($articleId == 200) { // Food
-                $food += $article['quantity'];
+        $bookingIds = getBookingIdsOfDate($date, false);        
+        foreach($bookingIds as $bookingId) { // a booking
+            $booking = getBooking($bookingId);
+ 	    	//echo("<pre>"); print_r($booking); echo("</pre>");
+            foreach ($booking['articles'] as $articleId => $article) { // articles
+				if (! array_key_exists($articleId, $articles))  {
+					$articles[$articleId] = array();
+				}
+			//	echo("$articleId:\n");
+			//	print_r($articles);
+			//	print_r($articles[$articleId]);
+				if (is_array($articles[$articleId]) and !array_key_exists('quantity', $articles[$articleId])) {
+					$articles[$articleId]['quantity'] = 0;
+				}
+				$articles[$articleId]['quantity'] += $article['quantity'];
+                $articles[$articleId]['price'] = $article['price']; // not summed up since it is per 1 pc.
+				
+				if ($articleId == 200) { // Food
+					//print_r($article);
+					$food += $article['quantity']; // equals the costs on food
+				}
+				elseif($articleId == 1) { // Parafin
+					$parafinWax += $article["quantity"];
+				}
+				elseif($articleId == 2) { // Bee Wax
+					$beeWax += $article["quantity"];
+				}
+				else { // Guss
+					if ($article["waxType"] == "parafin") {
+						$parafinWax += $article["waxAmount"] * $article["quantity"];					
+					}
+					else { // bee wax
+						$beeWax += $article["waxAmount"] * $article["quantity"];					
+					}
+				}
+
+				//echo("Parafin: $parafinWax, Bee: $beeWax\n");
+				
+// 				if ($articleId == 200) { // School
+// 					//print_r($article);
+// 					$school += $article['total'];
+// 				}
+
+				 
+				//echo("--------------------\n");
             }
-            elseif($articleId == 1) { // Parafin
-                $parafinWax += $article["quantity"];
-            }
-            elseif($articleId == 2) { // Bee Wax
-                $beeWax += $article["quantity"];
-            }
-            else { // Guss
-                if ($article["waxType"] == "parafin") {
-                    $parafinWax += $article["waxAmount"] * $article["quantity"];					
-                }
-                else { // bee wax
-                    $beeWax += $article["waxAmount"] * $article["quantity"];					
-                }
-            }
-        }
+            $donations += $booking['donation'];
+            $total += $booking['total'];
+			if ($booking['school']) {
+				$school += $booking['total']; // Count school bookings total additionally
+			}
+	    
+			//echo("#############################\n");
+        }   
         
-        // Accumulate data exactly like original
-        $data[$date]['donations'] += $booking['donation'];
-        $data[$date]['total'] += $booking['total'];
-        $data[$date]['food'] += $food;
-        $data[$date]['parafinWax'] += $parafinWax;
-        $data[$date]['beeWax'] += $beeWax;
-        
-        if ($booking['school']) {
-            $data[$date]['school'] += $booking['total'];
-        }
+//         $total += $donations;
+        $data[$date]['donations'] = $donations;
+        $data[$date]['total'] = $total;
+        $data[$date]['food'] = $food;
+        $data[$date]['school'] = $school;
+        $data[$date]['parafinWax'] = $parafinWax;
+        $data[$date]['beeWax'] = $beeWax;
+		
+// 		echo("donations, total, food, school: $donations, $total, $food, $school<br>\n");
+// 		if ($school > 0) {
+// 	    	echo("SCHOOL: $school<br>");
+// 		}
     }
     
     ksort($data);
+	
+	//print_r($data);
     return $data;
 }
 
@@ -92,6 +102,7 @@ function getStatsData() {
     for ($i = 0; $i <= (date("Y") - 2017 + 1); $i++) {
         $year = date("Y") - $i; // iterate through the last years (since 2017)
         $stats = getStatsPerDay($year);
+    // 	echo("<pre>"); print_r($stats); echo("</pre>");
         if (count($stats) == 0) { // no stats for this year => skip
             continue;
         }
@@ -121,9 +132,10 @@ function getStatsData() {
         $totalSummed = 0;
         $beeWaxSummed = 0;
         $parafinWaxSummed = 0;
-        
+        //echo("<br>$year<br>");
         if (! array_key_exists($year, $statsPerDay))  {
             $statsPerDay[$year] = array();
+
         }
         foreach($statsPerDay[$year] as $date => $data) { // for each day
             if ($dayIndex == 0) {
@@ -141,6 +153,7 @@ function getStatsData() {
             
             /* Wax and food in CHF, summed up */
             $totalSummed += $data['total'];
+            //echo("$dayOffset: $totalSummed<br>");
             $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $totalSummed; 
             $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = 0;
             $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date; 
@@ -172,6 +185,8 @@ function getStatsData() {
             $totalWaxPerDayAndYearInKgSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
         }
         
+        //echo("<pre>"); print_r($totalWaxPerDayAndYearInKgSummed); echo("</pre>");
+        
 
         if (! array_key_exists(0, $totalPerDayAndYearSummed)) { // No data for this year
             continue;
@@ -195,6 +210,7 @@ function getStatsData() {
 
         /* Fill up empty days on the summed up data */
         for ($x = 1; $x < 15; $x++) {
+            // echo("x: $x<br>");
             if (array_key_exists($x, $totalPerDayAndYearSummed))  {
                 if (! array_key_exists($year, $totalPerDayAndYearSummed[$x]['year']))  {
                     $totalPerDayAndYearSummed[$x]['year'][$year] = array();
