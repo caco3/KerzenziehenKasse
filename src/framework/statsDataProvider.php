@@ -44,6 +44,11 @@ function getStatsPerDay($year) {
         $booking['school'] = $row['school'] == 1;
         $booking['articles'] = unserialize($row['serialized_articles']);
         
+        // Skip if unserialize failed
+        if ($booking['articles'] === false) {
+            continue;
+        }
+        
         // Process articles exactly like original logic
         $food = 0;
         $beeWax = 0;
@@ -60,11 +65,11 @@ function getStatsPerDay($year) {
                 $beeWax += $article["quantity"];
             }
             else { // Guss
-                if ($article["waxType"] == "parafin") {
-                    $parafinWax += $article["waxAmount"] * $article["quantity"];					
+                if (($article["waxType"] ?? "") == "parafin") {
+                    $parafinWax += ($article["waxAmount"] ?? 0) * $article["quantity"];					
                 }
                 else { // bee wax
-                    $beeWax += $article["waxAmount"] * $article["quantity"];					
+                    $beeWax += ($article["waxAmount"] ?? 0) * $article["quantity"];					
                 }
             }
         }
@@ -206,17 +211,17 @@ function getStatsData() {
                     $totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['lowerPart'];
                 }
 
-                if (! array_key_exists($year, $totalWaxPerDayAndYearInKgSummed[$x]['year']))  {
+                if (! array_key_exists($year, $totalWaxPerDayAndYearInKgSummed[$x]['year'] ?? array()))  {
                     $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year] = array();
                     $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
                     $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
                 }
 
-                if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] == 0) {
-                    $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['lowerPart'];
+                if (($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] ?? 0) == 0) {
+                    $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['lowerPart'] ?? 0;
                 }
-                if ($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] == 0) {
-                    $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['upperPart'];
+                if (($totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] ?? 0) == 0) {
+                    $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = $totalWaxPerDayAndYearInKgSummed[$x - 1]['year'][$year]['upperPart'] ?? 0;
                 }
             }
         }

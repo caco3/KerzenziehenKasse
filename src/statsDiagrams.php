@@ -2,7 +2,7 @@
 
 $root=".";
 include "$root/framework/header.php";
-include "statsDataProvider.php";
+include "$root/framework/statsDataProvider.php";
 include "statsDiagramsFunctions.php";
 
 
