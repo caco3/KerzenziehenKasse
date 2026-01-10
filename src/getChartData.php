@@ -23,7 +23,7 @@ require_once("$root/framework/db.php");
 db_connect();
 
 // Include the data provider
-include "statsDataProvider.php";
+include "$root/framework/statsDataProvider.php";
 
 // Get the stats data
 $statsData = getStatsData();
