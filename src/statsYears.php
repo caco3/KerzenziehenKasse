@@ -138,13 +138,13 @@ function showAllYearsSummary() {
         return;
     }
     
-    // Sort years in descending order
-    krsort($yearsData);
+    // Sort years in ascending order
+    ksort($yearsData);
     $years = array_keys($yearsData);
     
     ?>
     <p><br></p>
-    <h1>Umsatz pro Jahr (Alle Jahre)</h1>
+    <h1>Umsatz pro Jahr</h1>
     <table id=bookingsTable>
     <tr>
         <th>Artikel</th>
@@ -265,12 +265,22 @@ function showAllYearsSummary() {
 
 ?>
     <div id="body" class="statsYears">
+		<div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px;">Ansicht:</h4>
+				<ul style="margin: 0; padding-left: 20px;">
+					<li><a href="statsYears.php" style="color: #007bff;">Kompaktansicht</a><br><br></li>
+					<li><a href="statsYearsDetails.php" style="color: #6c757d;">Separate Tabelle pro Jahr</a></li>
+				</ul>
+			</div>
+		</div>
+    
     <?php
     showAllYearsSummary();
     ?>
+    <p><br></p>
     </div>
 
 <?
 include "$root/framework/footer.php"; 
 ?>
-    
