@@ -17,11 +17,12 @@ google.charts.setOnLoadCallback(function() {
 
 // Global data cache for client-side sharing
 var allChartData = null;
+var chartConfig = null;
 
 // Load all chart data once
 function loadAllChartData() {
     return new Promise(function(resolve, reject) {
-        if (allChartData) {
+        if (allChartData && chartConfig) {
             resolve(allChartData);
             return;
         }
@@ -36,7 +37,8 @@ function loadAllChartData() {
                 var loadTime = endTime - startTime;
                 console.log('Chart data loaded in ' + loadTime.toFixed(2) + ' ms');
                 
-                allChartData = data;
+                chartConfig = data.config;
+                allChartData = data.data;
                 resolve(allChartData);
             })
             .catch(error => {
@@ -49,7 +51,7 @@ function loadAllChartData() {
 }
 
 // Reusable chart function - now uses shared data
-function createChart(chartId, legendId, dataId, lowerName, upperName, prefix, suffix, fractionDigits) {
+function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) {
     return new Promise(function(resolve, reject) {
         loadAllChartData()
             .then(allData => {
@@ -64,7 +66,7 @@ function createChart(chartId, legendId, dataId, lowerName, upperName, prefix, su
                 // Wait for Google Charts to be ready
                 function waitForGoogleCharts() {
                     if (window.googleChartsReady && google.visualization) {
-                        drawChart(chartId, data, headers, lowerName, upperName, prefix, suffix, fractionDigits);
+                        drawChart(chartId, data, headers, prefix, suffix, fractionDigits);
                         drawLegendChart(legendId, headers);
                         resolve();
                     } else {
@@ -81,7 +83,7 @@ function createChart(chartId, legendId, dataId, lowerName, upperName, prefix, su
     });
 }
 
-function drawChart(chartId, data, headers, lowerName, upperName, prefix, suffix, fractionDigits) {
+function drawChart(chartId, data, headers, prefix, suffix, fractionDigits) {
     var startTime = performance.now();
     console.log('Starting to render chart: ' + chartId);
     
@@ -96,18 +98,8 @@ function drawChart(chartId, data, headers, lowerName, upperName, prefix, suffix,
         for (var i = 0; i < headers.length; i += 2) {
             var yearName = headers[i].split(':')[0];
             years.push(yearName);
-            if (lowerName) {
-                headerRow.push(yearName + ": " + lowerName);
-            }
-            else {
-                headerRow.push(yearName);   
-            }
-            if (upperName) {
-                headerRow.push(yearName + ": " + upperName);
-            }
-            else {
-                headerRow.push(yearName);
-            }
+            headerRow.push(headers[i]);
+            headerRow.push(headers[i + 1]);
             
             // Use hardcoded colors for each series
             googleColors.push(seriesColors[yearCounter * 2]);
@@ -249,9 +241,15 @@ function drawLegendChart(legendId, headers) {
     }
 
 // Create container immediately (without data loading)
-function createDiagramContainer(name, dataId, paddingLeft, prefix, suffix, fractionDigits, bgImage, lowerName, upperName) {
-    var chartId = 'chart_' + name;
-    var legendId = 'legend_' + name;
+function createDiagramContainer(dataId) {
+    var config = chartConfig ? chartConfig[dataId] : null;
+    if (!config) {
+        console.error('Chart config not found for: ' + dataId);
+        return null;
+    }
+
+    var chartId = 'chart_' + dataId;
+    var legendId = 'legend_' + dataId;
     
     var container = document.getElementById(dataId);
     if (!container) {
@@ -262,14 +260,14 @@ function createDiagramContainer(name, dataId, paddingLeft, prefix, suffix, fract
     // Show chart container with background image and loading indicator immediately
     // Adjust padding-left to the container to make sure all X axis tick labels have the same width (so it matches the background image position)
     // And compensate the width with it
-    var chartHtml = '<div id="' + chartId + '" style="width: ' + (1997 - paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + paddingLeft + 'px; height: 470px; background-image: url(images/' + bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -9px -20px; position: relative;">';
+    var chartHtml = '<div id="' + chartId + '" style="width: ' + (1997 - config.paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + config.paddingLeft + 'px; height: 470px; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -9px -20px; position: relative;">';
     chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
     chartHtml += '</div>';
     chartHtml += '<div id="' + legendId + '" style="max-width: 1400px; margin: 0; margin-top: 10px; height: 100px;"></div>';
     
     container.innerHTML = chartHtml;
     
-    return { chartId: chartId, legendId: legendId, dataId: dataId, lowerName: lowerName, upperName: upperName, prefix: prefix, suffix: suffix, fractionDigits: fractionDigits };
+    return { chartId: chartId, legendId: legendId, dataId: dataId, prefix: config.prefix, suffix: config.suffix, fractionDigits: config.fractionDigits };
 }
 
 // Load data into existing container
@@ -277,7 +275,7 @@ function loadDiagramData(containerInfo) {
     if (!containerInfo) return Promise.reject('Invalid container info');
     
     // Start loading data in background using shared data
-    return createChart(containerInfo.chartId, containerInfo.legendId, containerInfo.dataId, containerInfo.lowerName, containerInfo.upperName, containerInfo.prefix, containerInfo.suffix, containerInfo.fractionDigits);
+    return createChart(containerInfo.chartId, containerInfo.legendId, containerInfo.dataId, containerInfo.prefix, containerInfo.suffix, containerInfo.fractionDigits);
 }
 
 var data = [];
@@ -426,7 +424,6 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 </div>
 <hr>
 
-<hr>
 <a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYear"></div><hr>
 <a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYearSummed"></div><hr>
 <a name=Wax_Currency></a><h2>Umsatz Wachs</span></h2><div id="totalWaxPerDayAndYear"></div><hr>
@@ -440,23 +437,23 @@ function loadAllDiagrams() {
     var totalStartTime = performance.now();
     console.log('=== DIAGRAM LOADING START ===');
     console.log('Starting to load all diagrams...');
-    
-    // Create all containers first (immediate display)
-    var commonContainer = createDiagramContainer("Common", "totalPerDayAndYear",  0, "CHF", "", 2, "chart-bg-public-school.png", "Öffentlich", "Schule");
-    var commonSummedContainer = createDiagramContainer("CommonSummed", "totalPerDayAndYearSummed",  5, "CHF", "", 2, "chart-bg.png", "", "");
-    var waxContainer = createDiagramContainer("Wax", "totalWaxPerDayAndYear", 0, "CHF", "", 2, "chart-bg-public-school.png", "Öffentlich", "Schule");
-    var foodContainer = createDiagramContainer("Food", "totalFoodPerDayAndYear", 7, "CHF ", "", 2, "chart-bg.png", "", "");
-    var waxAmountContainer = createDiagramContainer("WaxAmount", "totalWaxPerDayAndYearInKg", 17, "", "kg", 1, "chart-bg-bee-parafin.png", "Parafinwachs", "Bienenwachs");
-    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "totalWaxPerDayAndYearInKgSummed", 7, "", "kg", 1, "chart-bg-bee-parafin.png", "Parafinwachs", "Bienenwachs");
-    
-    var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
-    
-    // Load all data once, then render all charts in parallel
+
+    // Load config+data first, then create containers and render charts
     loadAllChartData()
         .then(function() {
+            // Create all containers first (immediate display)
+            var commonContainer = createDiagramContainer("totalPerDayAndYear");
+            var commonSummedContainer = createDiagramContainer("totalPerDayAndYearSummed");
+            var waxContainer = createDiagramContainer("totalWaxPerDayAndYear");
+            var foodContainer = createDiagramContainer("totalFoodPerDayAndYear");
+            var waxAmountContainer = createDiagramContainer("totalWaxPerDayAndYearInKg");
+            var waxAmountSummedContainer = createDiagramContainer("totalWaxPerDayAndYearInKgSummed");
+
+            var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
+
             var dataLoadTime = performance.now() - totalStartTime;
             console.log('✓ Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
-            
+
             // Render all charts simultaneously
             var promises = containers.map(function(container) {
                 return loadDiagramData(container);
