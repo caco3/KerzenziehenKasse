@@ -109,7 +109,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
             echo("<td class=td_rightBorder>");
             foreach($booking['articles'] as $articleId => $article) {
                 list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
-                echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
+                echo("<span style=\"display: inline-block; padding-top: 4px; padding-bottom: 0px;\" class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
                 echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
             }
             
@@ -207,7 +207,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 echo("<td class=td_rightBorder>");
                 foreach($booking['articles'] as $articleId => $article) {
                     list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
-                    echo("<span class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
+                    echo("<span style=\"display: inline-block; padding-top: 4px; padding-bottom: 0px;\" class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
                     echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
                 }
                 

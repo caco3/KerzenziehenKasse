@@ -597,6 +597,14 @@ a:link, a:visited, a:hover, a:active {
     min-width: 280px; /* Ensure minimum width for buttons */
 }
 
+/* Override min-width for stats tables */
+.statsYears #bookingsTable th:last-child,
+.statsYears #bookingsTable td:last-child,
+.statsCurrentYear #bookingsTable th:last-child,
+.statsCurrentYear #bookingsTable td:last-child {
+    min-width: auto;
+}
+
 
 .articleImage {
     width: 40px;

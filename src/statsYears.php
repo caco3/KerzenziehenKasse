@@ -4,214 +4,462 @@
 $root=".";
 include "$root/framework/header.php";
 
+function appendTrendIndicator($display, $currentValue, &$previousValue) {
+    if ($previousValue === null) {
+        $previousValue = $currentValue;
+        return $display;
+    }
 
-/* Shows the summary stats of a year */
-function showSummaryOfYear($year) {
+    if ($display === "-") {
+        $previousValue = $currentValue;
+        return "-";
+    }
+
+    $percentage = 0;
+    $trendSymbol = "";
+    $trendColor = "";
+    $bgColor = "";
+    
+    if ($currentValue > $previousValue) {
+        if ($previousValue == 0) {
+            $percentage = 0; // Hide percentage when going from 0
+        } else {
+            $percentage = (($currentValue - $previousValue) / $previousValue) * 100;
+        }
+        $trendSymbol = "↗";
+        $trendColor = "#198754";
+        $bgColor = "rgba(25, 135, 84, 0.1)";
+    }
+    else if ($currentValue < $previousValue) {
+        if ($previousValue == 0) {
+            $percentage = 0; // No percentage when going from 0 to lower (shouldn't happen)
+        } else {
+            $percentage = (($currentValue - $previousValue) / $previousValue) * 100;
+        }
+        $trendSymbol = "↘";
+        $trendColor = "#dc3545";
+        $bgColor = "rgba(220, 53, 69, 0.1)";
+    }
+    else {
+        $trendSymbol = "→";
+        $trendColor = "#000";
+        $bgColor = "rgba(0, 0, 0, 0.05)";
+    }
+
+    $previousValue = $currentValue;
+    
+    // Format percentage display
+    $percentageText = "";
+    if ($percentage > 0 && $percentage < 1) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 1) . "%</span>";
+    } else if ($percentage >= 1) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 0) . "%</span>";
+    } else if ($percentage > 0) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 0) . "%</span>";
+    } else if ($percentage < 0) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">" . number_format($percentage, 0) . "%</span>";
+    }
+    // Hide background when no percentage is shown (transition from 0)
+    $containerStyle = $percentageText ? "display: inline-block; padding: 1px 4px; border-radius: 2px; background-color: $bgColor; margin: -1px -4px;" : "display: inline-block; padding: 1px 4px; border-radius: 2px; margin: -1px -4px;";
+    
+    return "<span style=\"$containerStyle\">" .
+           $display .
+           ($percentageText ? " $percentageText" : "") . 
+           "</span>";
+}
+
+/* Shows the summary stats of all years in a single table */
+function showAllYearsSummary() {
+    global $customImage;
+    
+    // Start timing
+    $startTime = microtime(true);
+    $dbQueryCount = 0;
+    
+    // Get all products once for consistency
+    $productsWachs = getDbProducts("wachs", "articleId");
+    $productsGuss = getDbProducts("guss", "name");
+    $productsSpecial = getDbProducts("special", "name");
+    $dbQueryCount += 3;
+    
+    // Combine all products
+    $allProducts = array_merge($productsWachs, $productsGuss, $productsSpecial);
+    
+    // Initialize data structure for all years
+    $yearsData = array();
+    $allArticles = array();
+    
+    // Process each year using optimized approach
+    for ($i = 0; $i <= 10; $i++) {
+        $year = date("Y") - $i;
+        
         $articles = array();
         $donations = 0;		
         $total = 0;
-		$cash = 0;
-		$twint = 0;	
-		$invoice = 0;   	
         $waxAmountBee = 0;
-        $waxAmountParafin = 0;          
-        
-        // Create list of all available products, so all days have the same order
-        $products = getDbProducts("wachs", "articleId");
-        // echo("<pre>"); print_r($products);
-        foreach($products as $product) {
-            $articles[$product['articleId']]['text'] = $product['name'];
-            $articles[$product['articleId']]['quantity'] = $product['quantity'];
-            $articles[$product['articleId']]['unit'] = $product['unit'];
-            $articles[$product['articleId']]['type'] = $product['type'];
-            $articles[$product['articleId']]['subtype'] = $product['subtype'];
-            $articles[$product['articleId']]['image'] = $product['image1'];
-            $articles[$product['articleId']]['waxType'] = $product['waxType'];
-            $articles[$product['articleId']]['waxAmount'] = $product['waxAmount'];
-        }
-
-        $products = getDbProducts("guss", "name");
-        foreach($products as $product) {
-            $articles[$product['articleId']]['text'] = $product['name'];
-            $articles[$product['articleId']]['quantity'] = $product['quantity'];
-            $articles[$product['articleId']]['unit'] = $product['unit'];
-            $articles[$product['articleId']]['type'] = $product['type'];
-            $articles[$product['articleId']]['subtype'] = $product['subtype'];
-            $articles[$product['articleId']]['image'] = $product['image1'];
-            $articles[$product['articleId']]['waxType'] = $product['waxType'];
-            $articles[$product['articleId']]['waxAmount'] = $product['waxAmount'];
-        }
-
-        $products = getDbProducts("special", "name");
-        foreach($products as $product) {
-            $articles[$product['articleId']]['text'] = $product['name'];
-            $articles[$product['articleId']]['quantity'] = $product['quantity'];
-            $articles[$product['articleId']]['unit'] = $product['unit'];
-            $articles[$product['articleId']]['type'] = $product['type'];
-            $articles[$product['articleId']]['subtype'] = $product['subtype'];
-            $articles[$product['articleId']]['image'] = $product['image1'];
-            $articles[$product['articleId']]['waxType'] = $product['waxType'];
-            $articles[$product['articleId']]['waxAmount'] = $product['waxAmount'];
-            $articles[$product['articleId']]['pricePerQuantity'] = $product['pricePerQuantity'];
-        }
-        
-        $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
+        $waxAmountParafin = 0;
         $customIds = 0;
-        foreach($bookingDatesOfCurrentYear as $date) {  // a day
-            $bookingIds = getBookingIdsOfDate($date, false);
-            foreach($bookingIds as $bookingId) { // a booking
-                $booking = getBooking($bookingId);
-                foreach ($booking['articles'] as $articleId => $article) { // articles
-                    if($article['type'] != "custom") { // normal article   
-                        $id = $articleId;
-                    }
-                    else { // custom article      
-                        $id = $article['text'] . "_$customIds";
-                        $customIds++;
-                    }
-                    
-                    // echo("<pre>"); print_r($article);
-                    
-                    $articles[$id]['text'] = $article['text'];
-                    $articles[$id]['quantity'] += $article['quantity'];
-                    $articles[$id]['price'] = $article['price']; // not summed up since it is per 1 pc.
-                    $articles[$id]['unit'] = $article['unit'];
-                    $articles[$id]['type'] = $article['type'];
-//                     $articles[$id]['waxType'] = $article['waxType'];
-//                     $articles[$id]['waxAmount'] = $article['waxAmount'];
-                }
-
-                $donations += $booking['donation'];
-            }
+        
+        // Initialize articles with all products
+        foreach($allProducts as $product) {
+            $articles[$product['articleId']] = array(
+                'text' => $product['name'],
+                'quantity' => 0,
+                'unit' => $product['unit'],
+                'type' => $product['type'],
+                'subtype' => $product['subtype'],
+                'image' => $product['image1'],
+                'waxType' => $product['waxType'],
+                'waxAmount' => $product['waxAmount'],
+                'pricePerQuantity' => $product['pricePerQuantity'],
+                'price' => 0
+            );
+        }
+        
+        // Optimized approach - single query to get all bookings for the year
+        $nextYear = $year + 1;
+        $query = "SELECT b.bookingId, b.date, b.donation, b.total, b.school, b.booking as serialized_articles
+                  FROM bookings b
+                  WHERE b.date >= '$year-01-01' AND b.date < '$nextYear-01-01'
+                  ORDER BY b.date, b.bookingId";
+        
+        $result = mysqli_query($GLOBALS['db_link'], $query);
+        $dbQueryCount++;
+        
+        if (!$result) {
+            continue; // Skip year if query fails
+        }
+        
+        // Process all bookings in memory
+        $allBookings = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $booking = array();
+            $booking['donation'] = floatval($row['donation']);
+            $booking['total'] = floatval($row['total']);
+            $booking['school'] = $row['school'] == 1;
+            $booking['articles'] = unserialize($row['serialized_articles']);
             
-        }
-        
-        // Add missing price field (missing on articles which have quantity=0)
-        foreach($articles as $key => $data) {
-            if (! array_key_exists("price", $data)) {
-                $articles[$key]['price'] = 0;
-            }
-        }
-
-        // echo("<pre>"); print_r($articles); echo("</pre>");
-
-        foreach($articles as $article) {
-            $total += $article['quantity'] * $article['price'];
-        }
-        $total += $donations;
-        
-        if ($total == 0) { // no stats for this year => return
-            return;
-        }
-        
-        
-        // Sum up wax amount
-//         echo("<pre>"); print_r($articles); echo("</pre>");
-        foreach($articles as $articleId => $article) {
-//             echo("__" . $articles[$articleId]['waxType'] . " " . $articles[$articleId]['type'] . " " . $articles[$articleId]['quantity'] . " " . $articles[$articleId]['waxAmount'] . "<br>");
-            
-            if ($articles[$articleId]['type'] == "guss") { // Gegossen, sum all up
-                if ($articles[$articleId]['waxType'] == "bee") {
-                    $waxAmountBee += $articles[$articleId]['quantity'] * $articles[$articleId]['waxAmount'];
-                }
-                else if ($articles[$articleId]['waxType'] == "parafin") {
-                    $waxAmountParafin += $articles[$articleId]['quantity'] * $articles[$articleId]['waxAmount'];
-                }
-            }
-            else if ($articles[$articleId]['type'] == "wachs") { // Gezogen
-                if ($articles[$articleId]['waxType'] == "bee") {
-                    $waxAmountBee += $articles[$articleId]['quantity'];
-                }
-                else if ($articles[$articleId]['waxType'] == "parafin") {
-                    $waxAmountParafin += $articles[$articleId]['quantity'];
-                }
-            }
-        }
-
-        
-    ?>
-        <p><br></p>
-        <a name=year_<? echo($year); ?>_summary></a><h2><? echo($year); ?><? echo(exportCsvButton($year)); ?></h2>
-        <table id=bookingsTable>
-        <tr><th>Artikel</th><th class=td_rightBorder></th><th class=td_rightBorder>Menge</th><th class=td_rightBorder>Betrag</th></tr>
-    <?
-
-        foreach($articles as $articleId => $article) {
-            if ($article['quantity'] == 0) { // no sales for this article, ignore it 
+            // Skip if unserialize failed
+            if ($booking['articles'] === false) {
                 continue;
             }
-                
-            if ($article['type'] == "custom") { 
-                $custom = "*) ";
-                $article['image'] = $customImage;
-            }
-            else {
-                $custom = ""; 
-            }
-        
-            echo("<tr>");
-            echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
-
-			
-			if ($article['subtype'] == 'food') {
-                echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
-			}
-			else { // normal     
-				$quantity = number_format($article['quantity'], 0, ".", "'");
-				$unit = $article['unit'];
-				if ($article['unit'] == "g") {
-					$quantity = number_format($article['quantity'] / 1000, 1, ".", "'");
-					$unit = "kg";
-					$article['text'] .= " (ohne Gussformen)";
-				}
-				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
-			}
-			
-			
-			
+            
+            $allBookings[] = $booking;
         }
         
-        /* Spenden */
-        echo("<tr class=tr_bottomBorder><td colspan=2 class=td_rightBorder>Spenden</td><td class=td_rightBorder></td><td>CHF " . roundMoney($donations) . "</td></tr>\n");
+        // Process all bookings
+        foreach($allBookings as $booking) {
+            foreach ($booking['articles'] as $articleId => $article) {
+                if(!isset($article['type']) || $article['type'] != "custom") {
+                    $id = $articleId;
+                }
+                else {
+                    $id = $article['text'] . "_$customIds";
+                    $customIds++;
+                    
+                    // Initialize custom article if not exists
+                    if (!isset($articles[$id])) {
+                        $articles[$id] = array(
+                            'text' => $article['text'],
+                            'quantity' => 0,
+                            'unit' => $article['unit'] ?? '',
+                            'type' => $article['type'],
+                            'subtype' => $article['subtype'] ?? '',
+                            'image' => $customImage,
+                            'price' => 0
+                        );
+                    }
+                }
+                
+                if (isset($articles[$id])) {
+                    $articles[$id]['quantity'] += $article['quantity'] ?? 0;
+                    $articles[$id]['price'] = $article['price'] ?? 0;
+                }
+            }
+            $donations += $booking['donation'];
+        }
         
-        /* Total CHF */
-        echo("<tr><td colspan=2 class=td_rightBorder><b>Total</b></td><td class=td_rightBorder></td><td><b>CHF " . roundMoney10($total) . "</b></td></tr>\n");
+        // Calculate totals and wax amounts
+        foreach($articles as $articleId => $article) {
+            $amount = $article['quantity'] * $article['price'];
+            $total += $amount;
+            
+            // Add safety checks for wax calculations
+            if (isset($article['type']) && $article['type'] == "guss") {
+                if (isset($article['waxType']) && $article['waxType'] == "bee") {
+                    $waxAmountBee += $article['quantity'] * ($article['waxAmount'] ?? 0);
+                }
+                else if (isset($article['waxType']) && $article['waxType'] == "parafin") {
+                    $waxAmountParafin += $article['quantity'] * ($article['waxAmount'] ?? 0);
+                }
+            }
+            else if (isset($article['type']) && $article['type'] == "wachs") {
+                if (isset($article['waxType']) && $article['waxType'] == "bee") {
+                    $waxAmountBee += $article['quantity'];
+                }
+                else if (isset($article['waxType']) && $article['waxType'] == "parafin") {
+                    $waxAmountParafin += $article['quantity'];
+                }
+            }
+        }
         
-        /* Total Wachs */
-        echo("<tr><td colspan=2 class=td_rightBorder></td><td class=td_rightBorder></td><td class=td_rightBorder><b>
-        <img src=images/articles/colors.png height=25px> Parafinwachs: " . formatWeight($waxAmountParafin/1000) . " kg, <img src=images/articles/bee.png height=25px> Bienenwachs: " . formatWeight($waxAmountBee/1000) . " kg</b></td></tr>\n");
-    ?>
-        </table>
-        </div>
-    <?
-}
-
-
-
-
-
-
-
-
-
-
-
-
-?>
-    <div id="body" class="statsYears">
-  
-<a name=PerYear></a><h1>Umsatz pro Jahr</h1>
-<?
-    // Show yearly summary
-
-    for ($i = 0; $i <= 10; $i++) {
-        $year = date("Y") - $i; 
-        showSummaryOfYear($year);
+        $total += $donations;
+        
+        // Skip years with no data
+        if ($total == 0) {
+            continue;
+        }
+        
+        // Store year data
+        $yearsData[$year] = array(
+            'articles' => $articles,
+            'donations' => $donations,
+            'total' => $total,
+            'waxAmountBee' => $waxAmountBee,
+            'waxAmountParafin' => $waxAmountParafin
+        );
+        
+        // Collect all unique articles across all years
+        foreach($articles as $articleId => $article) {
+            // Collect articles that have actual data (quantity > 0 or price > 0)
+            if (($article['quantity'] ?? 0) > 0 || ($article['price'] ?? 0) > 0) {
+                $allArticles[$articleId] = $article;
+            }
+        }
     }
-?>
+    
+    if (empty($yearsData)) {
+        echo "<p>Keine Daten verfügbar.</p>";
+        return;
+    }
+    
+    // Sort years in ascending order
+    ksort($yearsData);
+    $years = array_keys($yearsData);
 
+    $sortedArticles = array();
+    foreach($allProducts as $product) {
+        $articleId = $product['articleId'];
+        if (isset($allArticles[$articleId])) {
+            $sortedArticles[$articleId] = $allArticles[$articleId];
+        }
+    }
+    foreach($allArticles as $articleId => $article) {
+        if (!isset($sortedArticles[$articleId])) {
+            $sortedArticles[$articleId] = $article;
+        }
+    }
+    
+    // Calculate and log performance metrics to console
+    $endTime = microtime(true);
+    $totalTime = ($endTime - $startTime) * 1000;
+    echo "<script>console.log('statsYears.php Performance: " . number_format($totalTime, 2) . "ms | DB Queries: " . $dbQueryCount . " | Years processed: " . count($yearsData) . "');</script>";
+    
+    ?>
+    <p><br></p>
+    <h1>Umsatz pro Jahr</h1>
+    <div style="overflow-x: auto; max-width: 100%;">
+    <table id=bookingsTable style="white-space: nowrap;">
+    <colgroup>
+        <col>
+        <col>
+        <col>
+        <?php foreach($years as $year): ?>
+            <col>
+        <?php endforeach; ?>
+    </colgroup>
+    <tr>
+        <th>Artikel</th>
+        <th class=td_rightBorder></th>
+        <th class=td_rightBorder>Einheit</th>
+        <?php foreach($years as $year): ?>
+            <th class=td_rightBorder><?php echo $year; ?></th>
+        <?php endforeach; ?>
+    </tr>
+    <?php
+    $foodRows = array();
+    
+    // Display each article across all years
+    foreach($sortedArticles as $articleId => $article) {
+        $hasData = false;
+        
+        // Check if this article has any data in any year
+        foreach($years as $year) {
+            if (isset($yearsData[$year]['articles'][$articleId])) {
+                $yearArticle = $yearsData[$year]['articles'][$articleId];
+                // Check if this article has quantity > 0 OR price > 0 (for food items)
+                if (($yearArticle['quantity'] ?? 0) > 0 || ($yearArticle['price'] ?? 0) > 0) {
+                    $hasData = true;
+                    break;
+                }
+            }
+        }
+        
+        if (!$hasData) {
+            continue;
+        }
+        
+        if ($article['subtype'] == 'food') {
+            ob_start();
+        }
+        
+        echo("<tr>");
+        echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+        
+        $displayText = $article['text'];
+        if ($article['type'] == "custom") {
+            $displayText = "*) " . $displayText;
+        }
+        if ($article['unit'] == "g") {
+            $displayText .= "<br>(ohne Gussformen)";
+        }
+        
+        echo("<td class=td_rightBorder>" . $displayText . "</td>");
+        
+        if ($article['subtype'] == 'food') {
+            echo("<td class=td_rightBorder>CHF</td>");
+        } else {
+            $unit = $article['unit'];
+            if ($article['unit'] == "g") {
+                $unit = "kg";
+            }
+            echo("<td class=td_rightBorder>$unit</td>");
+        }
+        
+        // Display data for each year
+        $prevTrendValue = null;
+        foreach($years as $year) {
+            if (isset($yearsData[$year]['articles'][$articleId])) {
+                $yearArticle = $yearsData[$year]['articles'][$articleId];
+                
+                // Check if this article has data for this year
+                if (($yearArticle['quantity'] ?? 0) > 0 || ($yearArticle['price'] ?? 0) > 0) {
+                    $amount = $yearArticle['quantity'] * $yearArticle['price'];
+                    
+                    if ($article['subtype'] == 'food') {
+                        $numericValue = round($amount, 0);
+                        $displayValue = ($numericValue == 0) ? "-" : number_format($numericValue, 0, ".", "'");
+                        echo("<td class=td_rightBorder>" . appendTrendIndicator($displayValue, $numericValue, $prevTrendValue) . "</td>");
+                    } else {
+                        $quantity = $yearArticle['quantity'];
+                        if ($article['unit'] == "g") {
+                            $numericValue = round($quantity / 1000, 0);
+                        } else {
+                            $numericValue = round($quantity, 0);
+                        }
+                        $displayValue = ($numericValue == 0) ? "-" : number_format($numericValue, 0, ".", "'");
+                        echo("<td class=td_rightBorder>" . appendTrendIndicator($displayValue, $numericValue, $prevTrendValue) . "</td>");
+                    }
+                } else {
+                    echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
+                }
+            } else {
+                echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
+            }
+        }
+        
+        echo("</tr>\n");
+        
+        if ($article['subtype'] == 'food') {
+            $foodRows[] = ob_get_clean();
+            continue;
+        }
+    }
+    
+    foreach($foodRows as $rowHtml) {
+        echo($rowHtml);
+    }
+    
+    // Donations row
+    echo("<tr class=tr_bottomBorder>");
+    echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
+    echo("<td class=td_rightBorder>Spenden</td>");
+    echo("<td class=td_rightBorder>CHF</td>");
+    $prevTrendValue = null;
+    foreach($years as $year) {
+        $donationsRounded = round($yearsData[$year]['donations'], 0);
+        if ($donationsRounded == 0) {
+            echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
+        } else {
+            $formatted = number_format($donationsRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder>" . appendTrendIndicator($formatted, $donationsRounded, $prevTrendValue) . "</td>");
+        }
+    }
+    echo("</tr>\n");
+    
+    // Total row
+    echo("<tr>");
+    echo("<td><b>CHF</b></td>");
+    echo("<td class=td_rightBorder><b>Umsatz Total</b></td>");
+    echo("<td class=td_rightBorder><b>CHF</b></td>");
+    $prevTrendValue = null;
+    foreach($years as $year) {
+        $totalRounded = round($yearsData[$year]['total'], 0);
+        if ($totalRounded == 0) {
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</b></td>");
+        } else {
+            $formatted = number_format($totalRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator($formatted, $totalRounded, $prevTrendValue) . "</b></td>");
+        }
+    }
+    echo("</tr>\n");
+    
+    // Wax totals rows
+    echo("<tr>");
+    echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/colors.png><span><img src=images/articles/colors.png></span></span></td>");
+    echo("<td class=td_rightBorder><b>Parafinwachs</b></td>");
+    echo("<td class=td_rightBorder><b>kg</b></td>");
+    $prevTrendValue = null;
+    foreach($years as $year) {
+        $waxParafinRounded = round($yearsData[$year]['waxAmountParafin']/1000, 0);
+        if ($waxParafinRounded == 0) {
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</b></td>");
+        } else {
+            $formatted = number_format($waxParafinRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator($formatted, $waxParafinRounded, $prevTrendValue) . "</b></td>");
+        }
+    }
+    echo("</tr>\n");
+
+    echo("<tr>");
+    echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/bee.png><span><img src=images/articles/bee.png></span></span></td>");
+    echo("<td class=td_rightBorder><b>Bienenwachs</b></td>");
+    echo("<td class=td_rightBorder><b>kg</b></td>");
+    $prevTrendValue = null;
+    foreach($years as $year) {
+        $waxBeeRounded = round($yearsData[$year]['waxAmountBee']/1000, 0);
+        if ($waxBeeRounded == 0) {
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</b></td>");
+        } else {
+            $formatted = number_format($waxBeeRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator($formatted, $waxBeeRounded, $prevTrendValue) . "</b></td>");
+        }
+    }
+    echo("</tr>\n");
+    ?>
+    </table>
+    <?php
+    }
+
+    ?>
+    <div id="body" class="statsYears">
+        <div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
+            <div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+                <h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px;">Ansicht:</h4>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li><a href="statsYears.php" style="color: #007bff;">Kompaktansicht</a><br><br></li>
+                    <li><a href="statsYearsDetails.php" style="color: #6c757d;">Separate Tabelle pro Jahr</a></li>
+                </ul>
+            </div>
+        </div>
+    
+    <?php
+    showAllYearsSummary();
+    ?>
+    <p><br></p>
+    </div>
+    </div>
 
 <?
 include "$root/framework/footer.php"; 
 ?>
-    
