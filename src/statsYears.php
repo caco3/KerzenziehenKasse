@@ -72,10 +72,15 @@ function appendTrendIndicator($display, $currentValue, &$previousValue) {
 function showAllYearsSummary() {
     global $customImage;
     
+    // Start timing
+    $startTime = microtime(true);
+    $dbQueryCount = 0;
+    
     // Get all products once for consistency
     $productsWachs = getDbProducts("wachs", "articleId");
     $productsGuss = getDbProducts("guss", "name");
     $productsSpecial = getDbProducts("special", "name");
+    $dbQueryCount += 3;
     
     // Combine all products
     $allProducts = array_merge($productsWachs, $productsGuss, $productsSpecial);
@@ -84,7 +89,7 @@ function showAllYearsSummary() {
     $yearsData = array();
     $allArticles = array();
     
-    // Process each year using original slow approach
+    // Process each year using optimized approach
     for ($i = 0; $i <= 10; $i++) {
         $year = date("Y") - $i;
         
@@ -111,41 +116,53 @@ function showAllYearsSummary() {
             );
         }
         
-        // Use original slow approach - get dates, then bookings, then process
+        // Optimized approach - get all booking IDs for the year at once
         $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
+        $dbQueryCount++;
+        $allBookingIds = array();
         foreach($bookingDatesOfCurrentYear as $date) {
-            $bookingIds = getBookingIdsOfDate($date, false);
-            foreach($bookingIds as $bookingId) {
-                $booking = getBooking($bookingId);
-                foreach ($booking['articles'] as $articleId => $article) {
-                    if(!isset($article['type']) || $article['type'] != "custom") {
-                        $id = $articleId;
-                    }
-                    else {
-                        $id = $article['text'] . "_$customIds";
-                        $customIds++;
-                        
-                        // Initialize custom article if not exists
-                        if (!isset($articles[$id])) {
-                            $articles[$id] = array(
-                                'text' => $article['text'],
-                                'quantity' => 0,
-                                'unit' => $article['unit'] ?? '',
-                                'type' => $article['type'],
-                                'subtype' => $article['subtype'] ?? '',
-                                'image' => $customImage,
-                                'price' => 0
-                            );
-                        }
-                    }
+            $bookingIdsOfDate = getBookingIdsOfDate($date, false);
+            $dbQueryCount++;
+            $allBookingIds = array_merge($allBookingIds, $bookingIdsOfDate);
+        }
+        
+        // Get all bookings at once
+        $allBookings = array();
+        foreach($allBookingIds as $bookingId) {
+            $allBookings[] = getBooking($bookingId);
+            $dbQueryCount++;
+        }
+        
+        // Process all bookings
+        foreach($allBookings as $booking) {
+            foreach ($booking['articles'] as $articleId => $article) {
+                if(!isset($article['type']) || $article['type'] != "custom") {
+                    $id = $articleId;
+                }
+                else {
+                    $id = $article['text'] . "_$customIds";
+                    $customIds++;
                     
-                    if (isset($articles[$id])) {
-                        $articles[$id]['quantity'] += $article['quantity'] ?? 0;
-                        $articles[$id]['price'] = $article['price'] ?? 0;
+                    // Initialize custom article if not exists
+                    if (!isset($articles[$id])) {
+                        $articles[$id] = array(
+                            'text' => $article['text'],
+                            'quantity' => 0,
+                            'unit' => $article['unit'] ?? '',
+                            'type' => $article['type'],
+                            'subtype' => $article['subtype'] ?? '',
+                            'image' => $customImage,
+                            'price' => 0
+                        );
                     }
                 }
-                $donations += $booking['donation'];
+                
+                if (isset($articles[$id])) {
+                    $articles[$id]['quantity'] += $article['quantity'] ?? 0;
+                    $articles[$id]['price'] = $article['price'] ?? 0;
+                }
             }
+            $donations += $booking['donation'];
         }
         
         // Calculate totals and wax amounts
@@ -218,6 +235,11 @@ function showAllYearsSummary() {
             $sortedArticles[$articleId] = $article;
         }
     }
+    
+    // Calculate and log performance metrics to console
+    $endTime = microtime(true);
+    $totalTime = ($endTime - $startTime) * 1000;
+    echo "<script>console.log('statsYears.php Performance: " . number_format($totalTime, 2) . "ms | DB Queries: " . $dbQueryCount . " | Years processed: " . count($yearsData) . "');</script>";
     
     ?>
     <p><br></p>
