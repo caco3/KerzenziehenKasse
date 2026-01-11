@@ -33,8 +33,8 @@ $chartConfig = [
         'paddingLeft' => 0
     ],
     'totalPerDayAndYearSummed' => [
-        'lowerName' => 'Öffentlich',
-        'upperName' => 'Schule',
+        'lowerName' => '',
+        'upperName' => '',
         'prefix' => 'CHF',
         'suffix' => '',
         'fractionDigits' => 2,
@@ -51,8 +51,8 @@ $chartConfig = [
         'paddingLeft' => 0
     ],
     'totalFoodPerDayAndYear' => [
-        'lowerName' => 'Öffentlich',
-        'upperName' => 'Schule',
+        'lowerName' => '',
+        'upperName' => '',
         'prefix' => 'CHF ',
         'suffix' => '',
         'fractionDigits' => 2,
