@@ -252,7 +252,7 @@ function createDiagramContainer(name, yTitle, dataId, paddingLeft, prefix, suffi
     // Show chart container with background image and loading indicator immediately
     // Adjust padding-left to the container to make sure all X axis tick labels have the same width (so it matches the background image position)
     // And compensate the width with it
-    var chartHtml = '<div id="' + chartId + '" style="width: ' + (1994 - paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + paddingLeft + 'px; height: 470px; background-image: url(images/' + bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -9px -20px; position: relative;">';
+    var chartHtml = '<div id="' + chartId + '" style="width: ' + (1997 - paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + paddingLeft + 'px; height: 470px; background-image: url(images/' + bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -9px -20px; position: relative;">';
     chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
     chartHtml += '</div>';
     chartHtml += '<div id="' + legendId + '" style="max-width: 1400px; margin: 0; margin-top: 10px; height: 100px;"></div>';
@@ -431,12 +431,12 @@ function loadAllDiagrams() {
     console.log('Starting to load all diagrams...');
     
     // Create all containers first (immediate display)
-    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear",  6, "CHF", "", 2, "chart-bg-public-school.png");
-    var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed",  10, "CHF", "", 2, "chart-bg.png");
-    var waxContainer = createDiagramContainer("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", 6, "CHF", "", 2, "chart-bg-public-school.png");
-    var foodContainer = createDiagramContainer("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", 10, "CHF ", "", 2, "chart-bg.png");
-    var waxAmountContainer = createDiagramContainer("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", 20, "", "kg", 1, "chart-bg-bee-parafin.png");
-    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", 10, "", "kg", 1, "chart-bg-bee-parafin.png");
+    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear",  0, "CHF", "", 2, "chart-bg-public-school.png");
+    var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed",  5, "CHF", "", 2, "chart-bg.png");
+    var waxContainer = createDiagramContainer("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", 0, "CHF", "", 2, "chart-bg-public-school.png");
+    var foodContainer = createDiagramContainer("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", 7, "CHF ", "", 2, "chart-bg.png");
+    var waxAmountContainer = createDiagramContainer("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", 17, "", "kg", 1, "chart-bg-bee-parafin.png");
+    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", 7, "", "kg", 1, "chart-bg-bee-parafin.png");
     
     var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
     
