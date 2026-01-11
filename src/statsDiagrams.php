@@ -49,22 +49,22 @@ function loadAllChartData() {
 }
 
 // Reusable chart function - now uses shared data
-function createChart(chartId, legendId, chartType, chartTitle, prefix, suffix, fractionDigits) {
+function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) {
     return new Promise(function(resolve, reject) {
         loadAllChartData()
             .then(allData => {
-                if (!allData[chartType]) {
-                    reject('Data not found for chart type: ' + chartType);
+                if (!allData[dataId]) {
+                    reject('Data not found for data id: ' + dataId);
                     return;
                 }
                 
-                var data = allData[chartType];
+                var data = allData[dataId];
                 var headers = data[0].slice(1);
                 
                 // Wait for Google Charts to be ready
                 function waitForGoogleCharts() {
                     if (window.googleChartsReady && google.visualization) {
-                        drawChart(chartId, data, headers, chartTitle, prefix, suffix, fractionDigits);
+                        drawChart(chartId, data, headers, prefix, suffix, fractionDigits);
                         drawLegendChart(legendId, headers);
                         resolve();
                     } else {
@@ -81,7 +81,7 @@ function createChart(chartId, legendId, chartType, chartTitle, prefix, suffix, f
     });
 }
 
-function drawChart(chartId, data, headers, chartTitle, prefix, suffix, fractionDigits) {
+function drawChart(chartId, data, headers, prefix, suffix, fractionDigits) {
     var startTime = performance.now();
     console.log('Starting to render chart: ' + chartId);
     
@@ -239,7 +239,7 @@ function drawLegendChart(legendId, headers) {
     }
 
 // Create container immediately (without data loading)
-function createDiagramContainer(name, yTitle, dataId, paddingLeft, prefix, suffix, fractionDigits, bgImage) {
+function createDiagramContainer(name, dataId, paddingLeft, prefix, suffix, fractionDigits, bgImage) {
     var chartId = 'chart_' + name;
     var legendId = 'legend_' + name;
     
@@ -259,7 +259,7 @@ function createDiagramContainer(name, yTitle, dataId, paddingLeft, prefix, suffi
     
     container.innerHTML = chartHtml;
     
-    return { chartId: chartId, legendId: legendId, dataId: dataId, yTitle: yTitle, prefix: prefix, suffix: suffix, fractionDigits: fractionDigits };
+    return { chartId: chartId, legendId: legendId, dataId: dataId, prefix: prefix, suffix: suffix, fractionDigits: fractionDigits };
 }
 
 // Load data into existing container
@@ -267,7 +267,7 @@ function loadDiagramData(containerInfo) {
     if (!containerInfo) return Promise.reject('Invalid container info');
     
     // Start loading data in background using shared data
-    return createChart(containerInfo.chartId, containerInfo.legendId, containerInfo.dataId, containerInfo.yTitle, containerInfo.prefix, containerInfo.suffix, containerInfo.fractionDigits);
+    return createChart(containerInfo.chartId, containerInfo.legendId, containerInfo.dataId, containerInfo.prefix, containerInfo.suffix, containerInfo.fractionDigits);
 }
 
 var data = [];
@@ -432,12 +432,12 @@ function loadAllDiagrams() {
     console.log('Starting to load all diagrams...');
     
     // Create all containers first (immediate display)
-    var commonContainer = createDiagramContainer("Common", "Umsatz in CHF", "totalPerDayAndYear",  0, "CHF", "", 2, "chart-bg-public-school.png");
-    var commonSummedContainer = createDiagramContainer("CommonSummed", "Umsatz aufsummiert in CHF", "totalPerDayAndYearSummed",  5, "CHF", "", 2, "chart-bg.png");
-    var waxContainer = createDiagramContainer("Wax", "Umsatz in CHF", "totalWaxPerDayAndYear", 0, "CHF", "", 2, "chart-bg-public-school.png");
-    var foodContainer = createDiagramContainer("Food", "Umsatz in CHF", "totalFoodPerDayAndYear", 7, "CHF ", "", 2, "chart-bg.png");
-    var waxAmountContainer = createDiagramContainer("WaxAmount", "Wachsmenge in kg", "totalWaxPerDayAndYearInKg", 17, "", "kg", 1, "chart-bg-bee-parafin.png");
-    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "Wachsmenge in kg", "totalWaxPerDayAndYearInKgSummed", 7, "", "kg", 1, "chart-bg-bee-parafin.png");
+    var commonContainer = createDiagramContainer("Common", "totalPerDayAndYear",  0, "CHF", "", 2, "chart-bg-public-school.png");
+    var commonSummedContainer = createDiagramContainer("CommonSummed", "totalPerDayAndYearSummed",  5, "CHF", "", 2, "chart-bg.png");
+    var waxContainer = createDiagramContainer("Wax", "totalWaxPerDayAndYear", 0, "CHF", "", 2, "chart-bg-public-school.png");
+    var foodContainer = createDiagramContainer("Food", "totalFoodPerDayAndYear", 7, "CHF ", "", 2, "chart-bg.png");
+    var waxAmountContainer = createDiagramContainer("WaxAmount", "totalWaxPerDayAndYearInKg", 17, "", "kg", 1, "chart-bg-bee-parafin.png");
+    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "totalWaxPerDayAndYearInKgSummed", 7, "", "kg", 1, "chart-bg-bee-parafin.png");
     
     var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
     
