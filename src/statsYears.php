@@ -4,6 +4,31 @@
 $root=".";
 include "$root/framework/header.php";
 
+function appendTrendIndicator($display, $currentValue, &$previousValue) {
+    if ($previousValue === null) {
+        $previousValue = $currentValue;
+        return $display;
+    }
+
+    if ($display === "-") {
+        $previousValue = $currentValue;
+        return "-";
+    }
+
+    if ($currentValue > $previousValue) {
+        $arrow = " <span style=\"color: #198754; font-weight: bold;\">↗</span>";
+    }
+    else if ($currentValue < $previousValue) {
+        $arrow = " <span style=\"color: #dc3545; font-weight: bold;\">↘</span>";
+    }
+    else {
+        $arrow = " <span style=\"color: #000; font-weight: bold;\">→</span>";
+    }
+
+    $previousValue = $currentValue;
+    return $display . $arrow;
+}
+
 /* Shows the summary stats of all years in a single table */
 function showAllYearsSummary() {
     global $customImage;
@@ -158,7 +183,7 @@ function showAllYearsSummary() {
     ?>
     <p><br></p>
     <h1>Umsatz pro Jahr</h1>
-    <table id=bookingsTable>
+    <table id=bookingsTable style="white-space: nowrap;">
     <colgroup>
         <col>
         <col>
@@ -176,6 +201,7 @@ function showAllYearsSummary() {
         <?php endforeach; ?>
     </tr>
     <?php
+    $foodRows = array();
     
     // Display each article across all years
     foreach($sortedArticles as $articleId => $article) {
@@ -197,8 +223,12 @@ function showAllYearsSummary() {
             continue;
         }
         
+        if ($article['subtype'] == 'food') {
+            ob_start();
+        }
+        
         echo("<tr>");
-        echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+        echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
         
         $displayText = $article['text'];
         if ($article['type'] == "custom") {
@@ -221,6 +251,7 @@ function showAllYearsSummary() {
         }
         
         // Display data for each year
+        $prevTrendValue = null;
         foreach($years as $year) {
             if (isset($yearsData[$year]['articles'][$articleId])) {
                 $yearArticle = $yearsData[$year]['articles'][$articleId];
@@ -230,43 +261,52 @@ function showAllYearsSummary() {
                     $amount = $yearArticle['quantity'] * $yearArticle['price'];
                     
                     if ($article['subtype'] == 'food') {
-                        $amountRounded = round($amount, 0);
-                        if ($amountRounded == 0) {
-                            echo("<td class=td_rightBorder>-</td>");
-                        } else {
-                            echo("<td class=td_rightBorder>" . number_format($amountRounded, 0, ".", "'") . "</td>");
-                        }
+                        $numericValue = round($amount, 0);
+                        $displayValue = ($numericValue == 0) ? "-" : number_format($numericValue, 0, ".", "'");
+                        echo("<td class=td_rightBorder>" . appendTrendIndicator($displayValue, $numericValue, $prevTrendValue) . "</td>");
                     } else {
                         $quantity = $yearArticle['quantity'];
                         if ($article['unit'] == "g") {
-                            $quantity = number_format(round($quantity / 1000, 0), 0, ".", "'");
+                            $numericValue = round($quantity / 1000, 0);
                         } else {
-                            $quantity = number_format($quantity, 0, ".", "'");
+                            $numericValue = round($quantity, 0);
                         }
-                        echo("<td class=td_rightBorder>$quantity</td>");
+                        $displayValue = ($numericValue == 0) ? "-" : number_format($numericValue, 0, ".", "'");
+                        echo("<td class=td_rightBorder>" . appendTrendIndicator($displayValue, $numericValue, $prevTrendValue) . "</td>");
                     }
                 } else {
-                    echo("<td class=td_rightBorder>-</td>");
+                    echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
                 }
             } else {
-                echo("<td class=td_rightBorder>-</td>");
+                echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
             }
         }
         
         echo("</tr>\n");
+        
+        if ($article['subtype'] == 'food') {
+            $foodRows[] = ob_get_clean();
+            continue;
+        }
+    }
+    
+    foreach($foodRows as $rowHtml) {
+        echo($rowHtml);
     }
     
     // Donations row
     echo("<tr class=tr_bottomBorder>");
-    echo("<td><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
+    echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
     echo("<td class=td_rightBorder>Spenden</td>");
     echo("<td class=td_rightBorder>CHF</td>");
+    $prevTrendValue = null;
     foreach($years as $year) {
         $donationsRounded = round($yearsData[$year]['donations'], 0);
         if ($donationsRounded == 0) {
-            echo("<td class=td_rightBorder>-</td>");
+            echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
         } else {
-            echo("<td class=td_rightBorder>" . number_format($donationsRounded, 0, ".", "'") . "</td>");
+            $formatted = number_format($donationsRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder>" . appendTrendIndicator($formatted, $donationsRounded, $prevTrendValue) . "</td>");
         }
     }
     echo("</tr>\n");
@@ -276,41 +316,47 @@ function showAllYearsSummary() {
     echo("<td><b>CHF</b></td>");
     echo("<td class=td_rightBorder><b>Umsatz Total</b></td>");
     echo("<td class=td_rightBorder><b>CHF</b></td>");
+    $prevTrendValue = null;
     foreach($years as $year) {
         $totalRounded = round($yearsData[$year]['total'], 0);
         if ($totalRounded == 0) {
-            echo("<td class=td_rightBorder><b>-</b></td>");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</b></td>");
         } else {
-            echo("<td class=td_rightBorder><b>" . number_format($totalRounded, 0, ".", "'") . "</b></td>");
+            $formatted = number_format($totalRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator($formatted, $totalRounded, $prevTrendValue) . "</b></td>");
         }
     }
     echo("</tr>\n");
     
     // Wax totals rows
     echo("<tr>");
-    echo("<td><span class=tooltip><img class=articleImage src=images/articles/colors.png><span><img src=images/articles/colors.png></span></span></td>");
+    echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/articles/colors.png><span><img src=images/articles/colors.png></span></span></td>");
     echo("<td class=td_rightBorder><b>Parafinwachs</b></td>");
     echo("<td class=td_rightBorder><b>kg</b></td>");
+    $prevTrendValue = null;
     foreach($years as $year) {
         $waxParafinRounded = round($yearsData[$year]['waxAmountParafin']/1000, 0);
         if ($waxParafinRounded == 0) {
-            echo("<td class=td_rightBorder><b>-</b></td>");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</b></td>");
         } else {
-            echo("<td class=td_rightBorder><b>" . number_format($waxParafinRounded, 0, ".", "'") . "</b></td>");
+            $formatted = number_format($waxParafinRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator($formatted, $waxParafinRounded, $prevTrendValue) . "</b></td>");
         }
     }
     echo("</tr>\n");
 
     echo("<tr>");
-    echo("<td><span class=tooltip><img class=articleImage src=images/articles/bee.png><span><img src=images/articles/bee.png></span></span></td>");
+    echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/articles/bee.png><span><img src=images/articles/bee.png></span></span></td>");
     echo("<td class=td_rightBorder><b>Bienenwachs</b></td>");
     echo("<td class=td_rightBorder><b>kg</b></td>");
+    $prevTrendValue = null;
     foreach($years as $year) {
         $waxBeeRounded = round($yearsData[$year]['waxAmountBee']/1000, 0);
         if ($waxBeeRounded == 0) {
-            echo("<td class=td_rightBorder><b>-</b></td>");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</b></td>");
         } else {
-            echo("<td class=td_rightBorder><b>" . number_format($waxBeeRounded, 0, ".", "'") . "</b></td>");
+            $formatted = number_format($waxBeeRounded, 0, ".", "'");
+            echo("<td class=td_rightBorder><b>" . appendTrendIndicator($formatted, $waxBeeRounded, $prevTrendValue) . "</b></td>");
         }
     }
     echo("</tr>\n");
