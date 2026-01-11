@@ -67,6 +67,7 @@ $totalWaxPerDayAndYearInKgSummed = $statsData['totalWaxPerDayAndYearInKgSummed']
 					</tbody>
 				</table>
 			</li>
+            <li><a href="statsDiagrams.php">Neue Diagram-Seite</a></li>
 		</ul>
 	</div>
 </div>
@@ -77,26 +78,26 @@ $totalWaxPerDayAndYearInKgSummed = $statsData['totalWaxPerDayAndYearInKgSummed']
 <hr>
 
 <a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie) <span style="font-size: 70%"></span></h2>
-<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?>  
+<? showDiagram("Common", "Umsatz in CHF", $totalPerDayAndYear, ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school-old.png"); ?>  
 <hr>
 
 <a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie) <span style="font-size: 70%"></span></h2>
-<? showDiagram("CommonSummed", "Umsatz aufsummiert in CHF", $totalPerDayAndYearSummed, "", "", -2, 2, "CHF", "", 2, "chart-bg.png"); ?>  
+<? showDiagram("CommonSummed", "Umsatz aufsummiert in CHF", $totalPerDayAndYearSummed, "", "", -2, 2, "CHF", "", 2, "chart-bg-old.png"); ?>  
 <hr>
 
 <a name=Wax_Currency></a><h2>Umsatz Wachs <span style="font-size: 70%"></span></h2>
-<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school.png"); ?> 
+<? showDiagram("Wax", "Umsatz in CHF", $totalWaxPerDayAndYear, ": Öffentlich", ": Schule/Geschlossene Gesellschaft/Private Gruppe", 0, 0, "CHF", "", 2, "chart-bg-public-school-old.png"); ?> 
 <hr>
 
 <a name=Gastro_Currency></a><h2>Umsatz Gastronomie <span style="font-size: 70%"></span></h2>
-<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", -8, 8, "CHF ", "", 2, "chart-bg.png"); ?> 
+<? showDiagram("Food", "Umsatz in CHF", $totalFoodPerDayAndYear, "", "", -8, 8, "CHF ", "", 2, "chart-bg-old.png"); ?> 
 <hr>
 
 <a name=Wax_amount></a><h2>Wachsmenge <span style="font-size: 70%"></span></h2>
-<? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin.png"); ?> 
+<? showDiagram("WaxAmount", "Wachsmenge in kg", $totalWaxPerDayAndYearInKg, ": Parafinwachs", ": Bienenwachs", -20, 20, "", "kg", 1, "chart-bg-bee-parafin-old.png"); ?> 
 
 <a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert<span style="font-size: 70%"></span></h2>
-<? showDiagram("WaxAmountSummed", "Wachsmenge in kg", $totalWaxPerDayAndYearInKgSummed, ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin.png"); ?> 
+<? showDiagram("WaxAmountSummed", "Wachsmenge in kg", $totalWaxPerDayAndYearInKgSummed, ": Parafinwachs", ": Bienenwachs", -10, 10, "", "kg", 1, "chart-bg-bee-parafin-old.png"); ?> 
 
 <hr>
 
