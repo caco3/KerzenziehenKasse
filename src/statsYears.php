@@ -116,21 +116,35 @@ function showAllYearsSummary() {
             );
         }
         
-        // Optimized approach - get all booking IDs for the year at once
-        $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
+        // Optimized approach - single query to get all bookings for the year
+        $nextYear = $year + 1;
+        $query = "SELECT b.bookingId, b.date, b.donation, b.total, b.school, b.booking as serialized_articles
+                  FROM bookings b
+                  WHERE b.date >= '$year-01-01' AND b.date < '$nextYear-01-01'
+                  ORDER BY b.date, b.bookingId";
+        
+        $result = mysqli_query($GLOBALS['db_link'], $query);
         $dbQueryCount++;
-        $allBookingIds = array();
-        foreach($bookingDatesOfCurrentYear as $date) {
-            $bookingIdsOfDate = getBookingIdsOfDate($date, false);
-            $dbQueryCount++;
-            $allBookingIds = array_merge($allBookingIds, $bookingIdsOfDate);
+        
+        if (!$result) {
+            continue; // Skip year if query fails
         }
         
-        // Get all bookings at once
+        // Process all bookings in memory
         $allBookings = array();
-        foreach($allBookingIds as $bookingId) {
-            $allBookings[] = getBooking($bookingId);
-            $dbQueryCount++;
+        while ($row = mysqli_fetch_assoc($result)) {
+            $booking = array();
+            $booking['donation'] = floatval($row['donation']);
+            $booking['total'] = floatval($row['total']);
+            $booking['school'] = $row['school'] == 1;
+            $booking['articles'] = unserialize($row['serialized_articles']);
+            
+            // Skip if unserialize failed
+            if ($booking['articles'] === false) {
+                continue;
+            }
+            
+            $allBookings[] = $booking;
         }
         
         // Process all bookings
