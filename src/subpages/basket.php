@@ -90,12 +90,12 @@ $.ajaxPrefilter('script', function(options) {
         
         echo("<tr>
             <td>");
-        echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
+        echo("<span style=\"display: inline-block; padding-top: 4px; padding-bottom: 0px;\" class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image1><span><img src=images/articles/$image1></span></span>");
         if( $image2 != "") {
-            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
+            echo("<span style=\"display: inline-block; padding-top: 4px; padding-bottom: 0px;\" class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image2><span><img src=images/articles/$image2></span></span>");
         }
         if( $image3 != "") {
-            echo("<span class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
+            echo("<span style=\"display: inline-block; padding-top: 4px; padding-bottom: 0px;\" class=tooltip><img class=articleImageNumpadHeader src=images/articles/$image3><span><img src=images/articles/$image3></span></span>");
         }
         
         echo("</td><td>$textField</td>

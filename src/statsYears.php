@@ -228,7 +228,7 @@ function showAllYearsSummary() {
         }
         
         echo("<tr>");
-        echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+        echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
         
         $displayText = $article['text'];
         if ($article['type'] == "custom") {
@@ -296,7 +296,7 @@ function showAllYearsSummary() {
     
     // Donations row
     echo("<tr class=tr_bottomBorder>");
-    echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
+    echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
     echo("<td class=td_rightBorder>Spenden</td>");
     echo("<td class=td_rightBorder>CHF</td>");
     $prevTrendValue = null;
@@ -330,7 +330,7 @@ function showAllYearsSummary() {
     
     // Wax totals rows
     echo("<tr>");
-    echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/articles/colors.png><span><img src=images/articles/colors.png></span></span></td>");
+    echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/colors.png><span><img src=images/articles/colors.png></span></span></td>");
     echo("<td class=td_rightBorder><b>Parafinwachs</b></td>");
     echo("<td class=td_rightBorder><b>kg</b></td>");
     $prevTrendValue = null;
@@ -346,7 +346,7 @@ function showAllYearsSummary() {
     echo("</tr>\n");
 
     echo("<tr>");
-    echo("<td style=\"padding-top: 2px; padding-bottom: 2px;\"><span class=tooltip><img class=articleImage src=images/articles/bee.png><span><img src=images/articles/bee.png></span></span></td>");
+    echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/bee.png><span><img src=images/articles/bee.png></span></span></td>");
     echo("<td class=td_rightBorder><b>Bienenwachs</b></td>");
     echo("<td class=td_rightBorder><b>kg</b></td>");
     $prevTrendValue = null;

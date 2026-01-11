@@ -149,7 +149,7 @@ function showSummaryOfYear($year) {
             }
         
             echo("<tr>");
-            echo("<td><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
+            echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
 
 			
 			if ($article['subtype'] == 'food') {
