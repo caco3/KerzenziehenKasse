@@ -5,13 +5,6 @@ header('Content-Type: application/json');
 $startTime = microtime(true);
 error_log("getChartData.php starting execution...");
 
-// Enable error reporting for debugging
-error_reporting(E_ALL);
-ini_set('display_errors', 0); // Don't display errors in output
-
-// Capture any warnings/errors
-ob_start();
-
 $root=".";
 require_once("$root/framework/credentials_check.php");
 require_once("$root/config/config_generic.php");
@@ -117,9 +110,6 @@ foreach ($allChartTypes as $type) {
     
     $allFormattedData[$type] = $formattedData;
 }
-
-// Clear any output buffering and output clean JSON
-ob_end_clean();
 
 // Calculate and log total execution time
 $endTime = microtime(true);
