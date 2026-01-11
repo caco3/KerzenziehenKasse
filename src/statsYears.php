@@ -15,18 +15,55 @@ function appendTrendIndicator($display, $currentValue, &$previousValue) {
         return "-";
     }
 
+    $percentage = 0;
+    $trendSymbol = "";
+    $trendColor = "";
+    $bgColor = "";
+    
     if ($currentValue > $previousValue) {
-        $arrow = " <span style=\"color: #198754; font-weight: bold;\">↗</span>";
+        if ($previousValue == 0) {
+            $percentage = 100; // Treat as 100% increase when going from 0
+        } else {
+            $percentage = (($currentValue - $previousValue) / $previousValue) * 100;
+        }
+        $trendSymbol = "↗";
+        $trendColor = "#198754";
+        $bgColor = "rgba(25, 135, 84, 0.1)";
     }
     else if ($currentValue < $previousValue) {
-        $arrow = " <span style=\"color: #dc3545; font-weight: bold;\">↘</span>";
+        if ($previousValue == 0) {
+            $percentage = 0; // No percentage when going from 0 to lower (shouldn't happen)
+        } else {
+            $percentage = (($currentValue - $previousValue) / $previousValue) * 100;
+        }
+        $trendSymbol = "↘";
+        $trendColor = "#dc3545";
+        $bgColor = "rgba(220, 53, 69, 0.1)";
     }
     else {
-        $arrow = " <span style=\"color: #000; font-weight: bold;\">→</span>";
+        $trendSymbol = "→";
+        $trendColor = "#000";
+        $bgColor = "rgba(0, 0, 0, 0.05)";
     }
 
     $previousValue = $currentValue;
-    return $display . $arrow;
+    
+    // Format percentage display
+    $percentageText = "";
+    if ($percentage > 0 && $percentage < 1) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 1) . "%</span>";
+    } else if ($percentage >= 1) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 0) . "%</span>";
+    } else if ($percentage > 0) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 0) . "%</span>";
+    } else if ($percentage < 0) {
+        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">" . number_format($percentage, 0) . "%</span>";
+    }
+    
+    return "<span style=\"display: inline-block; padding: 2px 6px; border-radius: 3px; background-color: $bgColor;\">" .
+           $display .
+           ($percentageText ? " $percentageText" : "") . 
+           "</span>";
 }
 
 /* Shows the summary stats of all years in a single table */
@@ -189,7 +226,7 @@ function showAllYearsSummary() {
         <col>
         <col>
         <?php foreach($years as $year): ?>
-            <col style="width: 95px;">
+            <col>
         <?php endforeach; ?>
     </colgroup>
     <tr>
