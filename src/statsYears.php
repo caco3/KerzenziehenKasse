@@ -141,15 +141,36 @@ function showAllYearsSummary() {
     // Sort years in ascending order
     ksort($yearsData);
     $years = array_keys($yearsData);
+
+    $sortedArticles = array();
+    foreach($allProducts as $product) {
+        $articleId = $product['articleId'];
+        if (isset($allArticles[$articleId])) {
+            $sortedArticles[$articleId] = $allArticles[$articleId];
+        }
+    }
+    foreach($allArticles as $articleId => $article) {
+        if (!isset($sortedArticles[$articleId])) {
+            $sortedArticles[$articleId] = $article;
+        }
+    }
     
     ?>
     <p><br></p>
     <h1>Umsatz pro Jahr</h1>
     <table id=bookingsTable>
+    <colgroup>
+        <col>
+        <col>
+        <col>
+        <?php foreach($years as $year): ?>
+            <col style="width: 95px;">
+        <?php endforeach; ?>
+    </colgroup>
     <tr>
         <th>Artikel</th>
         <th class=td_rightBorder></th>
-        <th class=td_rightBorder></th>
+        <th class=td_rightBorder>Einheit</th>
         <?php foreach($years as $year): ?>
             <th class=td_rightBorder><?php echo $year; ?></th>
         <?php endforeach; ?>
@@ -157,7 +178,7 @@ function showAllYearsSummary() {
     <?php
     
     // Display each article across all years
-    foreach($allArticles as $articleId => $article) {
+    foreach($sortedArticles as $articleId => $article) {
         $hasData = false;
         
         // Check if this article has any data in any year
@@ -190,7 +211,7 @@ function showAllYearsSummary() {
         echo("<td class=td_rightBorder>" . $displayText . "</td>");
         
         if ($article['subtype'] == 'food') {
-            echo("<td class=td_rightBorder></td>");
+            echo("<td class=td_rightBorder>CHF</td>");
         } else {
             $unit = $article['unit'];
             if ($article['unit'] == "g") {
@@ -209,11 +230,16 @@ function showAllYearsSummary() {
                     $amount = $yearArticle['quantity'] * $yearArticle['price'];
                     
                     if ($article['subtype'] == 'food') {
-                        echo("<td class=td_rightBorder>CHF " . roundMoney($amount) . "</td>");
+                        $amountRounded = round($amount, 0);
+                        if ($amountRounded == 0) {
+                            echo("<td class=td_rightBorder>-</td>");
+                        } else {
+                            echo("<td class=td_rightBorder>" . number_format($amountRounded, 0, ".", "'") . "</td>");
+                        }
                     } else {
                         $quantity = $yearArticle['quantity'];
                         if ($article['unit'] == "g") {
-                            $quantity = number_format($quantity / 1000, 1, ".", "'");
+                            $quantity = number_format(round($quantity / 1000, 0), 0, ".", "'");
                         } else {
                             $quantity = number_format($quantity, 0, ".", "'");
                         }
@@ -232,48 +258,78 @@ function showAllYearsSummary() {
     
     // Donations row
     echo("<tr class=tr_bottomBorder>");
-    echo("<td colspan=3 class=td_rightBorder>Spenden</td>");
+    echo("<td><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
+    echo("<td class=td_rightBorder>Spenden</td>");
+    echo("<td class=td_rightBorder>CHF</td>");
     foreach($years as $year) {
-        echo("<td class=td_rightBorder>CHF " . roundMoney($yearsData[$year]['donations']) . "</td>");
+        $donationsRounded = round($yearsData[$year]['donations'], 0);
+        if ($donationsRounded == 0) {
+            echo("<td class=td_rightBorder>-</td>");
+        } else {
+            echo("<td class=td_rightBorder>" . number_format($donationsRounded, 0, ".", "'") . "</td>");
+        }
     }
     echo("</tr>\n");
     
     // Total row
     echo("<tr>");
-    echo("<td colspan=2 class=td_rightBorder><b>Total</b></td><td class=td_rightBorder></td>");
+    echo("<td><b>CHF</b></td>");
+    echo("<td class=td_rightBorder><b>Umsatz Total</b></td>");
+    echo("<td class=td_rightBorder><b>CHF</b></td>");
     foreach($years as $year) {
-        echo("<td class=td_rightBorder><b>CHF " . roundMoney10($yearsData[$year]['total']) . "</b></td>");
+        $totalRounded = round($yearsData[$year]['total'], 0);
+        if ($totalRounded == 0) {
+            echo("<td class=td_rightBorder><b>-</b></td>");
+        } else {
+            echo("<td class=td_rightBorder><b>" . number_format($totalRounded, 0, ".", "'") . "</b></td>");
+        }
     }
     echo("</tr>\n");
     
-    // Wax totals row
+    // Wax totals rows
     echo("<tr>");
-    echo("<td colspan=3 class=td_rightBorder><b>Wachs (Total)</b></td>");
+    echo("<td><span class=tooltip><img class=articleImage src=images/articles/colors.png><span><img src=images/articles/colors.png></span></span></td>");
+    echo("<td class=td_rightBorder><b>Parafinwachs</b></td>");
+    echo("<td class=td_rightBorder><b>kg</b></td>");
     foreach($years as $year) {
-        $waxText = "<img src=images/articles/colors.png height=25px> " . 
-                   formatWeight($yearsData[$year]['waxAmountParafin']/1000) . " kg, " .
-                   "<img src=images/articles/bee.png height=25px> " . 
-                   formatWeight($yearsData[$year]['waxAmountBee']/1000) . " kg";
-        echo("<td class=td_rightBorder><b>$waxText</b></td>");
+        $waxParafinRounded = round($yearsData[$year]['waxAmountParafin']/1000, 0);
+        if ($waxParafinRounded == 0) {
+            echo("<td class=td_rightBorder><b>-</b></td>");
+        } else {
+            echo("<td class=td_rightBorder><b>" . number_format($waxParafinRounded, 0, ".", "'") . "</b></td>");
+        }
     }
     echo("</tr>\n");
-    
+
+    echo("<tr>");
+    echo("<td><span class=tooltip><img class=articleImage src=images/articles/bee.png><span><img src=images/articles/bee.png></span></span></td>");
+    echo("<td class=td_rightBorder><b>Bienenwachs</b></td>");
+    echo("<td class=td_rightBorder><b>kg</b></td>");
+    foreach($years as $year) {
+        $waxBeeRounded = round($yearsData[$year]['waxAmountBee']/1000, 0);
+        if ($waxBeeRounded == 0) {
+            echo("<td class=td_rightBorder><b>-</b></td>");
+        } else {
+            echo("<td class=td_rightBorder><b>" . number_format($waxBeeRounded, 0, ".", "'") . "</b></td>");
+        }
+    }
+    echo("</tr>\n");
     ?>
     </table>
     <?php
-}
+    }
 
-?>
+    ?>
     <div id="body" class="statsYears">
-		<div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px;">Ansicht:</h4>
-				<ul style="margin: 0; padding-left: 20px;">
-					<li><a href="statsYears.php" style="color: #007bff;">Kompaktansicht</a><br><br></li>
-					<li><a href="statsYearsDetails.php" style="color: #6c757d;">Separate Tabelle pro Jahr</a></li>
-				</ul>
-			</div>
-		</div>
+        <div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
+            <div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+                <h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px;">Ansicht:</h4>
+                <ul style="margin: 0; padding-left: 20px;">
+                    <li><a href="statsYears.php" style="color: #007bff;">Kompaktansicht</a><br><br></li>
+                    <li><a href="statsYearsDetails.php" style="color: #6c757d;">Separate Tabelle pro Jahr</a></li>
+                </ul>
+            </div>
+        </div>
     
     <?php
     showAllYearsSummary();
