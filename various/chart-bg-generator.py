@@ -3,7 +3,7 @@
 
 from PIL import Image, ImageDraw
 
-divWidth = 1600
+divWidth = 1600+356
 divHeight = 600
 
 transparency = 180
@@ -14,7 +14,7 @@ days = len(dayNames)
 
 
 # top, right, bottom, left (like in css, https://www.w3schools.com/css/css_padding.asp)
-chartPadding = (20, 120, 40, 100)
+chartPadding = (20, 0, 40+77, 100)
 
 #index
 left = 3
