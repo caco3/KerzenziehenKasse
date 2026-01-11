@@ -96,8 +96,18 @@ function drawChart(chartId, data, headers, lowerName, upperName, prefix, suffix,
         for (var i = 0; i < headers.length; i += 2) {
             var yearName = headers[i].split(':')[0];
             years.push(yearName);
-            headerRow.push(yearName + (lowerName || ''));
-            headerRow.push(yearName + (upperName || ''));
+            if (lowerName) {
+                headerRow.push(yearName + ": " + lowerName);
+            }
+            else {
+                headerRow.push(yearName);   
+            }
+            if (upperName) {
+                headerRow.push(yearName + ": " + upperName);
+            }
+            else {
+                headerRow.push(yearName);
+            }
             
             // Use hardcoded colors for each series
             googleColors.push(seriesColors[yearCounter * 2]);
@@ -432,12 +442,12 @@ function loadAllDiagrams() {
     console.log('Starting to load all diagrams...');
     
     // Create all containers first (immediate display)
-    var commonContainer = createDiagramContainer("Common", "totalPerDayAndYear",  0, "CHF", "", 2, "chart-bg-public-school.png", ": Öffentlich", ": Schule");
+    var commonContainer = createDiagramContainer("Common", "totalPerDayAndYear",  0, "CHF", "", 2, "chart-bg-public-school.png", "Öffentlich", "Schule");
     var commonSummedContainer = createDiagramContainer("CommonSummed", "totalPerDayAndYearSummed",  5, "CHF", "", 2, "chart-bg.png", "", "");
-    var waxContainer = createDiagramContainer("Wax", "totalWaxPerDayAndYear", 0, "CHF", "", 2, "chart-bg-public-school.png", ": Öffentlich", ": Schule");
+    var waxContainer = createDiagramContainer("Wax", "totalWaxPerDayAndYear", 0, "CHF", "", 2, "chart-bg-public-school.png", "Öffentlich", "Schule");
     var foodContainer = createDiagramContainer("Food", "totalFoodPerDayAndYear", 7, "CHF ", "", 2, "chart-bg.png", "", "");
-    var waxAmountContainer = createDiagramContainer("WaxAmount", "totalWaxPerDayAndYearInKg", 17, "", "kg", 1, "chart-bg-bee-parafin.png", ": Parafinwachs", ": Bienenwachs");
-    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "totalWaxPerDayAndYearInKgSummed", 7, "", "kg", 1, "chart-bg-bee-parafin.png", ": Parafinwachs", ": Bienenwachs");
+    var waxAmountContainer = createDiagramContainer("WaxAmount", "totalWaxPerDayAndYearInKg", 17, "", "kg", 1, "chart-bg-bee-parafin.png", "Parafinwachs", "Bienenwachs");
+    var waxAmountSummedContainer = createDiagramContainer("WaxAmountSummed", "totalWaxPerDayAndYearInKgSummed", 7, "", "kg", 1, "chart-bg-bee-parafin.png", "Parafinwachs", "Bienenwachs");
     
     var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
     
