@@ -30,7 +30,7 @@ function loadAllChartData() {
         var startTime = performance.now();
         console.log('Starting to load chart data...');
         
-        fetch('getChartData.php')
+        fetch('framework/getChartData.php')
             .then(response => response.json())
             .then(data => {
                 var endTime = performance.now();

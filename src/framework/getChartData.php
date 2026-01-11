@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 $startTime = microtime(true);
 error_log("getChartData.php starting execution...");
 
-$root=".";
+$root="..";
 require_once("$root/framework/credentials_check.php");
 require_once("$root/config/config_generic.php");
 require_once("$root/config/config.php");
