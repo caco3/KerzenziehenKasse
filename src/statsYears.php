@@ -22,7 +22,7 @@ function appendTrendIndicator($display, $currentValue, &$previousValue) {
     
     if ($currentValue > $previousValue) {
         if ($previousValue == 0) {
-            $percentage = 100; // Treat as 100% increase when going from 0
+            $percentage = 0; // Hide percentage when going from 0
         } else {
             $percentage = (($currentValue - $previousValue) / $previousValue) * 100;
         }
@@ -59,8 +59,10 @@ function appendTrendIndicator($display, $currentValue, &$previousValue) {
     } else if ($percentage < 0) {
         $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">" . number_format($percentage, 0) . "%</span>";
     }
+    // Hide background when no percentage is shown (transition from 0)
+    $containerStyle = $percentageText ? "display: inline-block; padding: 1px 4px; border-radius: 2px; background-color: $bgColor; margin: -1px -4px;" : "display: inline-block; padding: 1px 4px; border-radius: 2px; margin: -1px -4px;";
     
-    return "<span style=\"display: inline-block; padding: 2px 6px; border-radius: 3px; background-color: $bgColor;\">" .
+    return "<span style=\"$containerStyle\">" .
            $display .
            ($percentageText ? " $percentageText" : "") . 
            "</span>";
@@ -220,6 +222,7 @@ function showAllYearsSummary() {
     ?>
     <p><br></p>
     <h1>Umsatz pro Jahr</h1>
+    <div style="overflow-x: auto; max-width: 100%;">
     <table id=bookingsTable style="white-space: nowrap;">
     <colgroup>
         <col>
@@ -272,7 +275,7 @@ function showAllYearsSummary() {
             $displayText = "*) " . $displayText;
         }
         if ($article['unit'] == "g") {
-            $displayText .= " (ohne Gussformen)";
+            $displayText .= "<br>(ohne Gussformen)";
         }
         
         echo("<td class=td_rightBorder>" . $displayText . "</td>");
@@ -418,6 +421,7 @@ function showAllYearsSummary() {
     showAllYearsSummary();
     ?>
     <p><br></p>
+    </div>
     </div>
 
 <?
