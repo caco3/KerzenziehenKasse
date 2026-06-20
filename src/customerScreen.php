@@ -8,7 +8,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 <head>
 
 <!--     <meta http-equiv="refresh" content="1" /> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
     <title>Kundendisplay</title>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
