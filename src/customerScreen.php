@@ -9,7 +9,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 
 <!--     <meta http-equiv="refresh" content="1" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kerzenziehen</title>
+    <title>Kundendisplay</title>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="shortcut icon" href="favicon.ico">
