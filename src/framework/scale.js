@@ -5,7 +5,7 @@ function doConnect()
 {
     console.log("Connecting to scale @ " + location.hostname + "...");
     update_display(null, "Verbinden...", false);
-    websocket = new WebSocket("ws://" + location.hostname + ":8000/");
+    websocket = new WebSocket("ws://" + location.hostname + ":8085/");
     websocket.onopen = function(evt) { onOpen(evt) };
     websocket.onclose = function(evt) { onClose(evt) };
     websocket.onmessage = function(evt) { onMessage(evt) };

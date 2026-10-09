@@ -237,7 +237,7 @@ function minimizeClicked(){
 
     var xhttp = new XMLHttpRequest();
     firework.launch("Die Kasse wird gleich minimiert...", 'success', 2000);
-    xhttp.open("GET", "http://localhost:8081/minimize", true);
+    xhttp.open("GET", "http://localhost:8086/minimize", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send();
 }
