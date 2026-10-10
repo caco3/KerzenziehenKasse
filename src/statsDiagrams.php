@@ -418,7 +418,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 					</tbody>
 				</table>
 			</li>
-            <li><a href="statsDiagrams-old.php">Alter Diagram-Seite</a></li>
+            <li><a href="statsDiagrams-old.php">Alte Diagram-Seite</a></li>
 		</ul>
 	</div>
 </div>
