@@ -7,7 +7,7 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
       <h1>Administration</h1>
 
       <h2>Drucker</h2>
-      <p><a href="http://localhost:5000" target="_blank">Drucker-Status API</a></p>
+      <p><a href="http://localhost:8087" target="_blank">Drucker-Status API</a></p>
       <p><a href="http://localhost:631/" target="_blank">CUPS Administration</a></p>
       <p><br></p>
 
@@ -15,7 +15,7 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
       <p><a href=prices.php target="_self">Generator für die Preisliste</a></p>
       
 <!--       <h2>Artikel und Preise ändern</h2> -->
-<!--       <p><a href=http://localhost:8080 target=_blank>phpmyadmin</a>.<br><br></p> -->
+<!--       <p><a href=http://localhost:8082 target=_blank>phpmyadmin</a>.<br><br></p> -->
       <p><br></p>
 
       <h2>Buchungen exportieren</h2>

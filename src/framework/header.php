@@ -61,7 +61,7 @@ db_connect();
     // var inputFieldSelection = null;
     
     // Receipt generator URL
-    var receiptGeneratorUrl = '<? echo "http://" . $_SERVER['HTTP_HOST'] . ":5000"; ?>';
+    var receiptGeneratorUrl = 'http://' + location.hostname + ':8087';
 
 
     $(document).ready(function(){
