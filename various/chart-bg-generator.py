@@ -5,7 +5,7 @@ import os
 from PIL import Image, ImageDraw
 
 # Matches the chart container width in statsDiagrams.php
-divWidth = 1600+356
+divWidth = 1600+84
 divHeight = 600
 
 transparency = 180
@@ -16,7 +16,7 @@ days = len(dayNames)
 
 
 # top, right, bottom, left (like in css, https://www.w3schools.com/css/css_padding.asp)
-chartPadding = (20, 0, 40+77, 100)
+chartPadding = (0, 2, 50, 0)
 
 #index
 left = 3
@@ -45,15 +45,21 @@ draw = ImageDraw.Draw(im)
 #draw.rectangle([chartPadding[left], divHeight-chartPadding[bottom]-1, chartPadding[left]+chartWidth, chartPadding[top]], outline=(255, 0, 0, 255))
 
 
+lineWidth = 2
+
+bottomY = chartPadding[top] + chartHeight
+extensionHeight = 50
+lineBottomY = bottomY + extensionHeight
+
 print("x1, y1, x2, y2")
 for day in range(days):
     x1 = chartPadding[left] + day * dayWidth
     x2 = x1 + dayWidth
-    
+
     y1 = chartPadding[top]
-    y2 = chartPadding[top]+dayHeight 
+    y2 = bottomY
     print(day, dayNames[day], x1, y1, x2, y2)
-    
+
     if dayNames[day] == "So": # sundays
         color = (255, 200, 200, transparency)
     elif (dayNames[day] == "Mo") or (dayNames[day] == "Mi") or (dayNames[day] == "Fr"): # Mo, Mi, Fr
@@ -63,6 +69,28 @@ for day in range(days):
 
     draw.rectangle([x1, y1, x2, y2], outline=None, fill=color)
 
+# Sundays get a red extension below the main chart area.
+for day in range(days):
+    if dayNames[day] != "So":
+        continue
+    x1 = chartPadding[left] + day * dayWidth
+    x2 = x1 + dayWidth
+    draw.rectangle([x1, bottomY, x2, lineBottomY], outline=None, fill=(255, 200, 200, transparency))
+
+# Draw the main horizontal line at the bottom of the main chart area in gray,
+# crossing all columns.
+draw.line(
+    [(chartPadding[left], bottomY), (chartPadding[left] + chartWidth, bottomY)],
+    fill=(128, 128, 128, 255),
+    width=lineWidth
+)
+
+# Draw vertical black lines between day columns on top of everything,
+# all the way down to the bottom of the Sunday extensions, including the
+# outer edges of the first and last columns.
+for day in range(days + 1):
+    x = chartPadding[left] + day * dayWidth
+    draw.line([(x, chartPadding[top]), (x, lineBottomY)], fill=(0, 0, 0, 255), width=lineWidth)
 
 
 # save image relative to this script, so it works from any CWD

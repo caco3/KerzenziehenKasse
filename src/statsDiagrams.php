@@ -263,9 +263,9 @@ function createDiagramContainer(dataId) {
     var legendOverlay = config.legendImage
         ? '<img src="images/' + config.legendImage + '" style="position: absolute; top: 50px; left: 150px; z-index: 1; pointer-events: none;" alt="">'
         : '';
-    var chartHtml = '<div style="width: 1825px; height: 470px; margin: 0; padding: 0; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-position: -9px -20px; position: relative;">';
+    var chartHtml = '<div style="width: 1825px; height: 470px; margin: 0; padding: 0; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-position: 46px -120px; position: relative;">';
     chartHtml += legendOverlay;
-    chartHtml += '<div id="' + chartId + '" style="position: relative; z-index: 2; width: ' + (1825 - config.paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + config.paddingLeft + 'px; height: 100%;">';
+    chartHtml += '<div id="' + chartId + '" style="position: relative; z-index: 2; width: ' + (1822 - config.paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + config.paddingLeft + 'px; height: 100%;">';
     chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
     chartHtml += '</div>';
     chartHtml += '</div>';
