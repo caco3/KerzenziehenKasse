@@ -7,15 +7,16 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
       <h1>Administration</h1>
 
       <h2>Drucker</h2>
-      <p><a href="http://localhost:8087" target="_blank">Drucker-Status API</a></p>
-      <p><a href="http://localhost:631/" target="_blank">CUPS Administration</a></p>
+      <p><a href="subpages/printerApi.php" target="_self">API für Beleg-Drucker</a><br><br></p>
+      <p><a href="#" onclick="fetch('http://localhost:8086/printer-settings'); return false;">Druckereinstellungen</a></p>
       <p><br></p>
 
       <h2>Preisliste</h2>
       <p><a href=prices.php target="_self">Generator für die Preisliste</a></p>
-      
-<!--       <h2>Artikel und Preise ändern</h2> -->
-<!--       <p><a href=http://localhost:8082 target=_blank>phpmyadmin</a>.<br><br></p> -->
+      <p><br></p>
+
+      <h2>Datenbank</h2>
+      <p><a href="subpages/phpmyadmin.php" target="_self">phpMyAdmin</a></p>
       <p><br></p>
 
       <h2>Buchungen exportieren</h2>

@@ -57,7 +57,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         }
 	    
 		.cellAmount, .cellName, .cellCost{
-            font-size: 150%;
+            font-size: 190%;
         }
 		
 		.cellName {
@@ -67,7 +67,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         .total {
             margin-top: 5px;
             margin-bottom: 5px;
-            font-size: 50px;
+            font-size: 80px;
         }
 		
 		#legend {
@@ -76,7 +76,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		}
 		
 		#roundingText {
-			font-size: 80%;
+			font-size: 150%;
 			margin-top: 0;
 			margin-bottom: 10px;
 			text-align: right;
@@ -277,7 +277,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             let cellName = row.insertCell();
             let cellCost = row.insertCell();
 
-            cellAmount.innerHTML = "<b>Menge</b>";
+            cellAmount.innerHTML = "<b>#</b>";
             cellName.innerHTML = "<b>Artikel</b>";
 			cellCost.innerHTML = "<b>Preis</b>";
 			cellAmount.className = "cellAmount";

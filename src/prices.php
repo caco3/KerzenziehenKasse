@@ -44,6 +44,7 @@ $articles = array_merge($articles, getDbProductsEx("wachs", "name", "effect"));
 
 <div id="scoped-content">
     <style type="text/css" scoped>
+        body { font-family: sans-serif; }
         table, th, td { border:1px solid black; border-collapse: collapse; padding: 5px;  } 		
     </style>
 
