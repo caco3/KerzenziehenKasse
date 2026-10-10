@@ -1,8 +1,10 @@
 ### Script to generate the background image for the diagrams (statsDiagrams.php)
 ###
 
+import os
 from PIL import Image, ImageDraw
 
+# Matches the chart container width in statsDiagrams.php
 divWidth = 1600+356
 divHeight = 600
 
@@ -63,7 +65,9 @@ for day in range(days):
 
 
 
-# save image
-f = '../src/images/chart-bg.png'
+# save image relative to this script, so it works from any CWD
+out_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src', 'images'))
+os.makedirs(out_dir, exist_ok=True)
+f = os.path.join(out_dir, 'chart-bg.png')
 print("Generated %s" % f)
 im.save(f) 
