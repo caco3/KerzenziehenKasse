@@ -260,7 +260,7 @@ function createDiagramContainer(dataId) {
     // Show chart container with background image and loading indicator immediately
     // Adjust padding-left to the container to make sure all X axis tick labels have the same width (so it matches the background image position)
     // And compensate the width with it
-    var chartHtml = '<div id="' + chartId + '" style="width: ' + (1997 - config.paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + config.paddingLeft + 'px; height: 470px; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -9px -20px; position: relative;">';
+    var chartHtml = '<div id="' + chartId + '" style="width: ' + (1825 - config.paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + config.paddingLeft + 'px; height: 470px; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-attachment: relative; background-position: -9px -20px; position: relative;">';
     chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
     chartHtml += '</div>';
     chartHtml += '<div id="' + legendId + '" style="max-width: 1400px; margin: 0; margin-top: 10px; height: 100px;"></div>';
