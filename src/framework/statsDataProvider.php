@@ -238,7 +238,34 @@ function getStatsData() {
                 }
             }
         }
-    } 
+    }
+
+    // Make sure every chart uses the same 15 weekday labels in a row.
+    // 2025 is a full event year starting on Sunday, so use it as the reference.
+    $referenceDate = '2025-11-02';
+    $chartArrays = array(
+        &$totalPerDayAndYear,
+        &$totalPerDayAndYearSummed,
+        &$totalWaxPerDayAndYear,
+        &$totalFoodPerDayAndYear,
+        &$totalWaxPerDayAndYearInKg,
+        &$totalWaxPerDayAndYearInKgSummed
+    );
+
+    for ($offset = 0; $offset < 15; $offset++) {
+        $label = $germanDayOfWeekShort[strftime("%w", strtotime("$referenceDate +$offset days"))];
+        foreach ($chartArrays as &$chartArray) {
+            if (!array_key_exists($offset, $chartArray)) {
+                $chartArray[$offset] = array('donations' => 0, 'total' => 0, 'school' => 0);
+            }
+            $chartArray[$offset]['formatedDate'] = $label;
+        }
+    }
+
+    // The summed arrays are built in booking order, so sort them back into day-offset order.
+    foreach ($chartArrays as &$chartArray) {
+        ksort($chartArray);
+    }
 
     return array(
         'totalPerDayAndYear' => $totalPerDayAndYear,
