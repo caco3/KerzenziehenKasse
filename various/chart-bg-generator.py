@@ -16,7 +16,7 @@ days = len(dayNames)
 
 
 # top, right, bottom, left (like in css, https://www.w3schools.com/css/css_padding.asp)
-chartPadding = (0, 2, 50, 0)
+chartPadding = (0, 2, 30, 0)
 
 #index
 left = 3

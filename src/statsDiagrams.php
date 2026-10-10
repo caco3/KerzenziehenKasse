@@ -224,12 +224,15 @@ function drawLegendChart(legendId, headers) {
             var yearName = headers[i].split(':')[0];
             var yearIndex = Math.floor(i / 2);
             var darkColor = seriesColors[yearIndex];
-            var lightColor = generateBrightColor(darkColor);
+            var hasSecondSeries = headers[i].indexOf(':') !== -1;
             
             legendHTML += '<div style="display: flex; align-items: center; gap: 8px;">';
             legendHTML += '<div style="display: flex; gap: 2px;">';
             legendHTML += '<div style="width: 20px; height: 20px; background-color: ' + darkColor + '; border: 1px solid #ccc;"></div>';
-            legendHTML += '<div style="width: 20px; height: 20px; background-color: ' + lightColor + '; border: 1px solid #ccc;"></div>';
+            if (hasSecondSeries) {
+                var lightColor = generateBrightColor(darkColor);
+                legendHTML += '<div style="width: 20px; height: 20px; background-color: ' + lightColor + '; border: 1px solid #ccc;"></div>';
+            }
             legendHTML += '</div>';
             legendHTML += '<span style="font-size: 14px; font-weight: bold;">' + yearName + '</span>';
             legendHTML += '</div>';
@@ -263,7 +266,7 @@ function createDiagramContainer(dataId) {
     var legendOverlay = config.legendImage
         ? '<img src="images/' + config.legendImage + '" style="position: absolute; top: 50px; left: 150px; z-index: 1; pointer-events: none;" alt="">'
         : '';
-    var chartHtml = '<div style="width: 1825px; height: 470px; margin: 0; padding: 0; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-position: 46px -120px; position: relative;">';
+    var chartHtml = '<div style="width: 1825px; height: 470px; margin: 0; padding: 0; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-position: 46px -140px; position: relative;">';
     chartHtml += legendOverlay;
     chartHtml += '<div id="' + chartId + '" style="position: relative; z-index: 2; width: ' + (1822 - config.paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + config.paddingLeft + 'px; height: 100%;">';
     chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
