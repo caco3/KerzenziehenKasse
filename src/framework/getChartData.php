@@ -29,7 +29,8 @@ $chartConfig = [
         'prefix' => 'CHF',
         'suffix' => '',
         'fractionDigits' => 2,
-        'bgImage' => 'chart-bg-public-school.png',
+        'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-schule-oeffentlich.png',
         'paddingLeft' => 0
     ],
     'totalPerDayAndYearSummed' => [
@@ -47,7 +48,8 @@ $chartConfig = [
         'prefix' => 'CHF',
         'suffix' => '',
         'fractionDigits' => 2,
-        'bgImage' => 'chart-bg-public-school.png',
+        'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-schule-oeffentlich.png',
         'paddingLeft' => 0
     ],
     'totalFoodPerDayAndYear' => [
@@ -65,7 +67,8 @@ $chartConfig = [
         'prefix' => '',
         'suffix' => 'kg',
         'fractionDigits' => 1,
-        'bgImage' => 'chart-bg-bee-parafin.png',
+        'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-bienenwachs-parafin.png',
         'paddingLeft' => 17
     ],
     'totalWaxPerDayAndYearInKgSummed' => [
@@ -74,7 +77,8 @@ $chartConfig = [
         'prefix' => '',
         'suffix' => 'kg',
         'fractionDigits' => 1,
-        'bgImage' => 'chart-bg-bee-parafin.png',
+        'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-bienenwachs-parafin.png',
         'paddingLeft' => 7
     ]
 ];
