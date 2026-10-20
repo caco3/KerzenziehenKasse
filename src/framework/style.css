@@ -243,16 +243,28 @@ a:link, a:visited, a:hover, a:active {
 
 /* border */
 #dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
-    border-radius:8px;
+    border-radius:9px;
     border-spacing: 0;
+    overflow: hidden;
 }
 
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
-    border: 3px solid black; 
+/* Green frames = content tables */
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable {
+    border: 3px solid #1f7821;
+}
+
+/* Teal frame = extra data / metadata */
+#extraInfoDiv {
+    border: 3px solid #007d79;
+}
+
+/* Blue frames = other content containers */
+#bibleVerseContentDiv, #navigationDiv {
+    border: 3px solid #2e75b6;
 }
 
 #basketTableEdit {
-    border: 3px solid #750000; 
+    border: 3px solid #750000;
 }
 
 #editBookingTitle {
@@ -261,7 +273,7 @@ a:link, a:visited, a:hover, a:active {
 
 /* Shade */
 #dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
-    box-shadow: 5px 5px 5px #888888;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
 }
 
 
