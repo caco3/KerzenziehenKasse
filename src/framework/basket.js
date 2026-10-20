@@ -162,8 +162,8 @@ function refreshExtraSummary() {
 				var extra = obj.success && obj.data ? obj.data : {};
 				var parts = [];
 				if (extra.schulklasse) parts.push("Klasse: " + extra.schulklasse);
-				if (extra.leiter) parts.push("Leiter: " + extra.leiter);
-				var summary = parts.length ? parts.join(", ") : "Drücken zum Bearbeiten";
+				if (extra.leiter) parts.push("Leiter/in: " + extra.leiter);
+				var summary = parts.length ? parts.join(", ") : "Angabe von Schulklasse, Leiter/in";
 				var el = document.getElementById("extraSummaryText");
 				if (el) el.innerText = summary;
 				console.log("Extra summary updated:", summary);

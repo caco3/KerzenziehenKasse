@@ -10,6 +10,7 @@ db_connect();
 $bookingId = getDbBookingId();
 ?>
 <div style="text-align: left; padding: 5px; cursor: pointer;" onclick="editExtraDataClicked();" id="extraInfoLine">
-	<small><em>Extra-Daten: <span id="extraSummaryText">Drücken zum Bearbeiten</span></em></small>
-	<img src="images/receipt.png" height=30px style="float: right; margin-left: 10px;">
+	<img src="images/school.png" height=50px style="margin-right: 10px; margin-top: 5px; margin-bottom:0">
+	<small style="position: relative; top: -18px;"><em> <span id="extraSummaryText">Angabe von Schulklasse, Leiter/in</span></em></small>
+	<button type=button class=editButton title="Editieren" style="float:right"></button>
 </div>
