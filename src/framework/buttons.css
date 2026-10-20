@@ -103,6 +103,14 @@
     border: 1px solid #87CEEB;
 }
 
+.editButton:hover:enabled {
+    background-image: url("../images/edit.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/edit.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/edit.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/edit.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/edit.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
+}
+
 .receiptButtonView {
     background: url("../images/receipt-view.png") no-repeat center center, #B0E0E6;
     background-image: url("../images/receipt-view.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
@@ -113,6 +121,14 @@
     background-size: 40px 40px, auto;
     background-repeat: no-repeat, no-repeat;
     border: 1px solid #87CEEB;
+}
+
+.receiptButtonView:hover:enabled {
+    background-image: url("../images/receipt-view.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-view.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-view.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-view.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-view.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
 }
 
 .receiptButtonPrint {
@@ -127,6 +143,14 @@
     border: 1px solid #87CEEB;
 }
 
+.receiptButtonPrint:hover:enabled {
+    background-image: url("../images/receipt-print.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-print.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-print.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-print.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/receipt-print.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
+}
+
 .exportCsvButton {
     background: url("../images/csv.png") no-repeat center center, #B0E0E6;
     background-image: url("../images/csv.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
@@ -137,6 +161,14 @@
     background-size: 40px 40px, auto;
     background-repeat: no-repeat, no-repeat;
     border: 1px solid #87CEEB;
+}
+
+.exportCsvButton:hover:enabled {
+    background-image: url("../images/csv.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/csv.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/csv.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/csv.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/csv.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
 }
 
 .schoolFlagButton {
@@ -151,6 +183,14 @@
     border: 1px solid #87CEEB;
 }
 
+.schoolFlagButton:hover:enabled {
+    background-image: url("../images/public.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/public.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/public.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/public.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/public.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
+}
+
 .schoolFlagButton.active {
     background: url("../images/school.png") no-repeat center center, #B0E0E6;
     background-image: url("../images/school.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
@@ -161,6 +201,14 @@
     background-size: 40px 40px, auto;
     background-repeat: no-repeat, no-repeat;
     border: 1px solid #87CEEB;
+}
+
+.schoolFlagButton.active:hover:enabled {
+    background-image: url("../images/school.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/school.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/school.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/school.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
+    background-image: url("../images/school.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
 }
 
 /* Clearfix for button containers */
