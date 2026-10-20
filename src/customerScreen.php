@@ -71,7 +71,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         }
 		
 		#legend {
-			color: gray;
+			color: rgba(73, 80, 87, 1);
 			font-size: 70%;
 		}
 		
@@ -87,10 +87,12 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 			display:  block;
 			overflow: auto;
 			max-height: 606px;
+			font-size: 120%; /* Keep the big customer-display text (overrides the smaller #bookingsTable size) */
 		}
 		
 		.bookingsTableTotal {
 			margin-top: 10px;
+			font-size: 120%; /* Keep the big customer-display text */
 		}
 		
 		#screensaver {
