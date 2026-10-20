@@ -5,6 +5,7 @@
    ============================================================ */
 .addToBasketButton, .removeFromBasketButton, .editButton,
 .receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton,
+.minimizeButton,
 .cashButton, .twintButton, .invoiceButton, .summaryBackButton,
 .updateButton, .cancelButton, .cancelClearBasketButton, .clearBasket {
     border-radius: 9px;
@@ -25,7 +26,7 @@
 .addToBasketButton:hover:enabled, .removeFromBasketButton:hover:enabled,
 .editButton:hover:enabled, .receiptButtonView:hover:enabled,
 .receiptButtonPrint:hover:enabled, .exportCsvButton:hover:enabled,
-.schoolFlagButton:hover:enabled,
+.schoolFlagButton:hover:enabled, .minimizeButton:hover:enabled,
 .cashButton:hover:enabled, .twintButton:hover:enabled,
 .invoiceButton:hover:enabled, .summaryBackButton:hover:enabled,
 .updateButton:hover:enabled, .cancelButton:hover:enabled,
@@ -39,7 +40,7 @@
 .addToBasketButton:active:enabled, .removeFromBasketButton:active:enabled,
 .editButton:active:enabled, .receiptButtonView:active:enabled,
 .receiptButtonPrint:active:enabled, .exportCsvButton:active:enabled,
-.schoolFlagButton:active:enabled,
+.schoolFlagButton:active:enabled, .minimizeButton:active:enabled,
 .cashButton:active:enabled, .twintButton:active:enabled,
 .invoiceButton:active:enabled, .summaryBackButton:active:enabled,
 .updateButton:active:enabled, .cancelButton:active:enabled,
@@ -57,6 +58,7 @@
 .receiptButtonPrint:disabled, .receiptButtonPrint[disabled],
 .exportCsvButton:disabled, .exportCsvButton[disabled],
 .schoolFlagButton:disabled, .schoolFlagButton[disabled],
+.minimizeButton:disabled, .minimizeButton[disabled],
 .cashButton:disabled, .cashButton[disabled],
 .twintButton:disabled, .twintButton[disabled],
 .invoiceButton:disabled, .invoiceButton[disabled],
@@ -78,7 +80,8 @@
    Icon buttons (56x50, light blue)
    ------------------------------------------------------------ */
 .addToBasketButton, .removeFromBasketButton, .editButton,
-.receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton {
+.receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton,
+.minimizeButton {
     width: 56px;
     height: 50px;
     background-color: #B0E0E6;
@@ -96,6 +99,7 @@
 .exportCsvButton         { background-image: url("../images/csv.png"),           linear-gradient(to bottom, #B0E0E6, #87CEEB); }
 .schoolFlagButton        { background-image: url("../images/public.png"),        linear-gradient(to bottom, #B0E0E6, #87CEEB); }
 .schoolFlagButton.active { background-image: url("../images/school.png"),        linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.minimizeButton          { background-image:                                    linear-gradient(to bottom, #B0E0E6, #87CEEB); background-size: cover; margin: 1px; margin-top: 4px; padding: 0; width: 44px; height: 36px; }
 
 
 /* ------------------------------------------------------------

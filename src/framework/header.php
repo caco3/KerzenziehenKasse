@@ -100,7 +100,7 @@ db_connect();
 
     <body id=live>
 
-<button onclick="topFunction()" id="scrollUpButton" title="Go to top"><img src=images/to-top.png width=60px></button>
+<button onclick="topFunction()" id="scrollUpButton" title="Go to top"><img src=images/to-top.png width=40px></button>
 
 <div id="container">
 

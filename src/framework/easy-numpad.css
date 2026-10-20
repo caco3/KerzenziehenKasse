@@ -68,40 +68,84 @@ a#easy-numpad-close {
     position: relative;
     left: -3px;
     margin-top: 10px;
+    border-spacing: 4px;
 }
-.easy-numpad-number-container > table a {
+
+/* Numpad keys — same chrome as the app buttons.
+   These are <a> elements, so plain :hover/:active is used. */
+.easy-numpad-number-container > table a,
+a#easy-numpad-close, .scale_done, #scale_done {
     display: block;
-    padding: 25px 25px;
-    background-color: #424242;
-    color: #fff;
+    padding: 25px;
+    border-radius: 9px;
+    border: 1px solid transparent;
+    font-family: Arial;
+    font-size: 20px;
+    color: #1a1a1a;
     text-align: center;
-}
-.easy-numpad-number-container > table a:hover {
-    background-color: #616161;
+    text-decoration: none;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.1s ease;
 }
 
-.easy-numpad-number-container .cancel {
-    background-color: #ef5350;
+.easy-numpad-number-container > table a:hover,
+a#easy-numpad-close:hover, .scale_done:hover, #scale_done:hover {
+    filter: brightness(1.15);
 }
+
+.easy-numpad-number-container > table a:active,
+a#easy-numpad-close:active, .scale_done:active, #scale_done:active {
+    transform: scale(0.95);
+    filter: brightness(0.9);
+}
+
+/* Neutral digit keys — light blue like the icon buttons */
+.easy-numpad-number-container > table a {
+    background: #B0E0E6;
+    background-image: linear-gradient(to bottom, #B0E0E6, #87CEEB);
+    border-color: #87CEEB;
+}
+
+/* Larger digits (keys without del/cancel/done class) */
+.easy-numpad-number-container > table a:not(.del):not(.cancel):not(.done) {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+/* Blue = back / delete last digit */
+.easy-numpad-number-container .del {
+    background: #5b9bd5;
+    background-image: linear-gradient(to bottom, #5b9bd5, #2e75b6);
+    border-color: #2e75b6;
+    color: #ffffff;
+}
+
+/* Red = cancel / close */
+.easy-numpad-number-container .cancel, a#easy-numpad-close {
+    background: #f24437;
+    background-image: linear-gradient(to bottom, #f24437, #ba1f14);
+    border-color: #ba1f14;
+    color: #ffffff;
+}
+
+a#easy-numpad-close {
+    padding: 20px 21px;
+}
+
+/* Green = confirm */
+.easy-numpad-number-container .done, .scale_done, #scale_done {
+    background: #52d934;
+    background-image: linear-gradient(to bottom, #52d934, #1f7821);
+    border-color: #1f7821;
+    color: #ffffff;
+}
+
 .easy-numpad-number-container .done {
-    background-color: #388E3C;
-    padding: 64px 64px;	
-}
-
-
-a#scale_done {
-    background-color: #388E3C;
     padding: 64px 64px;
 }
 
-
-#scale_done {
-    background-color: #388E3C;
-    padding: 64px 64px;
-}
-.scale_done {
-    background-color: #388E3C;
-    padding: 64px 64px;
+.scale_done, #scale_done {
+    padding: 32px 64px;
 }
 
 .scale-output {
