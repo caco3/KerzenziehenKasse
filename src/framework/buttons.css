@@ -1,215 +1,146 @@
 
-.addToBasketButton {
-    background: url("../images/add.png") no-repeat top center;
-}
-
-
-.removeFromBasketButton {
-    background: url("../images/delete.png") no-repeat top center;
-}
-
-
-.editButton {
-    background: url("../images/edit.png") no-repeat top center;
-}
-
-.receiptButtonView {
-    background: url("../images/receipt-view.png") no-repeat top center;
-}
-
-.receiptButtonPrint {
-    background: url("../images/receipt-print.png") no-repeat top center;
-}
-
-.exportCsvButton {
-    background: url("../images/csv.png") no-repeat top center;
-}
-
-.schoolFlagButton {
-    background: url("../images/public.png") no-repeat center center;
-    background-size: 40px 40px;
-}
-
-.schoolFlagButton.active {
-    background: url("../images/school.png") no-repeat center center;
-    background-size: 40px 40px;
-}
-
-
-
-.addToBasketButton, .removeFromBasketButton, .editButton, .receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton {    
-    background-size: 40px 40px;
-    width: 56px;
-    height: 50px;
-    border-radius: 6px;
-    background-position: center;
-    margin: 2px;
+/* ============================================================
+   Shared chrome for ALL buttons (icon + action buttons).
+   Sizes and semantic colors are defined per group below.
+   ============================================================ */
+.addToBasketButton, .removeFromBasketButton, .editButton,
+.receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton,
+.cashButton, .twintButton, .invoiceButton, .summaryBackButton,
+.updateButton, .cancelButton, .cancelClearBasketButton, .clearBasket {
+    border-radius: 9px;
+    border: 1px solid transparent;
+    font-family: Arial;
+    font-size: 20px;
+    color: #ffffff;
+    text-decoration: none;
     display: inline-block;
     vertical-align: top;
-    /* Apply lighter blue button background */
+    margin: 2px;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+/* Unified hover: same brightening for every button.
+   Using filter keeps each button's icon visible. */
+.addToBasketButton:hover:enabled, .removeFromBasketButton:hover:enabled,
+.editButton:hover:enabled, .receiptButtonView:hover:enabled,
+.receiptButtonPrint:hover:enabled, .exportCsvButton:hover:enabled,
+.schoolFlagButton:hover:enabled,
+.cashButton:hover:enabled, .twintButton:hover:enabled,
+.invoiceButton:hover:enabled, .summaryBackButton:hover:enabled,
+.updateButton:hover:enabled, .cancelButton:hover:enabled,
+.cancelClearBasketButton:hover:enabled, .clearBasket:hover:enabled {
+    filter: brightness(1.15);
+}
+
+/* Unified pressed effect: shrink + darken while clicked.
+   Placed after :hover so it overrides the hover brightening. */
+.addToBasketButton:active:enabled, .removeFromBasketButton:active:enabled,
+.editButton:active:enabled, .receiptButtonView:active:enabled,
+.receiptButtonPrint:active:enabled, .exportCsvButton:active:enabled,
+.schoolFlagButton:active:enabled,
+.cashButton:active:enabled, .twintButton:active:enabled,
+.invoiceButton:active:enabled, .summaryBackButton:active:enabled,
+.updateButton:active:enabled, .cancelButton:active:enabled,
+.cancelClearBasketButton:active:enabled, .clearBasket:active:enabled {
+    transform: scale(0.95);
+    filter: brightness(0.9);
+}
+
+/* Unified disabled state for every button */
+.addToBasketButton:disabled, .addToBasketButton[disabled],
+.removeFromBasketButton:disabled, .removeFromBasketButton[disabled],
+.editButton:disabled, .editButton[disabled],
+.receiptButtonView:disabled, .receiptButtonView[disabled],
+.receiptButtonPrint:disabled, .receiptButtonPrint[disabled],
+.exportCsvButton:disabled, .exportCsvButton[disabled],
+.schoolFlagButton:disabled, .schoolFlagButton[disabled],
+.cashButton:disabled, .cashButton[disabled],
+.twintButton:disabled, .twintButton[disabled],
+.invoiceButton:disabled, .invoiceButton[disabled],
+.summaryBackButton:disabled, .summaryBackButton[disabled],
+.updateButton:disabled, .updateButton[disabled],
+.cancelButton:disabled, .cancelButton[disabled],
+.cancelClearBasketButton:disabled, .cancelClearBasketButton[disabled],
+.clearBasket:disabled, .clearBasket[disabled] {
+    filter: grayscale(80%);
+    opacity: 0.6;
+    cursor: default;
+}
+
+
+/* ------------------------------------------------------------
+   Icon buttons (56x50, light blue)
+   ------------------------------------------------------------ */
+.addToBasketButton, .removeFromBasketButton, .editButton,
+.receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton {
+    width: 56px;
+    height: 50px;
     background-color: #B0E0E6;
-    background-image: -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    border: 1px solid #87CEEB;
-}
-
-.addToBasketButton:hover:enabled, .removeFromBasketButton:hover:enabled, .editButton:hover:enabled, .receiptButtonView:hover:enabled, .receiptButtonPrint:hover:enabled, .exportCsvButton:hover:enabled, .schoolFlagButton:hover:enabled {
-    background-color: #E0F6FF;
-    background-image: -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: -o-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: linear-gradient(to bottom, #E0F6FF, #B0E0E6);
-    border: 1px solid #B0E0E6;
-}
-
-/* Individual button styles to preserve icons */
-.addToBasketButton {
-    background: url("../images/add.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/add.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/add.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/add.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/add.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/add.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
     background-size: 40px 40px, auto;
     background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
+    background-position: center center, center center;
+    border-color: #87CEEB;
 }
 
-.removeFromBasketButton {
-    background: url("../images/delete.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/delete.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/delete.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/delete.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/delete.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/delete.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    background-size: 40px 40px, auto;
-    background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
+.addToBasketButton       { background-image: url("../images/add.png"),           linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.removeFromBasketButton  { background-image: url("../images/delete.png"),        linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.editButton              { background-image: url("../images/edit.png"),          linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.receiptButtonView       { background-image: url("../images/receipt-view.png"),  linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.receiptButtonPrint      { background-image: url("../images/receipt-print.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.exportCsvButton         { background-image: url("../images/csv.png"),           linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.schoolFlagButton        { background-image: url("../images/public.png"),        linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+.schoolFlagButton.active { background-image: url("../images/school.png"),        linear-gradient(to bottom, #B0E0E6, #87CEEB); }
+
+
+/* ------------------------------------------------------------
+   Action buttons — shared sizes, semantic colors
+   ------------------------------------------------------------ */
+.cashButton, .twintButton, .invoiceButton, .summaryBackButton,
+.updateButton, .cancelButton {
+    width: 150px;
+    height: 100px;
+    padding: 10px 20px;
 }
 
-.editButton {
-    background: url("../images/edit.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/edit.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/edit.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/edit.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/edit.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/edit.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    background-size: 40px 40px, auto;
-    background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
+.cancelClearBasketButton, .clearBasket {
+    width: 150px;
+    height: 50px;
+    padding: 10px 20px;
 }
 
-.editButton:hover:enabled {
-    background-image: url("../images/edit.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/edit.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/edit.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/edit.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/edit.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
+/* Green = pay / confirm */
+.cashButton, .twintButton, .invoiceButton, .cancelClearBasketButton {
+    background: #52d934;
+    background-image: linear-gradient(to bottom, #52d934, #1f7821);
+    border-color: #1f7821;
 }
 
-.receiptButtonView {
-    background: url("../images/receipt-view.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/receipt-view.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-view.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-view.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-view.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-view.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    background-size: 40px 40px, auto;
-    background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
+/* Teal = update */
+.updateButton {
+    background: #007d79;
+    background-image: linear-gradient(to bottom, #007d79, #015451);
+    border-color: #015451;
 }
 
-.receiptButtonView:hover:enabled {
-    background-image: url("../images/receipt-view.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-view.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-view.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-view.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-view.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
+/* Blue = navigate back */
+.summaryBackButton {
+    background: #5b9bd5;
+    background-image: linear-gradient(to bottom, #5b9bd5, #2e75b6);
+    border-color: #2e75b6;
 }
 
-.receiptButtonPrint {
-    background: url("../images/receipt-print.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/receipt-print.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-print.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-print.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-print.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/receipt-print.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    background-size: 40px 40px, auto;
-    background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
+/* Red = cancel / destructive */
+.cancelButton, .clearBasket {
+    background: #f24437;
+    background-image: linear-gradient(to bottom, #f24437, #ba1f14);
+    border-color: #ba1f14;
 }
 
-.receiptButtonPrint:hover:enabled {
-    background-image: url("../images/receipt-print.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-print.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-print.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-print.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/receipt-print.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
+.cancelButton {
+    margin-right: 10px;
 }
 
-.exportCsvButton {
-    background: url("../images/csv.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/csv.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/csv.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/csv.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/csv.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/csv.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    background-size: 40px 40px, auto;
-    background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
-}
-
-.exportCsvButton:hover:enabled {
-    background-image: url("../images/csv.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/csv.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/csv.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/csv.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/csv.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
-}
-
-.schoolFlagButton {
-    background: url("../images/public.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/public.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/public.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/public.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/public.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/public.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    background-size: 40px 40px, auto;
-    background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
-}
-
-.schoolFlagButton:hover:enabled {
-    background-image: url("../images/public.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/public.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/public.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/public.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/public.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
-}
-
-.schoolFlagButton.active {
-    background: url("../images/school.png") no-repeat center center, #B0E0E6;
-    background-image: url("../images/school.png"), -webkit-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/school.png"), -moz-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/school.png"), -ms-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/school.png"), -o-linear-gradient(top, #B0E0E6, #87CEEB);
-    background-image: url("../images/school.png"), linear-gradient(to bottom, #B0E0E6, #87CEEB);
-    background-size: 40px 40px, auto;
-    background-repeat: no-repeat, no-repeat;
-    border: 1px solid #87CEEB;
-}
-
-.schoolFlagButton.active:hover:enabled {
-    background-image: url("../images/school.png"), -webkit-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/school.png"), -moz-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/school.png"), -ms-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/school.png"), -o-linear-gradient(top, #E0F6FF, #B0E0E6);
-    background-image: url("../images/school.png"), linear-gradient(to bottom, #E0F6FF, #B0E0E6);
-}
 
 /* Clearfix for button containers */
 .button-container::after {
@@ -230,140 +161,6 @@
 
 
 
-/* Button Generator
- * http://css3buttongenerator.com/
- */
-.cashButton, .twintButton, .invoiceButton, .summaryBackButton, .updateButton, .cancelButton {  
-  -webkit-border-radius: 9;
-  -moz-border-radius: 9;
-  border-radius: 9px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 20px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-  
-  width: 150px;
-  height: 100px;
-}
-
-.cancelClearBasketButton, .clearBasket {  
-  -webkit-border-radius: 9;
-  -moz-border-radius: 9;
-  border-radius: 9px;
-  font-family: Arial;
-  color: #ffffff;
-  font-size: 20px;
-  padding: 10px 20px 10px 20px;
-  text-decoration: none;
-  
-  width: 150px;
-  height: 50px;
-}
-
-.clearBasket {
-  background: #f24437;
-  background-image: -webkit-linear-gradient(top, #f24437, #ba1f14);
-  background-image: -moz-linear-gradient(top, #f24437, #ba1f14);
-  background-image: -ms-linear-gradient(top, #f24437, #ba1f14);
-  background-image: -o-linear-gradient(top, #f24437, #ba1f14);
-  background-image: linear-gradient(to bottom, #f24437, #ba1f14);
-  border: 1px solid #ba1f14;
-  transition: all 0.2s ease;
-}
-
-.cancelClearBasketButton {
-  background: #52d934;
-  background-image: -webkit-linear-gradient(top, #52d934, #1f7821);
-  background-image: -moz-linear-gradient(top, #52d934, #1f7821);
-  background-image: -ms-linear-gradient(top, #52d934, #1f7821);
-  background-image: -o-linear-gradient(top, #52d934, #1f7821);
-  background-image: linear-gradient(to bottom, #52d934, #1f7821);
-  border: 1px solid #1f7821;
-  transition: all 0.2s ease;
-}
-
-
-.cashButton:hover, .twintButton:hover, .invoiceButton:hover, .summaryBackButton:hover, .updateButton:hover, .cancelButton:hover {  
-  text-decoration: none;
-}
-
-.cashButton:disabled, .cashButton[disabled],
-.twintButton:disabled, .twintButton[disabled],
-.invoiceButton:disabled, .invoiceButton[disabled],
-.updateButton:disabled, .updateButton[disabled],
-.cancelButton:disabled, .cancelButton[disabled] {
-  background: #FFFFFF;
-  background-image: -webkit-linear-gradient(top, #d1d1d1, #adadad);
-  background-image: -moz-linear-gradient(top, #d1d1d1, #adadad);
-  background-image: -ms-linear-gradient(top, #d1d1d1, #adadad);
-  background-image: -o-linear-gradient(top, #d1d1d1, #adadad);
-  background-image: linear-gradient(to bottom, #d1d1d1, #adadad);
-}
-
-.cashButton, .twintButton, .invoiceButton{  
-  background: #52d934;
-  background-image: -webkit-linear-gradient(top, #52d934, #1f7821);
-  background-image: -moz-linear-gradient(top, #52d934, #1f7821);
-  background-image: -ms-linear-gradient(top, #52d934, #1f7821);
-  background-image: -o-linear-gradient(top, #52d934, #1f7821);
-  background-image: linear-gradient(to bottom, #52d934, #1f7821);
-}
-
-.cashButton:hover:enabled, .twintButton:hover:enabled, .invoiceButton:hover:enabled{
-  background: #3cfc3f;
-  background-image: -webkit-linear-gradient(top, #3cfc3f, #26ad43);
-  background-image: -moz-linear-gradient(top, #3cfc3f, #26ad43);
-  background-image: -ms-linear-gradient(top, #3cfc3f, #26ad43);
-  background-image: -o-linear-gradient(top, #3cfc3f, #26ad43);
-  background-image: linear-gradient(to bottom, #3cfc3f, #26ad43);
-}
-
-.updateButton{  
-  background: #007d79;
-  background-image: -webkit-linear-gradient(top, #007d79, #015451);
-  background-image: -moz-linear-gradient(top, #007d79, #015451);
-  background-image: -ms-linear-gradient(top, #007d79, #015451);
-  background-image: -o-linear-gradient(top, #007d79, #015451);
-  background-image: linear-gradient(to bottom, #007d79, #015451);
-}
-
-.updateButton:hover:enabled{
-  background: #00b0aa;
-  background-image: -webkit-linear-gradient(top, #00b0aa, #2980b9);
-  background-image: -moz-linear-gradient(top, #00b0aa, #2980b9);
-  background-image: -ms-linear-gradient(top, #00b0aa, #2980b9);
-  background-image: -o-linear-gradient(top, #00b0aa, #2980b9);
-  background-image: linear-gradient(to bottom, #00b0aa, #2980b9);
-}
-
-
-.cancelButton{  
-  background: #f24437;
-  background-image: -webkit-linear-gradient(top, #f24437, #ba1f14);
-  background-image: -moz-linear-gradient(top, #f24437, #ba1f14);
-  background-image: -ms-linear-gradient(top, #f24437, #ba1f14);
-  background-image: -o-linear-gradient(top, #f24437, #ba1f14);
-  background-image: linear-gradient(to bottom, #f24437, #ba1f14);
-}
-
-.cancelButton:hover:enabled{
-  background: #ff948c;
-  background-image: -webkit-linear-gradient(top, #ff948c, #db4237);
-  background-image: -moz-linear-gradient(top, #ff948c, #db4237);
-  background-image: -ms-linear-gradient(top, #ff948c, #db4237);
-  background-image: -o-linear-gradient(top, #ff948c, #db4237);
-  background-image: linear-gradient(to bottom, #ff948c, #db4237);
-}
-
-
-.cancelButton {
-    margin-right: 10px;
-}
-
-
-
-
 /* Article buttons 
    Style source: https://cssgradientbutton.com */
 .articleButton, .foodArticleButton, .dippingArticleButton {
@@ -374,7 +171,7 @@
     height: 137px;
     float: left;
     text-align: center;
-	    
+    
     background-size: 144px; /* Background image */
 	background-repeat: no-repeat;
 	
