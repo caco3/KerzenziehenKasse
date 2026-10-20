@@ -383,8 +383,8 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <div id="body" style="margin: 0; padding: 0;">
 <h1 style="margin: 0; padding: 0;">Umsatz und Wachs pro Tag und Jahr</h1>
 <div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
-	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Diagramme:</h4>
+	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Diagramme:</h4>
 		<ul style="margin: 0; padding-left: 20px;">
 			<li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs + Gastronomie)</a><br><br></li>
 			<li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs + Gastronomie)</a><br><br></li>
@@ -395,17 +395,17 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 		</ul>
 	</div>
 	
-	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
-		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Hinweise:</h4>
-		<ul style="margin: 0; padding-left: 20px; color: rgba(73, 80, 87, 0.65); font-size: 16px;">
+	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
+		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Hinweise:</h4>
+		<ul style="margin: 0; padding-left: 20px; color: rgba(73, 80, 87, 1); font-size: 16px;">
 			<li style="margin-bottom: 10px;">2020 konnte das Kerzenziehen wegen COVID-19 nicht öffentlich durchgeführt werden.</li>
 			<li style="margin-bottom: 10px;">Wachspreise:
 				<table style="margin-top: 8px; border-collapse: collapse; width: 100%; font-size: 15px;">
 					<thead>
 						<tr style="border-bottom: 1px solid rgba(73, 80, 87, 0.3);">
-							<th style="padding: 1px 8px; text-align: left; color: rgba(73, 80, 87, 0.65); font-weight: 600;">Jahr</th>
-							<th style="padding: 1px 8px; text-align: left; color: rgba(73, 80, 87, 0.65); font-weight: 600;">Bienenwachs</th>
-							<th style="padding: 1px 8px; text-align: left; color: rgba(73, 80, 87, 0.65); font-weight: 600;">Parafinwachs</th>
+							<th style="padding: 1px 8px; text-align: left; color: rgba(73, 80, 87, 1); font-weight: 600;">Jahr</th>
+							<th style="padding: 1px 8px; text-align: left; color: rgba(73, 80, 87, 1); font-weight: 600;">Bienenwachs</th>
+							<th style="padding: 1px 8px; text-align: left; color: rgba(73, 80, 87, 1); font-weight: 600;">Parafinwachs</th>
 						</tr>
 					</thead>
 					<tbody>

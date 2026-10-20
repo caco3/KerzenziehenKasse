@@ -32,8 +32,8 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
     <div id="body">
 		<h1>Buchungen</h1>
 		<div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Navigation:</h4>
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Navigation:</h4>
 				<ul style="margin: 0; padding-left: 20px;">
 					<li><a href=bookings.php#today>Heute</a><br><br></li>
 					<li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
@@ -41,32 +41,32 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
 				</ul>
 			</div>
 			
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">CSV Export:</h4>
-				<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;"><? echo(exportCsvButton("bookings")); ?></div>
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">CSV Export:</h4>
+				<div style="color: rgba(73, 80, 87, 1); font-weight: 600;"><? echo(exportCsvButton("bookings")); ?></div>
 			</div>
 			
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 25px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
-				<h4 style="margin: 0 0 20px 0; color: rgba(73, 80, 87, 0.65); font-size: 18px; font-weight: 600;">Legende:</h4>
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
+				<h4 style="margin: 0 0 20px 0; color: rgba(73, 80, 87, 1); font-size: 18px; font-weight: 600;">Legende:</h4>
 				<div style="display: flex; gap: 20px; font-size: 16px; align-items: center;">
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/edit.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
-						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Bearbeiten</div>
+						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Bearbeiten</div>
 					</div>
 					
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/receipt-view.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
-						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Quittung ansehen</div>
+						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Quittung ansehen</div>
 					</div>
 					
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/receipt-print.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
-						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Quittung drucken</div>
+						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Quittung drucken</div>
 					</div>
 					
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/school.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
-						<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;">Schul-Markierung</div>
+						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Schul-Markierung</div>
 					</div>
 				</div>
 			</div>

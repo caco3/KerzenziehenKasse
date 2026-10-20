@@ -16,16 +16,16 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
     <div id="body">
 		<h1>Buchungen</h1>
 		<div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Navigation:</h4>
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Navigation:</h4>
 				<ul style="margin: 0; padding-left: 20px;">
 					<li><a href=bookings.php#today>Heute</a><br><br></li>
 					<li><a href=bookings.php#year>Aktuelles Jahr</a><br><br></li>
 				</ul>
 			</div>
 			
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">Jahr auswählen:</h4>
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Jahr auswählen:</h4>
 				<form method="GET" style="margin: 0;">
 					<select name="year" onchange="this.form.submit()" style="padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; background: rgba(255, 255, 255, 0.8); color: rgba(73, 80, 87, 0.8); font-size: 14px;">
 						<?php
@@ -39,9 +39,9 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 				</form>
 			</div>
 			
-			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 0.65); font-size: 16px; font-weight: 600;">CSV Export:</h4>
-				<div style="color: rgba(73, 80, 87, 0.65); font-weight: 600;"><? echo(exportCsvButton($selectedYear)); ?></div>
+			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
+				<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">CSV Export:</h4>
+				<div style="color: rgba(73, 80, 87, 1); font-weight: 600;"><? echo(exportCsvButton($selectedYear)); ?></div>
 			</div>
 			
 		</div>
