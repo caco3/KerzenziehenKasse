@@ -40,7 +40,7 @@ function showButton($line, $buttonStyle) {
 
 
     ?>
-        <div class="articleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> onclick="addArticleToBasket(this.id)"
+        <button type=button class="articleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> onclick="addArticleToBasket(this.id)"
 		style="background-image: url('<? echo("./images/articles_buttons/".$line['image1']); ?>');">
 		<!--	<div class=articlePackageDiv><? echo($line['package']); ?></div> -->
 		<!--	<? echo("<img class=articleImageLarge src=images/articles_buttons/".$line['image1'].">"); ?> -->
@@ -53,8 +53,8 @@ function showButton($line, $buttonStyle) {
             $name = str_replace("&shy;", "-", $name);
         }
 		?>
-            <p class="articleButtonText"><? echo($name); ?></p>
-        </div>
+            <span class="articleButtonText"><? echo($name); ?></span>
+        </button>
     <? 
 }
 
@@ -65,7 +65,7 @@ function showDippingButton($line, $buttonStyle) {
     
     $header = "<h2><img class=articleImageNumpadHeader src=images/articles_buttons/".$line['image1']."> " . $line['name'] . "</h2>";
     ?>
-        <div class="dippingArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
+        <button type=button class="dippingArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
             onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', false, '', ' g')"
 			style="background-image: url('<? echo("./images/articles_buttons/".$line['image1']); ?>');">
     <!--    <div class=articlePackageDiv><? echo($line['package']); ?></div> -->
@@ -73,8 +73,8 @@ function showDippingButton($line, $buttonStyle) {
      <!--       <p><? echo("<img class=articleImageLarge src=images/articles_buttons/".$line['image1'].">"); ?></p> -->
     <!--    <div class=articlePriceDiv><? echo($price); ?></div> -->
         
-            <p class="dippingArticleButtonText"><? echo($line['name']); ?></p>
-        </div>
+            <span class="dippingArticleButtonText"><? echo($line['name']); ?></span>
+        </button>
     <? 
 }
 
@@ -85,7 +85,7 @@ function showFoodButton($line, $buttonStyle) {
     
     $header = "<h2><img class=articleImageNumpadHeader src=images/articles_buttons/".$line['image1']."> " . $line['name'] . "</h2>";
     ?>
-        <div class="foodArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
+        <button type=button class="foodArticleButton <? echo("$buttonStyle"); ?>" id=<? echo($line['articleId']); ?> 
             onclick="show_easy_numpad(this.id, 'articleQuantity', 0, '<? echo($header); ?>', true, '', ' CHF')"
 			style="background-image: url('<? echo("./images/articles_buttons/".$line['image1']); ?>');">
     <!--    <div class=articlePackageDiv><! --<? echo($line['package']); ?>-- ></div> -->
@@ -93,8 +93,8 @@ function showFoodButton($line, $buttonStyle) {
     <!--        <p><? echo("<img class=articleImageLarge src=images/articles_buttons/".$line['image1'].">"); ?></p> -->
     <!--    <div class=articlePriceDiv><? echo($price); ?></div>-->
         
-            <p class="foodArticleButtonText"><? echo($line['name']); ?></p>
-        </div>
+            <span class="foodArticleButtonText"><? echo($line['name']); ?></span>
+        </button>
     <? 
 }
 
