@@ -19,6 +19,15 @@ db_connect();
 <?
 
 
+/**
+ * Renders a normal article button which adds one piece of the article to
+ * the basket on click.
+ *
+ * @param array $line - Article row from the database (articleId, name, unit,
+ *        pricePerQuantity, image1, ...).
+ * @param string $buttonStyle - Additional CSS class for the button.
+ * @return void Outputs HTML directly.
+ */
 function showButton($line, $buttonStyle) {
 //  [articleId] => 20 [typ] => guss [subtype] => normal [name] => Arrangement [pricePerQuantity] => 16.000 [unit] => Stk. [image1] => arrangement.png [image2] => [image3] => 
 // $line['name'], $line['image1'], $line['articleId'], $line['unit']
@@ -59,6 +68,15 @@ function showButton($line, $buttonStyle) {
 }
 
 
+/**
+ * Renders a dipping article button which opens the numpad (with scale
+ * support, unit 'g') to enter a weight on click.
+ *
+ * @param array $line - Article row from the database (articleId, name,
+ *        pricePerQuantity, image1, ...).
+ * @param string $buttonStyle - Additional CSS class for the button.
+ * @return void Outputs HTML directly.
+ */
 function showDippingButton($line, $buttonStyle) {
     $price = $line['pricePerQuantity'] * 100; // Adjust price since it is per 'g' but we want to show it per '100g'
     $price = formatMoney($price);
@@ -80,6 +98,14 @@ function showDippingButton($line, $buttonStyle) {
 
 
 
+/**
+ * Renders a food article button which opens the numpad (with decimal
+ * point, unit 'CHF') to enter a price on click.
+ *
+ * @param array $line - Article row from the database (articleId, name, image1, ...).
+ * @param string $buttonStyle - Additional CSS class for the button.
+ * @return void Outputs HTML directly.
+ */
 function showFoodButton($line, $buttonStyle) {
     $price = "";
     
@@ -163,6 +189,10 @@ if (in_array('preMade', $articlesToShow['special'])) {
 
 
 <script>
+    /**
+     * Document-ready handler for the articles subpage; only logs that the
+     * page was loaded.
+     */
     $(document).ready(function(){
         console.log("Articles Page loaded");  
     });

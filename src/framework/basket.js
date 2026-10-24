@@ -2,11 +2,19 @@ var cancelClearBasketQuestionDialogId = null;
 
 
 $(document).on({    
+    /**
+     * Global ajaxStop handler; hides the progress bar when all pending
+     * ajax requests have finished.
+     */
     ajaxStop: function() { 
         hideProgressBar();
     }    
 });
     
+/**
+ * Initializes the basket page: binds the click handler for removing
+ * single entries from the basket.
+ */
 $(document).ready(function(){    
     console.log("Basket loaded");
         
@@ -15,11 +23,22 @@ $(document).ready(function(){
 //     updateBasketButtonsStates();
 
     
-    $(".removeFromBasketButton").on('click', function(event){
+    $(".removeFromBasketButton").on('click', 
+        /**
+         * Click handler for the remove-from-basket button; sends a request
+         * to ajax/removeFromBasket.php to delete the entry.
+         *
+         * @param {jQuery.Event} event - Click event; the target's id holds the basket entry ID.
+         */
+        function(event){
             var basketEntryId = $(event.target).attr('id');   
             console.log("removeFromBasket basketEntryId=" + basketEntryId);
 
             var xhttp = new XMLHttpRequest();
+            /**
+             * Handles the removeFromBasket ajax response; refreshes the
+             * basket view on success or shows an error notification.
+             */
             xhttp.onreadystatechange = function() {                    
 //                 console.log(this.responseText);
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
@@ -101,6 +120,10 @@ $(document).ready(function(){
 
 
 
+/**
+ * Handles a click on the Twint payment button; completes the booking
+ * with payment method 'twint' if the basket is not empty.
+ */
 function twintClicked() {
 	console.log("twintClicked");
 	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
@@ -112,6 +135,10 @@ function twintClicked() {
 }
 
 
+/**
+ * Handles a click on the invoice payment button; completes the booking
+ * with payment method 'invoice' if the basket is not empty.
+ */
 function invoiceClicked() {
 	console.log("invoiceClicked");
 	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
@@ -123,6 +150,10 @@ function invoiceClicked() {
 }
 	
 	
+/**
+ * Handles a click on the cash payment button; completes the booking
+ * with payment method 'cash' if the basket is not empty.
+ */
 function cashClicked(){
 	console.log("cashClicked");
 	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
@@ -134,12 +165,20 @@ function cashClicked(){
 }
 
 
+/**
+ * Handles a click on the update button; saves the current basket changes
+ * back to the edited booking.
+ */
 function updateClicked(){
 	console.log("updateClicked");
 	updateBasketinBookings();
 }
 
 
+/**
+ * Handles a click on the cancel button; asks for confirmation before
+ * clearing the basket, or clears extra data directly if it is empty.
+ */
 function cancelClicked(){
 	console.log("cancelClicked");
 	if ($("#basketTotalMoney").val() != 0) { // Basket contains something
@@ -152,9 +191,17 @@ function cancelClicked(){
 }
 
 
+/**
+ * Reloads the extra data (Schulklasse, Leiter/in) via ajax/getExtraData.php
+ * and updates the summary line shown next to the extra-data button.
+ */
 function refreshExtraSummary() {
 	console.log("refreshExtraSummary called");
 	var xhttp = new XMLHttpRequest();
+	/**
+	 * Handles the getExtraData ajax response; writes a summary of the
+	 * extra data into the 'extraSummaryText' element.
+	 */
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 			try {
@@ -179,10 +226,18 @@ function refreshExtraSummary() {
 	xhttp.send();
 }
 
+/**
+ * Handles a click on the extra-data edit button; loads the current extra
+ * data and shows a full page overlay form to edit Schulklasse and Leiter/in.
+ */
 function editExtraDataClicked(){
 	console.log("editExtraDataClicked");
 	// Load current extra data
 	var xhttp = new XMLHttpRequest();
+	/**
+	 * Handles the getExtraData ajax response; builds the extra-data edit
+	 * form and shows it in a full page overlay.
+	 */
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 			var obj = JSON.parse(this.responseText);
@@ -206,12 +261,20 @@ function editExtraDataClicked(){
 	xhttp.send();
 }
 
+/**
+ * Saves the extra data (Schulklasse, Leiter/in) entered in the overlay
+ * form via ajax/setExtraData.php.
+ */
 function saveExtraData(){
 	var schulklasse = document.getElementById('extraSchulklasse').value;
 	var leiter = document.getElementById('extraLeiter').value;
 	var extra = {schulklasse: schulklasse, leiter: leiter};
 
 	var xhttp = new XMLHttpRequest();
+	/**
+	 * Handles the setExtraData ajax response; closes the overlay and
+	 * refreshes the summary line on success.
+	 */
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 			var obj = JSON.parse(this.responseText);
@@ -232,10 +295,20 @@ function saveExtraData(){
 }
 
 
+/**
+ * Completes the booking: sends the basket contents with the chosen
+ * payment method to ajax/moveBasketToBookings.php.
+ *
+ * @param {string} paymentMethod - Payment method ('cash', 'twint' or 'invoice').
+ */
 function moveBasketToBookings(paymentMethod) {    
     console.log("pay (move basket to bookings)");
     
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the moveBasketToBookings ajax response; refreshes the basket
+     * view and shows the new booking ID on success.
+     */
     xhttp.onreadystatechange = function() {                    
 //                 console.log(this.responseText);
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
@@ -267,6 +340,10 @@ function moveBasketToBookings(paymentMethod) {
 
 
 
+/**
+ * Asks the user for confirmation before clearing the basket (or aborting
+ * the edit of an existing booking in update mode).
+ */
 function clearBasket() {    
     console.log("user requests to clear basket");
     // Note: CSS style must be inlined since it will not get picked up from an external style sheet!
@@ -288,6 +365,10 @@ function clearBasket() {
 
 
 
+/**
+ * Cancels the clear-basket confirmation dialog and removes the
+ * notification.
+ */
 function cancelClearBasket() { 
     console.log("cancel clearing basket");
     firework.remove("#"+ cancelClearBasketQuestionDialogId);
@@ -295,12 +376,20 @@ function cancelClearBasket() {
 }
 
 
+/**
+ * Confirms clearing the basket: removes the confirmation notification and
+ * empties the basket via ajax/clearBasket.php.
+ */
 function definitlyClearBasket() {    
     console.log("clearing basket");
     firework.remove("#"+ cancelClearBasketQuestionDialogId);
     cancelClearBasketQuestionDialogId = null;
     
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the clearBasket ajax response; refreshes the basket view
+     * and shows a notification.
+     */
     xhttp.onreadystatechange = function() {                    
 //                 console.log(this.responseText);
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
@@ -331,10 +420,18 @@ function definitlyClearBasket() {
 
 
 
+/**
+ * Saves the changes made in the basket back to the existing booking via
+ * ajax/updateBasketInBookings.php.
+ */
 function updateBasketinBookings() {    
     console.log("update basket in bookings");
     
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the updateBasketInBookings ajax response; on success
+     * redirects back to the bookings page.
+     */
     xhttp.onreadystatechange = function() {                    
 //                 console.log(this.responseText);
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
@@ -345,7 +442,9 @@ function updateBasketinBookings() {
                 showBasket();
                 firework.launch("Buchung " + obj.response.bookingId + " erfolgreich aktualisiert.", 'success', 5000);
 				
-				setTimeout(function() { window.location.replace("bookings.php#" + obj.response.bookingId); }, (1000)); // load bookings page again
+				setTimeout(
+					/** Redirects the browser back to the updated booking on the bookings page. */
+					function() { window.location.replace("bookings.php#" + obj.response.bookingId); }, (1000)); // load bookings page again
             }
             else{
                 firework.launch("Konnte Buchung nicht aktualisieren!", 'error', 5000);
@@ -367,6 +466,13 @@ function updateBasketinBookings() {
 
 
 
+/**
+ * Extracts the numeric basket entry ID from a basket input field ID such
+ * as 'basketEntryId_12_quantity'.
+ *
+ * @param {string} inputFieldId - ID attribute of the basket input field.
+ * @returns {string} The extracted basket entry ID.
+ */
 function getBasketEntryIdfromInputFieldId(inputFieldId){ 
     basketEntryId = inputFieldId.replace("basketEntryId_", "");
     basketEntryId = basketEntryId.replace("_quantity", "");
@@ -377,6 +483,14 @@ function getBasketEntryIdfromInputFieldId(inputFieldId){
 
 
 
+/**
+ * Sends an updated quantity or amount for a basket entry to
+ * ajax/updateInBasket.php. For the special fields 'basketDonationMoney'
+ * and 'basketTotalMoney' the given quantity is treated as a price.
+ *
+ * @param {string} basketEntryId - ID of the basket entry or special field.
+ * @param {number|string} quantity - New quantity, or new amount for the special fields.
+ */
 function updateBasketEntry(basketEntryId, quantity) {
     console.log("basketEntryId: " + basketEntryId + ", quantity: " + quantity);
     
@@ -391,6 +505,10 @@ function updateBasketEntry(basketEntryId, quantity) {
     }        
     
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the updateInBasket ajax response; updates all changed fields
+     * (total, rounded total, donation, article prices) in the UI.
+     */
     xhttp.onreadystatechange = function() { 
 //         console.log("Ready state: " + this.readyState + ", status: " + this.status);
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {                   
@@ -404,7 +522,14 @@ function updateBasketEntry(basketEntryId, quantity) {
                 console.log("Updating changed fields:");                
 //                 console.log(obj.updatedFields);
                 
-                jQuery.each(obj.updatedFields, function(id, val) { // total changed
+                jQuery.each(obj.updatedFields, 
+                    /**
+                     * Applies one updated field returned by the server to the UI.
+                     *
+                     * @param {string} id - Field name ('total', 'totalRounded', 'donation' or 'article').
+                     * @param {*} val - New value of the field.
+                     */
+                    function(id, val) { // total changed
                     if(id == 'total'){
 //                         console.log("Old  Total: " + $("#" + 'basketTotalMoney').val());
                         console.log("  Total: " + val);
@@ -437,7 +562,14 @@ function updateBasketEntry(basketEntryId, quantity) {
                     }
                     
                     if(id == 'article'){ // an article changed              
-                        jQuery.each(val, function($basketEntryId, val2) {
+                        jQuery.each(val, 
+                            /**
+                             * Updates the displayed price of a single basket entry.
+                             *
+                             * @param {string} $basketEntryId - ID of the basket entry.
+                             * @param {Object} val2 - Updated entry data containing the new price.
+                             */
+                            function($basketEntryId, val2) {
                             console.log("  Article "+ $basketEntryId + ": " + val2.price);
                             $("#basketEntryId_" + $basketEntryId + "_price").val(formatCurrency(val2.price));
                         });

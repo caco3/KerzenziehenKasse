@@ -154,6 +154,10 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		var screensaverImgMaxY = 1024 - screensaverImgHeight;	
 	
 	
+        /**
+         * Initializes the customer display: runs the first page update and
+         * starts the periodic update and watchdog intervals.
+         */
         $(document).ready(function() {        
             //console.log("start");
             periodicallyUpdatePage();
@@ -162,6 +166,12 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
         });
 		
     
+		/**
+		 * Fetches the current basket state from ajax/getBasket.php, updates
+		 * the page and toggles the screensaver based on data changes.
+		 *
+		 * @param {AbortSignal} signal - Abort signal used to cancel the fetch.
+		 */
 		const fetchTodo = async (signal) => {
 			try {
 				const response = await fetch("<? echo("$root"); ?>/ajax/getBasket.php", { signal: AbortSignal.timeout(updateInterval*0.8) });
@@ -197,6 +207,10 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		}
 		
 		
+		/**
+		 * Periodically fetches the basket state; aborts a still-running
+		 * previous request before starting a new one.
+		 */
 		async function periodicallyUpdatePage() {			
 			// In the first time controller is null  
 			if(controller){
@@ -216,11 +230,20 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		}
 		
 		
+		/**
+		 * Sends a message to the remote logging endpoint (currently disabled).
+		 *
+		 * @param {*} message - The message to log remotely.
+		 */
 		function remoteLog(message) {
 			//fetch("https://www.ruinelli.ch/kerzenziehen/kundendisplay-log.php?data=" + message); // TODO remove me again
 		}
 		
 		
+		/**
+		 * Periodically checks the time since the last successful update and
+		 * shows a connection alert (hiding the tables) when it timed out.
+		 */
 		function watchdog() {
 			//console.log(Date.now() + ", " + lastUpdateTimestamp + " (" + (Date.now() - lastUpdateTimestamp) + "), " + lastChangeTimestamp);			
 			document.getElementById("lastUpdateTimestamp").innerHTML = Date.now() - lastUpdateTimestamp;
@@ -246,11 +269,20 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		}
 		
 		
+		/**
+		 * Returns a random integer between 0 and max (inclusive).
+		 *
+		 * @param {number} max - Upper bound of the random range.
+		 * @returns {number} The random integer.
+		 */
 		function getRandomInt(max) {
 			return Math.floor(Math.random() * (max + 1));
 		}
 		
 		
+		/**
+		 * Moves the screensaver image to a new random position.
+		 */
 		function moveScreensaverImg() {
 			document.getElementById("screensaverImg").style.setProperty("top", getRandomInt(screensaverImgMaxY) + "px");
 			document.getElementById("screensaverImg").style.setProperty("left", getRandomInt(screensaverImgMaxX) + "px");
@@ -258,6 +290,13 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		}
     
     
+        /**
+         * Re-renders the basket table, donation row and total on the
+         * customer display; toggles the header banner when space runs out.
+         *
+         * @param {Object} data - Basket data as returned by ajax/getBasket.php
+         *        with 'entries', 'donation' and 'total'.
+         */
         function updatePage(data) {
             //console.log("update page");
 			lastUpdateTimestamp = Date.now();
@@ -288,7 +327,14 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
             
             
 //             let body = table.createTBody();
-            data["entries"].forEach( item => {
+            data["entries"].forEach(
+                /**
+                 * Appends one basket entry as a row to the bookings table.
+                 *
+                 * @param {Object} item - Basket entry with quantity, price,
+                 *        unit and name.
+                 */
+                item => {
 //                 let row = body.insertRow();
                 let row = table.insertRow();
 //                 let cellImage = row.insertCell();

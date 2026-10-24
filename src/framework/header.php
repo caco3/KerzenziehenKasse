@@ -64,6 +64,11 @@ db_connect();
     var receiptGeneratorUrl = 'http://' + location.hostname + ':8087';
 
 
+    /**
+     * Page initialization: starts the clock and loads articles, basket,
+     * bible verse and navigation. Registers the scroll handler for the
+     * scroll-up button.
+     */
     $(document).ready(function(){
         startClock();
         showArticles();
@@ -73,14 +78,22 @@ db_connect();
         
         let scrollUpButton = document.getElementById("scrollUpButton");
         // When the user scrolls down 20px from the top of the document, show the button
+        /** Scroll handler; delegates to scrollFunction(). */
         window.onscroll = function() {scrollFunction()};
 
     });
 
+    /**
+     * Shows a 'Laden...' notification while a page is loading.
+     */
     function pleaseWaitBanner() {
         firework.launch("Laden...", 'success', 50000);
     }
 
+    /**
+     * Shows the scroll-up button once the page is scrolled down more than
+     * 20px, hides it otherwise.
+     */
     function scrollFunction() {
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
             scrollUpButton.style.display = "block";
@@ -90,6 +103,9 @@ db_connect();
     }
 
     // When the user clicks on the button, scroll to the top of the document
+    /**
+     * Scrolls the page back to the top.
+     */
     function topFunction() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;

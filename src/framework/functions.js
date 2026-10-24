@@ -1,5 +1,9 @@
 
 
+/**
+ * Callback invoked after a content block has been loaded.
+ * Currently a no-op kept for jQuery .load() compatibility.
+ */
 function blockLoaded(){
 //     contentsLoaded = contentsLoaded - 1;
 //     console.log("Loaded: " + (6 - contentsLoaded)); 
@@ -12,6 +16,9 @@ function blockLoaded(){
 }
 
 
+/**
+ * Loads the article subpages into the article container divs.
+ */
 function showArticles() {
     console.log("load articles");
     $("#dipArticlesDiv").load("subpages/dipArticles.php", blockLoaded());
@@ -26,11 +33,20 @@ function showArticles() {
 
 
 
+/**
+ * Reloads the basket view: basket contents, basket buttons and the
+ * extra-info section.
+ */
 function showBasket() {  
     console.log("load basket");
     $("#basketDiv").load("subpages/basket.php", blockLoaded());
     $("#basketButtonsDiv").load("subpages/basketButtons.php", blockLoaded());
-    $("#extraInfoDiv").load("subpages/extraInfo.php", function() {
+    $("#extraInfoDiv").load("subpages/extraInfo.php", 
+        /**
+         * Callback after the extra-info subpage loaded; refreshes the
+         * extra-data summary if the refreshExtraSummary() function exists.
+         */
+        function() {
         console.log("extraInfoDiv loaded, checking for refreshExtraSummary function");
         blockLoaded();
         if (typeof refreshExtraSummary === 'function') {
@@ -42,12 +58,18 @@ function showBasket() {
     });
 }
 
+/**
+ * Loads the bible verse subpage into the bibleVerse div and fades it in.
+ */
 function loadBibleVerse() {
 //     console.log("loadBibleVerse");   
     $("#bibleVerseDiv").load("subpages/bibleVerse.php", blockLoaded());
     $("#bibleVerseDiv").fadeIn(1000);
 }
 
+/**
+ * Loads the navigation subpage into the navigation div and fades it in.
+ */
 function loadNavigation() {
 //     console.log("loadNavigation");   
     $("#navigationDiv").load("subpages/navigation.php", blockLoaded());
@@ -56,22 +78,38 @@ function loadNavigation() {
 
 
 
+/**
+ * Fades out the current bible verse and loads a new one.
+ */
 function changeBibleVerse() {    
 //     console.log("changeBibleVerse");   
     $("#bibleVerseDiv").fadeOut(1000, loadBibleVerse);
 }
 
 
+/**
+ * Shows the loading progress bar by adding the 'loading' class to the body.
+ */
 function showProgressBar() {
     $("body").addClass("loading"); 
 }
 
+/**
+ * Hides the loading progress bar by removing the 'loading' class from the body.
+ */
 function hideProgressBar() {
     $("body").removeClass("loading"); 
 //     console.log("hided progress bar");
 }
 
 
+/**
+ * Shows the full page overlay with the given HTML content.
+ *
+ * @param {string} content - HTML content to display in the overlay.
+ * @param {boolean} [addCloseButton=true] - Whether to wrap the content in an
+ *        easy-numpad container and append a 'Schliessen' button.
+ */
 function showFullPageOverlay(content, addCloseButton = true) {
     console.log("Showing full page overlay");
     // Only wrap in easy-numpad-container if close button is needed
@@ -85,6 +123,9 @@ function showFullPageOverlay(content, addCloseButton = true) {
     $('.fullPageOverlay').show();
 }
 
+/**
+ * Hides the full page overlay.
+ */
 function hideFullPageOverlay() {    
     console.log("Hiding full page overlay");
     $('.fullPageOverlay').hide();
@@ -92,6 +133,10 @@ function hideFullPageOverlay() {
 
 
 
+/**
+ * Updates the clock display every second (blinking separator) and triggers
+ * a bible verse change every 10 minutes.
+ */
 function startClock() {
 	//console.log("Start Clock");
     var today = new Date();
@@ -120,6 +165,12 @@ function startClock() {
 }
 
 
+/**
+ * Prepends a leading zero to single digit numbers.
+ *
+ * @param {number|string} i - Number to pad.
+ * @returns {number|string} The padded value.
+ */
 function addLeadingZero(i) {
     if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
     return i;
@@ -129,11 +180,23 @@ function addLeadingZero(i) {
 
 
 
+/**
+ * Counts how many decimal point characters occur in a value.
+ *
+ * @param {number|string} data - The value to inspect.
+ * @returns {number} Number of '.' characters in the value.
+ */
 function getNumberOfDecimalPoints(data){
     data = "0" + data;
     return data.split(".").length - 1
 }
 
+/**
+ * Returns the number of digits behind the decimal point of a value.
+ *
+ * @param {number|string} data - The value to inspect.
+ * @returns {number} Count of digits after the decimal point.
+ */
 function getDigitsBehindDecimalPoints(data){  
     data = "0" + data;
     arr = data.split(".");
@@ -145,6 +208,12 @@ function getDigitsBehindDecimalPoints(data){
     }
 }
 
+/**
+ * Returns the number of digits ahead of the decimal point of a value.
+ *
+ * @param {number|string} data - The value to inspect.
+ * @returns {number} Count of digits before the decimal point.
+ */
 function getDigitsAheadDecimalPoints(data){  
     data = "0" + data;
     arr = data.split(".");
@@ -157,6 +226,13 @@ function getDigitsAheadDecimalPoints(data){
 }
 
 
+/**
+ * Formats a numeric value as a currency string with two digits behind the
+ * decimal point (cuts or pads decimals, pads the integer part).
+ *
+ * @param {number|string} value - The value to format.
+ * @returns {string} The formatted currency string.
+ */
 function formatCurrency(value){  
 //     console.log(value)
 //     console.log("decimal points:", getNumberOfDecimalPoints(value))
@@ -193,6 +269,12 @@ function formatCurrency(value){
 }
 
 
+/**
+ * Formats the value of an input field as currency (two decimals), while
+ * preserving the cursor position.
+ *
+ * @param {string} inputField - ID of the input field to format.
+ */
 function formatCurrencyField(inputField){
     selectionStart = document.getElementById(inputField).selectionStart
     
@@ -232,6 +314,10 @@ function formatCurrencyField(inputField){
 }
 
 
+/**
+ * Handles a click on the minimize button; asks the local helper service
+ * to minimize the kiosk window.
+ */
 function minimizeClicked(){
 	console.log("minimizeClicked");
 

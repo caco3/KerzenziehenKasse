@@ -1,5 +1,23 @@
 <?
 
+/**
+ * Renders one stacked bar diagram using Google Charts: outputs the
+ * JavaScript that builds the data table and draws the chart, plus the
+ * container div.
+ *
+ * @param string $name - Unique name suffix used for the generated JS function and div ids.
+ * @param string $yAxisName - Title of the Y axis.
+ * @param array $data - Chart data as [dayOffset => ['formatedDate' => ..., 'year' => [year => ['lowerPart' => ..., 'upperPart' => ...]]]].
+ * @param string $nameLowerPart - Legend name suffix for the lower (stacked) series.
+ * @param string $nameUpperPart - Legend name suffix for the upper (stacked) series.
+ * @param int $widthAdjustment - Extra width added to the base chart width.
+ * @param int $paddingLeft - Left padding of the chart container in px.
+ * @param string $prefix - Value prefix for tooltips (e.g. 'CHF').
+ * @param string $suffix - Value suffix for tooltips (e.g. 'kg').
+ * @param int $fractionDigits - Number of fraction digits for tooltips.
+ * @param string $bgImage - Background image file name (inside images/).
+ * @return void Outputs HTML/JS directly.
+ */
 function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $widthAdjustment, $paddingLeft, $prefix, $suffix, $fractionDigits, $bgImage) {
     
 //     print_r($data);
@@ -8,6 +26,10 @@ function showDiagram($name, $yAxisName, $data, $nameLowerPart, $nameUpperPart, $
 		google.charts.load('current', {'packages':['corechart', 'bar']});
 		google.charts.setOnLoadCallback(drawChartTotalPerDay_<? echo($name); ?>);
 				
+		/**
+		 * Draws the '<? echo($name); ?>' stacked bar chart with Google Charts
+		 * once the charts library has loaded.
+		 */
 		function drawChartTotalPerDay_<? echo($name); ?>() {
 			var data = google.visualization.arrayToDataTable([
 <?

@@ -3,6 +3,10 @@
     google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChartPieChartYear);
 
+    /**
+     * Draws the pie chart of sold candle molds (Gussformen) for the year
+     * once Google Charts has loaded.
+     */
     function drawChartPieChartYear() {
         var data = google.visualization.arrayToDataTable([
             ['Gussform', 'Anzahl'],

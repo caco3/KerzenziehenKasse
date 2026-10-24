@@ -4,7 +4,13 @@
 $root=".";
 include "$root/framework/header.php";
 
-/* Returns the total grouped per day for each day in the given year listed in the DB */
+/**
+ * Returns the total grouped per day for each day in the given year listed
+ * in the DB (single optimized query).
+ *
+ * @param int|string $year - The year to gather stats for.
+ * @return array Data keyed by date with donations, total and food.
+ */
 function getStatsPerDay($year) {
     global $db_link;
     
@@ -58,6 +64,13 @@ function getStatsPerDay($year) {
     return $data;
 }
 
+/**
+ * Renders a per-day details table for the given year: article quantities
+ * and amounts, donations, total per payment method and wax amounts.
+ *
+ * @param int|string $year - The year to display.
+ * @return void Outputs HTML directly.
+ */
 function showDetailsPerDayAndYear($year) {
     global $germanDayOfWeek, $germanDayOfWeekShort, $germanMonth;
 

@@ -4,7 +4,14 @@
 $root=".";
 include "$root/framework/header.php";
 
-/* Shows the summary stats of a year */
+/**
+ * Shows the summary stats of a year: renders a table with the quantity and
+ * amount of each article, donations, total per payment method and wax
+ * amounts.
+ *
+ * @param int|string $year - The year to summarize.
+ * @return void Outputs HTML directly.
+ */
 function showSummaryOfYear($year) {
         $articles = array();
         $donations = 0;		

@@ -9,6 +9,11 @@
 // School flag confirmation dialog variables
 var currentSchoolFlagBookingId = null;
 
+/**
+ * Shows the confirmation dialog for toggling the school-class flag of a booking.
+ *
+ * @param {string|number} bookingId - ID of the booking whose school flag should be toggled.
+ */
 function showSchoolFlagDialog(bookingId) {
     currentSchoolFlagBookingId = bookingId;
     document.getElementById('schoolFlagMessage').textContent = 
@@ -16,11 +21,18 @@ function showSchoolFlagDialog(bookingId) {
     document.getElementById('schoolFlagDialog').style.display = 'flex';
 }
 
+/**
+ * Closes the school flag confirmation dialog and clears the stored booking ID.
+ */
 function closeSchoolFlagDialog() {
     document.getElementById('schoolFlagDialog').style.display = 'none';
     currentSchoolFlagBookingId = null;
 }
 
+/**
+ * Confirms the school flag dialog and sends the toggle request to
+ * ajax/toggleSchoolFlag.php for the currently stored booking.
+ */
 function confirmSchoolFlag() {
     if (!currentSchoolFlagBookingId) {
         return;
@@ -30,6 +42,10 @@ function confirmSchoolFlag() {
     closeSchoolFlagDialog();
     
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the toggleSchoolFlag ajax response; toggles the school flag
+     * button styling and shows a success or error notification.
+     */
     xhttp.onreadystatechange = function() {                    
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             try {
@@ -74,16 +90,30 @@ function confirmSchoolFlag() {
     xhttp.send(params);
 }
 
+/**
+ * Initializes the bookings page: binds click handlers for the edit,
+ * receipt-view, receipt-print and school-flag buttons.
+ */
 $(document).ready(function(){
     console.log("Bookings loaded");    
     
     $(".editButton").off().on('click', 
+        /**
+         * Click handler for the edit button; copies the booking into the basket
+         * and redirects to the main page when the basket was empty.
+         *
+         * @param {jQuery.Event} event - Click event; the target's id holds the booking ID.
+         */
         function(event){
             var bookingId = $(event.target).attr('id');
             console.log("Loading booking " + bookingId + " into basket");
             
             // checking if basket is empty
             var xhttp = new XMLHttpRequest();
+            /**
+             * Handles the copyBookingToBasket ajax response; shows a notification
+             * and redirects to index.php on success.
+             */
             xhttp.onreadystatechange = function() {                    
                 if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
                     var obj = JSON.parse(this.responseText);
@@ -93,7 +123,9 @@ $(document).ready(function(){
 //                         copyBookingToBasket(bookingId)();
                         firework.launch("Buchung " + bookingId + " wurde in den Warenkorb geladen.<br>Du wirst gleich weitergeleitet...", 'success', 5000);
                         // load main page after 1 second
-                        setTimeout(function(){ window.location.replace("index.php"); }, 1000);                        
+                        setTimeout(
+                            /** Redirects the browser to the main page. */
+                            function(){ window.location.replace("index.php"); }, 1000);                        
                     }
                     else if(obj.response.empty == "false") {
                         console.log("Basket is not empty");
@@ -118,12 +150,22 @@ $(document).ready(function(){
     
     
     $(".receiptButtonView").off().on('click', 
+        /**
+         * Click handler for the receipt-view button; fetches the booking data
+         * and triggers PDF generation via the receipt-generator API.
+         *
+         * @param {jQuery.Event} event - Click event; the target's id holds the booking ID.
+         */
         function(event){
             var bookingId = $(event.target).attr('id');
             console.log("creating receipt for booking " + bookingId);
             
             // First get booking data from database
             var xhttp = new XMLHttpRequest();
+            /**
+             * Handles the getBookingData ajax response; on success calls
+             * callReceiptGenerator() to create the PDF receipt.
+             */
             xhttp.onreadystatechange = function() {                    
                 if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
                     try {
@@ -157,12 +199,22 @@ $(document).ready(function(){
     );
     
     $(".receiptButtonPrint").off().on('click', 
+        /**
+         * Click handler for the receipt-print button; fetches the booking data
+         * and opens the printer selection dialog.
+         *
+         * @param {jQuery.Event} event - Click event; the target's id holds the booking ID.
+         */
         function(event){
             var bookingId = $(event.target).attr('id');
             console.log("print button clicked for booking " + bookingId);
             
             // First get booking data from database
             var xhttp = new XMLHttpRequest();
+            /**
+             * Handles the getBookingData ajax response; on success opens the
+             * printer selection dialog via showPrinterDialog().
+             */
             xhttp.onreadystatechange = function() {                    
                 if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
                     try {
@@ -196,6 +248,12 @@ $(document).ready(function(){
     );
     
     $(".schoolFlagButton").off().on('click', 
+        /**
+         * Click handler for the school-flag button; opens the confirmation
+         * dialog for toggling the booking's school-class flag.
+         *
+         * @param {jQuery.Event} event - Click event on a button with id 'school_<bookingId>'.
+         */
         function(event){
             var buttonId = $(event.target).closest('button').attr('id');
             var bookingId = buttonId.replace('school_', '');
@@ -208,6 +266,18 @@ $(document).ready(function(){
     
 });
 
+/**
+ * Calls the receipt-generator API to create a PDF receipt for a booking
+ * and triggers a download of the resulting PDF in the browser.
+ *
+ * @param {Object} bookingData - Booking data returned by ajax/getBookingData.php.
+ * @param {string} bookingData.value - Total value of the booking.
+ * @param {string|number} bookingData.booking_id - ID of the booking.
+ * @param {string} bookingData.teacher - Name of the teacher.
+ * @param {string} bookingData.class - Class name.
+ * @param {string} bookingData.payment_type - Payment type of the booking.
+ * @param {string} outputType - Output type; only 'pdf' is supported.
+ */
 function callReceiptGenerator(bookingData, outputType) {
     console.log("Calling receipt-generator with data:", bookingData, "outputType:", outputType);
     
@@ -221,6 +291,10 @@ function callReceiptGenerator(bookingData, outputType) {
     firework.launch(message, 'success', 5000);
     
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the receipt-generator ajax response; on success converts the
+     * response blob into a downloaded PDF file.
+     */
     xhttp.onreadystatechange = function() {                    
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             hideProgressBar();
@@ -308,10 +382,21 @@ var currentBookingData = null;
 var selectedPrinter = null;
 
 // Debug function to track variable changes
+/**
+ * Logs the current state of the printer-dialog variables for debugging.
+ *
+ * @param {string} context - Label describing where the debug call was made.
+ */
 function debugVariables(context) {
     console.log("DEBUG [" + context + "] - currentBookingData:", currentBookingData, "selectedPrinter:", selectedPrinter);
 }
 
+/**
+ * Opens the printer selection dialog for a booking, resets its state and
+ * starts loading the list of available printers.
+ *
+ * @param {Object} bookingData - Booking data returned by ajax/getBookingData.php.
+ */
 function showPrinterDialog(bookingData) {
     console.log("showPrinterDialog called with bookingData:", bookingData);
     currentBookingData = bookingData;
@@ -328,14 +413,26 @@ function showPrinterDialog(bookingData) {
     loadPrinters();
 }
 
+/**
+ * Closes the printer selection dialog and resets the stored booking and
+ * printer selection.
+ */
 function closePrinterDialog() {
     document.getElementById('printerSelectionDialog').style.display = 'none';
     currentBookingData = null;
     selectedPrinter = null;
 }
 
+/**
+ * Loads the list of available printers from the receipt-generator API
+ * (/api/printer-status) and displays them in the printer dialog.
+ */
 function loadPrinters() {
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the printer-status ajax response; on success renders the
+     * printer list via displayPrinters().
+     */
     xhttp.onreadystatechange = function() {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             try {
@@ -357,6 +454,17 @@ function loadPrinters() {
     xhttp.send();
 }
 
+/**
+ * Renders the list of printers in the printer selection dialog and
+ * auto-selects an enabled USB printer if one is found.
+ *
+ * @param {Object[]} printers - List of printers returned by the receipt-generator API.
+ * @param {string} printers[].name - CUPS queue name of the printer.
+ * @param {string} printers[].status - Printer status ('enabled', 'disabled' or other).
+ * @param {string} [printers[].description] - Human readable printer description.
+ * @param {string} [printers[].type] - Printer type (e.g. 'network').
+ * @param {string} [printers[].ip_address] - IP address for network printers.
+ */
 function displayPrinters(printers) {
     console.log("displayPrinters called with printers:", printers);
     document.getElementById('printerLoading').style.display = 'none';
@@ -369,7 +477,14 @@ function displayPrinters(printers) {
     var printerListHtml = '';
     var usbPrinterName = null;
     
-    printers.forEach(function(printer) {
+    printers.forEach(
+        /**
+         * Builds the HTML list entry for a single printer and detects an
+         * enabled USB printer for auto-selection.
+         *
+         * @param {Object} printer - Printer object as returned by the API.
+         */
+        function(printer) {
         var statusClass = printer.status === 'enabled' ? 'enabled' : 
                          printer.status === 'disabled' ? 'disabled' : 'unknown';
         var statusText = printer.status === 'enabled' ? 'Bereit' : 
@@ -415,6 +530,13 @@ function displayPrinters(printers) {
     }
 }
 
+/**
+ * Handles the click on a printer entry in the printer selection dialog;
+ * marks the printer as selected and enables the confirm button.
+ *
+ * @param {string} printerName - CUPS queue name of the selected printer.
+ * @param {string} printerStatus - Status of the printer ('enabled' or 'disabled').
+ */
 function selectPrinter(printerName, printerStatus) {
     if (printerStatus !== 'enabled') {
         firework.launch('Dieser Drucker ist nicht verfügbar.', 'error', 3000);
@@ -425,7 +547,13 @@ function selectPrinter(printerName, printerStatus) {
     debugVariables("after manual selection");
     
     // Update radio button selection
-    document.querySelectorAll('.printer-item').forEach(function(item) {
+    document.querySelectorAll('.printer-item').forEach(
+        /**
+         * Removes the 'selected' CSS class from a printer list item.
+         *
+         * @param {Element} item - Printer list item element.
+         */
+        function(item) {
         item.classList.remove('selected');
     });
     event.currentTarget.classList.add('selected');
@@ -439,9 +567,17 @@ function selectPrinter(printerName, printerStatus) {
 }
 
 // Confirm print button click handler
+/**
+ * Attaches the click handler to the print confirmation button once the
+ * DOM is fully loaded.
+ */
 document.addEventListener('DOMContentLoaded', function() {
     var confirmBtn = document.getElementById('confirmPrintBtn');
     if (confirmBtn) {
+        /**
+         * Click handler for the confirm-print button; starts the print job
+         * for the selected printer and closes the dialog.
+         */
         confirmBtn.addEventListener('click', function() {
             if (selectedPrinter && currentBookingData) {
                 // Call the function BEFORE closing the dialog to preserve the variables
@@ -453,6 +589,10 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Alternative click handler for inline onclick
+/**
+ * Confirms the printer selection and sends the print job via
+ * callReceiptGeneratorWithPrinter(), then closes the dialog.
+ */
 function confirmPrint() {
     debugVariables("confirmPrint start");
     
@@ -473,6 +613,19 @@ function confirmPrint() {
     closePrinterDialog();
 }
 
+/**
+ * Calls the receipt-generator API to send a receipt for a booking to a
+ * specific printer queue.
+ *
+ * @param {Object} bookingData - Booking data returned by ajax/getBookingData.php.
+ * @param {string} bookingData.value - Total value of the booking.
+ * @param {string|number} bookingData.booking_id - ID of the booking.
+ * @param {string} bookingData.teacher - Name of the teacher.
+ * @param {string} bookingData.class - Class name.
+ * @param {string} bookingData.payment_type - Payment type of the booking.
+ * @param {string} outputType - Output type; expects 'print' for printing.
+ * @param {string} printerName - CUPS queue name of the target printer.
+ */
 function callReceiptGeneratorWithPrinter(bookingData, outputType, printerName) {
     debugVariables("inside callReceiptGeneratorWithPrinter");
     console.log("Function parameters - bookingData:", bookingData, "outputType:", outputType, "printerName:", printerName);
@@ -489,7 +642,14 @@ function callReceiptGeneratorWithPrinter(bookingData, outputType, printerName) {
     var printerDescription = printerName; // fallback to name
     // Try to get description from the dialog's printer list
     var printerItems = document.querySelectorAll('.printer-item');
-    printerItems.forEach(function(item) {
+    printerItems.forEach(
+        /**
+         * Finds the selected printer item and extracts its displayed
+         * printer name as description for notifications.
+         *
+         * @param {Element} item - Printer list item element.
+         */
+        function(item) {
         var radio = item.querySelector('input[type="radio"]');
         if (radio && radio.checked) {
             var nameElement = item.querySelector('.printer-name');
@@ -504,6 +664,10 @@ function callReceiptGeneratorWithPrinter(bookingData, outputType, printerName) {
     firework.launch("Beleg f&uuml;r Buchung " + bookingData.booking_id + " wird an Drucker '" + printerDescription + "' gesendet...", 'success', 5000);
     
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the receipt-generator ajax response for a print job and
+     * shows a success or error notification.
+     */
     xhttp.onreadystatechange = function() {
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
             hideProgressBar();

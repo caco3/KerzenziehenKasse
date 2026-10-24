@@ -10,6 +10,12 @@ db_connect();
 ?>
 
 <script>
+/**
+ * jQuery ajax prefilter for 'script' requests; enables caching of loaded
+ * scripts.
+ *
+ * @param {Object} options - The ajax request options (modifies options.cache).
+ */
 $.ajaxPrefilter('script', function(options) {
     options.cache = true;
 });

@@ -10,6 +10,10 @@ include "$root/framework/header.php";
 google.charts.load('current', {'packages':['corechart', 'bar']});
 
 // Wait for Google Charts to be ready
+/**
+ * Callback executed once Google Charts finished loading; sets the
+ * googleChartsReady flag.
+ */
 google.charts.setOnLoadCallback(function() {
     // Set a flag to indicate Google Charts is ready
     window.googleChartsReady = true;
@@ -20,8 +24,21 @@ var allChartData = null;
 var chartConfig = null;
 
 // Load all chart data once
+/**
+ * Fetches all chart data and config from framework/getChartData.php once
+ * and caches it in allChartData/chartConfig.
+ *
+ * @returns {Promise<Object>} Resolves with the chart data map.
+ */
 function loadAllChartData() {
-    return new Promise(function(resolve, reject) {
+    return new Promise(
+        /**
+         * Promise executor performing the fetch of the chart data.
+         *
+         * @param {Function} resolve - Promise resolve callback.
+         * @param {Function} reject - Promise reject callback.
+         */
+        function(resolve, reject) {
         if (allChartData && chartConfig) {
             resolve(allChartData);
             return;
@@ -31,8 +48,17 @@ function loadAllChartData() {
         console.log('Starting to load chart data...');
         
         fetch('framework/getChartData.php')
-            .then(response => response.json())
-            .then(data => {
+            .then(
+                /** @param {Response} response - Fetch response. @returns {Promise} Parsed JSON body. */
+                response => response.json())
+            .then(
+                /**
+                 * Stores the fetched config and data in the cache and
+                 * resolves the outer promise.
+                 *
+                 * @param {Object} data - Response body with 'config' and 'data'.
+                 */
+                data => {
                 var endTime = performance.now();
                 var loadTime = endTime - startTime;
                 console.log('Chart data loaded in ' + loadTime.toFixed(2) + ' ms');
@@ -41,7 +67,13 @@ function loadAllChartData() {
                 allChartData = data.data;
                 resolve(allChartData);
             })
-            .catch(error => {
+            .catch(
+                /**
+                 * Rejects the promise when fetching the chart data failed.
+                 *
+                 * @param {*} error - The fetch/parse error.
+                 */
+                error => {
                 var endTime = performance.now();
                 var loadTime = endTime - startTime;
                 console.error('Error loading chart data after ' + loadTime.toFixed(2) + ' ms:', error);
@@ -51,10 +83,37 @@ function loadAllChartData() {
 }
 
 // Reusable chart function - now uses shared data
+/**
+ * Renders one chart (and its legend) once the shared chart data and
+ * Google Charts are available.
+ *
+ * @param {string} chartId - DOM id of the chart container.
+ * @param {string} legendId - DOM id of the legend container.
+ * @param {string} dataId - Key of the data set inside the shared chart data.
+ * @param {string} prefix - Value prefix for tooltips (e.g. 'CHF').
+ * @param {string} suffix - Value suffix for tooltips (e.g. 'kg').
+ * @param {number} fractionDigits - Number of fraction digits for tooltips.
+ * @returns {Promise} Resolves when the chart has been drawn.
+ */
 function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(
+        /**
+         * Promise executor that loads the shared chart data and triggers
+         * drawing when ready.
+         *
+         * @param {Function} resolve - Promise resolve callback.
+         * @param {Function} reject - Promise reject callback.
+         */
+        function(resolve, reject) {
         loadAllChartData()
-            .then(allData => {
+            .then(
+                /**
+                 * Draws the chart and legend for the requested data set once
+                 * Google Charts is ready.
+                 *
+                 * @param {Object} allData - The shared chart data map.
+                 */
+                allData => {
                 if (!allData[dataId]) {
                     reject('Data not found for data id: ' + dataId);
                     return;
@@ -64,6 +123,10 @@ function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) 
                 var headers = data[0].slice(1);
                 
                 // Wait for Google Charts to be ready
+                /**
+                 * Polls until Google Charts is ready, then draws the chart
+                 * and legend and resolves the promise.
+                 */
                 function waitForGoogleCharts() {
                     if (window.googleChartsReady && google.visualization) {
                         drawChart(chartId, data, headers, prefix, suffix, fractionDigits);
@@ -75,7 +138,14 @@ function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) 
                 }
                 waitForGoogleCharts();
             })
-            .catch(error => {
+            .catch(
+                /**
+                 * Shows an error notification and rejects the promise when
+                 * the chart data could not be loaded.
+                 *
+                 * @param {*} error - The loading error.
+                 */
+                error => {
                 console.error('Error loading chart data:', error);
                 firework.launch('Fehler beim Laden der Chart-Daten: ' + error, 'error', 5000);
                 reject(error);
@@ -83,6 +153,16 @@ function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) 
     });
 }
 
+/**
+ * Draws a stacked bar chart with Google Charts into the given container.
+ *
+ * @param {string} chartId - DOM id of the chart container.
+ * @param {Array[]} data - Chart data rows (first element is the day label).
+ * @param {string[]} headers - Column headers (two per year: lower and upper part).
+ * @param {string} prefix - Value prefix for tooltips (e.g. 'CHF').
+ * @param {string} suffix - Value suffix for tooltips (e.g. 'kg').
+ * @param {number} fractionDigits - Number of fraction digits for tooltips.
+ */
 function drawChart(chartId, data, headers, prefix, suffix, fractionDigits) {
     var startTime = performance.now();
     console.log('Starting to render chart: ' + chartId);
@@ -217,6 +297,13 @@ function drawChart(chartId, data, headers, prefix, suffix, fractionDigits) {
     }
 
 // HTML Legend
+/**
+ * Renders an HTML legend (one color box per year, plus a brightened box
+ * for stacked second series) into the given element.
+ *
+ * @param {string} legendId - DOM id of the legend container.
+ * @param {string[]} headers - Column headers (two per year).
+ */
 function drawLegendChart(legendId, headers) {
         var legendHTML = '<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px; margin-top: 0; padding-top: 0; background: transparent;">';
         
@@ -244,6 +331,14 @@ function drawLegendChart(legendId, headers) {
     }
 
 // Create container immediately (without data loading)
+/**
+ * Creates the DOM container (background image, chart div with loading
+ * indicator and legend div) for a diagram.
+ *
+ * @param {string} dataId - Key of the data set / DOM id of the outer container.
+ * @returns {Object|null} Info object with chartId, legendId, dataId, prefix,
+ *          suffix and fractionDigits, or null on failure.
+ */
 function createDiagramContainer(dataId) {
     var config = chartConfig ? chartConfig[dataId] : null;
     if (!config) {
@@ -280,6 +375,12 @@ function createDiagramContainer(dataId) {
 }
 
 // Load data into existing container
+/**
+ * Loads data into an existing diagram container by rendering the chart.
+ *
+ * @param {Object} containerInfo - Info object as returned by createDiagramContainer().
+ * @returns {Promise} Resolves when the chart has been drawn.
+ */
 function loadDiagramData(containerInfo) {
     if (!containerInfo) return Promise.reject('Invalid container info');
     
@@ -318,6 +419,13 @@ var seriesColors = [
 // Function to generate bright colors from dark colors
 // This is used for the legend chart.
 // The colors do not fully match what the chart above does, but it is close enough.
+/**
+ * Generates a brightened variant of a hex color (used for the second,
+ * stacked series in the legend).
+ *
+ * @param {string} hexColor - Color in '#rrggbb' format.
+ * @returns {string} The brightened color in '#rrggbb' format.
+ */
 function generateBrightColor(hexColor) {
     // Remove # and convert to RGB
     var r = parseInt(hexColor.substr(1, 2), 16);
@@ -442,6 +550,10 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 
 <script>
 // Create all containers immediately, then load data once and render all charts
+/**
+ * Loads the shared chart data, creates all six diagram containers and
+ * renders all charts in parallel.
+ */
 function loadAllDiagrams() {
     var totalStartTime = performance.now();
     console.log('=== DIAGRAM LOADING START ===');
@@ -449,7 +561,12 @@ function loadAllDiagrams() {
 
     // Load config+data first, then create containers and render charts
     loadAllChartData()
-        .then(function() {
+        .then(
+            /**
+             * Creates all diagram containers and starts rendering all
+             * charts in parallel once the shared data is available.
+             */
+            function() {
             // Create all containers first (immediate display)
             var commonContainer = createDiagramContainer("totalPerDayAndYear");
             var commonSummedContainer = createDiagramContainer("totalPerDayAndYearSummed");
@@ -464,25 +581,46 @@ function loadAllDiagrams() {
             console.log('✓ Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
 
             // Render all charts simultaneously
-            var promises = containers.map(function(container) {
+            var promises = containers.map(
+                /**
+                 * Starts loading/rendering a single diagram container.
+                 *
+                 * @param {Object} container - Info object from createDiagramContainer().
+                 * @returns {Promise} The rendering promise of the diagram.
+                 */
+                function(container) {
                 return loadDiagramData(container);
             });
 
             Promise.all(promises)
-                .then(function() {
+                .then(
+                    /** Logs the total rendering time once all charts finished. */
+                    function() {
                     var totalTime = performance.now() - totalStartTime;
                     console.log('✓ All charts rendered successfully');
                     console.log('=== DIAGRAM LOADING COMPLETE ===');
                     console.log('Total time: ' + totalTime.toFixed(2) + ' ms');
                     console.log('Charts rendered: ' + containers.length);
                 })
-                .catch(function(error) {
+                .catch(
+                    /**
+                     * Shows an error notification when chart rendering failed.
+                     *
+                     * @param {*} error - The rendering error.
+                     */
+                    function(error) {
                     var totalTime = performance.now() - totalStartTime;
                     console.error('✗ Error rendering diagrams after ' + totalTime.toFixed(2) + ' ms:', error);
                     firework.launch('Fehler beim Rendern der Diagramme: ' + error, 'error', 5000);
                 });
         })
-        .catch(function(error) {
+        .catch(
+            /**
+             * Shows an error notification when loading the diagram data failed.
+             *
+             * @param {*} error - The loading error.
+             */
+            function(error) {
             var totalTime = performance.now() - totalStartTime;
             console.error('✗ Error loading diagrams after ' + totalTime.toFixed(2) + ' ms:', error);
             firework.launch('Fehler beim Laden der Diagramme: ' + error, 'error', 5000);

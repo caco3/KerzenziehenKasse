@@ -8,36 +8,87 @@ $germanMonth = array("Jan", "Feb", "Mrz", "Apr", "Mai", "Jun", "Jul", "Aug", "Se
 date_default_timezone_set('Europe/Zurich');
 
 
+/**
+ * Returns the HTML for an add-to-basket button of an article.
+ *
+ * @param int|string $id - Article ID used as button id.
+ * @return string HTML button element.
+ */
 function addButton($id) {
     return "<button type=button id=$id class=addToBasketButton></button> ";
 }
 
+/**
+ * Returns the HTML for a remove-from-basket button of a basket entry.
+ *
+ * @param int|string $basketEntryId - Basket entry ID used as button id.
+ * @return string HTML button element.
+ */
 function showRemoveFromBasketButton($basketEntryId) {
     return "<button type=button id=$basketEntryId class=removeFromBasketButton></button> ";
 }
 
+/**
+ * Returns the HTML for the edit button of a booking (loads the booking
+ * back into the basket).
+ *
+ * @param int|string $id - Booking ID used as button id.
+ * @return string HTML button element.
+ */
 function editButton($id) {
     return "<button type=button id=$id class=editButton title=\"Diese Buchung zurück in den Warenkorb laden\"></button> ";
 }
 
+/**
+ * Returns the HTML for the print-receipt button of a booking.
+ *
+ * @param int|string $id - Booking ID used as button id.
+ * @return string HTML button element.
+ */
 function receiptButtonPrint($id) {
     return "<button type=button id=$id class=receiptButtonPrint title=\"Die Rechnung/Quittung für diese Buchung drucken\"></button> ";
 }
 
+/**
+ * Returns the HTML for the view-receipt button of a booking.
+ *
+ * @param int|string $id - Booking ID used as button id.
+ * @return string HTML button element.
+ */
 function receiptButtonView($id) {
     return "<button type=button id=$id class=receiptButtonView title=\"Die Rechnung/Quittung für diese Buchung ansehen\"></button> ";
 }
 
+/**
+ * Returns the HTML for the school-flag toggle button of a booking.
+ *
+ * @param int|string $id - Booking ID used as button id (prefixed with 'school_').
+ * @param bool $isActive - Whether the flag is currently set (adds 'active' class).
+ * @return string HTML button element.
+ */
 function schoolFlagButton($id, $isActive) {
     $activeClass = $isActive ? ' active' : '';
     return "<button type=button id=school_$id class=\"schoolFlagButton$activeClass\" title=\"Schul-Markierung umschalten\"></button> ";
 }
 
+/**
+ * Returns the HTML for the CSV export button of a booking.
+ *
+ * @param int|string $id - Booking ID used as button id.
+ * @return string HTML button element.
+ */
 function exportCsvButton($id) {
     return "<button type=button id=$id class=exportCsvButton title=\"Als CSV exportieren\" onclick=\"location.href='subpages/exportCsv.php?id=$id'\"></button> ";
 }
 
 
+/**
+ * Appends an SQL statement (whitespace-normalized) together with a
+ * timestamp to the db_transaction_log.sql file.
+ *
+ * @param string $message - The SQL statement or log message.
+ * @return void
+ */
 function sql_transaction_logger($message){
     $message = str_replace("\n", " ", $message);
     $message = preg_replace('!\s+!', ' ', $message);
@@ -48,7 +99,11 @@ function sql_transaction_logger($message){
 
 
 
-/* Sums up the cost of the whole basket optionally including donation
+/**
+ * Sums up the cost of the whole basket, optionally including donation.
+ *
+ * @param bool $includeDOnation - Whether to add the donation to the sum.
+ * @return float|int The calculated basket total.
  */
 function calculateBasketTotal($includeDOnation){
     $basket = getDbBasket();
@@ -77,7 +132,12 @@ function calculateBasketTotal($includeDOnation){
 
 
 
-/* Rundet auf 5 Rappen */
+/**
+ * Rundet auf 5 Rappen (rounds to 5 Rappen / 0.05 CHF).
+ *
+ * @param float $num - The amount to round.
+ * @return string The rounded amount, formatted with formatMoney().
+ */
 function roundMoney($num){
     $x = ($num * 1000) % 100;
     
@@ -96,7 +156,12 @@ function roundMoney($num){
 
 
 
-/* Rundet auf 10 Rappen */
+/**
+ * Rundet auf 10 Rappen (rounds to 10 Rappen / 0.10 CHF).
+ *
+ * @param float $num - The amount to round.
+ * @return string The rounded amount, formatted with formatMoney().
+ */
 function roundMoney10($num){
     $x = ($num * 1000) % 100;
     
@@ -111,12 +176,24 @@ function roundMoney10($num){
 }  
 
 
+/**
+ * Formats a price with two decimals and ' as thousands separator.
+ *
+ * @param float $price - The price to format.
+ * @return string The formatted price.
+ */
 function formatMoney($price) {
     return number_format($price, 2, ".", "'");
 }
 
 
 
+/**
+ * Formats a weight with one decimal and ' as thousands separator.
+ *
+ * @param float $weight - The weight to format.
+ * @return string The formatted weight.
+ */
 function formatWeight($weight) {
     return number_format($weight, 1, ".", "'");
 }
@@ -124,6 +201,11 @@ function formatWeight($weight) {
 
 
 
+/**
+ * Renders the basket summary as an HTML table (article, quantity, price).
+ *
+ * @return void
+ */
 function showSummary(){
     $summary = getBasketSummary(false, false);
     
@@ -159,7 +241,14 @@ function showSummary(){
 
 
 
-/* Returns the summarized content of the basket */
+/**
+ * Returns the summarized content of the basket: identical articles are
+ * merged, custom articles stay separate.
+ *
+ * @param bool $includeDonation - Whether to add a 'donation' entry.
+ * @param bool $includeTotal - Whether to add a 'total' entry.
+ * @return array Summary keyed by articleId (or 'custom_N', 'donation', 'total').
+ */
 function getBasketSummary($includeDonation, $includeTotal){
     $basket = getDbBasket();
     $summary = array();
@@ -217,7 +306,13 @@ function getBasketSummary($includeDonation, $includeTotal){
 
 
 
-/* Returns the summarized content of a booking */
+/**
+ * Returns the summarized content of a booking, with the stored article
+ * list enriched by article data (name, unit, wax info).
+ *
+ * @param int|string $bookingId - ID of the booking.
+ * @return array The booking array with an 'articles' element.
+ */
 function getBooking($bookingId){
     $booking = getDbBooking($bookingId);
 // 	echo("<pre>"); print_r($booking); echo("</pre>");
@@ -260,6 +355,13 @@ function getBooking($bookingId){
 
 
 
+/**
+ * Copies all data of an existing booking (articles, donation, total,
+ * extra data) into the basket for editing.
+ *
+ * @param int|string $bookingId - ID of the booking to copy.
+ * @return bool True on success, false on any failure.
+ */
 function copyBookingToBasket($bookingId) {
     $data = getBooking($bookingId);
 //     print_r($data);
@@ -302,6 +404,13 @@ function copyBookingToBasket($bookingId) {
 
 
 
+/**
+ * Appends the current basket content of a booking to its log file
+ * (booking_<id>.log in LOG_FOLDER).
+ *
+ * @param int|string $bookingId - ID of the booking.
+ * @return bool Always true.
+ */
 function writeBasketContentLog($bookingId) {
     $basket = getDbBasket();
      
@@ -332,6 +441,12 @@ function writeBasketContentLog($bookingId) {
 }
 
 
+/**
+ * Appends a timestamped message to error.log in LOG_FOLDER.
+ *
+ * @param string $message - The message to log.
+ * @return void
+ */
 function errorLog($message) {
     file_put_contents(LOG_FOLDER . "/error.log", date(DATE_RFC2822) . ", $message\r\n", FILE_APPEND);
 }

@@ -1,7 +1,12 @@
 // Source: https://github.com/gayanSandamal/easy-numpad
 
+/**
+ * Document-ready handler; binds the numpad to all '.easy-get' elements.
+ */
 $(document).ready(function () {
-    $('.easy-get').on('click', () => {
+    $('.easy-get').on('click', 
+        /** Click handler that opens the easy numpad overlay. */
+        () => {
         show_easy_numpad();
     });
 });
@@ -14,6 +19,19 @@ var type;
 var initialValue;
 
 
+/**
+ * Opens the on-screen numpad overlay for numeric input. For article
+ * quantities in grams a scale section is included in the dialog.
+ *
+ * @param {string|number} id - ID of the article or basket entry the value belongs to.
+ * @param {string} newType - Input type ('articleQuantity', 'basketQuantity',
+ *        'basketTotal' or 'basketDonation').
+ * @param {number|string} initialValue1 - Current value to display for correction.
+ * @param {string} header - HTML shown as header of the numpad dialog.
+ * @param {boolean} showDecimalPoint - Whether to show a decimal point key.
+ * @param {string} newPrefix - Prefix shown around the value (e.g. 'CHF ').
+ * @param {string} newSuffix - Suffix shown after the value (e.g. ' g').
+ */
 function show_easy_numpad(id, newType, initialValue1, header, showDecimalPoint, newPrefix, newSuffix) {
     console.log(id, newType, initialValue1, showDecimalPoint, newPrefix, newSuffix);
     articleId = id;
@@ -100,11 +118,20 @@ function show_easy_numpad(id, newType, initialValue1, header, showDecimalPoint, 
 }
 
 
+/**
+ * Closes and removes the easy numpad overlay.
+ */
 function easy_numpad_close() {
     $('#easy-numpad-frame').remove();
 }
 
 
+/**
+ * Updates the numpad output field; shows old and new value when a
+ * correction of an existing value is in progress.
+ *
+ * @param {number|string} value - The value to display.
+ */
 function updateValueField(value) {	
 	if (initialValue != 0) {
 
@@ -116,6 +143,11 @@ function updateValueField(value) {
 }
 
 
+/**
+ * Handles a key press on the numpad: appends the pressed digit (or decimal
+ * point) to the current value, enforcing a single decimal point, at most
+ * two decimals and no leading zero. Uses the global 'event' object.
+ */
 function easynum() {
     event.preventDefault();
 
@@ -155,6 +187,10 @@ function easynum() {
 }
 
 
+/**
+ * Handles the numpad backspace key: deletes the last entered character.
+ * Uses the global 'event' object.
+ */
 function easy_numpad_del() {
     event.preventDefault();
     console.log(value);
@@ -168,6 +204,9 @@ function easy_numpad_del() {
 }
 
 
+/**
+ * Resets the entered numpad value to '0'. Uses the global 'event' object.
+ */
 function easy_numpad_clear() {
     event.preventDefault();   
     value = "0";    
@@ -175,12 +214,21 @@ function easy_numpad_clear() {
 }
 
 
+/**
+ * Handles the numpad cancel key: closes the numpad without applying the
+ * value. Uses the global 'event' object.
+ */
 function easy_numpad_cancel() {
     event.preventDefault();
     $('#easy-numpad-frame').remove();
 }
 
 
+/**
+ * Handles the numpad OK key: validates the input and applies it according
+ * to the numpad type (add article to basket or update a basket entry).
+ * Uses the global 'event' object.
+ */
 function easy_numpad_done() {
     event.preventDefault();
 	
@@ -230,6 +278,14 @@ function easy_numpad_done() {
 
 var scale_value = 0;
 
+/**
+ * Updates the scale output inside the numpad and shows or hides the
+ * 'Übernehmen' (scale_done) button.
+ *
+ * @param {number|null} value - Current scale value in grams (or null on error/status).
+ * @param {string} text - Text to display in the scale output element.
+ * @param {boolean} is_value - Whether 'value' is a real measurement (shows the button).
+ */
 function update_display(value, text, is_value) {
     // console.log("is_value: ", is_value, text);
     output = document.getElementById("scale-output");
@@ -254,6 +310,11 @@ function update_display(value, text, is_value) {
 }
 
 
+/**
+ * Handles the scale 'Übernehmen' button: validates the current scale value
+ * and adds the article with that weight to the basket.
+ * Uses the global 'event' object.
+ */
 function scale_done() {
     event.preventDefault();
 

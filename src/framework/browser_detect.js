@@ -1,11 +1,22 @@
 // browser detect
 // Src: https://gist.github.com/2107/5529665
 var BrowserDetect = {
+        /**
+         * Detects browser name, version and operating system and stores
+         * them on this object.
+         */
         init: function() {
 		this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
 		this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "an unknown version";
 		this.OS = this.searchString(this.dataOS) || "an unknown OS";
 	},
+	/**
+	 * Searches a list of browser/OS identification entries for a match.
+	 *
+	 * @param {Object[]} data - List of identification entries with 'string',
+	 *        'prop', 'subString', 'identity' and optional 'versionSearch'.
+	 * @returns {string|undefined} The matched identity, or undefined.
+	 */
 	searchString: function(data) {
 		for (var i = 0; i < data.length; i++) {
 			var dataString = data[i].string;
@@ -16,6 +27,13 @@ var BrowserDetect = {
 			} else if (dataProp) return data[i].identity;
 		}
 	},
+	/**
+	 * Extracts the version number that follows the version search string
+	 * in the given data string.
+	 *
+	 * @param {string} dataString - String to search in (e.g. navigator.userAgent).
+	 * @returns {number|undefined} The parsed version number, or undefined.
+	 */
 	searchVersion: function(dataString) {
 		var index = dataString.indexOf(this.versionSearchString);
 		if (index == -1) return;

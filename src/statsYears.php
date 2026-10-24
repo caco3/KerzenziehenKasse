@@ -4,6 +4,15 @@
 $root=".";
 include "$root/framework/header.php";
 
+/**
+ * Wraps a displayed value in a span with a colored trend indicator
+ * (percentage change compared to the previous value).
+ *
+ * @param string $display - The already formatted value to display.
+ * @param float|int $currentValue - The numeric value of this cell.
+ * @param float|int|null &$previousValue - Value of the previous year, updated by reference.
+ * @return string HTML for the table cell content.
+ */
 function appendTrendIndicator($display, $currentValue, &$previousValue) {
     if ($previousValue === null) {
         $previousValue = $currentValue;
@@ -68,7 +77,13 @@ function appendTrendIndicator($display, $currentValue, &$previousValue) {
            "</span>";
 }
 
-/* Shows the summary stats of all years in a single table */
+/**
+ * Shows the summary stats of all years in a single table: per-article
+ * quantities/amounts with trend indicators, donations, total revenue and
+ * wax amounts per year.
+ *
+ * @return void Outputs HTML directly.
+ */
 function showAllYearsSummary() {
     global $customImage;
     

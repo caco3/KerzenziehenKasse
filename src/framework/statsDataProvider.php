@@ -5,7 +5,14 @@ $root=".";
 // Make sure the german day names are available
 global $germanDayOfWeekShort;
 
-/* Returns the total grouped per day for each day in the given year listed in the DB */
+/**
+ * Returns the total grouped per day for each day in the given year listed
+ * in the DB (single optimized query).
+ *
+ * @param int|string $year - The year to gather stats for.
+ * @return array Data keyed by date with donations, total, food, school,
+ *               parafinWax and beeWax.
+ */
 function getStatsPerDay($year) {
     global $db_link;
     
@@ -90,6 +97,12 @@ function getStatsPerDay($year) {
     return $data;
 }
 
+/**
+ * Builds all chart data sets (totals per day/year, summed totals, wax in
+ * CHF and kg, food in CHF) for the diagram pages.
+ *
+ * @return array Map of chart type names to [dayOffset][year] data arrays.
+ */
 function getStatsData() {
     global $germanDayOfWeekShort;
     

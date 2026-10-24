@@ -1,10 +1,17 @@
 $(document).on({    
+    /**
+     * Global ajaxStop handler; hides the progress bar when all pending
+     * ajax requests have finished.
+     */
     ajaxStop: function() { 
         hideProgressBar();
     }    
 });
 
 
+/**
+ * Document-ready handler for the articles page (currently only a placeholder).
+ */
 $(document).ready(function(){
 //     console.log("Articles loaded");   
 
@@ -13,22 +20,45 @@ $(document).ready(function(){
 
 
 /* Called when one of the article divs get pressed */
+/**
+ * Adds one piece of an article to the basket.
+ *
+ * @param {string|number} id - ID of the article to add.
+ */
 function addArticleToBasket(id) {
     addToBasket(id, 1); 
 }
 
 
 /* Called when one of the article divs get pressed */
+/**
+ * Adds an article with a given quantity (e.g. from the numpad or scale)
+ * to the basket.
+ *
+ * @param {string|number} id - ID of the article to add.
+ * @param {number|string} quantity - Quantity or weight to add.
+ */
 function addArticleWithQuantityToBasket(id, quantity) {
     addToBasket(id, quantity);
 }
 
 
+/**
+ * Sends a request to ajax/addToBasket.php to add an article with a given
+ * quantity to the basket.
+ *
+ * @param {string|number} id - ID of the article to add.
+ * @param {number|string} quantity - Quantity or weight to add.
+ */
 function addToBasket(id, quantity) {
     console.log("addToBasket id="+id+", quantity="+quantity);
     
     //add to basket
     var xhttp = new XMLHttpRequest();
+    /**
+     * Handles the addToBasket ajax response; refreshes the basket view and
+     * clears the custom article input fields on success.
+     */
     xhttp.onreadystatechange = function() {                    
 //                 console.log(this.responseText);
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
