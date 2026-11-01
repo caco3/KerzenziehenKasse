@@ -1,13 +1,20 @@
 # Templates
-Die Templates müssen zwingend als ODT 1.0 gespeichert wwerden. Neuere Formate werden durch das verwendete ODTPHP-Framework korrupiert!
 
-TODO: Altes Libreoffice finden, welches noch in ODT 1.0 speichert (7.6.7.2 ist zu neu).
+`receipt.odt` in diesem Ordner ist das **live Template**: docker-compose mountet
+dieses Verzeichnis in den `receipt-generator`-Container (`/templates`). Änderungen
+greifen sofort — kein Neustart, kein Rebuild nötig.
+
+Der Python-Service öffnet das ODT als ZIP, ersetzt Platzhalter in `content.xml` per String-Replace und tauscht
+die QR-Rechnung als SVG aus.
 
 ## Neue Felder hinzufügen
-Neue Felder können nur indirekt via LibreOffice hinzugefügt werden!
-Vorgehen:
+
+Platzhalter müssen in `content.xml` als **ungeteilter** String stehen
+(`{feldname}`), sonst findet das String-Replace sie nicht. LibreOffice teilt
+Felder aber oft auf mehrere `text:span`s auf — deshalb:
 
 1. Feld in LibreOffice hinzufügen
 2. Datei umbenennen: odt -> zip
-3. Datei content.xml in Editor öffnen.
-4. Feld suchen und Formatierungsteil entfernen, z.b: "{</text:span><text:span text:style-name="T20">qrBill</text:span><text:span text:style-name="T18">}" => "{qrBill}"
+3. `content.xml` in Editor öffnen.
+4. Feld suchen und Formatierungsteil entfernen, z.B.:
+   "{</text:span><text:span text:style-name="T20">qrBill</text:span><text:span text:style-name="T18">}" => "{qrBill}"
