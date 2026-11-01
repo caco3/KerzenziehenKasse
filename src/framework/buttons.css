@@ -21,22 +21,12 @@
     transition: filter 0.15s ease, transform 0.1s ease;
 }
 
-/* Unified hover: same brightening for every button.
-   Using filter keeps each button's icon visible. */
-.addToBasketButton:hover:enabled, .removeFromBasketButton:hover:enabled,
-.editButton:hover:enabled, .receiptButtonView:hover:enabled,
-.receiptButtonPrint:hover:enabled, .exportCsvButton:hover:enabled,
-.schoolFlagButton:hover:enabled, .minimizeButton:hover:enabled,
-.cashButton:hover:enabled, .twintButton:hover:enabled,
-.invoiceButton:hover:enabled, .summaryBackButton:hover:enabled,
-.updateButton:hover:enabled, .cancelButton:hover:enabled,
-.cancelClearBasketButton:hover:enabled, .clearBasket:hover:enabled,
-.articleButton:hover:enabled, .foodArticleButton:hover:enabled, .dippingArticleButton:hover:enabled {
-    filter: brightness(1.15);
-}
+/* No hover effect: the kiosk is used with a touchscreen, where :hover is
+   emulated and sticks to the last tapped element. Hover looks like idle. */
 
 /* Unified pressed effect: shrink + darken while clicked.
-   Placed after :hover so it overrides the hover brightening. */
+   The .pressed class mirrors :active for touchscreens: on a brief tap
+   :active ends before the shrink completes, so JS holds .pressed a bit. */
 .addToBasketButton:active:enabled, .removeFromBasketButton:active:enabled,
 .editButton:active:enabled, .receiptButtonView:active:enabled,
 .receiptButtonPrint:active:enabled, .exportCsvButton:active:enabled,
@@ -45,7 +35,16 @@
 .invoiceButton:active:enabled, .summaryBackButton:active:enabled,
 .updateButton:active:enabled, .cancelButton:active:enabled,
 .cancelClearBasketButton:active:enabled, .clearBasket:active:enabled,
-.articleButton:active:enabled, .foodArticleButton:active:enabled, .dippingArticleButton:active:enabled {
+.articleButton:active:enabled, .foodArticleButton:active:enabled, .dippingArticleButton:active:enabled,
+.addToBasketButton.pressed:enabled, .removeFromBasketButton.pressed:enabled,
+.editButton.pressed:enabled, .receiptButtonView.pressed:enabled,
+.receiptButtonPrint.pressed:enabled, .exportCsvButton.pressed:enabled,
+.schoolFlagButton.pressed:enabled, .minimizeButton.pressed:enabled,
+.cashButton.pressed:enabled, .twintButton.pressed:enabled,
+.invoiceButton.pressed:enabled, .summaryBackButton.pressed:enabled,
+.updateButton.pressed:enabled, .cancelButton.pressed:enabled,
+.cancelClearBasketButton.pressed:enabled, .clearBasket.pressed:enabled,
+.articleButton.pressed:enabled, .foodArticleButton.pressed:enabled, .dippingArticleButton.pressed:enabled {
     transform: scale(0.95);
     filter: brightness(0.9);
 }

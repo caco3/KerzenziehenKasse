@@ -327,3 +327,30 @@ function minimizeClicked(){
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send();
 }
+
+
+/**
+ * Plays the full button press animation on brief touchscreen taps.
+ * CSS :active only lasts while the finger is down, so a quick tap ends
+ * the shrink before it completes. Holding a .pressed class for a moment
+ * lets the full shrink-and-release transition play.
+ */
+(function () {
+    var PRESS_DURATION_MS = 220;
+    var BUTTON_SELECTOR = '.addToBasketButton, .removeFromBasketButton, .editButton, ' +
+        '.receiptButtonView, .receiptButtonPrint, .exportCsvButton, .schoolFlagButton, ' +
+        '.minimizeButton, .cashButton, .twintButton, .invoiceButton, .summaryBackButton, ' +
+        '.updateButton, .cancelButton, .cancelClearBasketButton, .clearBasket, ' +
+        '.articleButton, .foodArticleButton, .dippingArticleButton';
+
+    document.addEventListener('touchstart', function (event) {
+        var button = event.target.closest(BUTTON_SELECTOR);
+        if (!button || button.disabled || button.hasAttribute('disabled')) {
+            return;
+        }
+        button.classList.add('pressed');
+        setTimeout(function () {
+            button.classList.remove('pressed');
+        }, PRESS_DURATION_MS);
+    }, { passive: true });
+})();
