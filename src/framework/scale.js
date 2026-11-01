@@ -40,7 +40,7 @@ function onOpen(evt)
 function onClose(evt)
 {
     console.log("Scale disconnected!\n");
-    update_display(null, "Nicht verbunden!", false);
+    update_display(null, "Waage ausgeschaltet oder nicht verbunden!", false);
     setTimeout(doConnect, 1000);
 }
 
@@ -69,7 +69,7 @@ function onMessage(evt)
         //console.log('Scale: Error: ' + data.code + ' (' + data.description + ')!\n');
         //console.log('Scale: data: ' + evt.data);
         if (data.code == "NO_SCALE") {
-            update_display(null, data.description || "Nicht verbunden!", false);
+            update_display(null, data.description || "Waage ausgeschaltet oder nicht verbunden!", false);
         }
         else if (data.code == "NO_DATA") {
             // update_display(null, "Datenfehler!", false);

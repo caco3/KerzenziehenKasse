@@ -301,10 +301,26 @@ function update_display(value, text, is_value) {
         if (is_value) {
             // console.log("Show scale button");
             button.style.display = 'inline-block';
+            if (output != null) {
+                output.style.margin = '';
+                output.style.textAlign = '';
+                output.style.paddingLeft = '';
+                // large text, vertically centered against the button
+                output.style.fontSize = '200%';
+                output.style.alignSelf = 'center';
+            }
         }
         else {
             // console.log("Hide scale button");
             button.style.display = 'none';
+            if (output != null) {
+                // center text (override .scale-output's right-align + 200px padding)
+                output.style.margin = '0 auto';
+                output.style.textAlign = 'center';
+                output.style.paddingLeft = '0';
+                output.style.fontSize = '';
+                output.style.alignSelf = '';
+            }
         }
     }
 }
