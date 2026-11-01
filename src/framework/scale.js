@@ -69,7 +69,7 @@ function onMessage(evt)
         //console.log('Scale: Error: ' + data.code + ' (' + data.description + ')!\n');
         //console.log('Scale: data: ' + evt.data);
         if (data.code == "NO_SCALE") {
-            update_display(null, "Nicht verbunden!", false);
+            update_display(null, data.description || "Nicht verbunden!", false);
         }
         else if (data.code == "NO_DATA") {
             // update_display(null, "Datenfehler!", false);
