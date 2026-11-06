@@ -75,13 +75,14 @@ db_connect();
         showBasket();
         loadBibleVerse();
         loadNavigation();
-        
-        let scrollUpButton = document.getElementById("scrollUpButton");
-        // When the user scrolls down 20px from the top of the document, show the button
-        /** Scroll handler; delegates to scrollFunction(). */
-        window.onscroll = function() {scrollFunction()};
-
     });
+
+    // Register scroll listeners right away (not inside document.ready) so a
+    // failing init call can never disable the button. The capture-phase
+    // document listener also fires when body or another element scrolls,
+    // which window.onscroll alone would miss (e.g. overflow-x:hidden pages).
+    document.addEventListener('scroll', scrollFunction, {capture: true, passive: true});
+    window.addEventListener('scroll', scrollFunction, {passive: true});
 
     /**
      * Shows a 'Laden...' notification while a page is loading.
@@ -95,6 +96,8 @@ db_connect();
      * 20px, hides it otherwise.
      */
     function scrollFunction() {
+        var scrollUpButton = document.getElementById("scrollUpButton");
+        if (!scrollUpButton) return; // button not rendered yet
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
             scrollUpButton.style.display = "block";
         } else {
@@ -109,6 +112,7 @@ db_connect();
     function topFunction() {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
+        window.scrollTo(0, 0); // fallback for whichever element scrolls
     }
     </script>
 
@@ -116,7 +120,7 @@ db_connect();
 
     <body id=live>
 
-<button onclick="topFunction()" id="scrollUpButton" title="Go to top"><img src=images/to-top.png width=40px></button>
+<button onclick="topFunction()" id="scrollUpButton" title="Go to top" style="display:none;"><img src=images/to-top.png width=40px></button>
 
 <div id="container">
 
