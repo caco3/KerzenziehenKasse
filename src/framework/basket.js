@@ -165,16 +165,95 @@ function cashClicked(){
 }
 
 
+// Payment method confirmation dialog state (booking edit mode)
+var pendingPaymentMethod = null;
+
+// Display labels for payment methods, used in the confirmation dialog
+var paymentMethodLabels = {cash: "Bar", twint: "Twint", invoice: "Rechnung"};
+
 /**
  * Handles a click on the update button; saves the current basket changes
  * back to the edited booking, applying the payment method selected in
- * the paymentMethodRadio group.
+ * the paymentMethodRadio group. A changed payment method was already
+ * confirmed when the radio selection changed.
  */
 function updateClicked(){
 	var checked = document.querySelector('input[name="paymentMethodRadio"]:checked');
 	var paymentMethod = checked ? checked.value : "";
 	console.log("updateClicked, paymentMethod: " + paymentMethod);
 	updateBasketinBookings(paymentMethod);
+}
+
+
+/**
+ * Handles a change of the paymentMethodRadio selection in booking edit
+ * mode; asks for confirmation before applying the new payment method.
+ *
+ * @param {HTMLInputElement} radio - The radio input that was selected.
+ */
+function paymentMethodChanged(radio) {
+	var originalField = document.getElementById("originalPaymentMethod");
+	var originalMethod = originalField ? originalField.value : "";
+	console.log("paymentMethodChanged: " + radio.value + " (original: " + originalMethod + ")");
+
+	if (radio.value != originalMethod) {
+		showPaymentMethodDialog(radio.value, originalMethod);
+	}
+}
+
+
+/**
+ * Shows the confirmation dialog for changing the payment method of the
+ * booking currently being edited.
+ *
+ * @param {string} newMethod - The newly selected payment method.
+ * @param {string} originalMethod - The payment method stored on the booking.
+ */
+function showPaymentMethodDialog(newMethod, originalMethod) {
+	pendingPaymentMethod = newMethod;
+	var bookingIdField = document.getElementById("paymentBookingId");
+	var oldLabel = paymentMethodLabels[originalMethod] || originalMethod || "unbekannt";
+	var newLabel = paymentMethodLabels[newMethod] || newMethod;
+	document.getElementById('paymentMethodMessage').innerHTML =
+		'Soll die Zahlungsart der Buchung wirklich von<br>"' + oldLabel + '" auf "' + newLabel + '" geändert werden?';
+	document.getElementById('paymentMethodDialog').style.display = 'flex';
+}
+
+/**
+ * Closes the payment method confirmation dialog, clears the pending
+ * change and reverts the radio selection back to the stored payment
+ * method.
+ */
+function closePaymentMethodDialog() {
+	document.getElementById('paymentMethodDialog').style.display = 'none';
+	pendingPaymentMethod = null;
+
+	var originalField = document.getElementById("originalPaymentMethod");
+	var originalMethod = originalField ? originalField.value : "";
+	document.querySelectorAll('input[name="paymentMethodRadio"]').forEach(
+		/**
+		 * Re-checks only the radio matching the stored payment method.
+		 *
+		 * @param {HTMLInputElement} radio - A paymentMethodRadio input.
+		 */
+		function(radio) {
+			radio.checked = (radio.value === originalMethod);
+		});
+}
+
+/**
+ * Confirms the payment method change: closes the dialog and keeps the
+ * new radio selection, which becomes the baseline a later cancel reverts
+ * to. The change is only written to the database when 'Aktualisieren'
+ * is pressed.
+ */
+function confirmPaymentMethod() {
+	var originalField = document.getElementById("originalPaymentMethod");
+	if (originalField && pendingPaymentMethod != null) {
+		originalField.value = pendingPaymentMethod;
+	}
+	document.getElementById('paymentMethodDialog').style.display = 'none';
+	pendingPaymentMethod = null;
 }
 
 
