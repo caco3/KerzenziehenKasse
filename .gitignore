@@ -7,3 +7,4 @@ _git
 src/templates/receipt.odt.old
 credentials.txt
 *.bat
+.~lock.*.odt*

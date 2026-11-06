@@ -1,10 +1,13 @@
 # Templates
 
-`receipt.odt` in diesem Ordner ist das **live Template**: docker-compose mountet
-dieses Verzeichnis in den `receipt-generator`-Container (`/templates`). Änderungen
-greifen sofort — kein Neustart, kein Rebuild nötig.
+`bill.odt` und `receipt.odt` in diesem Ordner sind die **live Templates**: docker-compose
+mountet dieses Verzeichnis in den `receipt-generator`-Container (`/templates`).
 
-Der Python-Service öffnet das ODT als ZIP, ersetzt Platzhalter in `content.xml` per String-Replace und tauscht
+- `bill.odt` — Rechnung (Zahlungsart `EZS`), enthält den `qr-bill`-Frame für die QR-Rechnung
+- `receipt.odt` — Quittung für Bar- und Twint-Zahlungen
+
+Der Python-Service wählt das Template anhand der Zahlungsart, öffnet das ODT als ZIP,
+ersetzt Platzhalter in `content.xml` per String-Replace und tauscht bei Rechnungen
 die QR-Rechnung als SVG aus.
 
 ## Neue Felder hinzufügen
