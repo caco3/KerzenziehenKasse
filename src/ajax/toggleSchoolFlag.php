@@ -1,5 +1,7 @@
 <? 
 $root="..";
+require_once("$root/framework/credentials_check.php");
+
 require "$root/config/config.php";
 require "$root/framework/db.php";
 

@@ -157,12 +157,24 @@ function roundMoney($num){
 
 
 /**
- * Rundet auf 10 Rappen (rounds to 10 Rappen / 0.10 CHF).
+ * Rounds to 10 Rappen (0.10 CHF) and adds thousands delimiters.
  *
  * @param float $num - The amount to round.
  * @return string The rounded amount, formatted with formatMoney().
  */
-function roundMoney10($num){
+function prettyMoneyFormat($num){
+    return formatMoney(roundTo10Rappen($num));
+}
+
+
+/**
+ * Rundet auf 10 Rappen, numerisches Ergebnis (rounds to 10 Rappen / 0.10 CHF).
+ * Use this for values that go back into the database.
+ *
+ * @param float $num - The amount to round.
+ * @return float The rounded amount.
+ */
+function roundTo10Rappen($num){
     $x = ($num * 1000) % 100;
     
     if($x < 50){
@@ -172,7 +184,7 @@ function roundMoney10($num){
         $rounded = $num + (100-$x)/1000;
     }
     
-    return formatMoney($rounded);
+    return $rounded;
 }  
 
 

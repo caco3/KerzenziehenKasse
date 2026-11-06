@@ -38,7 +38,7 @@ db_connect();
 				<!--&nbsp;&nbsp;&nbsp;Zahlungsart:-->
 				<?
 				$booking = getDbBooking($bookingId);
-				$paymentMethod = $booking['paymentMethod'];
+				$paymentMethod = $booking['paymentMethod'] ?? '';
 				?>
 				<div style="display: inline-block; text-align: left; vertical-align: middle; margin-left: 100px">
 					<label style="display: block; margin: 20px 0;"><input type=radio name=paymentMethodRadio value=cash <? if ($paymentMethod == 'cash') echo 'checked'; ?>> <img src="images/bargeld.png" height=40px style="vertical-align: middle;"> Bar</label>

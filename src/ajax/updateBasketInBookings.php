@@ -45,7 +45,7 @@ else { // ok, basket was loaded from bookings and can be updated in there
         $extra = serialize($extra); // ensure serialized for DB
     }
 
-    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod, $extra);
+    $ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundTo10Rappen(getDbTotal()), $paymentMethod, $extra);
     if( $ret == false) {
         $errorText = "Failed to move basket to bookings (booking ID $bookingId, updating booking)!";
         $success = false;

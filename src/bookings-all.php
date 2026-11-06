@@ -39,7 +39,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
             echo("<tr>");
             echo("<td class=td_rightBorder>$bookingId</td>");
             echo("<td class=\"td_nowrap td_rightBorder\">" . $booking['time'] . "</td>");
-            echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
+            echo("<td class=\"td_nowrap td_rightBorder\">CHF " . prettyMoneyFormat($booking['total']) . "</td>");
             echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
 			if ($booking['paymentMethod'] == 'cash') {
 				echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/bargeld.png\" height=40px></td>");
@@ -109,7 +109,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
                 echo("<td class=td_rightBorder>$bookingId</td>");
                 echo("<td class=td_nowrap>$formatedDate</td>");
                 echo("<td class=\"td_nowrap td_rightBorder\">" . $booking['time'] . "</td>");
-                echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney10($booking['total']) . "</td>");
+                echo("<td class=\"td_nowrap td_rightBorder\">CHF " . prettyMoneyFormat($booking['total']) . "</td>");
                 echo("<td class=\"td_nowrap td_rightBorder\">CHF " . roundMoney($booking['donation']) . "</td>");
 				if ($booking['paymentMethod'] == 'cash') {
 					echo("<td class=\"td_nowrap td_rightBorder\" style=\"text-align: center; vertical-align: middle;\"><img src=\"images/bargeld.png\" height=40px></td>");

@@ -220,10 +220,12 @@ function addToBasket($id, $quantity, $price, $text) {
 
     // TODO sanetize
        
+    $textEscaped = mysqli_real_escape_string($db_link, $text);
+
     $sql = "INSERT INTO `basket`
         (`articleId`, `quantity`, `price`, `text`) 
         VALUES
-        ('$id', '$quantity',  '$price', '$text')
+        ('$id', '$quantity',  '$price', '$textEscaped')
     ";
     
         
@@ -644,7 +646,6 @@ function getExtraFromBasket() {
     mysqli_free_result($query_response);
     if (!empty($row['extra'])) {
         $raw = $row['extra'];
-        errorLog("getExtraFromBasket raw extra: " . $raw);
         $extra = @unserialize($raw);
         if ($extra === false && $raw !== serialize(false)) {
             // unserialize failed and not because the value is boolean false
@@ -695,8 +696,10 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $
 
 	//echo("moveBasketToBooking, $paymentMethod\n");
        
+    $basketEscaped = mysqli_real_escape_string($db_link, $serializedBasket);
+       
     $sql = "UPDATE `bookings`
-            SET `booking`='$serializedBasket', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'";
+            SET `booking`='$basketEscaped', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'";
     if ($extra !== null) {
         $extraEscaped = mysqli_real_escape_string($db_link, $extra);
         $sql .= ", `extra`='$extraEscaped'";

@@ -182,7 +182,7 @@ else if (strlen($id) != 4) { // a day
 
     $total += $donations;
 
-    $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney10($total) . "\n\n";
+    $content .= "Export für:;$formatedDate;Total [CHF]:;" . prettyMoneyFormat($total) . "\n\n";
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {
@@ -254,7 +254,7 @@ else { // the whole year
     }
     $total += $donations;
 
-    $content .= "Export für:;$formatedDate;Total [CHF]:;" . roundMoney10($total) . "\n\n";
+    $content .= "Export für:;$formatedDate;Total [CHF]:;" . prettyMoneyFormat($total) . "\n\n";
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {

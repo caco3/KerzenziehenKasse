@@ -56,7 +56,7 @@ if ($extra === null) {
 
 //echo("moveBasketToBookings.php, $paymentMethod\n");
 
-$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundMoney10(getDbTotal()), $paymentMethod, $extra);
+$ret = moveBasketToBooking($bookingId, $serializedBasket, getDbDonation(), roundTo10Rappen(getDbTotal()), $paymentMethod, $extra);
 if( $ret == false) {
     $errorText = "Failed to move basket to bookings (booking ID $bookingId)!";
     $success = false;

@@ -12,8 +12,8 @@
     $basket = getDbBasket();
     $basketFormated = array();
     
-    $basketFormated["total"] = roundMoney10(getDbTotal());
-    $basketFormated["donation"] = roundMoney10(getDbDonation());
+    $basketFormated["total"] = prettyMoneyFormat(getDbTotal());
+    $basketFormated["donation"] = prettyMoneyFormat(getDbDonation());
     $basketFormated["entries"] = array();
     
     foreach($basket as $basketEntry) {      

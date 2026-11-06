@@ -35,7 +35,7 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
                                                     
                 // List all fields that changed  
                 $response_array['updatedFields']['total'] = $total;
-                $response_array['updatedFields']['totalRounded'] = roundMoney10($total);
+                $response_array['updatedFields']['totalRounded'] = prettyMoneyFormat($total);
                         
                 $success = true;
             }
@@ -56,7 +56,7 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
                 // List all fields that changed  
                 $response_array['updatedFields']['article'][$basketEntryId]['price'] = $quantity * $pricePerQuantity;
                 $response_array['updatedFields']['total'] = $total;
-                $response_array['updatedFields']['totalRounded'] = roundMoney10($total);
+                $response_array['updatedFields']['totalRounded'] = prettyMoneyFormat($total);
                         
                 $success = true;
             }
@@ -73,7 +73,7 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
                         
             // List all fields that changed
             $response_array['updatedFields']['total'] = $total;
-            $response_array['updatedFields']['totalRounded'] = roundMoney10($total);
+            $response_array['updatedFields']['totalRounded'] = prettyMoneyFormat($total);
                         
             $success = true;
         }
@@ -96,12 +96,12 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
             else {
                 $total = getDbTotal();
             }
-            updateDonationInBasket($donation) == true;
+            updateDonationInBasket($donation);
             // todo validate
                         
             // List all fields that changed
             $response_array['updatedFields']['donation'] = $donation;
-            $response_array['updatedFields']['totalRounded'] = roundMoney10($total);
+            $response_array['updatedFields']['totalRounded'] = prettyMoneyFormat($total);
             
             $success = true;
         }
