@@ -56,8 +56,7 @@ $.ajaxPrefilter('script', function(options) {
         
         $removeButton = showRemoveFromBasketButton($basketEntryId);
         
-//         if($articleId != 'custom') { // normal entry
-            list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+        list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
             /* Note: input fields typenumber do not allow setSelection
             *       So we use a type=text field and restrict the characters, see $(".basketQuantityInput").keydown()          */
 			
@@ -86,12 +85,6 @@ $.ajaxPrefilter('script', function(options) {
             onclick=\"show_easy_numpad($basketEntryId, 'basketQuantity', this.value, '$header', $cents, '$prefix', '$suffix')\"> $unit";
             $priceField = "CHF <input class=basketMoneyInput type=text id=basketEntryId_" . $basketEntryId . "_price value=" . number_format($pricePerQuantity * $quantity, 2, ".", "") . " readonly disabled=disabled>";            
             $textField = "$name";
-//         }
-//         else { // custom entry
-//             $quantityField = "<input type=text class=basketQuantityInput id=basketEntryId_" . $basketEntryId . "_quantity value=$quantity readonly disabled=disabled> Stk.";
-//             $textField = $basketEntry['text'];
-//             $priceField = "CHF <input type=text class=basketMoneyInput id=basketEntryId_" . $basketEntryId . "_price value=" . $price . ">";
-//         }
         
         
         echo("<tr>

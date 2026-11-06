@@ -85,8 +85,6 @@ function appendTrendIndicator($display, $currentValue, &$previousValue) {
  * @return void Outputs HTML directly.
  */
 function showAllYearsSummary() {
-    global $customImage;
-    
     // Start timing
     $startTime = microtime(true);
     $dbQueryCount = 0;
@@ -113,7 +111,6 @@ function showAllYearsSummary() {
         $total = 0;
         $waxAmountBee = 0;
         $waxAmountParafin = 0;
-        $customIds = 0;
         
         // Initialize articles with all products
         foreach($allProducts as $product) {
@@ -165,26 +162,7 @@ function showAllYearsSummary() {
         // Process all bookings
         foreach($allBookings as $booking) {
             foreach ($booking['articles'] as $articleId => $article) {
-                if(!isset($article['type']) || $article['type'] != "custom") {
-                    $id = $articleId;
-                }
-                else {
-                    $id = $article['text'] . "_$customIds";
-                    $customIds++;
-                    
-                    // Initialize custom article if not exists
-                    if (!isset($articles[$id])) {
-                        $articles[$id] = array(
-                            'text' => $article['text'],
-                            'quantity' => 0,
-                            'unit' => $article['unit'] ?? '',
-                            'type' => $article['type'],
-                            'subtype' => $article['subtype'] ?? '',
-                            'image' => $customImage,
-                            'price' => 0
-                        );
-                    }
-                }
+                $id = $articleId;
                 
                 if (isset($articles[$id])) {
                     $articles[$id]['quantity'] += $article['quantity'] ?? 0;
@@ -322,9 +300,6 @@ function showAllYearsSummary() {
         echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
         
         $displayText = $article['text'];
-        if ($article['type'] == "custom") {
-            $displayText = "*) " . $displayText;
-        }
         if ($article['unit'] == "g") {
             $displayText .= "<br>(ohne Gussformen)";
         }

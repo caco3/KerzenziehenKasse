@@ -57,7 +57,7 @@ function addToBasket(id, quantity) {
     var xhttp = new XMLHttpRequest();
     /**
      * Handles the addToBasket ajax response; refreshes the basket view and
-     * clears the custom article input fields on success.
+     * clears the article quantity input fields on success.
      */
     xhttp.onreadystatechange = function() {                    
 //                 console.log(this.responseText);
@@ -69,8 +69,6 @@ function addToBasket(id, quantity) {
 //                             console.log(obj.data.inputFieldId);
                 showBasket();
                 console.log("added to basket.\nResponse: " + this.responseText);
-                $("#customArticleDescriptionInput").val(""); // clear custom article field
-                $("#quantity_custom").val(""); // clear custom article field
                 $("#quantity_1").val(""); // clear article field (parafin wax)
                 $("#quantity_2").val(""); // clear article field (bee wax)
             }

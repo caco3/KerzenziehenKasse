@@ -105,7 +105,7 @@ function getDbProductsEx($type, $orderByColumn, $subType) {
 
 /**
  * Returns the data of a single article.
- * Note: only provide real article IDs (but not custom ones).
+ * Note: only provide real article IDs.
  *
  * @param int|string $id - The articleId to look up.
  * @return array List with name, type, pricePerQuantity, unit, image1-3,
@@ -122,11 +122,6 @@ function getDbArticleData($id){
     }
 
     $line = mysqli_fetch_array( $query_response, MYSQLI_ASSOC);
-    
-    
-    if($line['type'] == 'custom'){ // custom article
-        $line['unit'] = "Stk."; // TODO: replace by unit in table
-    }
     
 //     echo("<pre>"); print_r($line); echo("</pre>");
     
@@ -471,12 +466,7 @@ function getDbBasket() {
     {
         list($line['name'], $line['type'], $line['pricePerQuantity'], $line['unit'], $line['image1'], $line['image2'], $line['image3']) = getDbArticleData($line['articleId']);
         
-        if($line['custom'] == 'custom'){ //normal article
-            $line['price'] = $line['quantity'] * $line['pricePerQuantity'];
-        }
-        else{ // custom article
-            $line['unit'] = "Stk."; // TODO replace by unit from table
-        }
+        $line['price'] = $line['quantity'] * $line['pricePerQuantity'];
 
         $lines[] = $line;
 //         print_r($line);
@@ -697,7 +687,7 @@ function moveBasketToBooking($bookingId, $serializedBasket, $donation, $total, $
 	//echo("moveBasketToBooking, $paymentMethod\n");
        
     $basketEscaped = mysqli_real_escape_string($db_link, $serializedBasket);
-       
+
     $sql = "UPDATE `bookings`
             SET `booking`='$basketEscaped', `donation`='$donation', `total`='$total', `paymentMethod`='$paymentMethod'";
     if ($extra !== null) {

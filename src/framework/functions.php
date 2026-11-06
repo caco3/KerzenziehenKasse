@@ -115,12 +115,7 @@ function calculateBasketTotal($includeDOnation){
         $price = $basketEntry['price'];
         list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
         
-        if($articleId != 'custom'){ // normal article
-            $sum += $quantity * $pricePerQuantity; 
-        }
-        else{ // custom article
-            $sum += $price; 
-        }
+        $sum += $quantity * $pricePerQuantity; 
     }
     
     if($includeDOnation == true){
@@ -255,17 +250,15 @@ function showSummary(){
 
 /**
  * Returns the summarized content of the basket: identical articles are
- * merged, custom articles stay separate.
+ * merged.
  *
  * @param bool $includeDonation - Whether to add a 'donation' entry.
  * @param bool $includeTotal - Whether to add a 'total' entry.
- * @return array Summary keyed by articleId (or 'custom_N', 'donation', 'total').
+ * @return array Summary keyed by articleId (or 'donation', 'total').
  */
 function getBasketSummary($includeDonation, $includeTotal){
     $basket = getDbBasket();
     $summary = array();
-    
-    $customId = 0; 
         
     foreach($basket as $basketEntry) {      
         $basketEntryId = $basketEntry['basketEntryId'];
@@ -275,21 +268,15 @@ function getBasketSummary($includeDonation, $includeTotal){
         $text = $basketEntry['text'];
         list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
   
-        if($articleId == 'custom'){ // custom article, they never get merged
-            $summary['custom_' . $customId]['text'] = $text;  
-            $summary['custom_' . $customId]['price'] = $price;             
-            $customId++;
+        // normal article, add it to an existing identical article
+        if(!array_key_exists($articleId, $summary)){ // Article shows up first time
+            $summary[$articleId]['quantity'] = $quantity;
+            $summary[$articleId]['price'] = $pricePerQuantity;
         }
-        else { // normal article, add it to an existing identical article
-            if(!array_key_exists($articleId, $summary)){ // Article shows up first time
-                $summary[$articleId]['quantity'] = $quantity;
-                $summary[$articleId]['price'] = $pricePerQuantity;
-            }
-            else { // article is already in the list, sum it up
-                $summary[$articleId]['quantity'] += $quantity;
+        else { // article is already in the list, sum it up
+            $summary[$articleId]['quantity'] += $quantity;
 //                 $summary[$articleId]['price']  += $quantity * $pricePerQuantity;
-            }
-        }    
+        }
     } 
     
     ksort($summary);
@@ -341,16 +328,10 @@ function getBooking($bookingId){
 
     if (count($articleIds) > 0) {
         foreach ($articleIds as $articleId) {
-            if (strpos("$articleId", 'custom') === 0) { // custom article
-                $booking['articles'][$articleId]['quantity'] = 1;
-                list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData('custom');
-            }
-            else { // normal article
-                list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
-                $booking['articles'][$articleId]['text'] = $name;
-                $booking['articles'][$articleId]['waxAmount'] = $waxAmount;
-                $booking['articles'][$articleId]['waxType'] = $waxType;
-            }
+            list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
+            $booking['articles'][$articleId]['text'] = $name;
+            $booking['articles'][$articleId]['waxAmount'] = $waxAmount;
+            $booking['articles'][$articleId]['waxType'] = $waxType;
             $booking['articles'][$articleId]['type'] = $type;
             $booking['articles'][$articleId]['unit'] = $unit;
         }
@@ -389,10 +370,6 @@ function copyBookingToBasket($bookingId) {
     foreach($data['articles' ] as $articleId => $article) {
 //         echo("$articleId:\n");
 //         print_r($article);
-
-        if (strpos($articleId, "custom_") !== false) { // remove index as used in bookings serialized format
-            $articleId = "custom";
-        }
 
         if (addToBasket($articleId, $article['quantity'], $article['price'] * $article['quantity'], $article['text']) != true) {
             return(false);

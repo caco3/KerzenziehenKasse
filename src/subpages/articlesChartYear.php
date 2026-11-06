@@ -20,9 +20,6 @@
                 if ($article['type'] != "guss") { // Do not show dipping articles
                     continue;
                 }
-                else if ($article['type'] == "custom") { // Do not show custom articles
-                    continue;
-                }
                 echo("['" . $article['text'] . "', " . $article['quantity'] . "],\n");    
             }
 ?> 

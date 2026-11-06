@@ -19,7 +19,6 @@ else { // Normal
                     <div class=leftSideDiv>
 <!--                             <div id=dipArticlesDiv style="width:408px;"></div> -->
                                             
-<!--                         <div id=customArticleDiv></div> -->
 <!--                        <span id=pourArticlesFloatingCandlesDiv></span>
                         <span id=pourArticlesNormalDiv></span>
                         <span id=pourArticlesPreMadeDiv></span>-->

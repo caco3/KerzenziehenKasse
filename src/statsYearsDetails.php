@@ -62,19 +62,12 @@ function showSummaryOfYear($year) {
         }
         
         $bookingDatesOfCurrentYear = getBookingDatesOfYear($year);
-        $customIds = 0;
         foreach($bookingDatesOfCurrentYear as $date) {  // a day
             $bookingIds = getBookingIdsOfDate($date, false);
             foreach($bookingIds as $bookingId) { // a booking
                 $booking = getBooking($bookingId);
                 foreach ($booking['articles'] as $articleId => $article) { // articles
-            if(!isset($article['type']) || $article['type'] != "custom") { // normal article   
                 $id = $articleId;
-            }
-            else { // custom article      
-                $id = $article['text'] . "_$customIds";
-                $customIds++;
-            }
                     
                     // echo("<pre>"); print_r($article);
                     
@@ -147,20 +140,13 @@ function showSummaryOfYear($year) {
                 continue;
             }
                 
-            if ($article['type'] == "custom") { 
-                $custom = "*) ";
-                $article['image'] = $customImage;
-            }
-            else {
-                $custom = ""; 
-            }
         
             echo("<tr>");
             echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/articles/". $article['image'] . "><span><img src=images/articles/". $article['image'] . "></span></span></td>");
 
 			
 			if ($article['subtype'] == 'food') {
-                echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+                echo("<td class=td_rightBorder>" . $article['text'] . "</td><td class=td_rightBorder></td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
 			else { // normal     
 				$quantity = number_format($article['quantity'], 0, ".", "'");
@@ -170,7 +156,7 @@ function showSummaryOfYear($year) {
 					$unit = "kg";
 					$article['text'] .= " (ohne Gussformen)";
 				}
-				echo("<td class=td_rightBorder>" . $custom . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
+				echo("<td class=td_rightBorder>" . $article['text'] . "</td><td class=td_rightBorder>$quantity $unit</td><td class=td_rightBorder>CHF " . roundMoney($article['quantity'] * $article['price']) . "</td></tr>\n");
 			}
 			
 			

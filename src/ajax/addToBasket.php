@@ -25,17 +25,10 @@ if (isset($_POST['id']) AND (isset($_POST['quantity']) OR isset($_POST['price'])
 //     echo($id . ", is_numeric(): " . is_numeric($id) . "<br>");
 //     echo($quantity . ", is_numeric(): " . is_numeric($quantity) . "<br>");
 
-    if ((is_numeric($id)) OR ($id == 'custom')){ // valid ID
-        if((is_numeric($quantity)) OR ($id == 'custom' AND $text != "" AND $price != "")) { //its a pour or dip article OR a custom article with a price and text
-        
-        
-            if($id != "custom"){ // normal article
-                list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($id);
-                $price = $quantity * $pricePerQuantity;
-            }
-            else{ // custom article
-                $quantity = 1;                
-            }        
+    if (is_numeric($id)){ // valid ID
+        if(is_numeric($quantity)) {
+            list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($id);
+            $price = $quantity * $pricePerQuantity;
         
             if(addToBasket($id, $quantity, $price, $text) == true){
                 $total = calculateBasketTotal(true);    
@@ -47,11 +40,8 @@ if (isset($_POST['id']) AND (isset($_POST['quantity']) OR isset($_POST['price'])
                 $errorText = "SQL transaction failed!";
             }
         }
-//         else if(is_numeric($quantity)) { // pour or dip
-//         
-//         }
         else {
-            $errorText = "Manual article without a text!";
+            $errorText = "Invalid quantity!";
         }
     }
     else { // invalid data

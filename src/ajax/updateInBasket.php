@@ -19,51 +19,30 @@ if (isset($_POST['basketEntryId']) AND isset($_POST['quantity']) AND isset($_POS
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
 
-    // TODO only check/use price in case its a custom article or donation or total
     if (!is_numeric($quantity) OR !is_numeric($price)){ // quantity or price is not a number
         $errorText = "Invalid parameters (not numbers)!";
     }
-    else if (is_numeric($basketEntryId)){ // Id is a number => must be an article (normal or custom)    
+    else if (is_numeric($basketEntryId)){ // Id is a number => must be an article
         $articleId = getArticleIdInBasket($basketEntryId);    
-        if($articleId == 'custom'){ //custom article
-            if(updateArticlePriceInBasket($basketEntryId, $price) == true){
-                $total = calculateBasketTotal(true);    
-                updateTotalInBasket($total);
-                //todo validate
-                
-                list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
-                                                    
-                // List all fields that changed  
-                $response_array['updatedFields']['total'] = $total;
-                $response_array['updatedFields']['totalRounded'] = prettyMoneyFormat($total);
-                        
-                $success = true;
-            }
-            else {
-                $errorText = "SQL transaction failed (article)!";
-            }
-        }
-        else{ // normal article        
-            if(updateArticleQuantityInBasket($basketEntryId, $quantity) == true){
-                $total = calculateBasketTotal(true);    
-                updateTotalInBasket($total);
-                //todo validate
-                
-                list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
+        if(updateArticleQuantityInBasket($basketEntryId, $quantity) == true){
+            $total = calculateBasketTotal(true);    
+            updateTotalInBasket($total);
+            //todo validate
+            
+            list($name, $type, $pricePerQuantity, $unit) = getDbArticleData($articleId);
 
-                updateArticlePriceInBasket($basketEntryId, $quantity * $pricePerQuantity); // TODO validate response
-                                                    
-                // List all fields that changed  
-                $response_array['updatedFields']['article'][$basketEntryId]['price'] = $quantity * $pricePerQuantity;
-                $response_array['updatedFields']['total'] = $total;
-                $response_array['updatedFields']['totalRounded'] = prettyMoneyFormat($total);
-                        
-                $success = true;
-            }
-            else {
-                $errorText = "SQL transaction failed (article)!";
-            }
-        } 
+            updateArticlePriceInBasket($basketEntryId, $quantity * $pricePerQuantity); // TODO validate response
+                                                
+            // List all fields that changed  
+            $response_array['updatedFields']['article'][$basketEntryId]['price'] = $quantity * $pricePerQuantity;
+            $response_array['updatedFields']['total'] = $total;
+            $response_array['updatedFields']['totalRounded'] = prettyMoneyFormat($total);
+                    
+            $success = true;
+        }
+        else {
+            $errorText = "SQL transaction failed (article)!";
+        }
     }
     else if(($basketEntryId == "basketDonationMoney")) { // id is donation, update donation
         if(updateDonationInBasket($price) == true){   

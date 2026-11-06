@@ -77,18 +77,11 @@ if ($id == "bookings") { // Bookings
         $content .= strip_tags(html_entity_decode($product['name'])) . " [" . $product['unit'] . "],";
     }
     
-//     $products = getDbProducts("custom", "name");
-//     foreach($products as $product) {
-//         $productList[$product['articleId']] = $product['name'];
-//         $content .= strip_tags(html_entity_decode($product['name'])) . ",";
-//     }
-    
     $content .= "\n";
   
     $bookingDatesOfCurrentYear = getBookingDatesOfYear(date("Y"));
     asort($bookingDatesOfCurrentYear);
     $donations = 0;
-    $customIds = 0;
 //     print_r($bookingDatesOfCurrentYear);
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $bookingIds = getBookingIdsOfDate($date, false);
@@ -132,18 +125,11 @@ if ($id == "bookings") { // Bookings
 else if (strlen($id) != 4) { // a day
     $bookingIds = getBookingIdsOfDate($date, false);
     $donations = 0;
-    $customIds = 0;
     foreach($bookingIds as $bookingId) { // a booking
         $booking = getBooking($bookingId);
         foreach ($booking['articles'] as $articleId => $article) { // articles
     //         print_r($article);
-//             if($article['type'] == "normal") { // normal article   
-                $id = $articleId;
-//             }
-//             else { // custom article      
-//                 $id = $article['text'] . "_$customIds";
-//                 $customIds++;
-//             }
+            $id = $articleId;
 
             if (! array_key_exists($id, $articles)) {
                 $articles[$id] = array();
@@ -186,14 +172,7 @@ else if (strlen($id) != 4) { // a day
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {
-        if (array_key_exists('type', $article) and $article['type'] == "custom") {
-            $custom = "*) ";
-        }
-        else {
-            $custom = ""; 
-        }
-
-        $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price'] * $article['quantity']) . "\n";
+        $content .= $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price'] * $article['quantity']) . "\n";
     }
     $content .= "Spenden;;;$donations";
 }
@@ -202,20 +181,13 @@ else if (strlen($id) != 4) { // a day
 else { // the whole year    
     $bookingDatesOfCurrentYear = getBookingDatesOfYear($id);
     $donations = 0;
-    $customIds = 0;
     foreach($bookingDatesOfCurrentYear as $date) {  // a day
         $bookingIds = getBookingIdsOfDate($date, false);
         foreach($bookingIds as $bookingId) { // a booking
             $booking = getBooking($bookingId);
             foreach ($booking['articles'] as $articleId => $article) { // articles
                  //print_r($article);
-//                 if($article['type'] == "normal") { // normal article   
-                    $id = $articleId;
-//                 }
-//                 else { // custom article   
-//                     $id = $article['text'] . "_$customIds";
-//                     $customIds++;
-//                 }
+                $id = $articleId;
 
                 if (! array_key_exists($id, $articles)) {
                     $articles[$id] = array();
@@ -258,14 +230,7 @@ else { // the whole year
     $content .= "Artikel;Menge;Einheit;Betrag [CHF]\n";
 
     foreach($articles as $articleId => $article) {
-        if (array_key_exists('type', $article) and $article['type'] == "custom") {
-            $custom = "*) ";
-        }
-        else {
-            $custom = ""; 
-        }
-
-        $content .= $custom . $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price'] * $article['quantity']) . "\n";
+        $content .= $article['text'] . ";" . number_format($article['quantity'], 0, ".", "") . ";" . $article['unit'] . ";" . roundMoney($article['price'] * $article['quantity']) . "\n";
     }    
     $content .= "Spenden;;;$donations";
 }

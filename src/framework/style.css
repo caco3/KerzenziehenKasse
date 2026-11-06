@@ -224,7 +224,7 @@ a:link, a:visited, a:hover, a:active {
     margin-left: 5px;
 }
 
-#dipArticlesDiv, #pourArticlesNormalDiv, #pourArticlesFloatingCandlesDiv, #pourArticlesPreMadeDiv, #customArticleDiv, #basketDiv, #bibleVerseDiv {
+#dipArticlesDiv, #pourArticlesNormalDiv, #pourArticlesFloatingCandlesDiv, #pourArticlesPreMadeDiv, #basketDiv, #bibleVerseDiv {
     display: inline-block;  
     width: 100%;
     margin-bottom: 20px;
@@ -235,21 +235,21 @@ a:link, a:visited, a:hover, a:active {
     max-width: 600px;
 }
 
-#dipArticlesDiv, #customArticleDiv, #pourArticlesFloatingCandlesDiv {
+#dipArticlesDiv, #pourArticlesFloatingCandlesDiv {
     margin-bottom: 10px;
 }
 
 
 
 /* border */
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     border-radius:9px;
     border-spacing: 0;
     overflow: hidden;
 }
 
 /* Green frames = content tables */
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #bookingsTable {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #basketTableNew, #bookingsTable {
     border: 3px solid #1f7821;
 }
 
@@ -272,12 +272,12 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* Shade */
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #basketTableNew, #basketTableEdit, #bookingsTable, #bibleVerseContentDiv, #navigationDiv, #extraInfoDiv {
     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
 }
 
 
-#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #customArticleTable, #basketTableNew, #basketTableEdit {
+#dipArticlesTable, #pourArticlesTable, #preMadeArticlesTable, #basketTableNew, #basketTableEdit {
     width: 100%;
     margin-bottom: -5px;
 }
@@ -412,13 +412,6 @@ a:link, a:visited, a:hover, a:active {
 /*     padding-bottom: 0px; */
 }
 
-#customArticleDescriptionInput {
-    width: 200px;
-    font-size: 120%;
-    padding: 5px;
-}
-
-
 
 #bibleVerseText {
     margin: 0px;
@@ -499,21 +492,6 @@ a:link, a:visited, a:hover, a:active {
 #preMadeArticlesTable tr:nth-child(even){
 /*     background-color: #ccbaff;     */
     background:  rgba(255, 175, 129, 0.8);
-}
-
-
-
-
-/* ############ Table Custom Article ############## */
-#customArticleTable th {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    text-align: left;
-    background:  rgba(0, 149, 149, 0.5);
-}
-
-#customArticleTable tr{
-    background:  rgba(170, 255, 255, 0.5);
 }
 
 

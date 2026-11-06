@@ -25,7 +25,6 @@ function showArticles() {
 //     $("#pourArticlesNormalDiv").load("subpages/pourArticlesNormal.php", blockLoaded());
 //     $("#pourArticlesFloatingCandlesDiv").load("subpages/pourArticlesFloatingCandles.php", blockLoaded());
 //     $("#pourArticlesPreMadeDiv").load("subpages/pourArticlesPreMade.php", blockLoaded());
-//     $("#customArticleDiv").load("subpages/customArticle.php", blockLoaded());
     
     $("#articlesDiv").load("subpages/articles.php", blockLoaded());
 }
