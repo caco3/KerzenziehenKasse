@@ -33,21 +33,18 @@ db_connect();
 			
 		<? } else { /* update existing booking */ ?>
 			<td>
-				<button type=button id=updateButton class=updateButton onclick="updateClicked();"><img src="images/update_basket.png" height=45px><br>Aktualisieren</button>
-				
-				&nbsp;&nbsp;&nbsp;Zahlungsart: 
+				<button type=button id=updateButton class=updateButton style="vertical-align: middle;" onclick="updateClicked();"><img src="images/update_basket.png" height=45px><br>Aktualisieren</button>
+
+				<!--&nbsp;&nbsp;&nbsp;Zahlungsart:-->
 				<?
 				$booking = getDbBooking($bookingId);
 				$paymentMethod = $booking['paymentMethod'];
-				
-				if ($paymentMethod == 'cash') { ?>
-					<img src="images/bargeld.png" height=40px>
-				<? } else if ($paymentMethod == 'twint') { ?>
-					<img src="images/twint.png" height=40px>
-				<? } else { /* invoice */ ?>
-					<img src="images/invoice.png" height=40px>
-				<? }				
 				?>
+				<div style="display: inline-block; text-align: left; vertical-align: middle; margin-left: 100px">
+					<label style="display: block; margin: 20px 0;"><input type=radio name=paymentMethodRadio value=cash <? if ($paymentMethod == 'cash') echo 'checked'; ?>> <img src="images/bargeld.png" height=40px style="vertical-align: middle;"> Bar</label>
+					<label style="display: block; margin: 20px 0;"><input type=radio name=paymentMethodRadio value=twint <? if ($paymentMethod == 'twint') echo 'checked'; ?>> <img src="images/twint.png" height=30px style="vertical-align: middle;"> Twint</label>
+					<label style="display: block; margin: 20px 0;"><input type=radio name=paymentMethodRadio value=invoice <? if ($paymentMethod == 'invoice') echo 'checked'; ?>> <img src="images/invoice.png" height=30px style="vertical-align: middle;"> Rechnung</label>
+				</div>
 			</td>
 		<? } ?>
     </tr>

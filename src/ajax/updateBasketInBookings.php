@@ -30,8 +30,12 @@ if($bookingId == "new" ) { // error, we expect a basket loaded from bookings
 }
 else { // ok, basket was loaded from bookings and can be updated in there
 	$booking = getDbBooking($bookingId);
-	
-	$paymentMethod = $booking['paymentMethod']; // On update, we do not support changing the method, so fetch it from the booking
+
+	// Keep the stored method unless a valid new one was sent
+	$paymentMethod = $booking['paymentMethod'];
+	if (isset($_POST['paymentMethod']) and ($_POST['paymentMethod'] == 'cash' or $_POST['paymentMethod'] == 'twint' or $_POST['paymentMethod'] == 'invoice')) {
+		$paymentMethod = $_POST['paymentMethod'];
+	}
 
     // Get current extra data from basket
     $extra = getExtraFromBasket();

@@ -167,11 +167,14 @@ function cashClicked(){
 
 /**
  * Handles a click on the update button; saves the current basket changes
- * back to the edited booking.
+ * back to the edited booking, applying the payment method selected in
+ * the paymentMethodRadio group.
  */
 function updateClicked(){
-	console.log("updateClicked");
-	updateBasketinBookings();
+	var checked = document.querySelector('input[name="paymentMethodRadio"]:checked');
+	var paymentMethod = checked ? checked.value : "";
+	console.log("updateClicked, paymentMethod: " + paymentMethod);
+	updateBasketinBookings(paymentMethod);
 }
 
 
@@ -380,25 +383,34 @@ function cancelClearBasket() {
  * Confirms clearing the basket: removes the confirmation notification and
  * empties the basket via ajax/clearBasket.php.
  */
-function definitlyClearBasket() {    
+function definitlyClearBasket() {
     console.log("clearing basket");
     firework.remove("#"+ cancelClearBasketQuestionDialogId);
     cancelClearBasketQuestionDialogId = null;
-    
+
+    // Capture mode before clearing: in update mode there is no cashButton
+    var inUpdateMode = (document.getElementById("cashButton") == null);
+
     var xhttp = new XMLHttpRequest();
     /**
-     * Handles the clearBasket ajax response; refreshes the basket view
-     * and shows a notification.
+     * Handles the clearBasket ajax response; in update mode redirects back
+     * to the bookings page, otherwise refreshes the basket view and shows
+     * a notification.
      */
-    xhttp.onreadystatechange = function() {                    
+    xhttp.onreadystatechange = function() {
 //                 console.log(this.responseText);
 //                 console.log("Ready state: " + this.readyState + ", status: " + this.status);
         if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-            var obj = JSON.parse(this.responseText);                    
+            var obj = JSON.parse(this.responseText);
             if(obj.response.success == "true") {
                 console.log("Basket emptied");
-                showBasket();
-                firework.launch("Warenkorb ist nun leer.", 'success', 5000);
+                if (inUpdateMode) { // aborted editing an existing booking
+                    window.location.replace("bookings.php");
+                }
+                else {
+                    showBasket();
+                    firework.launch("Warenkorb ist nun leer.", 'success', 5000);
+                }
             }
             else{
                 firework.launch("Konnte Warenkorb nicht leeren!", 'error', 5000);
@@ -423,8 +435,11 @@ function definitlyClearBasket() {
 /**
  * Saves the changes made in the basket back to the existing booking via
  * ajax/updateBasketInBookings.php.
+ *
+ * @param {string} paymentMethod - New payment method ('cash', 'twint',
+ *   'invoice'), or empty string to keep the existing one.
  */
-function updateBasketinBookings() {    
+function updateBasketinBookings(paymentMethod) {
     console.log("update basket in bookings");
     
     var xhttp = new XMLHttpRequest();
@@ -452,10 +467,11 @@ function updateBasketinBookings() {
             }
         }
     };
-    var params = "";
+    var params = "paymentMethod=" + encodeURIComponent(paymentMethod || "");
+    console.log("Parameters:", params);
 
-    showProgressBar();  
-        
+    showProgressBar();
+
     xhttp.open("POST", "ajax/updateBasketInBookings.php", true);
     xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhttp.send(params);
