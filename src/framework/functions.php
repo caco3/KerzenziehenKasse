@@ -93,8 +93,11 @@ function sql_transaction_logger($message){
     $message = str_replace("\n", " ", $message);
     $message = preg_replace('!\s+!', ' ', $message);
     // TODO: replace absolute path
-    file_put_contents(LOG_FOLDER . "/db_transaction_log.sql", "-- " . date(DATE_RFC2822) . "\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/db_transaction_log.sql", "$message\r\n", FILE_APPEND);
+    $logFile = LOG_FOLDER . "/db_transaction_log.sql";
+    if (@file_put_contents($logFile, "-- " . date(DATE_RFC2822) . "\r\n", FILE_APPEND) === false
+        || @file_put_contents($logFile, "$message\r\n", FILE_APPEND) === false) {
+        logWriteFailed($logFile);
+    }
 }
 
 
@@ -398,22 +401,28 @@ function copyBookingToBasket($bookingId) {
  * (booking_<id>.log in LOG_FOLDER).
  *
  * @param int|string $bookingId - ID of the booking.
- * @return bool Always true.
+ * @return bool True on success, false when the log directory is not writable.
  */
 function writeBasketContentLog($bookingId) {
+    $logFile = LOG_FOLDER . "/booking_$bookingId.log";
+    if (!is_writable($logFile) && !is_writable(dirname($logFile))) {
+        logWriteFailed($logFile);
+        return false;
+    }
+
     $basket = getDbBasket();
-     
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "------------------------------------------------------------------------------\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "Booking ID, Date\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "donation, total\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "articleId, quantity, pricePerQuantity, price, text\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "------------------------------------------------------------------------------\r\n", FILE_APPEND);
+
+    file_put_contents($logFile, "------------------------------------------------------------------------------\r\n", FILE_APPEND);
+    file_put_contents($logFile, "Booking ID, Date\r\n", FILE_APPEND);
+    file_put_contents($logFile, "donation, total\r\n", FILE_APPEND);
+    file_put_contents($logFile, "articleId, quantity, pricePerQuantity, price, text\r\n", FILE_APPEND);
+    file_put_contents($logFile, "------------------------------------------------------------------------------\r\n", FILE_APPEND);
         
     $total = getDbTotal();
     $donation = getDbDonation();
     
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$bookingId, " . date(DATE_RFC2822) . "\r\n", FILE_APPEND);
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$donation, $total\r\n", FILE_APPEND);
+    file_put_contents($logFile, "$bookingId, " . date(DATE_RFC2822) . "\r\n", FILE_APPEND);
+    file_put_contents($logFile, "$donation, $total\r\n", FILE_APPEND);
     
     foreach($basket as $basketEntry) {      
         $articleId = $basketEntry['articleId'];
@@ -422,11 +431,25 @@ function writeBasketContentLog($bookingId) {
         $text = $basketEntry['text'];
         list($name, $type, $pricePerQuantity, $unit, $image1, $image2, $image3, $waxAmount, $waxType) = getDbArticleData($articleId);
 
-        file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "$articleId, $quantity, $pricePerQuantity, $price, $text\r\n", FILE_APPEND);
+        file_put_contents($logFile, "$articleId, $quantity, $pricePerQuantity, $price, $text\r\n", FILE_APPEND);
     }
         
-    file_put_contents(LOG_FOLDER . "/booking_$bookingId.log", "------------------------------------------------------------------------------\r\n\r\n\r\n", FILE_APPEND);
+    file_put_contents($logFile, "------------------------------------------------------------------------------\r\n\r\n\r\n", FILE_APPEND);
     return true;
+}
+
+
+/**
+ * Handles a failed log write: reports it to the Apache error log (visible
+ * via 'docker logs') and sets a response header which the frontend turns
+ * into a firework notification (see functions.js).
+ *
+ * @param string $path - The log file that could not be written.
+ * @return void
+ */
+function logWriteFailed($path) {
+    error_log("Cannot write log file '$path' - check permissions of " . dirname($path));
+    @header('X-Log-Write-Failure: 1');
 }
 
 
@@ -437,7 +460,9 @@ function writeBasketContentLog($bookingId) {
  * @return void
  */
 function errorLog($message) {
-    file_put_contents(LOG_FOLDER . "/error.log", date(DATE_RFC2822) . ", $message\r\n", FILE_APPEND);
+    if (@file_put_contents(LOG_FOLDER . "/error.log", date(DATE_RFC2822) . ", $message\r\n", FILE_APPEND) === false) {
+        logWriteFailed(LOG_FOLDER . "/error.log");
+    }
 }
 
 

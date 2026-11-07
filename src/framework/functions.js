@@ -353,3 +353,25 @@ function minimizeClicked(){
         }, PRESS_DURATION_MS);
     }, { passive: true });
 })();
+
+/**
+ * Shows a firework warning when a server-side log write failed.
+ * PHP loggers (functions.php) set the X-Log-Write-Failure response header;
+ * wrapping XMLHttpRequest covers every AJAX call without touching handlers.
+ */
+(function () {
+    var originalSend = XMLHttpRequest.prototype.send;
+    XMLHttpRequest.prototype.send = function () {
+        this.addEventListener('load', function () {
+            if (this.getResponseHeader('X-Log-Write-Failure')) {
+                var message = 'DB-Log nicht schreibbar — Berechtigungen prüfen!';
+                if (typeof firework !== 'undefined') {
+                    firework.launch(message, 'error', 10000);
+                } else {
+                    console.error(message);
+                }
+            }
+        });
+        return originalSend.apply(this, arguments);
+    };
+})();
