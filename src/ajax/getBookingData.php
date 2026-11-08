@@ -32,8 +32,8 @@ $class_name = "";
 if (!empty($booking['extra'])) {
     $extraData = @unserialize($booking['extra']);
     if (is_array($extraData)) {
-        $teacher = $extraData['leiter'] ?? "";
-        $class_name = $extraData['schulklasse'] ?? "";
+        $teacher = $extraData['lead'] ?? "";
+        $class_name = $extraData['group'] ?? "";
     }
 }
 

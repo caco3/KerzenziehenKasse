@@ -290,9 +290,9 @@ function refreshExtraSummary() {
 				var obj = JSON.parse(this.responseText);
 				var extra = obj.success && obj.data ? obj.data : {};
 				var parts = [];
-				if (extra.schulklasse) parts.push("Klasse: " + extra.schulklasse);
-				if (extra.leiter) parts.push("Leiter/in: " + extra.leiter);
-				var summary = parts.length ? parts.join(", ") : "Angabe von Schulklasse, Leiter/in";
+				if (extra.group) parts.push("Gruppe: " + extra.group);
+				if (extra.lead) parts.push("Leiter/in: " + extra.lead);
+				var summary = parts.length ? parts.join(", ") : "Angabe von Gruppe, Leiter/in";
 				var el = document.getElementById("extraSummaryText");
 				if (el) el.innerText = summary;
 				console.log("Extra summary updated:", summary);
@@ -324,15 +324,15 @@ function editExtraDataClicked(){
 		if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
 			var obj = JSON.parse(this.responseText);
 			var extra = obj.success && obj.data ? obj.data : {};
-			var schulklasse = extra.schulklasse || "";
-			var leiter = extra.leiter || "";
+			var group = extra.group || "";
+			var lead = extra.lead || "";
 
 			var content = ""
 				+ "<h2 style='margin-bottom: 20px; color: #333;'>Extra-Daten</h2>"
                 + "<p style='margin-bottom: 20px; color: #666;'>Diese Informationen werden auf der Rechnung/Quittung verwendet.</p>" 
 				+ "<table style='margin: 0 auto; border-collapse: collapse; width: 500px;'>"
-				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; width: 120px; font-size: 20px;'>Schulklasse:</td><td style='padding: 15px;'><input type=text id='extraSchulklasse' placeholder='Schulklasse eingeben' value='" + schulklasse + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
-				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; font-size: 20px;'>Leiter/in:</td><td style='padding: 15px;'><input type=text id='extraLeiter' placeholder='Leiter/in eingeben' value='" + leiter + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
+				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; width: 120px; font-size: 20px;'>Gruppe:</td><td style='padding: 15px;'><input type=text id='extraGroup' placeholder='Gruppe eingeben' value='" + group + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
+				+ "<tr><td style='padding: 15px; text-align: right; font-weight: bold; font-size: 20px;'>Leiter/in:</td><td style='padding: 15px;'><input type=text id='extraLead' placeholder='Leiter/in eingeben' value='" + lead + "' style='width: 320px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 20px;'></td></tr>"
 				+ "</table>"
 				+ "<br><div style='text-align: center; margin-top: 30px;'><button class='cashButton' onclick='saveExtraData()' style='margin-right: 20px; width: 150px; height: 60px; font-size: 20px;'>Speichern</button><button class='cancelButton' onclick='hideFullPageOverlay()' style='width: 150px; height: 60px; font-size: 20px;'>Abbrechen</button></div>";
 			showFullPageOverlay(content, false);
@@ -348,9 +348,9 @@ function editExtraDataClicked(){
  * form via ajax/setExtraData.php.
  */
 function saveExtraData(){
-	var schulklasse = document.getElementById('extraSchulklasse').value;
-	var leiter = document.getElementById('extraLeiter').value;
-	var extra = {schulklasse: schulklasse, leiter: leiter};
+	var group = document.getElementById('extraGroup').value;
+	var lead = document.getElementById('extraLead').value;
+	var extra = {group: group, lead: lead};
 
 	var xhttp = new XMLHttpRequest();
 	/**

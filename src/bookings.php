@@ -121,8 +121,8 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 $extraData = @unserialize($booking['extra']);
                 if (is_array($extraData)) {
                     $extraParts = [];
-                    if (!empty($extraData['schulklasse'])) $extraParts[] = "Schulklasse: " . $extraData['schulklasse'];
-                    if (!empty($extraData['leiter'])) $extraParts[] = "Leiter/in: " . $extraData['leiter'];
+                    if (!empty($extraData['group'])) $extraParts[] = "Gruppe: " . $extraData['group'];
+                    if (!empty($extraData['lead'])) $extraParts[] = "Leiter/in: " . $extraData['lead'];
                     echo(implode("<br>", $extraParts));
                 }
             }
@@ -219,8 +219,8 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                     $extraData = @unserialize($booking['extra']);
                     if (is_array($extraData)) {
                         $extraParts = [];
-                        if (!empty($extraData['schulklasse'])) $extraParts[] = "Schulklasse: " . $extraData['schulklasse'];
-                        if (!empty($extraData['leiter'])) $extraParts[] = "Leiter/in: " . $extraData['leiter'];
+                        if (!empty($extraData['group'])) $extraParts[] = "Gruppe: " . $extraData['group'];
+                        if (!empty($extraData['lead'])) $extraParts[] = "Leiter/in: " . $extraData['lead'];
                         echo(implode("<br>", $extraParts));
                     }
                 }

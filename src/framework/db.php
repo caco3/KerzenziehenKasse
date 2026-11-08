@@ -654,7 +654,7 @@ function getExtraFromBasket() {
 /**
  * Serializes and stores an extra-data array in the basket.
  *
- * @param array $extraArray - Extra data (e.g. 'schulklasse', 'leiter').
+ * @param array $extraArray - Extra data (e.g. 'group', 'lead').
  * @return bool True on success, false when the input is not an array or the update fails.
  */
 function setExtraInBasket($extraArray) {
