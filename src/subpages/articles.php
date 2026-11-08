@@ -175,7 +175,7 @@ if (in_array('preMade', $articlesToShow['special'])) {
 	// foreach($lines as $line) {
 	// 	showButton($line, "preMadeArticleButton");
 	// }
-	$lines = getDbProductsEx("special", "name", "preMade");
+	$lines = getDbProductsEx("special", "pricePerQuantity", "preMade");
 	foreach($lines as $line) {
 		showButton($line, "preMadeArticleButton");
 	}
