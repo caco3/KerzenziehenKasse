@@ -26,10 +26,10 @@ if(!$booking) {
     exit();
 }
 
-// Extract extra data if available
+// Extract extra data if available (hidden on viewer for privacy)
 $teacher = "";
 $class_name = "";
-if (!empty($booking['extra'])) {
+if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer") && !empty($booking['extra'])) {
     $extraData = @unserialize($booking['extra']);
     if (is_array($extraData)) {
         $teacher = $extraData['lead'] ?? "";

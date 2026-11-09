@@ -115,14 +115,15 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
             
             echo("</td>");
             
-            // Extra-Daten column
+            // Extra-Daten column (values masked on viewer for privacy)
             echo("<td class=td_rightBorder>");
             if (!empty($booking['extra'])) {
                 $extraData = @unserialize($booking['extra']);
                 if (is_array($extraData)) {
+                    $isViewer = str_contains($_SERVER["SCRIPT_FILENAME"], "viewer");
                     $extraParts = [];
-                    if (!empty($extraData['group'])) $extraParts[] = "Gruppe: " . $extraData['group'];
-                    if (!empty($extraData['lead'])) $extraParts[] = "Leiter/in: " . $extraData['lead'];
+                    if (!empty($extraData['group'])) $extraParts[] = "Gruppe: " . ($isViewer ? "********" : $extraData['group']);
+                    if (!empty($extraData['lead'])) $extraParts[] = "Leiter/in: " . ($isViewer ? "********" : $extraData['lead']);
                     echo(implode("<br>", $extraParts));
                 }
             }
@@ -213,14 +214,15 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 
                 echo("</td>");
                 
-                // Extra-Daten column
+                // Extra-Daten column (values masked on viewer for privacy)
                 echo("<td class=td_rightBorder>");
                 if (!empty($booking['extra'])) {
                     $extraData = @unserialize($booking['extra']);
                     if (is_array($extraData)) {
+                        $isViewer = str_contains($_SERVER["SCRIPT_FILENAME"], "viewer");
                         $extraParts = [];
-                        if (!empty($extraData['group'])) $extraParts[] = "Gruppe: " . $extraData['group'];
-                        if (!empty($extraData['lead'])) $extraParts[] = "Leiter/in: " . $extraData['lead'];
+                        if (!empty($extraData['group'])) $extraParts[] = "Gruppe: " . ($isViewer ? "********" : $extraData['group']);
+                        if (!empty($extraData['lead'])) $extraParts[] = "Leiter/in: " . ($isViewer ? "********" : $extraData['lead']);
                         echo(implode("<br>", $extraParts));
                     }
                 }
