@@ -20,7 +20,7 @@ require_once("$root/config/config_generic.php");
 
     <meta charset="UTF-8">
     <http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="/favicon.ico">
     
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/style.css">
     <link rel="stylesheet" href="<? echo("$root"); ?>/framework/buttons.css">  
