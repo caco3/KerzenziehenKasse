@@ -99,6 +99,24 @@ $chartConfig = [
         'bgImage' => 'chart-bg.png',
         'legendImage' => 'legende-bienenwachs-parafin.png',
         'paddingLeft' => 7
+    ],
+    'bookingsPerDayAndYear' => [
+        'lowerName' => '',
+        'upperName' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'fractionDigits' => 0,
+        'bgImage' => 'chart-bg.png',
+        'paddingLeft' => 10
+    ],
+    'bookingsPerDayAndYearSummed' => [
+        'lowerName' => '',
+        'upperName' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'fractionDigits' => 0,
+        'bgImage' => 'chart-bg.png',
+        'paddingLeft' => 10
     ]
 ];
 

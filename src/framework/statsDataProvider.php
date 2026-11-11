@@ -42,6 +42,7 @@ function getStatsPerDay($year) {
             $data[$date]['school'] = 0;
             $data[$date]['parafinWax'] = 0;
             $data[$date]['beeWax'] = 0;
+            $data[$date]['bookings'] = 0;
         }
         
         // Process booking data exactly like original
@@ -87,7 +88,8 @@ function getStatsPerDay($year) {
         $data[$date]['food'] += $food;
         $data[$date]['parafinWax'] += $parafinWax;
         $data[$date]['beeWax'] += $beeWax;
-        
+        $data[$date]['bookings'] += 1;
+
         if ($booking['school']) {
             $data[$date]['school'] += $booking['total'];
         }
@@ -124,6 +126,8 @@ function getStatsData() {
     $totalFoodPerDayAndYearSummed = array(); // [day][year]
     $totalWaxPerDayAndYearInKg = array(); // [day][year]
     $totalWaxPerDayAndYearInKgSummed = array(); // [day][year]
+    $bookingsPerDayAndYear = array(); // [day][year]
+    $bookingsPerDayAndYearSummed = array(); // [day][year]
 
     /* Create one index per day for 30 days.
      * If a day stays empty, it will get ignored in the plot */
@@ -133,6 +137,7 @@ function getStatsData() {
         $totalFoodPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
         $totalWaxPerDayAndYearInKg[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
         $totalWaxPerDayAndYearInKgSummed[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
+        $bookingsPerDayAndYear[$i] = array('donations' => 0, 'total' => 0, 'school' => 0);
     }
         
     for ($i = 0; $i <= 10; $i++) { // for each year
@@ -144,6 +149,7 @@ function getStatsData() {
         $foodSummed = 0;
         $beeWaxSummed = 0;
         $parafinWaxSummed = 0;
+        $bookingsSummed = 0;
         
         if (! array_key_exists($year, $statsPerDay))  {
             $statsPerDay[$year] = array();
@@ -205,9 +211,22 @@ function getStatsData() {
             $parafinWaxSummed += $data['parafinWax'] / 1000;
             $beeWaxSummed += $data['beeWax'] / 1000;
             $totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['lowerPart'] = $parafinWaxSummed; 
-            $totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['upperPart'] = $beeWaxSummed; 
-            $totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['date'] = $date; 
+            $totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['upperPart'] = $beeWaxSummed;
+            $totalWaxPerDayAndYearInKgSummed[$dayOffset]['year'][$year]['date'] = $date;
             $totalWaxPerDayAndYearInKgSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
+
+            /* Bookings count */
+            $bookingsPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['bookings'];
+            $bookingsPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = 0;
+            $bookingsPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date;
+            $bookingsPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
+
+            /* Bookings count, summed up */
+            $bookingsSummed += $data['bookings'];
+            $bookingsPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $bookingsSummed;
+            $bookingsPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = 0;
+            $bookingsPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date;
+            $bookingsPerDayAndYearSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
         }
         
 
@@ -231,7 +250,7 @@ function getStatsData() {
             $totalWaxPerDayAndYearInKgSummed[0]['year'][$year]['upperPart'] = 0;
         }
 
-        foreach (array(&$totalWaxPerDayAndYearSummed, &$totalFoodPerDayAndYearSummed) as &$summedArray) {
+        foreach (array(&$totalWaxPerDayAndYearSummed, &$totalFoodPerDayAndYearSummed, &$bookingsPerDayAndYearSummed) as &$summedArray) {
             if (! array_key_exists($year, $summedArray[0]['year'] ?? array()))  {
                 $summedArray[0]['year'][$year] = array('lowerPart' => 0, 'upperPart' => 0);
             }
@@ -265,7 +284,7 @@ function getStatsData() {
                 }
             }
 
-            foreach (array(&$totalWaxPerDayAndYearSummed, &$totalFoodPerDayAndYearSummed) as &$summedArray) {
+            foreach (array(&$totalWaxPerDayAndYearSummed, &$totalFoodPerDayAndYearSummed, &$bookingsPerDayAndYearSummed) as &$summedArray) {
                 if (! array_key_exists($x, $summedArray))  {
                     continue;
                 }
@@ -293,6 +312,7 @@ function getStatsData() {
                         $totalWaxPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
                         $totalWaxPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = 0;
                         $totalFoodPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+                        $bookingsPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
                     }
                 }
             }
@@ -310,7 +330,9 @@ function getStatsData() {
         &$totalFoodPerDayAndYear,
         &$totalFoodPerDayAndYearSummed,
         &$totalWaxPerDayAndYearInKg,
-        &$totalWaxPerDayAndYearInKgSummed
+        &$totalWaxPerDayAndYearInKgSummed,
+        &$bookingsPerDayAndYear,
+        &$bookingsPerDayAndYearSummed
     );
 
     for ($offset = 0; $offset < 15; $offset++) {
@@ -336,7 +358,9 @@ function getStatsData() {
         'totalFoodPerDayAndYear' => $totalFoodPerDayAndYear,
         'totalFoodPerDayAndYearSummed' => $totalFoodPerDayAndYearSummed,
         'totalWaxPerDayAndYearInKg' => $totalWaxPerDayAndYearInKg,
-        'totalWaxPerDayAndYearInKgSummed' => $totalWaxPerDayAndYearInKgSummed
+        'totalWaxPerDayAndYearInKgSummed' => $totalWaxPerDayAndYearInKgSummed,
+        'bookingsPerDayAndYear' => $bookingsPerDayAndYear,
+        'bookingsPerDayAndYearSummed' => $bookingsPerDayAndYearSummed
     );
 }
 

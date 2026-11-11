@@ -497,7 +497,7 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <h1 style="margin: 0; padding: 0;">Umsatz und Wachs pro Tag und Jahr</h1>
 <div style="display: flex; align-items: flex-start; gap: 20px 60px; margin-bottom: 20px;">
 	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
-		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Diagramme:</h4>
+		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Übersicht:</h4>
 		<ul style="margin: 0; padding-left: 20px;">
 			<li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs, zugekaufte Artikel + Gastronomie)</a><br><br></li>
 			<li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs, zugekaufte Artikel + Gastronomie)</a><br><br></li>
@@ -506,7 +506,9 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 			<li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
 			<li><a href=#Gastro_Currency_summed>Umsatz Gastronomie aufsummiert</a><br><br></li>
 			<li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
-			<li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a></li>
+			<li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a><br><br></li>
+			<li><a href=#bookings>Buchungen pro Tag</a><br><br></li>
+			<li><a href=#bookings_summed>Buchungen aufsummiert</a></li>
 		</ul>
 	</div>
 	
@@ -555,12 +557,14 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <a name=Gastro_Currency></a><h2>Umsatz Gastronomie (in CHF)</span></h2><div id="totalFoodPerDayAndYear"></div><hr>
 <a name=Gastro_Currency_summed></a><h2>Umsatz Gastronomie aufsummiert (in CHF)</span></h2><div id="totalFoodPerDayAndYearSummed"></div><hr>
 <a name=Wax_amount></a><h2>Wachsmenge (in kg)</span></h2><div id="totalWaxPerDayAndYearInKg"></div><hr>
-<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert (in kg)</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div>
+<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert (in kg)</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div><hr>
+<a name=bookings></a><h2>Buchungen pro Tag</h2><div id="bookingsPerDayAndYear"></div><hr>
+<a name=bookings_summed></a><h2>Buchungen aufsummiert</h2><div id="bookingsPerDayAndYearSummed"></div>
 
 <script>
 // Create all containers immediately, then load data once and render all charts
 /**
- * Loads the shared chart data, creates all eight diagram containers and
+ * Loads the shared chart data, creates all ten diagram containers and
  * renders all charts in parallel.
  */
 function loadAllDiagrams() {
@@ -585,8 +589,10 @@ function loadAllDiagrams() {
             var foodSummedContainer = createDiagramContainer("totalFoodPerDayAndYearSummed");
             var waxAmountContainer = createDiagramContainer("totalWaxPerDayAndYearInKg");
             var waxAmountSummedContainer = createDiagramContainer("totalWaxPerDayAndYearInKgSummed");
+            var bookingsContainer = createDiagramContainer("bookingsPerDayAndYear");
+            var bookingsSummedContainer = createDiagramContainer("bookingsPerDayAndYearSummed");
 
-            var containers = [commonContainer, commonSummedContainer, waxContainer, waxSummedContainer, foodContainer, foodSummedContainer, waxAmountContainer, waxAmountSummedContainer];
+            var containers = [commonContainer, commonSummedContainer, waxContainer, waxSummedContainer, foodContainer, foodSummedContainer, waxAmountContainer, waxAmountSummedContainer, bookingsContainer, bookingsSummedContainer];
 
             var dataLoadTime = performance.now() - totalStartTime;
             console.log('✓ Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
