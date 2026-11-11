@@ -481,6 +481,11 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
         margin-left: 5px !important; /* Force left margin */
     }
     
+    /* Google Charts sometimes reserves too little space for the Y axis labels (e.g. "16K"), let them overflow into the padding */
+    [id^="chart_"] svg {
+        overflow: visible;
+    }
+
     /* Hide chart overflow */
     #chart {
         overflow-x: hidden !important;
@@ -494,10 +499,12 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 	<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto;">
 		<h4 style="margin: 0 0 15px 0; color: rgba(73, 80, 87, 1); font-size: 16px; font-weight: 600;">Diagramme:</h4>
 		<ul style="margin: 0; padding-left: 20px;">
-			<li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs + Gastronomie)</a><br><br></li>
-			<li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs + Gastronomie)</a><br><br></li>
-			<li><a href=#Wax_Currency>Umsatz Wachs</a><br><br></li>
+			<li><a href=#Wax+Gastro_Currency>Umsatz pro Tag (Wachs, zugekaufte Artikel + Gastronomie)</a><br><br></li>
+			<li><a href=#Wax+Gastro_Currency_summed>Umsatz aufsummiert (Wachs, zugekaufte Artikel + Gastronomie)</a><br><br></li>
+			<li><a href=#Wax_Currency>Umsatz Wachs + zugekaufte Artikel</a><br><br></li>
+			<li><a href=#Wax_Currency_summed>Umsatz Wachs + zugekaufte Artikel aufsummiert</a><br><br></li>
 			<li><a href=#Gastro_Currency>Umsatz Gastronomie</a><br><br></li>
+			<li><a href=#Gastro_Currency_summed>Umsatz Gastronomie aufsummiert</a><br><br></li>
 			<li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
 			<li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a></li>
 		</ul>
@@ -541,17 +548,19 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 </div>
 <hr>
 
-<a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYear"></div><hr>
-<a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs + Gastronomie)</span></h2><div id="totalPerDayAndYearSummed"></div><hr>
-<a name=Wax_Currency></a><h2>Umsatz Wachs</span></h2><div id="totalWaxPerDayAndYear"></div><hr>
-<a name=Gastro_Currency></a><h2>Umsatz Gastronomie</span></h2><div id="totalFoodPerDayAndYear"></div><hr>
-<a name=Wax_amount></a><h2>Wachsmenge in kg</span></h2><div id="totalWaxPerDayAndYearInKg"></div><hr>
-<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert in kg</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div>
+<a name=Wax+Gastro_Currency></a><h2>Umsatz pro Tag (Wachs, zugekaufte Artikel  + Gastronomie, in CHF)</span></h2><div id="totalPerDayAndYear"></div><hr>
+<a name=Wax+Gastro_Currency_summed></a><h2>Umsatz aufsummiert (Wachs, zugekaufte Artikel + Gastronomie, in CHF)</span></h2><div id="totalPerDayAndYearSummed"></div><hr>
+<a name=Wax_Currency></a><h2>Umsatz Wachs + zugekaufte Artikel (in CHF)</span></h2><div id="totalWaxPerDayAndYear"></div><hr>
+<a name=Wax_Currency_summed></a><h2>Umsatz Wachs + zugekaufte Artikel aufsummiert (in CHF)</span></h2><div id="totalWaxPerDayAndYearSummed"></div><hr>
+<a name=Gastro_Currency></a><h2>Umsatz Gastronomie (in CHF)</span></h2><div id="totalFoodPerDayAndYear"></div><hr>
+<a name=Gastro_Currency_summed></a><h2>Umsatz Gastronomie aufsummiert (in CHF)</span></h2><div id="totalFoodPerDayAndYearSummed"></div><hr>
+<a name=Wax_amount></a><h2>Wachsmenge (in kg)</span></h2><div id="totalWaxPerDayAndYearInKg"></div><hr>
+<a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert (in kg)</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div>
 
 <script>
 // Create all containers immediately, then load data once and render all charts
 /**
- * Loads the shared chart data, creates all six diagram containers and
+ * Loads the shared chart data, creates all eight diagram containers and
  * renders all charts in parallel.
  */
 function loadAllDiagrams() {
@@ -571,11 +580,13 @@ function loadAllDiagrams() {
             var commonContainer = createDiagramContainer("totalPerDayAndYear");
             var commonSummedContainer = createDiagramContainer("totalPerDayAndYearSummed");
             var waxContainer = createDiagramContainer("totalWaxPerDayAndYear");
+            var waxSummedContainer = createDiagramContainer("totalWaxPerDayAndYearSummed");
             var foodContainer = createDiagramContainer("totalFoodPerDayAndYear");
+            var foodSummedContainer = createDiagramContainer("totalFoodPerDayAndYearSummed");
             var waxAmountContainer = createDiagramContainer("totalWaxPerDayAndYearInKg");
             var waxAmountSummedContainer = createDiagramContainer("totalWaxPerDayAndYearInKgSummed");
 
-            var containers = [commonContainer, commonSummedContainer, waxContainer, foodContainer, waxAmountContainer, waxAmountSummedContainer];
+            var containers = [commonContainer, commonSummedContainer, waxContainer, waxSummedContainer, foodContainer, foodSummedContainer, waxAmountContainer, waxAmountSummedContainer];
 
             var dataLoadTime = performance.now() - totalStartTime;
             console.log('✓ Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');

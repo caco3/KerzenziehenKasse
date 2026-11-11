@@ -52,6 +52,16 @@ $chartConfig = [
         'legendImage' => 'legende-schule-oeffentlich.png',
         'paddingLeft' => 0
     ],
+    'totalWaxPerDayAndYearSummed' => [
+        'lowerName' => 'Öffentlich',
+        'upperName' => 'Schule',
+        'prefix' => 'CHF',
+        'suffix' => '',
+        'fractionDigits' => 2,
+        'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-schule-oeffentlich.png',
+        'paddingLeft' => 15
+    ],
     'totalFoodPerDayAndYear' => [
         'lowerName' => '',
         'upperName' => '',
@@ -60,6 +70,15 @@ $chartConfig = [
         'fractionDigits' => 2,
         'bgImage' => 'chart-bg.png',
         'paddingLeft' => 7
+    ],
+    'totalFoodPerDayAndYearSummed' => [
+        'lowerName' => '',
+        'upperName' => '',
+        'prefix' => 'CHF ',
+        'suffix' => '',
+        'fractionDigits' => 2,
+        'bgImage' => 'chart-bg.png',
+        'paddingLeft' => 1
     ],
     'totalWaxPerDayAndYearInKg' => [
         'lowerName' => 'Parafinwachs',
