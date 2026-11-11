@@ -42,6 +42,7 @@ function getStatsPerDay($year) {
             $data[$date]['school'] = 0;
             $data[$date]['parafinWax'] = 0;
             $data[$date]['beeWax'] = 0;
+            $data[$date]['schoolFood'] = 0;
             $data[$date]['bookings'] = 0;
         }
         
@@ -92,6 +93,7 @@ function getStatsPerDay($year) {
 
         if ($booking['school']) {
             $data[$date]['school'] += $booking['total'];
+            $data[$date]['schoolFood'] += $food;
         }
     }
     
@@ -163,14 +165,14 @@ function getStatsData() {
             $dayIndex++;
             
             /* Wax and food in CHF */
-            $totalWaxPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['total'] - $data['food'] - $data['school']; 
-            $totalWaxPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = $data['school']; 
+            $totalWaxPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = ($data['total'] - $data['school']) - ($data['food'] - $data['schoolFood']);
+            $totalWaxPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = $data['school'] - $data['schoolFood']; 
             $totalWaxPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date; 
             $totalWaxPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
 
             /* Wax in CHF, summed up */
-            $waxPublicSummed += $data['total'] - $data['food'] - $data['school'];
-            $waxSchoolSummed += $data['school'];
+            $waxPublicSummed += ($data['total'] - $data['school']) - ($data['food'] - $data['schoolFood']);
+            $waxSchoolSummed += $data['school'] - $data['schoolFood'];
             $totalWaxPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $waxPublicSummed; 
             $totalWaxPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = $waxSchoolSummed; 
             $totalWaxPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date; 
