@@ -30,7 +30,7 @@ $todayDE = date("d. ") . $germanMonth[date("m") - 1] . date(". Y");
 					<select name="year" onchange="this.form.submit()" style="padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; background: rgba(255, 255, 255, 0.8); color: rgba(73, 80, 87, 0.8); font-size: 14px;">
 						<?php
 							$currentYear = date("Y");
-							for ($year = $currentYear; $year >= 2020; $year--) {
+							for ($year = $currentYear; $year >= 2017; $year--) {
 								$selected = ($year == $selectedYear) ? 'selected' : '';
 								echo "<option value=\"$year\" $selected>$year</option>";
 							}
