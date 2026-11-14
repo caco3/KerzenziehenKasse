@@ -361,7 +361,9 @@ function createDiagramContainer(dataId) {
     var legendOverlay = config.legendImage
         ? '<img src="images/' + config.legendImage + '" style="position: absolute; top: 50px; left: 150px; z-index: 1; pointer-events: none;" alt="">'
         : '';
-    var chartHtml = '<div style="width: 1825px; height: 470px; margin: 0; padding: 0; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-position: 46px -140px; position: relative;">';
+    // Wrapper width = 46px bg offset + 1684px bg image width; overflow-x hidden hides the
+    // transparent tail of the Google chart that extends beyond the last band.
+    var chartHtml = '<div style="width: 1730px; height: 470px; margin: 0; padding: 0; overflow-x: hidden; background-image: url(images/' + config.bgImage + '); background-repeat: no-repeat; background-position: 46px -140px; position: relative;">';
     chartHtml += legendOverlay;
     chartHtml += '<div id="' + chartId + '" style="position: relative; z-index: 2; width: ' + (1822 - config.paddingLeft) + 'px; margin: 0; padding: 0 0 0 ' + config.paddingLeft + 'px; height: 100%;">';
     chartHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
@@ -472,6 +474,12 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
     html, body {
         width: 100vw !important;
         overflow-x: hidden !important;
+    }
+    
+    /* The page itself never scrolls sideways - instead each diagram container
+       scrolls the fixed-width chart horizontally when the viewport is too narrow. */
+    #body > div[id] {
+        overflow-x: auto;
     }
     
     /* Google Charts specific overrides */
