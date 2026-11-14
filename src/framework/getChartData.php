@@ -25,7 +25,7 @@ $statsData = getStatsData();
 $chartConfig = [
     'totalPerDayAndYear' => [
         'lowerName' => 'Öffentlich',
-        'upperName' => 'Schule',
+        'upperName' => 'Schule/Gruppe',
         'prefix' => 'CHF',
         'suffix' => '',
         'fractionDigits' => 2,
@@ -34,17 +34,18 @@ $chartConfig = [
         'paddingLeft' => 0
     ],
     'totalPerDayAndYearSummed' => [
-        'lowerName' => '',
-        'upperName' => '',
+        'lowerName' => 'Öffentlich',
+        'upperName' => 'Schule/Gruppe',
         'prefix' => 'CHF',
         'suffix' => '',
         'fractionDigits' => 2,
         'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-schule-oeffentlich.png',
         'paddingLeft' => 5
     ],
     'totalWaxPerDayAndYear' => [
         'lowerName' => 'Öffentlich',
-        'upperName' => 'Schule',
+        'upperName' => 'Schule/Gruppe',
         'prefix' => 'CHF',
         'suffix' => '',
         'fractionDigits' => 2,
@@ -54,7 +55,7 @@ $chartConfig = [
     ],
     'totalWaxPerDayAndYearSummed' => [
         'lowerName' => 'Öffentlich',
-        'upperName' => 'Schule',
+        'upperName' => 'Schule/Gruppe',
         'prefix' => 'CHF',
         'suffix' => '',
         'fractionDigits' => 2,
@@ -63,21 +64,23 @@ $chartConfig = [
         'paddingLeft' => 15
     ],
     'totalFoodPerDayAndYear' => [
-        'lowerName' => '',
-        'upperName' => '',
+        'lowerName' => 'Öffentlich',
+        'upperName' => 'Schule/Gruppe',
         'prefix' => 'CHF ',
         'suffix' => '',
         'fractionDigits' => 2,
         'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-schule-oeffentlich.png',
         'paddingLeft' => 7
     ],
     'totalFoodPerDayAndYearSummed' => [
-        'lowerName' => '',
-        'upperName' => '',
+        'lowerName' => 'Öffentlich',
+        'upperName' => 'Schule/Gruppe',
         'prefix' => 'CHF ',
         'suffix' => '',
         'fractionDigits' => 2,
         'bgImage' => 'chart-bg.png',
+        'legendImage' => 'legende-schule-oeffentlich.png',
         'paddingLeft' => 1
     ],
     'totalWaxPerDayAndYearInKg' => [

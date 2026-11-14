@@ -145,10 +145,12 @@ function getStatsData() {
     for ($i = 0; $i <= 10; $i++) { // for each year
         $year = date("Y") - $i; 
         $dayIndex = 0;
-        $totalSummed = 0;
+        $totalPublicSummed = 0;
+        $totalSchoolSummed = 0;
         $waxPublicSummed = 0;
         $waxSchoolSummed = 0;
-        $foodSummed = 0;
+        $foodPublicSummed = 0;
+        $foodSchoolSummed = 0;
         $beeWaxSummed = 0;
         $parafinWaxSummed = 0;
         $bookingsSummed = 0;
@@ -178,10 +180,11 @@ function getStatsData() {
             $totalWaxPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date; 
             $totalWaxPerDayAndYearSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
             
-            /* Wax and food in CHF, summed up */
-            $totalSummed += $data['total'];
-            $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $totalSummed; 
-            $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = 0;
+            /* Wax and food in CHF, summed up (public / school split) */
+            $totalPublicSummed += $data['total'] - $data['school'];
+            $totalSchoolSummed += $data['school'];
+            $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $totalPublicSummed; 
+            $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = $totalSchoolSummed;
             $totalPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date; 
             $totalPerDayAndYearSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
 
@@ -191,15 +194,16 @@ function getStatsData() {
             $totalPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date; 
             $totalPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];  
             /* Food only in CHF */
-            $totalFoodPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['food']; // We only want to see the food part
-            $totalFoodPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = 0;
+            $totalFoodPerDayAndYear[$dayOffset]['year'][$year]['lowerPart'] = $data['food'] - $data['schoolFood']; // public part
+            $totalFoodPerDayAndYear[$dayOffset]['year'][$year]['upperPart'] = $data['schoolFood']; // school part
             $totalFoodPerDayAndYear[$dayOffset]['year'][$year]['date'] = $date; 
             $totalFoodPerDayAndYear[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
 
-            /* Food only in CHF, summed up */
-            $foodSummed += $data['food'];
-            $totalFoodPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $foodSummed; 
-            $totalFoodPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = 0;
+            /* Food only in CHF, summed up (public / school split) */
+            $foodPublicSummed += $data['food'] - $data['schoolFood'];
+            $foodSchoolSummed += $data['schoolFood'];
+            $totalFoodPerDayAndYearSummed[$dayOffset]['year'][$year]['lowerPart'] = $foodPublicSummed; 
+            $totalFoodPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = $foodSchoolSummed;
             $totalFoodPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date; 
             $totalFoodPerDayAndYearSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))]; 
             
@@ -271,6 +275,9 @@ function getStatsData() {
                 if ($totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] == 0) {
                     $totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['lowerPart'];
                 }
+                if (($totalPerDayAndYearSummed[$x]['year'][$year]['upperPart'] ?? 0) == 0) {
+                    $totalPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = $totalPerDayAndYearSummed[$x - 1]['year'][$year]['upperPart'] ?? 0;
+                }
 
                 if (! array_key_exists($year, $totalWaxPerDayAndYearInKgSummed[$x]['year'] ?? array()))  {
                     $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year] = array();
@@ -309,11 +316,13 @@ function getStatsData() {
                 if (array_key_exists($x, $totalPerDayAndYearSummed))  {
                     if ($totalWaxPerDayAndYearInKg[$x]['year'][$year]['lowerPart'] == 0) { // This day has no booking yet and is therefore most likely in the future
                         $totalPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+                        $totalPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = 0;
                         $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['lowerPart'] = 0;
                         $totalWaxPerDayAndYearInKgSummed[$x]['year'][$year]['upperPart'] = 0;
                         $totalWaxPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
                         $totalWaxPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = 0;
                         $totalFoodPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
+                        $totalFoodPerDayAndYearSummed[$x]['year'][$year]['upperPart'] = 0;
                         $bookingsPerDayAndYearSummed[$x]['year'][$year]['lowerPart'] = 0;
                     }
                 }
