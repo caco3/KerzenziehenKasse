@@ -137,7 +137,7 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 //		var updateInterval = 1000; // in ms
 		var updateInterval = 500; // in ms
 		var watchdogInterval = updateInterval; // in ms
-		var screensaverTimeout = 60 * 60 * 1000; // 1h in ms
+		var screensaverTimeout = 60 * 60 * 1000; // 60min in ms
 		var screensaverMoveInterval = 5 * 1000; // 5s in ms
 		var alertTimeout = 5 * 1000; // 5s in ms
 		
@@ -147,13 +147,6 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		var moveScreensaverTimerHandle = "";
 			
 		let controller = null;
-		
-		var screensaverImgWidth = 200;
-		var screensaverImgHeight = 92;
-		var screensaverImgMaxX = 600 - screensaverImgWidth;
-		var screensaverImgMaxY = 1024 - screensaverImgHeight;	
-	
-	
         /**
          * Initializes the customer display: runs the first page update and
          * starts the periodic update and watchdog intervals.
@@ -270,23 +263,15 @@ $root=str_replace("customerScreen.php", "", $_SERVER['PHP_SELF'],);
 		
 		
 		/**
-		 * Returns a random integer between 0 and max (inclusive).
-		 *
-		 * @param {number} max - Upper bound of the random range.
-		 * @returns {number} The random integer.
-		 */
-		function getRandomInt(max) {
-			return Math.floor(Math.random() * (max + 1));
-		}
-		
-		
-		/**
-		 * Moves the screensaver image to a new random position.
+		 * Moves the screensaver image to a new random position,
+		 * sized to the actual window instead of hardcoded bounds.
 		 */
 		function moveScreensaverImg() {
-			document.getElementById("screensaverImg").style.setProperty("top", getRandomInt(screensaverImgMaxY) + "px");
-			document.getElementById("screensaverImg").style.setProperty("left", getRandomInt(screensaverImgMaxX) + "px");
-
+			var img = document.getElementById("screensaverImg");
+			var maxX = Math.max(0, window.innerWidth - img.offsetWidth);
+			var maxY = Math.max(0, window.innerHeight - img.offsetHeight);
+			img.style.left = Math.floor(Math.random() * (maxX + 1)) + "px";
+			img.style.top = Math.floor(Math.random() * (maxY + 1)) + "px";
 		}
     
     
