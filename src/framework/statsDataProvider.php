@@ -18,7 +18,7 @@ function getStatsPerDay($year) {
     
     // Single optimized query to get all data for the year
     $nextYear = $year + 1;
-    $query = "SELECT b.bookingId, b.date, b.donation, b.total, b.school, b.booking as serialized_articles
+    $query = "SELECT b.bookingId, b.date, b.donation, b.total, b.school, b.booking as serialized_articles, (HOUR(b.time) * 4 + FLOOR(MINUTE(b.time) / 15)) as bookingSlot
               FROM bookings b
               WHERE b.date >= '$year-01-01' AND b.date < '$nextYear-01-01'
               ORDER BY b.date, b.bookingId";
@@ -44,6 +44,7 @@ function getStatsPerDay($year) {
             $data[$date]['beeWax'] = 0;
             $data[$date]['schoolFood'] = 0;
             $data[$date]['bookings'] = 0;
+            $data[$date]['bookingsPerHour'] = array_fill(0, 96, 0);
         }
         
         // Process booking data exactly like original
@@ -62,8 +63,12 @@ function getStatsPerDay($year) {
         $food = 0;
         $beeWax = 0;
         $parafinWax = 0;
-        
+        $hasWaxOrArticles = false;
+
         foreach ($booking['articles'] as $articleId => $article) {
+            if ($articleId != 200) { // anything else than Food counts for the heatmap
+                $hasWaxOrArticles = true;
+            }
             if ($articleId == 200) { // Food
                 $food += $article['quantity'];
             }
@@ -90,6 +95,9 @@ function getStatsPerDay($year) {
         $data[$date]['parafinWax'] += $parafinWax;
         $data[$date]['beeWax'] += $beeWax;
         $data[$date]['bookings'] += 1;
+        if ($hasWaxOrArticles) {
+            $data[$date]['bookingsPerHour'][$row['bookingSlot']]++;
+        }
 
         if ($booking['school']) {
             $data[$date]['school'] += $booking['total'];
@@ -130,6 +138,7 @@ function getStatsData() {
     $totalWaxPerDayAndYearInKgSummed = array(); // [day][year]
     $bookingsPerDayAndYear = array(); // [day][year]
     $bookingsPerDayAndYearSummed = array(); // [day][year]
+    $bookingsPerHour = array(); // [day][year][quarterHourSlot]
 
     /* Create one index per day for 30 days.
      * If a day stays empty, it will get ignored in the plot */
@@ -233,6 +242,10 @@ function getStatsData() {
             $bookingsPerDayAndYearSummed[$dayOffset]['year'][$year]['upperPart'] = 0;
             $bookingsPerDayAndYearSummed[$dayOffset]['year'][$year]['date'] = $date;
             $bookingsPerDayAndYearSummed[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
+
+            /* Bookings per hour (heatmap data) */
+            $bookingsPerHour[$dayOffset]['year'][$year] = $data['bookingsPerHour'];
+            $bookingsPerHour[$dayOffset]['formatedDate'] = $germanDayOfWeekShort[strftime("%w", strtotime($date))];
         }
         
 
@@ -343,7 +356,8 @@ function getStatsData() {
         &$totalWaxPerDayAndYearInKg,
         &$totalWaxPerDayAndYearInKgSummed,
         &$bookingsPerDayAndYear,
-        &$bookingsPerDayAndYearSummed
+        &$bookingsPerDayAndYearSummed,
+        &$bookingsPerHour
     );
 
     for ($offset = 0; $offset < 15; $offset++) {
@@ -371,7 +385,8 @@ function getStatsData() {
         'totalWaxPerDayAndYearInKg' => $totalWaxPerDayAndYearInKg,
         'totalWaxPerDayAndYearInKgSummed' => $totalWaxPerDayAndYearInKgSummed,
         'bookingsPerDayAndYear' => $bookingsPerDayAndYear,
-        'bookingsPerDayAndYearSummed' => $bookingsPerDayAndYearSummed
+        'bookingsPerDayAndYearSummed' => $bookingsPerDayAndYearSummed,
+        'bookingsPerHour' => $bookingsPerHour
     );
 }
 

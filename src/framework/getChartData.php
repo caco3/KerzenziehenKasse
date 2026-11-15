@@ -120,6 +120,16 @@ $chartConfig = [
         'fractionDigits' => 0,
         'bgImage' => 'chart-bg.png',
         'paddingLeft' => 10
+    ],
+    'bookingsPerHour' => [
+        'chartType' => 'heatmap',
+        'lowerName' => '',
+        'upperName' => '',
+        'prefix' => '',
+        'suffix' => '',
+        'fractionDigits' => 0,
+        'bgImage' => '',
+        'paddingLeft' => 0
     ]
 ];
 
@@ -148,6 +158,37 @@ foreach ($allChartTypes as $type) {
         }					
         array_push($years, $year);
     }				
+
+    if (($config['chartType'] ?? '') === 'heatmap') {
+        // 2017 only has one aggregated booking per day at 00:00, exclude it
+        $heatmapYears = array();
+        foreach($years as $year) {
+            if ($year == 2017) {
+                continue;
+            }
+            $heatmapYears[] = $year;
+        }
+
+        foreach($heatmapYears as $year) {
+            $headers[] = (string)$year;
+        }
+        $formattedData[] = $headers;
+
+        foreach($data as $day => $dataOfDay) {
+            if ((!array_key_exists("formatedDate", $dataOfDay)) or ($dataOfDay['formatedDate'] == "")) {
+                continue;
+            }
+
+            $row = [$dataOfDay['formatedDate']];
+            foreach($heatmapYears as $year) {
+                $row[] = $dataOfDay['year'][$year] ?? array_fill(0, 96, 0);
+            }
+            $formattedData[] = $row;
+        }
+
+        $allFormattedData[$type] = $formattedData;
+        continue;
+    }
 
     foreach($years as $year) {
         $lowerName = isset($config['lowerName']) ? trim($config['lowerName']) : '';

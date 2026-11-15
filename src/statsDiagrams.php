@@ -121,13 +121,19 @@ function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) 
                 
                 var data = allData[dataId];
                 var headers = data[0].slice(1);
-                
+
                 // Wait for Google Charts to be ready
                 /**
                  * Polls until Google Charts is ready, then draws the chart
                  * and legend and resolves the promise.
                  */
                 function waitForGoogleCharts() {
+                    if (chartConfig[dataId] && chartConfig[dataId].chartType === 'heatmap') {
+                        drawHeatmap(chartId, data, headers);
+                        drawHeatmapLegend(legendId);
+                        resolve();
+                        return;
+                    }
                     if (window.googleChartsReady && google.visualization) {
                         drawChart(chartId, data, headers, prefix, suffix, fractionDigits);
                         drawLegendChart(legendId, headers);
@@ -296,6 +302,133 @@ function drawChart(chartId, data, headers, prefix, suffix, fractionDigits) {
         console.log('Chart ' + chartId + ' rendered in ' + renderTime.toFixed(2) + ' ms');
     }
 
+// Heatmap
+/**
+ * Maps a booking count to a discrete heat category color:
+ * 0 = empty, 1-3 = green, 4-6 = yellow, 7-9 = orange, 10+ = red.
+ *
+ * @param {number} value - Number of bookings in the slot.
+ * @returns {string} CSS color, 'transparent' for empty slots.
+ */
+function heatColor(value) {
+    if (value <= 0) return 'transparent';
+    if (value <= 3) return 'hsl(120, 90%, 42%)';
+    if (value <= 6) return 'hsl(50, 90%, 45%)';
+    if (value <= 9) return 'hsl(25, 90%, 45%)';
+    return 'hsl(0, 90%, 45%)';
+}
+
+/**
+ * Draws an HTML heatmap table: 15-minute slots on the Y axis (10:00 on
+ * top to 23:45 at the bottom), one opening-hours column plus one column
+ * per year grouped per event day on the X axis (like the bar charts).
+ * Cells are colored by category: green (1-3) to red (10+ bookings),
+ * blue marks the opening hours.
+ *
+ * @param {string} chartId - DOM id of the chart container.
+ * @param {Array[]} data - Row 0 = ['', year, ...]; then one row per day:
+ *        [dayLabel, slotCounts[96] per year, ...].
+ * @param {string[]} headers - Year labels (data[0].slice(1)).
+ */
+function drawHeatmap(chartId, data, headers) {
+    var startTime = performance.now();
+    console.log('Starting to render heatmap: ' + chartId);
+
+    // Fixed display range 10:00 - 24:00 in 15-minute slots (40 = 10:00, 95 = 23:45)
+    var minSlot = 40;
+    var maxSlot = 95;
+    var slotMinutes = ['00', '15', '30', '45'];
+
+    // Opening hours per weekday as [firstSlot, endSlot) in 15-minute slots
+    var openingHours = {
+        'So': [48, 74], // 12:00 - 18:30
+        'Mo': null,
+        'Di': null,
+        'Mi': [56, 74], // 14:00 - 18:30
+        'Do': null,
+        'Fr': [72, 88], // 18:00 - 22:00
+        'Sa': [48, 74]  // 12:00 - 18:30
+    };
+    var lastDayHours = [48, 62]; // Last event day: 12:00 - 15:30
+
+    function getSlotLabel(s) {
+        return Math.floor(s / 4) + ':' + slotMinutes[s % 4];
+    }
+
+    var html = '<table class="heatmap-table"><tr><th class="heatmap-axis"></th>';
+    for (var row = 1; row < data.length; row++) {
+        html += '<th colspan="' + (headers.length + 1) + '" class="heatmap-day">' + data[row][0] + '</th>';
+    }
+    html += '</tr><tr><th class="heatmap-axis"></th>';
+    for (var row = 1; row < data.length; row++) {
+        html += '<th class="heatmap-year heatmap-group-start" title="Öffnungszeiten"><div>Öffn.</div></th>';
+        for (var i = 0; i < headers.length; i++) {
+            html += '<th class="heatmap-year"><div>' + headers[i] + '</div></th>';
+        }
+    }
+    html += '</tr>';
+
+    for (var s = minSlot; s <= maxSlot; s++) {
+        var slotLabel = getSlotLabel(s);
+        var hourStart = (s % 4 === 0);
+        html += '<tr><th class="heatmap-axis' + (hourStart ? ' heatmap-hour-start' : '') + '">' + slotLabel + '</th>';
+        for (var row = 1; row < data.length; row++) {
+            var weekday = data[row][0];
+            var hours = (row === data.length - 1 && weekday === 'So') ? lastDayHours : openingHours[weekday];
+            if (hours && s === hours[0]) {
+                var openText = 'Öffnungszeiten: ' + getSlotLabel(hours[0]) + ' - ' + getSlotLabel(hours[1]);
+                html += '<td class="heatmap-cell heatmap-group-start heatmap-open' + (hourStart ? ' heatmap-hour-start' : '') +
+                    '" rowspan="' + (hours[1] - hours[0]) + '" title="' + weekday + ' - ' + openText + '"><div>Geöffnet</div></td>';
+            } else if (!hours || s < hours[0] || s >= hours[1]) {
+                html += '<td class="heatmap-cell heatmap-group-start' + (hourStart ? ' heatmap-hour-start' : '') +
+                    '" style="background-color: transparent;" title="' + weekday + ' - geschlossen"></td>';
+            }
+            for (var i = 0; i < headers.length; i++) {
+                var slotCounts = data[row][i + 1] || [];
+                var value = slotCounts[s] || 0;
+                var bookingsLabel = value + ' Buchung' + (value === 1 ? '' : 'en');
+                html += '<td class="heatmap-cell' + (hourStart ? ' heatmap-hour-start' : '') +
+                    '" style="background-color: ' + heatColor(value) + ';" title="' +
+                    headers[i] + ', ' + data[row][0] + ', ' + slotLabel + ' - ' + bookingsLabel + '"></td>';
+            }
+        }
+        html += '</tr>';
+    }
+    html += '</table>';
+
+    document.getElementById(chartId).innerHTML = html;
+
+    var endTime = performance.now();
+    console.log('Heatmap ' + chartId + ' rendered in ' + (endTime - startTime).toFixed(2) + ' ms');
+}
+
+/**
+ * Renders the heatmap legend (one colored box per booking-count
+ * category) into the given element.
+ *
+ * @param {string} legendId - DOM id of the legend container.
+ */
+function drawHeatmapLegend(legendId) {
+    var categories = [
+        { color: heatColor(2), border: '1px solid #ccc', label: '1-3 Buchungen' },
+        { color: heatColor(5), border: '1px solid #ccc', label: '4-6 Buchungen' },
+        { color: heatColor(8), border: '1px solid #ccc', label: '7-9 Buchungen' },
+        { color: heatColor(10), border: '1px solid #ccc', label: '10+ Buchungen' }
+    ];
+
+    var legendHTML = '<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px; margin-top: 0; padding-top: 0; background: transparent;">';
+    for (var i = 0; i < categories.length; i++) {
+        legendHTML += '<div style="display: flex; align-items: center; gap: 8px;">';
+        legendHTML += '<div style="width: 20px; height: 20px; background-color: ' + categories[i].color + '; border: ' + categories[i].border + ';"></div>';
+        legendHTML += '<span style="font-size: 14px; font-weight: bold;">' + categories[i].label + '</span>';
+        legendHTML += '</div>';
+    }
+    legendHTML += '<span style="font-size: 13px; font-weight: bold; color: #555;">pro 15 Minuten</span>';
+    legendHTML += '</div>';
+
+    document.getElementById(legendId).innerHTML = legendHTML;
+}
+
 // HTML Legend
 /**
  * Renders an HTML legend (one color box per year, plus a brightened box
@@ -348,13 +481,26 @@ function createDiagramContainer(dataId) {
 
     var chartId = 'chart_' + dataId;
     var legendId = 'legend_' + dataId;
-    
+
     var container = document.getElementById(dataId);
     if (!container) {
         console.error('Container not found: ' + dataId);
         return null;
     }
-    
+
+    if (config.chartType === 'heatmap') {
+        var heatmapHtml = '<div style="margin: 0; padding: 0;">';
+        heatmapHtml += '<div id="' + chartId + '" style="position: relative; min-height: 150px; margin: 0; padding: 10px 0 0 0;">';
+        heatmapHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
+        heatmapHtml += '</div>';
+        heatmapHtml += '</div>';
+        heatmapHtml += '<div id="' + legendId + '" style="max-width: 1400px; margin: 0; margin-top: 10px; height: 60px;"></div>';
+
+        container.innerHTML = heatmapHtml;
+
+        return { chartId: chartId, legendId: legendId, dataId: dataId, chartType: 'heatmap' };
+    }
+
     // Show chart container with background image and loading indicator immediately
     // Adjust padding-left to the container to make sure all X axis tick labels have the same width (so it matches the background image position)
     // And compensate the width with it
@@ -499,6 +645,67 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
         overflow-x: hidden !important;
         margin-left: 5px !important; /* Force left margin */
     }
+
+    /* Heatmap table */
+    .heatmap-table {
+        border-collapse: collapse;
+    }
+    .heatmap-table th {
+        font-weight: normal;
+        padding: 0 2px;
+    }
+    .heatmap-table .heatmap-day {
+        font-size: 13px;
+        border-left: 2px solid #999;
+        border-right: 2px solid #999;
+        border-bottom: 1px solid #999;
+        text-align: center;
+    }
+    .heatmap-table .heatmap-year {
+        height: 52px;
+        vertical-align: bottom;
+        text-align: center;
+        padding: 0 !important;
+    }
+    .heatmap-table .heatmap-year div {
+        writing-mode: vertical-rl;
+        font-size: 9px;
+        height: 48px;
+        margin: 0 auto;
+    }
+    .heatmap-table .heatmap-axis {
+        font-size: 11px;
+        text-align: right;
+        padding: 0 5px 0 0 !important;
+        white-space: nowrap;
+        width: 42px;
+    }
+    .heatmap-table .heatmap-cell {
+        width: 11px;
+        min-width: 11px;
+        max-width: 11px;
+        height: 12px;
+        padding: 0;
+    }
+    .heatmap-table .heatmap-group-start {
+        border-left: 2px solid #999;
+    }
+    .heatmap-table .heatmap-hour-start {
+        border-top: 1px solid #ccc;
+    }
+    .heatmap-table .heatmap-open {
+        background-color: hsl(210, 90%, 45%);
+        text-align: center;
+        vertical-align: middle;
+    }
+    .heatmap-table .heatmap-open div {
+        writing-mode: vertical-rl;
+        font-size: 10px;
+        font-weight: bold;
+        color: #fff;
+        letter-spacing: 1px;
+        margin: 0 auto;
+    }
 </style>
 
 <div id="body" style="margin: 0; padding: 0;">
@@ -516,7 +723,8 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 			<li><a href=#Wax_amount>Wachsmenge</a><br><br></li>
 			<li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a><br><br></li>
 			<li><a href=#bookings>Buchungen pro Tag</a><br><br></li>
-			<li><a href=#bookings_summed>Buchungen aufsummiert</a></li>
+			<li><a href=#bookings_summed>Buchungen aufsummiert</a><br><br></li>
+			<li><a href=#bookings_heatmap>Buchungen pro 15 Minuten (nur Wachs &amp; Artikel)</a></li>
 		</ul>
 	</div>
 	
@@ -567,7 +775,8 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <a name=Wax_amount></a><h2>Wachsmenge (in kg)</span></h2><div id="totalWaxPerDayAndYearInKg"></div><hr>
 <a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert (in kg)</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div><hr>
 <a name=bookings></a><h2>Buchungen pro Tag</h2><div id="bookingsPerDayAndYear"></div><hr>
-<a name=bookings_summed></a><h2>Buchungen aufsummiert</h2><div id="bookingsPerDayAndYearSummed"></div>
+<a name=bookings_summed></a><h2>Buchungen aufsummiert</h2><div id="bookingsPerDayAndYearSummed"></div><hr>
+<a name=bookings_heatmap></a><h2>Buchungen pro 15 Minuten (nur Wachs &amp; Artikel, ohne Gastronomie/Spenden)</h2><div id="bookingsPerHour"></div>
 
 <script>
 // Create all containers immediately, then load data once and render all charts
@@ -599,8 +808,9 @@ function loadAllDiagrams() {
             var waxAmountSummedContainer = createDiagramContainer("totalWaxPerDayAndYearInKgSummed");
             var bookingsContainer = createDiagramContainer("bookingsPerDayAndYear");
             var bookingsSummedContainer = createDiagramContainer("bookingsPerDayAndYearSummed");
+            var bookingsHeatmapContainer = createDiagramContainer("bookingsPerHour");
 
-            var containers = [commonContainer, commonSummedContainer, waxContainer, waxSummedContainer, foodContainer, foodSummedContainer, waxAmountContainer, waxAmountSummedContainer, bookingsContainer, bookingsSummedContainer];
+            var containers = [commonContainer, commonSummedContainer, waxContainer, waxSummedContainer, foodContainer, foodSummedContainer, waxAmountContainer, waxAmountSummedContainer, bookingsContainer, bookingsSummedContainer, bookingsHeatmapContainer];
 
             var dataLoadTime = performance.now() - totalStartTime;
             console.log('✓ Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
