@@ -113,6 +113,7 @@ function show_easy_numpad(id, newType, initialValue1, header, showDecimalPoint, 
             </div>
         </div>
     `;
+    $('#easy-numpad-frame').remove(); // in case a previous numpad is still open
     $('body').append(easy_numpad);    
     updateValueField(value);
 }

@@ -5,8 +5,32 @@
  * Opens a websocket connection to the scale-gateway container on this host
  * (port 8085) and registers the websocket event handlers.
  */
+var websocket = null;
+var scaleReconnectTimer = null; // single pending reconnect attempt (deduplicated)
+
+/**
+ * Schedules exactly one reconnect attempt. Both onError and onClose fire for
+ * the same failure; without deduplication each would start its own reconnect
+ * loop, doubling the number of parallel WebSocket reconnects every second
+ * while the scale is unreachable (the page gets slower over time).
+ */
+function scheduleScaleReconnect()
+{
+    if (scaleReconnectTimer == null) {
+        scaleReconnectTimer = setTimeout(function() {
+            scaleReconnectTimer = null;
+            doConnect();
+        }, 1000);
+    }
+}
+
 function doConnect()
 {
+    // Do not open another socket while one is still connecting or open
+    if (websocket != null &&
+        (websocket.readyState === WebSocket.CONNECTING || websocket.readyState === WebSocket.OPEN)) {
+        return;
+    }
     console.log("Connecting to scale @ " + location.hostname + "...");
     update_display(null, "Verbinden...", false);
     websocket = new WebSocket("ws://" + location.hostname + ":8085/");
@@ -28,6 +52,10 @@ function doConnect()
 function onOpen(evt)
 {
     console.log("Scale connected\n");
+    if (scaleReconnectTimer != null) { // cancel a queued reconnect, we are connected
+        clearTimeout(scaleReconnectTimer);
+        scaleReconnectTimer = null;
+    }
     update_display(null, "Verbunden", false);
 }
 
@@ -41,7 +69,7 @@ function onClose(evt)
 {
     console.log("Scale disconnected!\n");
     update_display(null, "Waage ausgeschaltet oder nicht verbunden!", false);
-    setTimeout(doConnect, 1000);
+    scheduleScaleReconnect();
 }
 
 /**
@@ -91,8 +119,8 @@ function onError(evt)
 {
     console.log('Scale: Error handler: ' + evt.data + '!\n');
     update_display(null, "Kommunikationsfehler", false);
-    websocket.close();
-    setTimeout(doConnect, 1000);
+    websocket.close(); // triggers onClose -> scheduleScaleReconnect()
+    scheduleScaleReconnect(); // fallback if close() does not fire onClose
 }
 
 
