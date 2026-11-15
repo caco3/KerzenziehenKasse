@@ -78,6 +78,7 @@ else { // Normal
         var screensaverMoveInterval = 5 * 1000; // 5s in ms
         var screensaverIdleTimer = null;
         var moveScreensaverTimerHandle = null;
+        var screensaverDismissedAt = 0; // timestamp of last dismissal (for click swallowing)
 
         /**
          * Shows the screensaver overlay and starts moving the logo.
@@ -92,7 +93,13 @@ else { // Normal
          * Hides the screensaver overlay and stops moving the logo.
          */
         function hideScreensaver() {
-            document.getElementById("screensaver").style.display = "none";
+            var screensaver = document.getElementById("screensaver");
+            if (window.getComputedStyle(screensaver).display !== "none") {
+                // The input that dismissed the screensaver must not also trigger
+                // actions underneath (e.g. put an article into the basket).
+                screensaverDismissedAt = Date.now();
+            }
+            screensaver.style.display = "none";
             if (moveScreensaverTimerHandle != null) {
                 clearInterval(moveScreensaverTimerHandle);
                 moveScreensaverTimerHandle = null;
@@ -112,17 +119,36 @@ else { // Normal
 
         /**
          * Dismisses the screensaver (if shown) and restarts the idle timer.
+         *
+         * @param {Event} [e] - The input event that counts as activity.
          */
-        function resetScreensaverTimer() {
+        function resetScreensaverTimer(e) {
+            if (e && e.type === "touchstart" && e.cancelable &&
+                window.getComputedStyle(document.getElementById("screensaver")).display !== "none") {
+                e.preventDefault(); // suppress the emulated click of the dismissing tap
+            }
             hideScreensaver();
             clearTimeout(screensaverIdleTimer);
             screensaverIdleTimer = setTimeout(showScreensaver, screensaverIdleTimeout);
         }
 
         // Any user input counts as activity; "keydown" also covers the barcode scanner
-        ["mousemove", "mousedown", "touchstart", "keydown"].forEach(function(evt) {
+        ["mousemove", "mousedown", "keydown"].forEach(function(evt) {
             document.addEventListener(evt, resetScreensaverTimer, true);
         });
+        // touchstart needs a non-passive listener so preventDefault() can suppress
+        // the emulated click of the tap that dismisses the screensaver
+        document.addEventListener("touchstart", resetScreensaverTimer, { capture: true, passive: false });
+
+        // Swallow the first click after the screensaver was dismissed so the
+        // dismissing tap/click/keypress cannot reach the UI underneath
+        document.addEventListener("click", function(e) {
+            if (Date.now() - screensaverDismissedAt < 500) {
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        }, true);
+
         resetScreensaverTimer(); // Start the idle timer on page load
     </script>
 
