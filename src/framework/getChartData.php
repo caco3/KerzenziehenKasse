@@ -17,9 +17,11 @@ db_connect();
 
 // Include the data provider
 include "$root/framework/statsDataProvider.php";
+include_once __DIR__ . "/fetchTemperatureData.php";
 
 // Get the stats data
 $statsData = getStatsData();
+$temperatureData = getTemperatureData();
 
 // Map chart types to column names
 $chartConfig = [
@@ -130,6 +132,26 @@ $chartConfig = [
         'fractionDigits' => 0,
         'bgImage' => '',
         'paddingLeft' => 0
+    ],
+    'temperaturePerDayAndYear' => [
+        'chartType' => 'line',
+        'lowerName' => '',
+        'upperName' => '',
+        'prefix' => '',
+        'suffix' => '°C',
+        'fractionDigits' => 1,
+        'bgImage' => '',
+        'paddingLeft' => 0
+    ],
+    'waxVsTemperature' => [
+        'chartType' => 'scatter',
+        'lowerName' => '',
+        'upperName' => '',
+        'prefix' => '',
+        'suffix' => '°C',
+        'fractionDigits' => 1,
+        'bgImage' => '',
+        'paddingLeft' => 0
     ]
 ];
 
@@ -141,7 +163,7 @@ $allChartTypes = array_keys($chartConfig);
 foreach ($allChartTypes as $type) {
     // Process this chart type
     $config = $chartConfig[$type];
-    $data = $statsData[$type];
+    $data = $statsData[$type] ?? null;
     
     // Format the data for this chart type
     $formattedData = [];
@@ -182,6 +204,29 @@ foreach ($allChartTypes as $type) {
             $row = [$dataOfDay['formatedDate']];
             foreach($heatmapYears as $year) {
                 $row[] = $dataOfDay['year'][$year] ?? array_fill(0, 96, 0);
+            }
+            $formattedData[] = $row;
+        }
+
+        $allFormattedData[$type] = $formattedData;
+        continue;
+    }
+
+    if (in_array($config['chartType'] ?? '', ['line', 'scatter'])) {
+        foreach($years as $year) {
+            $headers[] = (string)$year;
+        }
+        $formattedData[] = $headers;
+
+        // Reuse the bookingsPerHour day labels; one 24h temperature array per year
+        foreach($statsData['bookingsPerHour'] as $day => $dataOfDay) {
+            if ((!array_key_exists("formatedDate", $dataOfDay)) or ($dataOfDay['formatedDate'] == "")) {
+                continue;
+            }
+
+            $row = [$dataOfDay['formatedDate']];
+            foreach($years as $year) {
+                $row[] = $temperatureData[$year][$day] ?? null;
             }
             $formattedData[] = $row;
         }

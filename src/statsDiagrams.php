@@ -135,8 +135,18 @@ function createChart(chartId, legendId, dataId, prefix, suffix, fractionDigits) 
                         return;
                     }
                     if (window.googleChartsReady && google.visualization) {
-                        drawChart(chartId, data, headers, prefix, suffix, fractionDigits);
-                        drawLegendChart(legendId, headers);
+                        if (chartConfig[dataId] && chartConfig[dataId].chartType === 'scatter') {
+                            var correlation = drawWaxTemperatureChart(chartId, data, allData['totalWaxPerDayAndYearInKg'], headers);
+                            drawWaxTemperatureLegend(legendId, headers, correlation);
+                        }
+                        else if (chartConfig[dataId] && chartConfig[dataId].chartType === 'line') {
+                            drawTemperatureChart(chartId, data, headers);
+                            drawTemperatureLegend(legendId, headers);
+                        }
+                        else {
+                            drawChart(chartId, data, headers, prefix, suffix, fractionDigits);
+                            drawLegendChart(legendId, headers);
+                        }
                         resolve();
                     } else {
                         setTimeout(waitForGoogleCharts, 100);
@@ -318,6 +328,35 @@ function heatColor(value) {
     return 'hsl(0, 90%, 45%)';
 }
 
+// Opening hours per weekday as [firstSlot, endSlot) in 15-minute slots
+var openingHours = {
+    'So': [48, 74], // 12:00 - 18:30
+    'Mo': null,
+    'Di': null,
+    'Mi': [56, 74], // 14:00 - 18:30
+    'Do': null,
+    'Fr': [72, 88], // 18:00 - 22:00
+    'Sa': [48, 74]  // 12:00 - 18:30
+};
+var lastDayHours = [48, 62]; // Last event day: 12:00 - 15:30
+var slotMinutes = ['00', '15', '30', '45'];
+
+/**
+ * Returns the opening hours [firstSlot, endSlot) for a weekday, or null
+ * when closed. The last event day (a Sunday) has shorter hours.
+ *
+ * @param {string} weekday - German weekday label ('So', 'Mo', ...).
+ * @param {boolean} isLastDay - True for the last event day.
+ * @returns {number[]|null} Slot range or null when closed.
+ */
+function getOpeningHours(weekday, isLastDay) {
+    return (isLastDay && weekday === 'So') ? lastDayHours : openingHours[weekday];
+}
+
+function getSlotLabel(s) {
+    return Math.floor(s / 4) + ':' + slotMinutes[s % 4];
+}
+
 /**
  * Draws an HTML heatmap table: 15-minute slots on the Y axis (10:00 on
  * top to 23:45 at the bottom), one opening-hours column plus one column
@@ -337,23 +376,6 @@ function drawHeatmap(chartId, data, headers) {
     // Fixed display range 10:00 - 24:00 in 15-minute slots (40 = 10:00, 95 = 23:45)
     var minSlot = 40;
     var maxSlot = 95;
-    var slotMinutes = ['00', '15', '30', '45'];
-
-    // Opening hours per weekday as [firstSlot, endSlot) in 15-minute slots
-    var openingHours = {
-        'So': [48, 74], // 12:00 - 18:30
-        'Mo': null,
-        'Di': null,
-        'Mi': [56, 74], // 14:00 - 18:30
-        'Do': null,
-        'Fr': [72, 88], // 18:00 - 22:00
-        'Sa': [48, 74]  // 12:00 - 18:30
-    };
-    var lastDayHours = [48, 62]; // Last event day: 12:00 - 15:30
-
-    function getSlotLabel(s) {
-        return Math.floor(s / 4) + ':' + slotMinutes[s % 4];
-    }
 
     var html = '<table class="heatmap-table"><tr><th class="heatmap-axis"></th>';
     for (var row = 1; row < data.length; row++) {
@@ -374,7 +396,7 @@ function drawHeatmap(chartId, data, headers) {
         html += '<tr><th class="heatmap-axis' + (hourStart ? ' heatmap-hour-start' : '') + '">' + slotLabel + '</th>';
         for (var row = 1; row < data.length; row++) {
             var weekday = data[row][0];
-            var hours = (row === data.length - 1 && weekday === 'So') ? lastDayHours : openingHours[weekday];
+            var hours = getOpeningHours(weekday, row === data.length - 1);
             if (hours && s === hours[0]) {
                 var openText = 'Öffnungszeiten: ' + getSlotLabel(hours[0]) + ' - ' + getSlotLabel(hours[1]);
                 html += '<td class="heatmap-cell heatmap-group-start heatmap-open' + (hourStart ? ' heatmap-hour-start' : '') +
@@ -424,6 +446,268 @@ function drawHeatmapLegend(legendId) {
         legendHTML += '</div>';
     }
     legendHTML += '<span style="font-size: 13px; font-weight: bold; color: #555;">pro 15 Minuten</span>';
+    legendHTML += '</div>';
+
+    document.getElementById(legendId).innerHTML = legendHTML;
+}
+
+// Temperature line chart
+/**
+ * Draws a Google Charts line chart: X axis = event days (weekday labels
+ * like the other charts), one line per year, Y = average temperature
+ * during that day's opening hours.
+ *
+ * @param {string} chartId - DOM id of the chart container.
+ * @param {Array[]} data - Row 0 = ['', year, ...]; then one row per day:
+ *        [dayLabel, hourlyTemps[24] per year (or null), ...].
+ * @param {string[]} headers - Year labels (data[0].slice(1)).
+ */
+function drawTemperatureChart(chartId, data, headers) {
+    var startTime = performance.now();
+    console.log('Starting to render temperature chart: ' + chartId);
+
+    var chartData = [[''].concat(headers)];
+    for (var row = 1; row < data.length; row++) {
+        var weekday = data[row][0];
+        var hours = getOpeningHours(weekday, row === data.length - 1);
+        var dataRow = [weekday];
+        for (var i = 0; i < headers.length; i++) {
+            var temps = data[row][i + 1];
+            if (!hours || !temps) {
+                dataRow.push(null);
+                continue;
+            }
+            var firstHour = Math.floor(hours[0] / 4);
+            var lastHour = Math.floor((hours[1] - 1) / 4);
+            var sum = 0;
+            var count = 0;
+            for (var h = firstHour; h <= lastHour; h++) {
+                if (temps[h] !== null && temps[h] !== undefined) {
+                    sum += temps[h];
+                    count++;
+                }
+            }
+            dataRow.push(count > 0 ? sum / count : null);
+        }
+        chartData.push(dataRow);
+    }
+
+    var dataTable = google.visualization.arrayToDataTable(chartData);
+
+    // Same one-color-per-year palette as the other charts' legends
+    var colors = [];
+    for (var i = 0; i < headers.length; i++) {
+        colors.push(seriesColors[i]);
+    }
+
+    var options = {
+        backgroundColor: 'transparent',
+        height: 460,
+        width: 1730,
+        chartArea: {
+            left: 80,
+            top: 20,
+            width: '85%',
+            height: '75%',
+            backgroundColor: 'transparent',
+        },
+        hAxis: {
+            textStyle: { fontSize: 16 },
+            title: null,
+        },
+        vAxis: {
+            title: '°C',
+            titleTextStyle: { fontSize: 20, italic: false },
+            textStyle: { fontSize: 16 },
+        },
+        interpolateNulls: true,
+        colors: colors,
+        pointSize: 5,
+        lineWidth: 3,
+        legend: {
+            position: 'none'
+        }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById(chartId));
+    chart.draw(dataTable, options);
+
+    var loadingElement = document.getElementById('loading_' + chartId);
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+
+    var endTime = performance.now();
+    console.log('Temperature chart ' + chartId + ' rendered in ' + (endTime - startTime).toFixed(2) + ' ms');
+}
+
+/**
+ * Renders the temperature chart legend (one color box per year) into the
+ * given element.
+ *
+ * @param {string} legendId - DOM id of the legend container.
+ * @param {string[]} headers - Year labels.
+ */
+function drawTemperatureLegend(legendId, headers) {
+    var legendHTML = '<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px; margin-top: 0; padding-top: 0; background: transparent;">';
+    for (var i = 0; i < headers.length; i++) {
+        legendHTML += '<div style="display: flex; align-items: center; gap: 8px;">';
+        legendHTML += '<div style="width: 20px; height: 20px; background-color: ' + seriesColors[i] + '; border: 1px solid #ccc;"></div>';
+        legendHTML += '<span style="font-size: 14px; font-weight: bold;">' + headers[i] + '</span>';
+        legendHTML += '</div>';
+    }
+    legendHTML += '</div>';
+
+    document.getElementById(legendId).innerHTML = legendHTML;
+}
+
+// Wax vs temperature scatter chart
+/**
+ * Draws a scatter chart correlating total wax amount per year with the
+ * average temperature during the event's opening hours that year. One
+ * point per year, plus a linear trendline.
+ *
+ * @param {string} chartId - DOM id of the chart container.
+ * @param {Array[]} tempData - Row 0 = ['', year, ...]; then one row per
+ *        day: [dayLabel, hourlyTemps[24] per year (or null), ...].
+ * @param {Array[]} waxData - Row 0 = ['', 'year: lower', 'year: upper',
+ *        ...]; then one row per day: [dayLabel, lowerKg, upperKg per year].
+ * @param {string[]} headers - Year labels (tempData[0].slice(1)).
+ * @returns {number|null} Pearson correlation coefficient of all points.
+ */
+function drawWaxTemperatureChart(chartId, tempData, waxData, headers) {
+    var startTime = performance.now();
+    console.log('Starting to render wax/temperature chart: ' + chartId);
+
+    // Accumulate per year: mean temperature over all opening hours of the
+    // event, and total wax amount over all event days.
+    var tempSum = headers.map(function() { return 0; });
+    var tempCount = headers.map(function() { return 0; });
+    var waxSum = headers.map(function() { return 0; });
+    for (var row = 1; row < tempData.length; row++) {
+        var weekday = tempData[row][0];
+        var hours = getOpeningHours(weekday, row === tempData.length - 1);
+        if (!hours) {
+            continue;
+        }
+        var firstHour = Math.floor(hours[0] / 4);
+        var lastHour = Math.floor((hours[1] - 1) / 4);
+        for (var i = 0; i < headers.length; i++) {
+            var temps = tempData[row][i + 1];
+            var waxRow = waxData[row] || [];
+            waxSum[i] += (parseFloat(waxRow[i * 2 + 1]) || 0) + (parseFloat(waxRow[i * 2 + 2]) || 0);
+            if (!temps) {
+                continue;
+            }
+            for (var h = firstHour; h <= lastHour; h++) {
+                if (temps[h] !== null && temps[h] !== undefined) {
+                    tempSum[i] += temps[h];
+                    tempCount[i]++;
+                }
+            }
+        }
+    }
+
+    var points = [];
+    for (var i = 0; i < headers.length; i++) {
+        if (tempCount[i] === 0 || waxSum[i] <= 0) {
+            continue;
+        }
+        var meanTemp = tempSum[i] / tempCount[i];
+        points.push([
+            meanTemp,
+            waxSum[i],
+            'point { fill-color: ' + seriesColors[i] + ' }',
+            headers[i] + ': ' + meanTemp.toFixed(1) + ' °C, ' + waxSum[i].toFixed(1) + ' kg'
+        ]);
+    }
+
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn('number', 'Temperatur');
+    dataTable.addColumn('number', 'Wachsmenge');
+    dataTable.addColumn({ type: 'string', role: 'style' });
+    dataTable.addColumn({ type: 'string', role: 'tooltip' });
+    dataTable.addRows(points);
+
+    // Pearson correlation over all points
+    var n = points.length;
+    var correlation = null;
+    if (n > 1) {
+        var sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+        for (var i = 0; i < n; i++) {
+            var x = points[i][0];
+            var y = points[i][1];
+            sumX += x; sumY += y; sumXY += x * y; sumX2 += x * x; sumY2 += y * y;
+        }
+        var denom = Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY));
+        if (denom > 0) {
+            correlation = (n * sumXY - sumX * sumY) / denom;
+        }
+    }
+
+    var options = {
+        backgroundColor: 'transparent',
+        height: 460,
+        width: 1730,
+        chartArea: {
+            left: 80,
+            top: 20,
+            width: '85%',
+            height: '75%',
+            backgroundColor: 'transparent',
+        },
+        hAxis: {
+            title: 'Temperatur (°C)',
+            titleTextStyle: { fontSize: 20, italic: false },
+            textStyle: { fontSize: 16 },
+        },
+        vAxis: {
+            title: 'Wachsmenge (kg)',
+            titleTextStyle: { fontSize: 20, italic: false },
+            textStyle: { fontSize: 16 },
+            viewWindow: { min: 0 },
+        },
+        pointSize: 7,
+        trendlines: {
+            0: { type: 'linear', color: '#333', lineWidth: 2, opacity: 0.6 }
+        },
+        legend: {
+            position: 'none'
+        }
+    };
+
+    var chart = new google.visualization.ScatterChart(document.getElementById(chartId));
+    chart.draw(dataTable, options);
+
+    var loadingElement = document.getElementById('loading_' + chartId);
+    if (loadingElement) {
+        loadingElement.style.display = 'none';
+    }
+
+    var endTime = performance.now();
+    console.log('Wax/temperature chart ' + chartId + ' rendered in ' + (endTime - startTime).toFixed(2) + ' ms');
+    return correlation;
+}
+
+/**
+ * Renders the wax/temperature chart legend (one color box per year plus
+ * the correlation coefficient) into the given element.
+ *
+ * @param {string} legendId - DOM id of the legend container.
+ * @param {string[]} headers - Year labels.
+ * @param {number|null} correlation - Pearson r of all points.
+ */
+function drawWaxTemperatureLegend(legendId, headers, correlation) {
+    var legendHTML = '<div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 20px; margin-top: 0; padding-top: 0; background: transparent;">';
+    for (var i = 0; i < headers.length; i++) {
+        legendHTML += '<div style="display: flex; align-items: center; gap: 8px;">';
+        legendHTML += '<div style="width: 20px; height: 20px; background-color: ' + seriesColors[i] + '; border: 1px solid #ccc;"></div>';
+        legendHTML += '<span style="font-size: 14px; font-weight: bold;">' + headers[i] + '</span>';
+        legendHTML += '</div>';
+    }
+    if (correlation !== null) {
+        legendHTML += '<span style="font-size: 14px; font-weight: bold; margin-left: 20px;">Korrelation r = ' + correlation.toFixed(2) + '</span>';
+    }
     legendHTML += '</div>';
 
     document.getElementById(legendId).innerHTML = legendHTML;
@@ -488,7 +772,7 @@ function createDiagramContainer(dataId) {
         return null;
     }
 
-    if (config.chartType === 'heatmap') {
+    if (config.chartType === 'heatmap' || config.chartType === 'line' || config.chartType === 'scatter') {
         var heatmapHtml = '<div style="margin: 0; padding: 0;">';
         heatmapHtml += '<div id="' + chartId + '" style="position: relative; min-height: 150px; margin: 0; padding: 10px 0 0 0;">';
         heatmapHtml += '<div id="loading_' + chartId + '" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 8px; text-align: center; font-size: 16px; font-weight: bold; color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">Lade Diagramm...</div>';
@@ -498,7 +782,7 @@ function createDiagramContainer(dataId) {
 
         container.innerHTML = heatmapHtml;
 
-        return { chartId: chartId, legendId: legendId, dataId: dataId, chartType: 'heatmap' };
+        return { chartId: chartId, legendId: legendId, dataId: dataId, chartType: config.chartType };
     }
 
     // Show chart container with background image and loading indicator immediately
@@ -724,7 +1008,9 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 			<li><a href=#WaxAmountSummed>Wachsmenge aufsummiert</a><br><br></li>
 			<li><a href=#bookings>Buchungen pro Tag</a><br><br></li>
 			<li><a href=#bookings_summed>Buchungen aufsummiert</a><br><br></li>
-			<li><a href=#bookings_heatmap>Buchungen pro 15 Minuten (nur Wachs &amp; Artikel)</a></li>
+			<li><a href=#bookings_heatmap>Buchungen pro 15 Minuten (nur Wachs &amp; Artikel)</a><br><br></li>
+			<li><a href=#temperature>Durchschnittliche Temperatur während Öffnungszeiten</a><br><br></li>
+			<li><a href=#wax_temperature>Wachsmenge vs. Temperatur</a></li>
 		</ul>
 	</div>
 	
@@ -776,7 +1062,9 @@ for (var yearIndex = 0; yearIndex < 10; yearIndex++) {
 <a name=WaxAmountSummed></a><h2>Wachsmenge aufsummiert (in kg)</span></h2><div id="totalWaxPerDayAndYearInKgSummed"></div><hr>
 <a name=bookings></a><h2>Buchungen pro Tag</h2><div id="bookingsPerDayAndYear"></div><hr>
 <a name=bookings_summed></a><h2>Buchungen aufsummiert</h2><div id="bookingsPerDayAndYearSummed"></div><hr>
-<a name=bookings_heatmap></a><h2>Buchungen pro 15 Minuten (nur Wachs &amp; Artikel, ohne Gastronomie/Spenden)</h2><div id="bookingsPerHour"></div>
+<a name=bookings_heatmap></a><h2>Buchungen pro 15 Minuten (nur Wachs &amp; Artikel, ohne Gastronomie/Spenden)</h2><div id="bookingsPerHour"></div><hr>
+<a name=temperature></a><h2>Durchschnittliche Temperatur während Öffnungszeiten</h2><div id="temperaturePerDayAndYear"></div><hr>
+<a name=wax_temperature></a><h2>Wachsmenge vs. Temperatur pro Jahr</h2><div id="waxVsTemperature"></div>
 
 <script>
 // Create all containers immediately, then load data once and render all charts
@@ -809,8 +1097,10 @@ function loadAllDiagrams() {
             var bookingsContainer = createDiagramContainer("bookingsPerDayAndYear");
             var bookingsSummedContainer = createDiagramContainer("bookingsPerDayAndYearSummed");
             var bookingsHeatmapContainer = createDiagramContainer("bookingsPerHour");
+            var temperatureContainer = createDiagramContainer("temperaturePerDayAndYear");
+            var waxTemperatureContainer = createDiagramContainer("waxVsTemperature");
 
-            var containers = [commonContainer, commonSummedContainer, waxContainer, waxSummedContainer, foodContainer, foodSummedContainer, waxAmountContainer, waxAmountSummedContainer, bookingsContainer, bookingsSummedContainer, bookingsHeatmapContainer];
+            var containers = [commonContainer, commonSummedContainer, waxContainer, waxSummedContainer, foodContainer, foodSummedContainer, waxAmountContainer, waxAmountSummedContainer, bookingsContainer, bookingsSummedContainer, bookingsHeatmapContainer, temperatureContainer, waxTemperatureContainer];
 
             var dataLoadTime = performance.now() - totalStartTime;
             console.log('✓ Data loading completed in ' + dataLoadTime.toFixed(2) + ' ms, starting chart rendering...');
