@@ -16,11 +16,11 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
     <div id="schoolFlagDialog" class="printer-dialog" style="display: none;">
         <div class="printer-dialog-content">
             <div class="printer-dialog-header">
-                <h3>Buchungen von Schulklassen</h3>
+                <h3>Buchungen von Schulklassen/geschlossenen Gruppen</h3>
                 <button type="button" class="printer-dialog-close" onclick="closeSchoolFlagDialog()">&times;</button>
             </div>
             <div class="printer-dialog-body">
-                <p id="schoolFlagMessage">Möchten Sie die Schul-Markierung wirklich umschalten?</p>
+                <p id="schoolFlagMessage">Möchten Sie die Markierung Schule/geschlossene Gruppe wirklich umschalten?</p>
             </div>
             <div class="printer-dialog-footer">
                 <button type="button" class="cashButton" id="confirmSchoolFlagBtn" style="width: 150px; height: 60px; font-size: 20px; margin-right: 20px;" onclick="confirmSchoolFlag()">Umschalten</button>
@@ -49,24 +49,25 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
 			<div style="background: rgba(248, 249, 250, 0.65); border: 1px solid #dee2e6; border-radius: 8px; padding: 10px; backdrop-filter: blur(5px); flex: 0 0 auto; margin-left: auto;">
 				<h4 style="margin: 0 0 20px 0; color: rgba(73, 80, 87, 1); font-size: 18px; font-weight: 600;">Legende:</h4>
 				<div style="display: flex; gap: 20px; font-size: 16px; align-items: center;">
+					<? if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { ?>
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/edit.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
 						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Bearbeiten</div>
 					</div>
-					
+
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/receipt-view.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
 						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Quittung ansehen</div>
 					</div>
-					
+
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/receipt-print.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
 						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Quittung drucken</div>
 					</div>
-					
+					<? } ?>
 					<div style="display: flex; align-items: center; gap: 8px;">
 						<div style="width: 28px; height: 28px; background: url('images/school.png') no-repeat center center; background-size: 20px 20px; background-color: rgba(176, 224, 230, 0.65); border: 1px solid rgba(135, 206, 235, 0.65); border-radius: 4px;"></div>
-						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Schul-Markierung</div>
+						<div style="color: rgba(73, 80, 87, 1); font-weight: 600;">Schule oder geschlossene Gruppe</div>
 					</div>
 				</div>
 			</div>
@@ -76,7 +77,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
       <!--<p>Noch nicht implementiert</p>-->
       
       <table id=bookingsTable class=fixedLayout>
-      <tr><th class="td_rightBorder buchungCol">Buchung</th><th class="td_rightBorder zeitCol">Zeit</th><th class="td_rightBorder totalCol">Total</th><th class="td_rightBorder spendeCol">Spende</th><th class="td_rightBorder bezahlungCol">Bezahlung</th><th class="td_rightBorder artikelCol">Artikel</th><th class="td_rightBorder extraCol<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" viewerExtraCell"); } ?>">Extra-Daten</th><th<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" class=viewerIndicatorCell"); } ?>></th></tr>
+      <tr><th class="td_rightBorder buchungCol">#</th><th class="td_rightBorder zeitCol">Zeit</th><th class="td_rightBorder totalCol">Total</th><th class="td_rightBorder spendeCol">Spende</th><th class="td_rightBorder bezahlungCol">Bezahlung</th><th class="td_rightBorder artikelCol">Artikel</th><th class="td_rightBorder extraCol<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" viewerExtraCell"); } ?>">Extra-Daten</th><th<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" class=viewerIndicatorCell"); } ?>></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -109,10 +110,12 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
             echo("<td class=td_rightBorder>");
             foreach($booking['articles'] as $articleId => $article) {
                 list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
+                echo("<div class=articleBlock>");
                 echo("<span style=\"display: inline-block; padding-top: 4px; padding-bottom: 0px;\" class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
-                echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
+                echo("<div class=articleBlockText><div>" . $article['quantity'] . " " . $article['unit'] . "</div><div>" . $article['text'] . "</div></div>");
+                echo("</div>");
             }
-            
+
             echo("</td>");
             
             // Extra-Daten column (values masked on viewer for privacy)
@@ -156,7 +159,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
     <p><br></p>
     <h2><a name=year>Weitere Buchungen des aktuellen Jahres</h2>
     <table id=bookingsTable class=fixedLayout>
-    <tr><th class="td_rightBorder buchungCol">Buchung</th><th class=datumCol>Datum</th><th class="td_rightBorder zeitCol">Zeit</th><th class="td_rightBorder totalCol">Total</th><th class="td_rightBorder spendeCol">Spende</th><th class="td_rightBorder bezahlungCol">Bezahlung</th><th class="td_rightBorder artikelCol">Artikel</th><th class="td_rightBorder extraCol<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" viewerExtraCell"); } ?>">Extra-Daten</th><th class="<? echo(str_contains($_SERVER["SCRIPT_FILENAME"], "viewer") ? "viewerIndicatorCell" : "smallLastCol"); ?>"></th></tr>
+    <tr><th class="td_rightBorder buchungCol">#</th><th class=datumCol>Datum</th><th class="td_rightBorder zeitCol">Zeit</th><th class="td_rightBorder totalCol">Total</th><th class="td_rightBorder spendeCol">Spende</th><th class="td_rightBorder bezahlungCol">Bezahlung</th><th class="td_rightBorder artikelCol">Artikel</th><th class="td_rightBorder extraCol<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" viewerExtraCell"); } ?>">Extra-Daten</th><th class="<? echo(str_contains($_SERVER["SCRIPT_FILENAME"], "viewer") ? "viewerIndicatorCell" : "smallLastCol"); ?>"></th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
@@ -214,10 +217,12 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 echo("<td class=td_rightBorder>");
                 foreach($booking['articles'] as $articleId => $article) {
                     list($name, $type, $pricePerQuantity, $unit, $image) = getDbArticleData($articleId);
+                    echo("<div class=articleBlock>");
                     echo("<span style=\"display: inline-block; padding-top: 4px; padding-bottom: 0px;\" class=tooltip><img class=articleImage src=images/articles/$image><span><img src=images/articles/$image></span></span>");
-                    echo(" " . $article['quantity'] . " " . $article['unit'] . " " . $article['text'] . ", ");
+                    echo("<div class=articleBlockText><div>" . $article['quantity'] . " " . $article['unit'] . "</div><div>" . $article['text'] . "</div></div>");
+                    echo("</div>");
                 }
-                
+
                 echo("</td>");
                 
                 // Extra-Daten column (values masked on viewer for privacy)
@@ -248,7 +253,12 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
 				echo("<td class=td_rightBorder><div class='button-container'>");
 				echo("$receiptButtonView");
 				echo("$receiptButtonPrint");
-				echo(schoolFlagButton($bookingId, $booking['school'] == 1));
+				// School indicator only, no action
+				if ($booking['school'] == 1) {
+					echo("<img src=\"images/school.png\" height=35px>");
+				} else {
+					echo("<img src=\"images/public.png\" height=35px>");
+				}
 				echo("</div></td>");
 			}
                 echo("</tr>\n");

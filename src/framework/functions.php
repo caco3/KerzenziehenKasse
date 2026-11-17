@@ -68,7 +68,7 @@ function receiptButtonView($id) {
  */
 function schoolFlagButton($id, $isActive) {
     $activeClass = $isActive ? ' active' : '';
-    return "<button type=button id=school_$id class=\"schoolFlagButton$activeClass\" title=\"Schul-Markierung umschalten\"></button> ";
+    return "<button type=button id=school_$id class=\"schoolFlagButton$activeClass\" title=\"Markierung Schule/geschlossene Gruppe umschalten\"></button> ";
 }
 
 /**

@@ -17,7 +17,7 @@ var currentSchoolFlagBookingId = null;
 function showSchoolFlagDialog(bookingId) {
     currentSchoolFlagBookingId = bookingId;
     document.getElementById('schoolFlagMessage').textContent = 
-        'Soll die Schul-Markierung für Buchung ' + bookingId + ' wirklich umgeschaltet werden?';
+        'Soll die Markierung Schule/geschlossene Gruppe für Buchung ' + bookingId + ' wirklich umgeschaltet werden?';
     document.getElementById('schoolFlagDialog').style.display = 'flex';
 }
 
@@ -72,13 +72,13 @@ function confirmSchoolFlag() {
                 console.error("Error parsing response:", e);
                 console.error("Response text:", this.responseText);
                 hideProgressBar();
-                firework.launch("Fehler beim Aktualisieren der Schul-Markierung!", 'error', 5000);
+                firework.launch("Fehler beim Aktualisieren der Markierung Schule/geschlossene Gruppe!", 'error', 5000);
             }
         }
         else if (this.readyState == XMLHttpRequest.DONE) {
             hideProgressBar();
             console.error("Request failed. Status:", this.status, "Response:", this.responseText);
-            firework.launch("Fehler beim Aktualisieren der Schul-Markierung!", 'error', 5000);
+            firework.launch("Fehler beim Aktualisieren der Markierung Schule/geschlossene Gruppe!", 'error', 5000);
         }
     };
     
