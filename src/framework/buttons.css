@@ -160,7 +160,7 @@
 /* Prevent button containers from wrapping and right-align buttons */
 .button-container {
     white-space: nowrap;
-    min-width: 280px;
+    min-width: 240px;
     display: flex;
     justify-content: flex-end;
     gap: 2px;

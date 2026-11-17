@@ -75,8 +75,8 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
       <h2><a name=today>Buchungen Heute (<? echo($todayDayOfWeek); ?>, <? echo($todayDE); ?>)</h2>
       <!--<p>Noch nicht implementiert</p>-->
       
-      <table id=bookingsTable>
-      <tr><th class=td_rightBorder>Buchung</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th class=td_rightBorder>Extra-Daten</th><th></th></tr>
+      <table id=bookingsTable class=fixedLayout>
+      <tr><th class="td_rightBorder buchungCol">Buchung</th><th class="td_rightBorder zeitCol">Zeit</th><th class="td_rightBorder totalCol">Total</th><th class="td_rightBorder spendeCol">Spende</th><th class="td_rightBorder bezahlungCol">Bezahlung</th><th class="td_rightBorder artikelCol">Artikel</th><th class="td_rightBorder extraCol<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" viewerExtraCell"); } ?>">Extra-Daten</th><th<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" class=viewerIndicatorCell"); } ?>></th></tr>
       <?
       
         $bookingIdsToday = getBookingIdsOfDate($today, false);
@@ -116,7 +116,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
             echo("</td>");
             
             // Extra-Daten column (values masked on viewer for privacy)
-            echo("<td class=td_rightBorder>");
+            echo("<td class=\"td_rightBorder extraCol" . (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer") ? " viewerExtraCell" : "") . "\">");
             if (!empty($booking['extra'])) {
                 $extraData = @unserialize($booking['extra']);
                 if (is_array($extraData)) {
@@ -129,8 +129,14 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
             }
             echo("</td>");
             if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
-				// Do not show any buttons
-				echo("<td></td><td></td><td></td>");
+				// School indicator only, no buttons
+				echo("<td class=\"td_rightBorder viewerIndicatorCell\">");
+				if ($booking['school'] == 1) {
+					echo("<img src=\"images/school.png\" height=35px>");
+				} else {
+					echo("<img src=\"images/public.png\" height=35px>");
+				}
+				echo("</td>");
 			}
 			else {
 				echo("<td class=td_rightBorder><div class='button-container'>");
@@ -149,8 +155,8 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
     
     <p><br></p>
     <h2><a name=year>Weitere Buchungen des aktuellen Jahres</h2>
-    <table id=bookingsTable>
-    <tr><th class=td_rightBorder>Buchung</th><th>Datum</th><th class=td_rightBorder>Zeit</th><th class=td_rightBorder>Total</th><th class=td_rightBorder>Spende</th><th class=td_rightBorder>Bezahlung</th><th class=td_rightBorder>Artikel</th><th class=td_rightBorder>Extra-Daten</th><th></th></tr>
+    <table id=bookingsTable class=fixedLayout>
+    <tr><th class="td_rightBorder buchungCol">Buchung</th><th class=datumCol>Datum</th><th class="td_rightBorder zeitCol">Zeit</th><th class="td_rightBorder totalCol">Total</th><th class="td_rightBorder spendeCol">Spende</th><th class="td_rightBorder bezahlungCol">Bezahlung</th><th class="td_rightBorder artikelCol">Artikel</th><th class="td_rightBorder extraCol<? if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { echo(" viewerExtraCell"); } ?>">Extra-Daten</th><th class="<? echo(str_contains($_SERVER["SCRIPT_FILENAME"], "viewer") ? "viewerIndicatorCell" : "smallLastCol"); ?>"></th></tr>
     <?    
         $datesWithBookings = getBookingDatesOfYear(date("Y"));
     
@@ -215,7 +221,7 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 echo("</td>");
                 
                 // Extra-Daten column (values masked on viewer for privacy)
-                echo("<td class=td_rightBorder>");
+                echo("<td class=\"td_rightBorder extraCol" . (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer") ? " viewerExtraCell" : "") . "\">");
                 if (!empty($booking['extra'])) {
                     $extraData = @unserialize($booking['extra']);
                     if (is_array($extraData)) {
@@ -229,8 +235,14 @@ $todayDayOfWeek = $germanDayOfWeek[date("w")];
                 echo("</td>");
 
 				if (str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) {
-					// Do not show any buttons
-					echo("<td></td>");
+					// School indicator only, no buttons
+					echo("<td class=\"td_rightBorder viewerIndicatorCell\">");
+					if ($booking['school'] == 1) {
+						echo("<img src=\"images/school.png\" height=35px>");
+					} else {
+						echo("<img src=\"images/public.png\" height=35px>");
+					}
+					echo("</td>");
 				}
 				else {
 				echo("<td class=td_rightBorder><div class='button-container'>");
