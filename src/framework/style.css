@@ -579,10 +579,11 @@ a:link, a:visited, a:hover, a:active {
     width: auto;
 }
 
-/* Fixed table layout: column widths come from the header cells, so the
-   Artikel column (no width) takes the remaining space and wraps inside */
+/* Fixed table layout: column widths come from the header cells. min-width
+   keeps the columns from compressing on narrow screens. */
 #bookingsTable.fixedLayout {
     table-layout: fixed;
+    min-width: 1080px;
 }
 #bookingsTable .buchungCol { width: 45px; }
 #bookingsTable .datumCol { width: 140px; }
@@ -590,6 +591,7 @@ a:link, a:visited, a:hover, a:active {
 #bookingsTable .totalCol { width: 90px; }
 #bookingsTable .spendeCol { width: 80px; }
 #bookingsTable .bezahlungCol { width: 85px; }
+#bookingsTable .artikelCol { min-width: 200px; }
 
 /* Ensure last column doesn't wrap buttons and is equal in all tables */
 #bookingsTable th:last-child,
