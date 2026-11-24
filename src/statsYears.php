@@ -57,23 +57,22 @@ function appendTrendIndicator($display, $currentValue, &$previousValue) {
 
     $previousValue = $currentValue;
     
-    // Format percentage display
+    // Format percentage display; the colored background only covers the percentage
+    $percentageStyle = "font-size: 0.8em; color: $trendColor; display: inline-block; padding: 1px 4px; border-radius: 2px; background-color: $bgColor;";
     $percentageText = "";
     if ($percentage > 0 && $percentage < 1) {
-        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 1) . "%</span>";
+        $percentageText = "<span style=\"$percentageStyle\">+" . number_format($percentage, 1) . "%</span>";
     } else if ($percentage >= 1) {
-        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 0) . "%</span>";
+        $percentageText = "<span style=\"$percentageStyle\">+" . number_format($percentage, 0) . "%</span>";
     } else if ($percentage > 0) {
-        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">+" . number_format($percentage, 0) . "%</span>";
+        $percentageText = "<span style=\"$percentageStyle\">+" . number_format($percentage, 0) . "%</span>";
     } else if ($percentage < 0) {
-        $percentageText = "<span style=\"font-size: 0.8em; color: $trendColor;\">" . number_format($percentage, 0) . "%</span>";
+        $percentageText = "<span style=\"$percentageStyle\">" . number_format($percentage, 0) . "%</span>";
     }
-    // Hide background when no percentage is shown (transition from 0)
-    $containerStyle = $percentageText ? "display: inline-block; padding: 1px 4px; border-radius: 2px; background-color: $bgColor; margin: -1px -4px;" : "display: inline-block; padding: 1px 4px; border-radius: 2px; margin: -1px -4px;";
-    
-    return "<span style=\"$containerStyle\">" .
+
+    return "<span style=\"display: inline-block;\">" .
            $display .
-           ($percentageText ? " $percentageText" : "") . 
+           ($percentageText ? " $percentageText" : "") .
            "</span>";
 }
 
@@ -108,6 +107,7 @@ function showAllYearsSummary() {
         
         $articles = array();
         $donations = 0;		
+        $donationsNonSchool = 0;
         $total = 0;
         $waxAmountBee = 0;
         $waxAmountParafin = 0;
@@ -170,6 +170,9 @@ function showAllYearsSummary() {
                 }
             }
             $donations += $booking['donation'];
+            if (!$booking['school']) {
+                $donationsNonSchool += $booking['donation'];
+            }
             // booking.total already includes the donation (both are rounded
             // to 5 Rappen together at checkout)
             $total += $booking['total'];
@@ -205,6 +208,7 @@ function showAllYearsSummary() {
         $yearsData[$year] = array(
             'articles' => $articles,
             'donations' => $donations,
+            'donationsNonSchool' => $donationsNonSchool,
             'total' => $total,
             'waxAmountBee' => $waxAmountBee,
             'waxAmountParafin' => $waxAmountParafin
@@ -359,7 +363,7 @@ function showAllYearsSummary() {
     }
     
     // Donations row
-    echo("<tr class=tr_bottomBorder>");
+    echo("<tr>");
     echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
     echo("<td class=td_rightBorder>Spenden</td>");
     echo("<td class=td_rightBorder>CHF</td>");
@@ -374,7 +378,24 @@ function showAllYearsSummary() {
         }
     }
     echo("</tr>\n");
-    
+
+    // Donations excluding school bookings row
+    echo("<tr class=tr_bottomBorder>");
+    echo("<td style=\"padding-top: 4px; padding-bottom: 0px;\"><span class=tooltip><img class=articleImage src=images/heart.png><span><img src=images/heart.png></span></span></td>");
+    echo("<td class=td_rightBorder>Spenden ohne Schul-Buchungen</td>");
+    echo("<td class=td_rightBorder>CHF</td>");
+    $prevTrendValue = null;
+    foreach($years as $year) {
+        $donationsNonSchoolRounded = round($yearsData[$year]['donationsNonSchool'], 2);
+        if ($donationsNonSchoolRounded == 0) {
+            echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
+        } else {
+            $formatted = number_format($donationsNonSchoolRounded, 2, ".", "'");
+            echo("<td class=td_rightBorder>" . appendTrendIndicator($formatted, $donationsNonSchoolRounded, $prevTrendValue) . "</td>");
+        }
+    }
+    echo("</tr>\n");
+
     // Total row
     echo("<tr>");
     echo("<td><b>CHF</b></td>");
