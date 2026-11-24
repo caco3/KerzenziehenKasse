@@ -20,8 +20,12 @@ if (!str_contains($_SERVER["SCRIPT_FILENAME"], "viewer")) { /* Hide on viewer */
       <p><br></p>
 
       <h2>Buchungen exportieren</h2>
-      <p>Der CSV-Export ist direkt über die Buchungs- und Statistik-Seiten möglich.</p>
-      <p><br></p>
+      <ul>
+        <li>Der CSV-Export ist direkt über die Buchungs- und Statistik-Seiten möglich.<br><br></li>
+        <li><a href=subpages/exportOds.php target="_self">Alle Rechnungen des aktuellen Jahres</a><br><br></li>
+        <li><a href="subpages/exportOds.php?method=twint" target="_self">Alle Twint-Buchungen des aktuellen Jahres</a></li>
+      </ul>
+      <p></p>
 
       <h2>Monitoring / APIs</h2>
       <p>REST-Schnittstellen (via kdotool-webserver):</p>
