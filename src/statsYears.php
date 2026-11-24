@@ -325,8 +325,8 @@ function showAllYearsSummary() {
                     $amount = $yearArticle['quantity'] * $yearArticle['price'];
                     
                     if ($article['subtype'] == 'food') {
-                        $numericValue = round($amount, 0);
-                        $displayValue = ($numericValue == 0) ? "-" : number_format($numericValue, 0, ".", "'");
+                        $numericValue = round($amount, 2);
+                        $displayValue = ($numericValue == 0) ? "-" : number_format($numericValue, 2, ".", "'");
                         echo("<td class=td_rightBorder>" . appendTrendIndicator($displayValue, $numericValue, $prevTrendValue) . "</td>");
                     } else {
                         $quantity = $yearArticle['quantity'];
@@ -365,11 +365,11 @@ function showAllYearsSummary() {
     echo("<td class=td_rightBorder>CHF</td>");
     $prevTrendValue = null;
     foreach($years as $year) {
-        $donationsRounded = round($yearsData[$year]['donations'], 0);
+        $donationsRounded = round($yearsData[$year]['donations'], 2);
         if ($donationsRounded == 0) {
             echo("<td class=td_rightBorder>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</td>");
         } else {
-            $formatted = number_format($donationsRounded, 0, ".", "'");
+            $formatted = number_format($donationsRounded, 2, ".", "'");
             echo("<td class=td_rightBorder>" . appendTrendIndicator($formatted, $donationsRounded, $prevTrendValue) . "</td>");
         }
     }
@@ -382,11 +382,11 @@ function showAllYearsSummary() {
     echo("<td class=td_rightBorder><b>CHF</b></td>");
     $prevTrendValue = null;
     foreach($years as $year) {
-        $totalRounded = round($yearsData[$year]['total'], 0);
+        $totalRounded = round($yearsData[$year]['total'], 2);
         if ($totalRounded == 0) {
             echo("<td class=td_rightBorder><b>" . appendTrendIndicator("-", 0, $prevTrendValue) . "</b></td>");
         } else {
-            $formatted = number_format($totalRounded, 0, ".", "'");
+            $formatted = number_format($totalRounded, 2, ".", "'");
             echo("<td class=td_rightBorder><b>" . appendTrendIndicator($formatted, $totalRounded, $prevTrendValue) . "</b></td>");
         }
     }
