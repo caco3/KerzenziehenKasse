@@ -77,7 +77,7 @@ $columnCount = $includeExtra ? 8 : 5;
 $rows = "";
 
 // Total of all matching bookings, above the list
-$rows .= "<table:table-row>" . str_repeat("<table:table-cell/>", $columnCount - 2) . textCell("Total aller Buchungen via $methodName [CHF]:", "boldRight") . numberCell($totalSum, "bold") . "</table:table-row>";
+$rows .= "<table:table-row>" . str_repeat("<table:table-cell/>", $columnCount - 2) . textCell("Total aller Buchungen via $methodName [CHF]:", "boldRight") . numberCell($totalSum, "moneyBold") . "</table:table-row>";
 $rows .= "<table:table-row>" . str_repeat("<table:table-cell/>", $columnCount) . "</table:table-row>";
 
 // Header
@@ -102,8 +102,8 @@ foreach($filteredBookings as $booking) {
         . numberCell($booking['bookingId'])
         . textCell($dateFormatted)
         . textCell($booking['time'])
-        . numberCell($booking["total"])
-        . numberCell($booking["donation"]);
+        . numberCell($booking["total"], "money")
+        . numberCell($booking["donation"], "money");
     if ($includeExtra) {
         $rows .= textCell($isSchool ? "Ja" : "")
             . textCell($booking['group'])
@@ -114,10 +114,13 @@ foreach($filteredBookings as $booking) {
 
 $contentXml = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
-<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" office:version="1.2">
+<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0" xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0" xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0" office:version="1.2">
 <office:automatic-styles>
+<number:number-style style:name="twoDec"><number:number number:decimal-places="2" number:min-integer-digits="1"/></number:number-style>
 <style:style style:name="bold" style:family="table-cell"><style:text-properties fo:font-weight="bold"/></style:style>
 <style:style style:name="boldRight" style:family="table-cell"><style:text-properties fo:font-weight="bold"/><style:paragraph-properties fo:text-align="end"/></style:style>
+<style:style style:name="money" style:family="table-cell" style:data-style-name="twoDec"/>
+<style:style style:name="moneyBold" style:family="table-cell" style:data-style-name="twoDec"><style:text-properties fo:font-weight="bold"/></style:style>
 </office:automatic-styles>
 <office:body><office:spreadsheet>
 <table:table table:name="$methodName $year">
