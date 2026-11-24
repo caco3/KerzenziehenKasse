@@ -170,13 +170,13 @@ function showAllYearsSummary() {
                 }
             }
             $donations += $booking['donation'];
+            // booking.total already includes the donation (both are rounded
+            // to 5 Rappen together at checkout)
+            $total += $booking['total'];
         }
         
-        // Calculate totals and wax amounts
+        // Calculate wax amounts
         foreach($articles as $articleId => $article) {
-            $amount = $article['quantity'] * $article['price'];
-            $total += $amount;
-            
             // Add safety checks for wax calculations
             if (isset($article['type']) && $article['type'] == "guss") {
                 if (isset($article['waxType']) && $article['waxType'] == "bee") {
@@ -195,8 +195,6 @@ function showAllYearsSummary() {
                 }
             }
         }
-        
-        $total += $donations;
         
         // Skip years with no data
         if ($total == 0) {
